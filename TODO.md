@@ -2,8 +2,8 @@
 
 ## Phase 1 (MVP Setup)
 
-- [ ] Install and configure React Router
-- [ ] Set up basic route structure
+- [✔] Install and configure React Router
+- [✔] Set up basic route structure
 - [ ] Wire up APIs:
   - Analyse Position (FEN)
   - Analyse Game (PGN)
