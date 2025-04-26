@@ -1,3 +1,6 @@
+import { NavLink, Link } from "react-router-dom";
+
+
 export default function Sidebar() {
   return (
     <aside
@@ -36,10 +39,16 @@ export default function Sidebar() {
       </form>
       <ul class="space-y-2">
         <li>
-          <a
-            href="#"
-            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-          >
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            `flex items-center p-2 text-base font-medium rounded-lg group ${
+              isActive
+                ? "text-blue-600 dark:text-white bg-gray-200 dark:bg-gray-700"
+                : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+            }`
+          }
+        >
             <svg
               aria-hidden="true"
               class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -51,7 +60,7 @@ export default function Sidebar() {
               <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
             </svg>
             <span class="ml-3">Insights</span>
-          </a>
+          </NavLink>
         </li>
         <li>
           <button
@@ -74,8 +83,7 @@ export default function Sidebar() {
               ></path>
             </svg>
             <span class="flex-1 ml-3 text-left whitespace-nowrap"
-              >Analyse</span
-            >
+              >Analyse</span>
             <svg
               aria-hidden="true"
               class="w-6 h-6"
@@ -92,23 +100,45 @@ export default function Sidebar() {
           </button>
           <ul id="dropdown-pages" class="hidden py-2 space-y-2">
             <li>
-              <a
-                href="#"
-                class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                >Position (FEN)</a>
+              <NavLink
+                to="/analyse/position"
+                className={({ isActive }) =>
+                  `flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 group ${
+                    isActive
+                      ? "text-blue-600 bg-gray-200 dark:text-white dark:bg-gray-700"
+                      : "text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                  }`
+                }
+              >
+                Position (FEN)
+              </NavLink>
             </li>
             <li>
-              <a
-                href="#"
-                class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                >Game (PGN)</a>
+              <NavLink
+                  to="/analyse/game"
+                  className={({ isActive }) =>
+                    `flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 group ${
+                      isActive
+                        ? "text-blue-600 bg-gray-200 dark:text-white dark:bg-gray-700"
+                        : "text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                    }`
+                  }
+                >
+                  Game (PGN)
+                </NavLink>
             </li>
           </ul>
         </li>
         <li>
-          <a
-            href="#"
-            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+          <NavLink
+            to="/train"
+            className={({ isActive }) =>
+              `flex items-center p-2 text-base font-medium rounded-lg group ${
+                isActive
+                  ? "text-blue-600 dark:text-white bg-gray-200 dark:bg-gray-700"
+                  : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`
+            }
           >
             <svg
               aria-hidden="true"
@@ -125,12 +155,18 @@ export default function Sidebar() {
               ></path>
             </svg>
             <span class="ml-3">Training</span>
-          </a>
+          </NavLink>
         </li>
         <li>
-          <a
-            href="#"
-            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+          <NavLink
+            to="/games"
+            className={({ isActive }) =>
+              `flex items-center p-2 text-base font-medium rounded-lg group ${
+                isActive
+                  ? "text-blue-600 dark:text-white bg-gray-200 dark:bg-gray-700"
+                  : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`
+            }
           >
             <svg
               aria-hidden="true"
@@ -144,14 +180,20 @@ export default function Sidebar() {
               ></path>
             </svg>
             <span class="ml-3">Game History</span>
-          </a>
+          </NavLink>
         </li>
       </ul>
       <ul class="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
         <li>
-          <a
-            href="#"
-            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+          <NavLink
+            to="/help"
+            className={({ isActive }) =>
+              `flex items-center p-2 text-base font-medium rounded-lg group ${
+                isActive
+                  ? "text-blue-600 dark:text-white bg-gray-200 dark:bg-gray-700"
+                  : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`
+            }
           >
             <svg
               aria-hidden="true"
@@ -167,7 +209,7 @@ export default function Sidebar() {
               ></path>
             </svg>
             <span class="ml-3">FAQ / Help</span>
-          </a>
+          </NavLink>
         </li>
       </ul>
     </div>
