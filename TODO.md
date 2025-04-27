@@ -4,9 +4,9 @@
 
 - [✔] Install and configure React Router
 - [✔] Set up basic route structure
-- [ ] Wire up APIs:
-  - Analyse Position (FEN)
-  - Analyse Game (PGN)
+- [✔] Wire up APIs:
+  - [✔] Analyse Position (FEN)
+  - [ ] Analyse Game (PGN)
 - [ ] Wire up Profile Page
   - [ ] Display basic profile info
   - [ ] (Optional for PoC) Allow changing user
