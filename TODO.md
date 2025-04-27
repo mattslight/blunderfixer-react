@@ -10,8 +10,8 @@
 - [ ] Wire up Profile Page
   - [ ] Display basic profile info
   - [ ] (Optional for PoC) Allow changing user
-- [ ] Deploy frontend to Vercel
-- [ ] Link domain name `blunderfixer.com`
+- [✔] Deploy frontend to Vercel
+- [✔] Link domain name `blunderfixer.com`
 
 ## Phase 2 (Enhancements)
 
