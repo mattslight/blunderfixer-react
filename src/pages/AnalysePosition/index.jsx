@@ -7,6 +7,8 @@ import TopmovesCarousel from "./TopmovesCarousel"
 
 const DEFAULT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 //const SAMPLE_FEN = "r1bqkbnr/pp1p1ppp/2n5/2p1p3/4P3/2P2N2/PP1P1PPP/RNBQKB1R w KQkq - 2 4"
+//const SIMPLE_POSITION = "4kb1r/p4ppp/4q3/8/8/1B6/PPP2PPP/2KR4"
+//const ONLY_ONE_VALID_MOVE = "5k1r/2q3p1/p3p2p/1B3p1Q/n4P2/6P1/bbP2N1P/1K1RR3"
 
 export default function AnalysePosition() {
   const [fen, setFEN] = useState("");
@@ -74,7 +76,8 @@ export default function AnalysePosition() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           fen: result.fen,
-          top_moves: result.top_moves
+          top_moves: result.top_moves,
+          legal_moves: result.legal_moves,
         })
       });
       const data = await response.json();
@@ -96,6 +99,7 @@ export default function AnalysePosition() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           fen: result.fen,
+          legal_moves: result.legal_moves,
           past_messages: chatMessages,
           user_message: userQuestion
         })
