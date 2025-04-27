@@ -35,7 +35,7 @@ export default function Navbar() {
               clipRule="evenodd"
             ></path>
           </svg>
-          <span class="sr-only">Toggle sidebar</span>
+          <span className="sr-only">Toggle sidebar</span>
         </button>
         <a href="https://blunderfixer.com" class="flex items-center justify-between mr-4">
           <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">BlunderFixer ‼️</span>
