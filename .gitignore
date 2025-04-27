@@ -38,3 +38,4 @@ logs
 coverage/
 *.local
 
+.vercel
