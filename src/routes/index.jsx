@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Insights from "../pages/Insights";
-import AnalysePosition from "../pages/AnalysePosition";
+import AnalysePosition from "../pages/AnalysePosition/index";
 import AnalyseGame from "../pages/AnalyseGame";
 import Profile from "../pages/Profile";
 import GameHistory from "../pages/GameHistory";

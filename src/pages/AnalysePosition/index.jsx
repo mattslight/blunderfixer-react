@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Chessboard } from "react-chessboard";
-import { analyseFEN } from "../api/analyse";
+import { analyseFEN } from "../../api/analyse";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from "remark-gfm";
+import TopmovesCarousel from "./TopmovesCarousel"
 
 const DEFAULT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 //const SAMPLE_FEN = "r1bqkbnr/pp1p1ppp/2n5/2p1p3/4P3/2P2N2/PP1P1PPP/RNBQKB1R w KQkq - 2 4"
@@ -46,7 +47,7 @@ export default function AnalysePosition() {
     setExplanation(null);
     setChatMessages([]);
     try {
-      const analysis = await analyseFEN(fen);
+      const analysis = await analyseFEN(fen, 5);
       setResult(analysis);
 
       const [from, to] = getMoveParts(analysis.top_moves[0].move);
@@ -129,15 +130,14 @@ export default function AnalysePosition() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-4xl font-bold mb-4">Analyse Position</h1>
-
-      {/* FEN Input + Analyse Button */}
-      <div className="flex w-full max-w-lg mb-4 gap-2">
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      {!result && 
+      <><h1 className="text-4xl font-bold mb-4">Analyse Position</h1>
+      <div className="flex w-full max-w-lg mb-[30vh] gap-2">
         <textarea
           className="flex-grow p-2 border border-gray-300 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 resize-none"
           rows="2"
-          placeholder="Enter FEN string here"
+          placeholder="Paste a FEN string here to start analysing..."
           value={fen}
           onChange={handleFenChange}
         />
@@ -148,56 +148,50 @@ export default function AnalysePosition() {
         >
           {loading ? "Analysing..." : "Analyse"}
         </button>
-      </div>
+      </div></>}
 
       {/* Error */}
       {error && <p className="mt-4 text-red-500">{error}</p>}
 
       {/* Board + Analysis Section */}
       {result && (
-        <div className="mt-6 w-full max-w-lg bg-gray-100 dark:bg-gray-700 rounded p-4">
-          <h2 className="text-2xl font-semibold mb-4">Analysis Board</h2>
-
+        <div className="w-full max-w-lg rounded">
           <Chessboard 
             position={boardFEN}
             customArrows={arrows}
             customSquareStyles={moveSquares}
           />
 
-          {/* Top Moves */}
-          <div className="mt-4">
-            <h2 className="text-xl font-semibold mb-2">Top Recommendations</h2>
-            <ul className="space-y-4">
-              {result.top_moves.map((move, index) => (
-                <li key={index} className="bg-white dark:bg-gray-800 p-4 rounded shadow">
-                  <p className="text-lg font-bold mb-2">
-                    {index === 0 ? "Best Move" : `Alternative ${index}`}
-                  </p>
-                  <p><strong>Move:</strong> {move.move}</p>
-                  <p><strong>Evaluation:</strong> {move.evaluation > 0 ? "+" : ""}{move.evaluation}</p>
-                  <p className="mt-2"><strong>Line:</strong></p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300 break-words">
-                    {move.line.slice(0, 5).join(" → ")}{move.line.length > 5 ? " ..." : ""}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Top Moves Carousel */}
+
+          <TopmovesCarousel 
+            result={result} 
+            onSlideChange={(index) => {
+              if (!result?.top_moves[index]) return;
+              const [from, to] = getMoveParts(result.top_moves[index].move);
+              setArrows([[from, to, "rgba(0, 255, 0, 0.6)"]]);
+              setMoveSquares({
+                [from]: { backgroundColor: "rgba(255, 255, 0, 0.5)" },
+                [to]: { backgroundColor: "rgba(0, 255, 0, 0.5)" },
+              });
+            }}
+          />
+
 
           {/* Buttons */}
           <div className="flex gap-4 mt-6">
-            <button
+            {!explanation && <button
               onClick={handleGetExplanation}
               disabled={loadingExplanation}
               className="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
             >
               {loadingExplanation ? "Thinking..." : "Get Coach Explanation"}
-            </button>
+            </button>}
             <button
               onClick={handleNewAnalysis}
               className="px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700"
             >
-              Start New Analysis
+              New Position
             </button>
           </div>
 
