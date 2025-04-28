@@ -27,6 +27,10 @@ export async function analyseFEN(fen, top_n = 1) {
   return post("/analyse-fen", { fen, top_n });
 }
 
+export async function extractFeatures(fen) {
+  return post("/extract-features", { fen });
+}
+
 // Later you can easily add more like:
 // export async function analysePGN(pgn) { return post("/api/analyse-pgn", { pgn }); }
 // export async function getProfile(username) { return get(`/api/profile/${username}`); } (if you want GET too)
