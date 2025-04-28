@@ -3,11 +3,28 @@ import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
+import { Chess } from "chess.js";
 
 export default function TopmovesCarousel({ result, onSlideChange }) {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
+
+  const chess = useMemo(() => new Chess(result.fen), [result.fen]);
+
+  // build an array that includes both UCI and SAN
+  const moves = result.top_moves.map((m) => {
+    const uci = m.move;                // e.g. "d2d4"
+    const from = uci.slice(0,2);
+    const to   = uci.slice(2,4);
+    const promo = uci.length === 5 ? uci[4] : undefined;
+    // apply the move to get a moveObject, then undo to keep board clean
+    const moveObj = chess.move({ from, to, promotion: promo });
+    const san = moveObj?.san || uci;
+    chess.undo();
+
+    return { ...m, san };
+  });
 
   return (
     <div className="relative w-full mt-4">
@@ -29,7 +46,7 @@ export default function TopmovesCarousel({ result, onSlideChange }) {
         }}
         className="rounded-lg"
       >
-        {result.top_moves.map((move, index) => (
+        {moves.map((m, index) => (
           <SwiperSlide key={index}>
             <div className="flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
               <div className="mb-2">
@@ -39,10 +56,10 @@ export default function TopmovesCarousel({ result, onSlideChange }) {
                   {index === 0 ? "Best Move" : `Alternative ${index}`}
                 </span>
               </div>
-              <p className="text-lg font-semibold mb-1">Move: {move.move}</p>
-              <p className="text-sm mb-2">Eval: {move.evaluation > 0 ? "+" : ""}{move.evaluation}</p>
+              <p className="text-lg font-semibold mb-1">Move: {m.san}</p>
+              <p className="text-sm mb-2">Eval: {m.evaluation > 0 ? "+" : ""}{m.evaluation}</p>
               <p className="text-xs text-gray-700 dark:text-gray-300 text-center">
-                {move.line.slice(0, 7).join(" → ")}{move.line.length > 7 ? " ..." : ""}
+                {m.line.slice(0, 7).join(" → ")}{m.line.length > 7 ? " ..." : ""}
               </p>
             </div>
           </SwiperSlide>
