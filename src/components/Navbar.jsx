@@ -1,8 +1,10 @@
+import UserMenu from './UserMenu';
+
 export default function Navbar({ toggleSidebar }) {
   return (
-    <nav class="fixed top-0 right-0 left-0 z-50 border-b border-gray-200 bg-white px-4 py-2.5 dark:border-gray-700 dark:bg-gray-800">
-      <div class="flex flex-wrap items-center justify-between">
-        <div class="flex items-center justify-start">
+    <nav className="fixed top-0 right-0 left-0 z-50 border-b border-gray-200 bg-white px-4 py-2.5 dark:border-gray-700 dark:bg-gray-800">
+      <div className="flex flex-wrap items-center justify-between">
+        <div className="flex items-center justify-start">
           <button
             className="mr-2 cursor-pointer rounded-lg p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 md:hidden dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:bg-gray-700 dark:focus:ring-gray-700"
             onClick={toggleSidebar}
@@ -37,25 +39,25 @@ export default function Navbar({ toggleSidebar }) {
           </button>
           <a
             href="https://blunderfixer.com"
-            class="mr-4 flex items-center justify-between"
+            className="mr-4 flex items-center justify-between"
           >
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
               BlunderFixer ‼️
             </span>
           </a>
         </div>
-        <div class="flex items-center lg:order-2">
+        <div className="flex items-center lg:order-2">
           {/* Notifications */}
           <button
             type="button"
             data-dropdown-toggle="notification-dropdown"
-            class="mr-1 rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:ring-4 focus:ring-gray-300 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-600"
+            className="mr-1 rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:ring-4 focus:ring-gray-300 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-600"
           >
-            <span class="sr-only">View notifications</span>
+            <span className="sr-only">View notifications</span>
             {/* Bell icon */}
             <svg
               aria-hidden="true"
-              class="h-6 w-6"
+              className="h-6 w-6"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -65,27 +67,27 @@ export default function Navbar({ toggleSidebar }) {
           </button>
           {/* Dropdown menu */}
           <div
-            class="z-50 my-4 hidden max-w-sm list-none divide-y divide-gray-100 overflow-hidden rounded rounded-xl bg-white text-base shadow-lg dark:divide-gray-600 dark:bg-gray-700"
+            className="z-50 my-4 hidden max-w-sm list-none divide-y divide-gray-100 overflow-hidden rounded rounded-xl bg-white text-base shadow-lg dark:divide-gray-600 dark:bg-gray-700"
             id="notification-dropdown"
           >
-            <div class="block bg-gray-50 px-4 py-2 text-center text-base font-medium text-gray-700 dark:bg-gray-600 dark:text-gray-300">
+            <div className="block bg-gray-50 px-4 py-2 text-center text-base font-medium text-gray-700 dark:bg-gray-600 dark:text-gray-300">
               Notifications
             </div>
             <div>
               <a
                 href="#"
-                class="flex border-b px-4 py-3 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
+                className="flex border-b px-4 py-3 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
               >
-                <div class="flex-shrink-0">
+                <div className="flex-shrink-0">
                   <img
-                    class="h-11 w-11 rounded-full"
+                    className="h-11 w-11 rounded-full"
                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png"
                     alt="Bonnie Green avatar"
                   />
-                  <div class="bg-primary-700 absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white dark:border-gray-700">
+                  <div className="bg-primary-700 absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white dark:border-gray-700">
                     <svg
                       aria-hidden="true"
-                      class="h-3 w-3 text-white"
+                      className="h-3 w-3 text-white"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -95,33 +97,33 @@ export default function Navbar({ toggleSidebar }) {
                     </svg>
                   </div>
                 </div>
-                <div class="w-full pl-3">
-                  <div class="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
+                <div className="w-full pl-3">
+                  <div className="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
                     New message from
-                    <span class="font-semibold text-gray-900 dark:text-white">
+                    <span className="font-semibold text-gray-900 dark:text-white">
                       Bonnie Green
                     </span>
                     : "Hey, what's up? All set for the presentation?"
                   </div>
-                  <div class="text-primary-600 dark:text-primary-500 text-xs font-medium">
+                  <div className="text-primary-600 dark:text-primary-500 text-xs font-medium">
                     a few moments ago
                   </div>
                 </div>
               </a>
               <a
                 href="#"
-                class="flex border-b px-4 py-3 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
+                className="flex border-b px-4 py-3 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
               >
-                <div class="flex-shrink-0">
+                <div className="flex-shrink-0">
                   <img
-                    class="h-11 w-11 rounded-full"
+                    className="h-11 w-11 rounded-full"
                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
                     alt="Jese Leos avatar"
                   />
-                  <div class="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-gray-900 dark:border-gray-700">
+                  <div className="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-gray-900 dark:border-gray-700">
                     <svg
                       aria-hidden="true"
-                      class="h-3 w-3 text-white"
+                      className="h-3 w-3 text-white"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -130,36 +132,36 @@ export default function Navbar({ toggleSidebar }) {
                     </svg>
                   </div>
                 </div>
-                <div class="w-full pl-3">
-                  <div class="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
-                    <span class="font-semibold text-gray-900 dark:text-white">
+                <div className="w-full pl-3">
+                  <div className="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <span className="font-semibold text-gray-900 dark:text-white">
                       Jese leos
                     </span>
                     and
-                    <span class="font-medium text-gray-900 dark:text-white">
+                    <span className="font-medium text-gray-900 dark:text-white">
                       5 others
                     </span>
                     started following you.
                   </div>
-                  <div class="text-primary-600 dark:text-primary-500 text-xs font-medium">
+                  <div className="text-primary-600 dark:text-primary-500 text-xs font-medium">
                     10 minutes ago
                   </div>
                 </div>
               </a>
               <a
                 href="#"
-                class="flex border-b px-4 py-3 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
+                className="flex border-b px-4 py-3 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
               >
-                <div class="flex-shrink-0">
+                <div className="flex-shrink-0">
                   <img
-                    class="h-11 w-11 rounded-full"
+                    className="h-11 w-11 rounded-full"
                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png"
                     alt="Joseph McFall avatar"
                   />
-                  <div class="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-red-600 dark:border-gray-700">
+                  <div className="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-red-600 dark:border-gray-700">
                     <svg
                       aria-hidden="true"
-                      class="h-3 w-3 text-white"
+                      className="h-3 w-3 text-white"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -172,36 +174,36 @@ export default function Navbar({ toggleSidebar }) {
                     </svg>
                   </div>
                 </div>
-                <div class="w-full pl-3">
-                  <div class="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
-                    <span class="font-semibold text-gray-900 dark:text-white">
+                <div className="w-full pl-3">
+                  <div className="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <span className="font-semibold text-gray-900 dark:text-white">
                       Joseph Mcfall
                     </span>
                     and
-                    <span class="font-medium text-gray-900 dark:text-white">
+                    <span className="font-medium text-gray-900 dark:text-white">
                       141 others
                     </span>
                     love your story. See it and view more stories.
                   </div>
-                  <div class="text-primary-600 dark:text-primary-500 text-xs font-medium">
+                  <div className="text-primary-600 dark:text-primary-500 text-xs font-medium">
                     44 minutes ago
                   </div>
                 </div>
               </a>
               <a
                 href="#"
-                class="flex border-b px-4 py-3 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
+                className="flex border-b px-4 py-3 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
               >
-                <div class="flex-shrink-0">
+                <div className="flex-shrink-0">
                   <img
-                    class="h-11 w-11 rounded-full"
+                    className="h-11 w-11 rounded-full"
                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/roberta-casas.png"
                     alt="Roberta Casas image"
                   />
-                  <div class="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-green-400 dark:border-gray-700">
+                  <div className="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-green-400 dark:border-gray-700">
                     <svg
                       aria-hidden="true"
-                      class="h-3 w-3 text-white"
+                      className="h-3 w-3 text-white"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -214,36 +216,36 @@ export default function Navbar({ toggleSidebar }) {
                     </svg>
                   </div>
                 </div>
-                <div class="w-full pl-3">
-                  <div class="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
-                    <span class="font-semibold text-gray-900 dark:text-white">
+                <div className="w-full pl-3">
+                  <div className="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <span className="font-semibold text-gray-900 dark:text-white">
                       Leslie Livingston
                     </span>
                     mentioned you in a comment:
-                    <span class="text-primary-600 dark:text-primary-500 font-medium">
+                    <span className="text-primary-600 dark:text-primary-500 font-medium">
                       @bonnie.green
                     </span>
                     what do you say?
                   </div>
-                  <div class="text-primary-600 dark:text-primary-500 text-xs font-medium">
+                  <div className="text-primary-600 dark:text-primary-500 text-xs font-medium">
                     1 hour ago
                   </div>
                 </div>
               </a>
               <a
                 href="#"
-                class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600"
+                className="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600"
               >
-                <div class="flex-shrink-0">
+                <div className="flex-shrink-0">
                   <img
-                    class="h-11 w-11 rounded-full"
+                    className="h-11 w-11 rounded-full"
                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/robert-brown.png"
                     alt="Robert image"
                   />
-                  <div class="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-purple-500 dark:border-gray-700">
+                  <div className="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-purple-500 dark:border-gray-700">
                     <svg
                       aria-hidden="true"
-                      class="h-3 w-3 text-white"
+                      className="h-3 w-3 text-white"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -252,15 +254,15 @@ export default function Navbar({ toggleSidebar }) {
                     </svg>
                   </div>
                 </div>
-                <div class="w-full pl-3">
-                  <div class="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
-                    <span class="font-semibold text-gray-900 dark:text-white">
+                <div className="w-full pl-3">
+                  <div className="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <span className="font-semibold text-gray-900 dark:text-white">
                       Robert Brown
                     </span>
                     posted a new video: Glassmorphism - learn how to implement
                     the new design trend.
                   </div>
-                  <div class="text-primary-600 dark:text-primary-500 text-xs font-medium">
+                  <div className="text-primary-600 dark:text-primary-500 text-xs font-medium">
                     3 hours ago
                   </div>
                 </div>
@@ -268,12 +270,12 @@ export default function Navbar({ toggleSidebar }) {
             </div>
             <a
               href="#"
-              class="text-md block bg-gray-50 py-2 text-center font-medium text-gray-900 hover:bg-gray-100 dark:bg-gray-600 dark:text-white dark:hover:underline"
+              className="text-md block bg-gray-50 py-2 text-center font-medium text-gray-900 hover:bg-gray-100 dark:bg-gray-600 dark:text-white dark:hover:underline"
             >
-              <div class="inline-flex items-center">
+              <div className="inline-flex items-center">
                 <svg
                   aria-hidden="true"
-                  class="mr-2 h-4 w-4 text-gray-500 dark:text-gray-400"
+                  className="mr-2 h-4 w-4 text-gray-500 dark:text-gray-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -289,145 +291,7 @@ export default function Navbar({ toggleSidebar }) {
               </div>
             </a>
           </div>
-          <button
-            type="button"
-            class="mx-3 flex rounded-full bg-gray-800 text-sm focus:ring-4 focus:ring-gray-300 md:mr-0 dark:focus:ring-gray-600"
-            id="user-menu-button"
-            aria-expanded="false"
-            data-dropdown-toggle="dropdown"
-          >
-            <span class="sr-only">Open user menu</span>
-            <img
-              class="h-8 w-8 rounded-full"
-              src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gough.png"
-              alt="user photo"
-            />
-          </button>
-          {/* Dropdown menu */}
-          <div
-            class="z-50 my-4 hidden w-56 list-none divide-y divide-gray-100 rounded rounded-xl bg-white text-base shadow dark:divide-gray-600 dark:bg-gray-700"
-            id="dropdown"
-          >
-            <div class="px-4 py-3">
-              <span class="block text-sm font-semibold text-gray-900 dark:text-white">
-                Dr Can
-              </span>
-              <span class="block truncate text-sm text-gray-900 dark:text-white">
-                name@flowbite.com
-              </span>
-            </div>
-            <ul
-              class="py-1 text-gray-700 dark:text-gray-300"
-              aria-labelledby="dropdown"
-            >
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  My profile
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Account settings
-                </a>
-              </li>
-            </ul>
-            <ul
-              class="py-1 text-gray-700 dark:text-gray-300"
-              aria-labelledby="dropdown"
-            >
-              <li>
-                <a
-                  href="#"
-                  class="flex items-center px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  <svg
-                    class="mr-2 h-5 w-5 text-gray-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                  My likes
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="flex items-center px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  <svg
-                    class="mr-2 h-5 w-5 text-gray-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path>
-                  </svg>
-                  Collections
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="flex items-center justify-between px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  <span class="flex items-center">
-                    <svg
-                      aria-hidden="true"
-                      class="text-primary-600 dark:text-primary-500 mr-2 h-5 w-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z"
-                        clipRule="evenodd"
-                      ></path>
-                    </svg>
-                    Pro version
-                  </span>
-                  <svg
-                    aria-hidden="true"
-                    class="h-5 w-5 text-gray-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
-                </a>
-              </li>
-            </ul>
-            <ul
-              class="py-1 text-gray-700 dark:text-gray-300"
-              aria-labelledby="dropdown"
-            >
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Sign out
-                </a>
-              </li>
-            </ul>
-          </div>
+          <UserMenu />
         </div>
       </div>
     </nav>
