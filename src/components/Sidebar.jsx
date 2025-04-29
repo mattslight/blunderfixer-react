@@ -1,37 +1,35 @@
-import { NavLink } from 'react-router-dom';
-import { Drawer } from 'flowbite-react';
-import { useState } from 'react';
+import { NavLink } from "react-router-dom";
+import { Drawer } from "flowbite-react";
+import { useState } from "react";
 
-export default function Sidebar({ isSidebarOpen }) {
+export default function Sidebar({ isSidebarOpen, closeSidebar }) {
   const [analyseOpen, setAnalyseOpen] = useState(false);
 
   return (
     <Drawer
       open={isSidebarOpen}
+      onClose={closeSidebar}
+      backdrop={true}
       placement="left"
       id="drawer-navigation"
-      className="
-          fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform
-          bg-white border-r border-gray-200
-          md:translate-x-0 dark:bg-gray-800 dark:border-gray-700
-        "
+      className="fixed top-0 left-0 z-40 h-screen w-64 border-r border-gray-200 bg-white pt-14 transition-transform md:translate-x-0 dark:border-gray-700 dark:bg-gray-800"
     >
-      <div class="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
+      <div class="h-full overflow-y-auto bg-white px-3 py-5 dark:bg-gray-800">
         <ul class="space-y-2">
           <li>
             <NavLink
               to="/"
               className={({ isActive }) =>
-                `flex items-center p-2 text-base font-medium rounded-lg group ${
+                `group flex items-center rounded-lg p-2 text-base font-medium ${
                   isActive
-                    ? 'text-blue-600 dark:text-white bg-gray-200 dark:bg-gray-700'
-                    : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                    ? "bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white"
+                    : "text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                 }`
               }
             >
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                class="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -46,11 +44,11 @@ export default function Sidebar({ isSidebarOpen }) {
             <button
               type="button"
               onClick={() => setAnalyseOpen((o) => !o)}
-              className="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+              className="group flex w-full items-center rounded-lg p-2 text-base font-medium text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
             >
               <svg
                 aria-hidden="true"
-                className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                className="h-6 w-6 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -60,14 +58,14 @@ export default function Sidebar({ isSidebarOpen }) {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="flex-1 ml-3 text-left whitespace-nowrap">
+              <span className="ml-3 flex-1 text-left whitespace-nowrap">
                 Analyse
               </span>
               <svg
                 aria-hidden="true"
-                className="w-6 h-6 transition-transform"
+                className="h-6 w-6 transition-transform"
                 style={{
-                  transform: analyseOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transform: analyseOpen ? "rotate(180deg)" : "rotate(0deg)",
                 }}
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -80,15 +78,15 @@ export default function Sidebar({ isSidebarOpen }) {
               </svg>
             </button>
 
-            <ul className={`${analyseOpen ? '' : 'hidden'} py-2 space-y-2`}>
+            <ul className={`${analyseOpen ? "" : "hidden"} space-y-2 py-2`}>
               <li>
                 <NavLink
                   to="/analyse/position"
                   className={({ isActive }) =>
-                    `flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 group ${
+                    `group flex w-full items-center rounded-lg p-2 pl-11 text-base font-medium transition duration-75 ${
                       isActive
-                        ? 'text-blue-600 bg-gray-200 dark:text-white dark:bg-gray-700'
-                        : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
+                        ? "bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white"
+                        : "text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                     }`
                   }
                 >
@@ -99,10 +97,10 @@ export default function Sidebar({ isSidebarOpen }) {
                 <NavLink
                   to="/analyse/game"
                   className={({ isActive }) =>
-                    `flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg transition duration-75 group ${
+                    `group flex w-full items-center rounded-lg p-2 pl-11 text-base font-medium transition duration-75 ${
                       isActive
-                        ? 'text-blue-600 bg-gray-200 dark:text-white dark:bg-gray-700'
-                        : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
+                        ? "bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white"
+                        : "text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                     }`
                   }
                 >
@@ -115,16 +113,16 @@ export default function Sidebar({ isSidebarOpen }) {
             <NavLink
               to="/train"
               className={({ isActive }) =>
-                `flex items-center p-2 text-base font-medium rounded-lg group ${
+                `group flex items-center rounded-lg p-2 text-base font-medium ${
                   isActive
-                    ? 'text-blue-600 dark:text-white bg-gray-200 dark:bg-gray-700'
-                    : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                    ? "bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white"
+                    : "text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                 }`
               }
             >
               <svg
                 aria-hidden="true"
-                class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                class="h-6 w-6 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -143,16 +141,16 @@ export default function Sidebar({ isSidebarOpen }) {
             <NavLink
               to="/games"
               className={({ isActive }) =>
-                `flex items-center p-2 text-base font-medium rounded-lg group ${
+                `group flex items-center rounded-lg p-2 text-base font-medium ${
                   isActive
-                    ? 'text-blue-600 dark:text-white bg-gray-200 dark:bg-gray-700'
-                    : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                    ? "bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white"
+                    : "text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                 }`
               }
             >
               <svg
                 aria-hidden="true"
-                class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                class="h-6 w-6 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -163,21 +161,21 @@ export default function Sidebar({ isSidebarOpen }) {
             </NavLink>
           </li>
         </ul>
-        <ul class="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
+        <ul class="mt-5 space-y-2 border-t border-gray-200 pt-5 dark:border-gray-700">
           <li>
             <NavLink
               to="/help"
               className={({ isActive }) =>
-                `flex items-center p-2 text-base font-medium rounded-lg group ${
+                `group flex items-center rounded-lg p-2 text-base font-medium ${
                   isActive
-                    ? 'text-blue-600 dark:text-white bg-gray-200 dark:bg-gray-700'
-                    : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                    ? "bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white"
+                    : "text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                 }`
               }
             >
               <svg
                 aria-hidden="true"
-                class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                class="h-6 w-6 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -193,21 +191,21 @@ export default function Sidebar({ isSidebarOpen }) {
           </li>
         </ul>
       </div>
-      <div class="hidden absolute bottom-0 left-0 justify-center p-4 space-x-4 w-full lg:flex bg-white dark:bg-gray-800 z-20">
+      <div class="absolute bottom-0 left-0 z-20 hidden w-full justify-center space-x-4 bg-white p-4 lg:flex dark:bg-gray-800">
         <NavLink
           to="/settings"
           data-tooltip-target="tooltip-settings"
           className={({ isActive }) =>
-            `inline-flex justify-center p-2 rounded cursor-pointer transition duration-75 group ${
+            `group inline-flex cursor-pointer justify-center rounded p-2 transition duration-75 ${
               isActive
-                ? 'text-blue-600 bg-gray-200 dark:text-white dark:bg-gray-700'
-                : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 hover:bg-gray-100 dark:hover:text-white dark:hover:bg-gray-600'
+                ? "bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white"
+                : "text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
             }`
           }
         >
           <svg
             aria-hidden="true"
-            className="w-6 h-6"
+            className="h-6 w-6"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
@@ -222,7 +220,7 @@ export default function Sidebar({ isSidebarOpen }) {
         <div
           id="tooltip-settings"
           role="tooltip"
-          class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip"
+          class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300"
         >
           Settings
           <div class="tooltip-arrow" data-popper-arrow></div>
