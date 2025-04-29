@@ -16,5 +16,5 @@
 ## Phase 2 (Enhancements)
 
 - [ ] Implement Authentication (optional)
-  - Chess.com OAuth? 
+  - Chess.com OAuth?
   - Simple email/password?
