@@ -1,336 +1,49 @@
+// src/components/AnalyseContainer.jsx
 import { useState } from 'react';
-import { Chessboard } from 'react-chessboard';
-import ReactMarkdown from 'react-markdown';
 
-import remarkGfm from 'remark-gfm';
+import AnalysePGN from './AnalysePGN'; // new, for PGN+games
+import AnalysePosition from './AnalysePosition'; // as‐is, for FEN
+import GameLoader from './GameLoader'; // new: fetch & pick games
 
-import { analyseFEN, extractFeatures } from '../../api/analyse';
-
-import TopmovesCarousel from './TopmovesCarousel';
-
-const DEFAULT_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
-
-export default function AnalysePosition() {
-  const [fen, setFEN] = useState('');
-  const [boardFEN, setBoardFEN] = useState(DEFAULT_FEN);
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [arrows, setArrows] = useState([]);
-  const [moveSquares, setMoveSquares] = useState({});
-  const [explanation, setExplanation] = useState(null);
-  const [chatMessages, setChatMessages] = useState([]);
-  const [userQuestion, setUserQuestion] = useState('');
-  const [chatLoading, setChatLoading] = useState(false);
-  const [loadingExplanation, setLoadingExplanation] = useState(false);
-  const [showFeatures, setShowFeatures] = useState(false);
-
-  function handleFenChange(e) {
-    const newFen = e.target.value;
-    setFEN(newFen);
-    if (newFen.trim() !== '') {
-      setBoardFEN(newFen.trim());
-    } else {
-      setBoardFEN(DEFAULT_FEN);
-    }
-  }
-
-  function getMoveParts(moveString) {
-    if (!moveString || moveString.length < 4) return [null, null];
-    const from = moveString.slice(0, 2);
-    const to = moveString.slice(2, 4);
-    return [from, to];
-  }
-
-  async function handleAnalyse() {
-    setLoading(true);
-    setError(null);
-    setArrows([]);
-    setMoveSquares({});
-    setExplanation(null);
-    setChatMessages([]);
-    try {
-      const [analysis, features] = await Promise.all([
-        analyseFEN(fen, 5),
-        extractFeatures(fen),
-      ]);
-      setResult({ ...analysis, features });
-
-      const [from, to] = getMoveParts(analysis.top_moves[0].move);
-
-      setArrows([[from, to, 'rgba(0, 255, 0, 0.6)']]);
-      setMoveSquares({
-        [from]: { backgroundColor: 'rgba(255, 255, 0, 0.5)' },
-        [to]: { backgroundColor: 'rgba(0, 255, 0, 0.5)' },
-      });
-    } catch (err) {
-      console.error('Error analysing FEN:', err);
-      setError('Failed to analyse position.');
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleGetExplanation() {
-    setLoadingExplanation(true);
-    setExplanation(null);
-    try {
-      const response = await fetch('http://127.0.0.1:8000/explain-lines', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fen: result.fen,
-          top_moves: result.top_moves,
-          legal_moves: result.legal_moves,
-          features: result.features,
-        }),
-      });
-      const data = await response.json();
-      setExplanation(data.explanation || 'Failed to get explanation.');
-    } catch (err) {
-      console.error(err);
-      setExplanation('Error fetching explanation.');
-    } finally {
-      setLoadingExplanation(false);
-    }
-  }
-
-  async function handleCoachChatSubmit() {
-    if (!userQuestion.trim()) return;
-    setChatLoading(true);
-    try {
-      const response = await fetch('http://127.0.0.1:8000/coach-chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fen: result.fen,
-          legal_moves: result.legal_moves,
-          past_messages: chatMessages,
-          user_message: userQuestion,
-        }),
-      });
-      const data = await response.json();
-      if (data.reply) {
-        setChatMessages([
-          ...chatMessages,
-          { role: 'user', content: userQuestion },
-          { role: 'assistant', content: data.reply },
-        ]);
-        setUserQuestion('');
-      } else {
-        console.error('Coach chat error:', data.error);
-      }
-    } catch (err) {
-      console.error('Failed to chat with coach:', err);
-    } finally {
-      setChatLoading(false);
-    }
-  }
-
-  function handleNewAnalysis() {
-    setFEN('');
-    setBoardFEN(DEFAULT_FEN);
-    setResult(null);
-    setArrows([]);
-    setMoveSquares({});
-    setExplanation(null);
-    setChatMessages([]);
-    setUserQuestion('');
-  }
+export default function AnalyseContainer() {
+  const [mode, setMode] = useState('fen');
+  const [selectedGamePGN, setSelectedGamePGN] = useState(null);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
-      {!result && (
-        <>
-          <h1 className="mb-4 text-4xl font-bold">Analyse Position</h1>
-          <div className="mb-16 flex w-full max-w-lg flex-col space-y-4">
-            {/* Row 1: FEN input + Analyse button */}
-            <div className="flex gap-2">
-              <textarea
-                className="flex-1 resize-none rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
-                rows={2}
-                placeholder="Paste a FEN string here to start analysing..."
-                value={fen}
-                onChange={handleFenChange}
-              />
-              <button
-                onClick={handleAnalyse}
-                disabled={!fen || loading}
-                className="rounded bg-blue-600 px-4 py-2 whitespace-nowrap text-white hover:bg-blue-700 disabled:opacity-50"
-              >
-                {loading ? 'Loading...' : 'Load'}
-              </button>
-            </div>
-
-            {/* Row 2: Example Positions */}
-            <div>
-              <h2 className="mb-1 text-sm font-semibold">Example Positions</h2>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  [
-                    'Sicilian-ish 🏁',
-                    'r1bqkbnr/pp1p1ppp/2n5/2p1p3/4P3/2P2N2/PP1P1PPP/RNBQKB1R w KQkq - 2 4',
-                  ],
-                  [
-                    'Simple tactic 🎯',
-                    '4kb1r/p4ppp/4q3/8/8/1B6/PPP2PPP/2KR4 w - - 0 1',
-                  ],
-                  [
-                    'One move ⚔️',
-                    '5k1r/2q3p1/p3p2p/1B3p1Q/n4P2/6P1/bbP2N1P/1K1RR3',
-                  ],
-                  [
-                    'Fried Liver 🗡️',
-                    'r1bqkb1r/ppp2Npp/2n5/3np3/2B5/8/PPPP1PPP/RNBQK2R b KQkq - 0 6',
-                  ],
-                  [
-                    'Berlin 🧐',
-                    'r1bq1bnr/ppp2kpp/2p5/4np2/4P3/8/PPPP1PPP/RNBQ1RK1 w - - 0 9',
-                  ],
-                  [
-                    'Engine Stress 🤯',
-                    'qrb5/rk1p1K2/p2P4/Pp6/1N2n3/6p1/5nB1/6b1 w - - 0 1',
-                  ],
-                  [
-                    'Nimzo-Indian ♞',
-                    'rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 0 4',
-                  ],
-                ].map(([label, fenStr]) => (
-                  <button
-                    key={fenStr}
-                    onClick={() => {
-                      setFEN(fenStr);
-                      setBoardFEN(fenStr);
-                    }}
-                    className="rounded bg-gray-200 px-2 py-1 text-xs hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-
-      {/* Error */}
-      {error && <p className="mt-4 text-red-500">{error}</p>}
-
-      {/* Board + Analysis Section */}
-      {result && (
-        <div className="w-full max-w-lg rounded">
-          <Chessboard
-            position={boardFEN}
-            customArrows={arrows}
-            customSquareStyles={moveSquares}
-          />
-
-          {/* Top Moves Carousel */}
-
-          <TopmovesCarousel
-            result={result}
-            onSlideChange={(index) => {
-              if (!result?.top_moves[index]) return;
-              const [from, to] = getMoveParts(result.top_moves[index].move);
-              setArrows([[from, to, 'rgba(0, 255, 0, 0.6)']]);
-              setMoveSquares({
-                [from]: { backgroundColor: 'rgba(255, 255, 0, 0.5)' },
-                [to]: { backgroundColor: 'rgba(0, 255, 0, 0.5)' },
-              });
-            }}
-          />
-
-          {/* Buttons */}
-          <div className="mt-6 flex gap-4">
-            {!explanation && (
-              <button
-                onClick={handleGetExplanation}
-                disabled={loadingExplanation}
-                className="rounded bg-green-600 px-6 py-2 text-white hover:bg-green-700 disabled:opacity-50"
-              >
-                {loadingExplanation ? 'Thinking...' : 'Get Coach Explanation'}
-              </button>
-            )}
-            <button
-              onClick={handleNewAnalysis}
-              className="rounded bg-red-600 px-6 py-2 text-white hover:bg-red-700"
-            >
-              New Position
-            </button>
-          </div>
-
-          {/* Coach Explanation */}
-          {explanation && (
-            <div className="mt-6 rounded bg-green-100 p-4 dark:bg-green-900">
-              <h3 className="mb-2 text-lg font-bold">Coach's Insight</h3>
-              <div className="prose dark:prose-invert prose-table:border-spacing-y-2 prose-table:border-b prose-th:border-b prose-td:border-b prose-th:border-grey-700">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {explanation}
-                </ReactMarkdown>
-              </div>
-            </div>
-          )}
-
-          {/* 🧩 Position Features toggle */}
+    <div className="p-4">
+      {/* mode tabs */}
+      <div className="mb-6 flex gap-4">
+        {['fen', 'pgn'].map((m) => (
           <button
-            onClick={() => setShowFeatures((f) => !f)}
-            className="mt-6 rounded bg-purple-600 px-4 py-2 text-white hover:bg-purple-700"
+            key={m}
+            onClick={() => {
+              setMode(m);
+              setSelectedGamePGN(null);
+            }}
+            className={`rounded px-4 py-2 ${
+              mode === m
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-200 dark:bg-gray-700'
+            }`}
           >
-            {showFeatures
-              ? 'Hide 🧩 Position Features'
-              : 'Show 🧩 Position Features'}
+            {m === 'fen' ? 'Analyse FEN' : 'Analyse Recent Games'}
           </button>
+        ))}
+      </div>
 
-          {/* collapsible panel */}
-          {showFeatures && (
-            <div className="mt-4 w-full max-w-lg overflow-auto rounded bg-gray-100 p-4 dark:bg-gray-800">
-              <h4 className="mb-2 font-semibold">Raw Feature Dump</h4>
-              <pre className="text-xs whitespace-pre-wrap">
-                {JSON.stringify(result.features, null, 2)}
-              </pre>
-            </div>
+      {mode === 'fen' && <AnalysePosition />}
+
+      {mode === 'pgn' && (
+        <>
+          {!selectedGamePGN ? (
+            <GameLoader onSelectPGN={setSelectedGamePGN} />
+          ) : (
+            <AnalysePGN
+              pgn={selectedGamePGN}
+              onBack={() => setSelectedGamePGN(null)}
+            />
           )}
-
-          {/* Coach Chat */}
-          <div className="mt-8 w-full">
-            <h3 className="mb-2 text-lg font-bold">Ask Coach a Question</h3>
-
-            <div className="mb-4 space-y-4">
-              {chatMessages.map((msg, idx) => (
-                <div
-                  key={idx}
-                  className={`rounded p-2 ${
-                    msg.role === 'user'
-                      ? 'bg-blue-100 text-right dark:bg-blue-700'
-                      : 'bg-gray-100 text-left dark:bg-gray-700'
-                  }`}
-                >
-                  <div className="prose dark:prose-invert text-sm whitespace-pre-wrap">
-                    <ReactMarkdown>{msg.content}</ReactMarkdown>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex space-x-2">
-              <input
-                type="text"
-                className="flex-1 rounded border p-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
-                placeholder="Type your question..."
-                value={userQuestion}
-                onChange={(e) => setUserQuestion(e.target.value)}
-                disabled={chatLoading}
-              />
-              <button
-                onClick={handleCoachChatSubmit}
-                disabled={!userQuestion.trim() || chatLoading}
-                className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700 disabled:opacity-50"
-              >
-                {chatLoading ? 'Sending...' : 'Ask'}
-              </button>
-            </div>
-          </div>
-        </div>
+        </>
       )}
     </div>
   );
