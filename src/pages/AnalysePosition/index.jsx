@@ -17,7 +17,7 @@ export default function AnalyseContainer() {
   return (
     <div className="p-4">
       {/* mode tabs */}
-      <div className="mb-6 flex gap-4">
+      <div className="mb-6 flex items-center justify-center gap-4">
         {['fen', 'pgn'].map((m) => (
           <button
             key={m}
