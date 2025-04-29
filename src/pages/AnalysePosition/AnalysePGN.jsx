@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import { Chess } from 'chess.js';
 
 import AnalysePosition from './AnalysePosition';
+import MoveStepper from './MoveStepper';
 
 export default function AnalysePGN({ pgn, onBack }) {
   const [fens, setFens] = useState([]);
   const [currentIdx, setCurrentIdx] = useState(0);
+  const [moveList, setMoveList] = useState([]);
 
   useEffect(() => {
     const chess = new Chess();
@@ -22,10 +24,13 @@ export default function AnalysePGN({ pgn, onBack }) {
       return;
     }
 
-    const history = chess.history({ verbose: true });
+    const moveList = chess.history(); // <-- get plain SAN strings
+    setMoveList(moveList);
+    console.log(moveList);
+
     chess.reset();
     const arr = [chess.fen()];
-    history.forEach((m) => {
+    moveList.forEach((m) => {
       chess.move(m);
       arr.push(chess.fen());
     });
@@ -46,27 +51,15 @@ export default function AnalysePGN({ pgn, onBack }) {
       </button>
 
       {/* Step controls */}
-      <div className="flex items-center justify-between">
-        <button
-          onClick={() => setCurrentIdx((i) => Math.max(0, i - 1))}
-          disabled={currentIdx === 0}
-          className="rounded bg-gray-200 px-3 py-1 disabled:opacity-50"
-        >
-          Prev
-        </button>
-        <span>Move #{currentIdx}</span>
-        <button
-          onClick={() => setCurrentIdx((i) => Math.min(fens.length - 1, i + 1))}
-          disabled={currentIdx === fens.length - 1}
-          className="rounded bg-gray-200 px-3 py-1 disabled:opacity-50"
-        >
-          Next
-        </button>
-      </div>
+      <MoveStepper
+        moveList={moveList}
+        currentIdx={currentIdx}
+        setCurrentIdx={setCurrentIdx}
+      />
 
       {console.log('Current FEN: ' + fens[currentIdx])}
       {/* Delegate to your existing FEN analyser */}
-      <AnalysePosition startingFen={fens[currentIdx]} />
+      <AnalysePosition startingFen={fens[currentIdx]} pgnMode={true} />
     </div>
   );
 }
