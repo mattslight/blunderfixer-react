@@ -12,7 +12,7 @@ import TopmovesCarousel from './TopmovesCarousel';
 
 const DEFAULT_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 
-export default function AnalysePosition({ startingFen }) {
+export default function AnalysePosition({ startingFen, pgnMode = false }) {
   // Inputs: prefill FEN from startingFen if provided
   const [fen, setFEN] = useState(startingFen || '');
   const [boardFEN, setBoardFEN] = useState(startingFen || DEFAULT_FEN);
@@ -79,51 +79,58 @@ export default function AnalysePosition({ startingFen }) {
     }
   }
 
-  function handleNewAnalysis() {
-    setFEN('');
-    setBoardFEN(DEFAULT_FEN);
-    setResult(null);
-    setArrows([]);
-    setMoveSquares({});
-    setError(null);
-  }
-
   return (
-    <div className="flex min-h-screen flex-col items-center space-y-6 p-4">
+    <div className="flex min-h-screen flex-col items-center space-y-6">
       {/* Board always on top (full width) */}
       <div className="w-full max-w-lg">
         <Chessboard
           position={boardFEN}
           customArrows={arrows}
           customSquareStyles={moveSquares}
+          customBoardStyle={{
+            borderRadius: '6px',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
+          }}
+          customDarkSquareStyle={{
+            backgroundColor: '#779952',
+          }}
+          customLightSquareStyle={{
+            backgroundColor: '#edeed1',
+          }}
         />
       </div>
 
       {/* Controls: FEN input + Analyse button */}
-      <div className="flex w-full max-w-lg flex-col space-y-2">
-        <textarea
-          rows={2}
-          className="w-full resize-none rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
-          placeholder="Paste a FEN string here to start analysing..."
-          value={fen}
-          onChange={handleFenChange}
-        />
-        <button
-          onClick={handleAnalyse}
-          disabled={!fen || loading}
-          className="w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
-        >
-          {loading ? 'Analysing…' : 'Analyse'}
-        </button>
-      </div>
+      {!result && (
+        <div className="flex w-full max-w-lg flex-col space-y-2">
+          {!pgnMode && (
+            <textarea
+              rows={2}
+              className="w-full resize-none rounded border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+              placeholder="Paste a FEN string here to start analysing..."
+              value={fen}
+              onChange={handleFenChange}
+            />
+          )}
+          <button
+            onClick={handleAnalyse}
+            disabled={!fen || loading}
+            className="w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+          >
+            {loading ? 'Analysing…' : 'Analyse'}
+          </button>
+        </div>
+      )}
 
       {/* Example positions + error */}
-      <div className="w-full max-w-lg space-y-2">
-        <ExamplePositions setFEN={setFEN} setBoardFEN={setBoardFEN} />
-        {(error || explanationError) && (
-          <p className="text-red-500">{error || explanationError}</p>
-        )}
-      </div>
+      {!result && !pgnMode && (
+        <div className="w-full max-w-lg space-y-2">
+          <ExamplePositions setFEN={setFEN} setBoardFEN={setBoardFEN} />
+          {(error || explanationError) && (
+            <p className="text-red-500">{error || explanationError}</p>
+          )}
+        </div>
+      )}
 
       {/* Analysis results below controls */}
       {result && (
@@ -158,12 +165,6 @@ export default function AnalysePosition({ startingFen }) {
                 {loadingExplanation ? 'Thinking…' : 'Get Explanation'}
               </button>
             )}
-            <button
-              onClick={handleNewAnalysis}
-              className="flex-1 rounded bg-red-600 py-2 text-white hover:bg-red-700"
-            >
-              New Position
-            </button>
           </div>
           {explanation && <CoachExplanation explanation={explanation} />}
           <PositionFeatures features={result.features} />
