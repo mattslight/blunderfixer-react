@@ -1,6 +1,4 @@
 {
   "regions": ["fra1"],
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
