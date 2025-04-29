@@ -15,8 +15,8 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
       id="drawer-navigation"
       className="fixed top-0 left-0 z-40 h-screen w-64 border-r border-gray-200 bg-white pt-14 transition-transform md:translate-x-0 dark:border-gray-700 dark:bg-gray-800"
     >
-      <div class="h-full overflow-y-auto bg-white px-3 py-5 dark:bg-gray-800">
-        <ul class="space-y-2">
+      <div className="h-full overflow-y-auto bg-white px-3 py-5 dark:bg-gray-800">
+        <ul className="space-y-2">
           <li>
             <NavLink
               to="/"
@@ -30,7 +30,7 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
             >
               <svg
                 aria-hidden="true"
-                class="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                className="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +38,7 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
                 <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
                 <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
               </svg>
-              <span class="ml-3">Insights</span>
+              <span className="ml-3">Insights</span>
             </NavLink>
           </li>
           <li>
@@ -123,7 +123,7 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
             >
               <svg
                 aria-hidden="true"
-                class="h-6 w-6 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                className="h-6 w-6 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -135,7 +135,7 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
                   clipRule="evenodd"
                 ></path>
               </svg>
-              <span class="ml-3">Training</span>
+              <span className="ml-3">Training</span>
             </NavLink>
           </li>
           <li>
@@ -151,18 +151,18 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
             >
               <svg
                 aria-hidden="true"
-                class="h-6 w-6 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                className="h-6 w-6 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path>
               </svg>
-              <span class="ml-3">Game History</span>
+              <span className="ml-3">Game History</span>
             </NavLink>
           </li>
         </ul>
-        <ul class="mt-5 space-y-2 border-t border-gray-200 pt-5 dark:border-gray-700">
+        <ul className="mt-5 space-y-2 border-t border-gray-200 pt-5 dark:border-gray-700">
           <li>
             <NavLink
               to="/help"
@@ -176,7 +176,7 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
             >
               <svg
                 aria-hidden="true"
-                class="h-6 w-6 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                className="h-6 w-6 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -187,12 +187,12 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
                   clipRule="evenodd"
                 ></path>
               </svg>
-              <span class="ml-3">FAQ / Help</span>
+              <span className="ml-3">FAQ / Help</span>
             </NavLink>
           </li>
         </ul>
       </div>
-      <div class="absolute bottom-0 left-0 z-20 hidden w-full justify-center space-x-4 bg-white p-4 lg:flex dark:bg-gray-800">
+      <div className="absolute bottom-0 left-0 z-20 hidden w-full justify-center space-x-4 bg-white p-4 lg:flex dark:bg-gray-800">
         <NavLink
           to="/settings"
           data-tooltip-target="tooltip-settings"
@@ -221,10 +221,10 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
         <div
           id="tooltip-settings"
           role="tooltip"
-          class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300"
+          className="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300"
         >
           Settings
-          <div class="tooltip-arrow" data-popper-arrow></div>
+          <div className="tooltip-arrow" data-popper-arrow></div>
         </div>
       </div>
     </Drawer>
