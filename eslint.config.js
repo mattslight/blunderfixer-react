@@ -1,7 +1,8 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
+import js from '@eslint/js';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import simpleSort from 'eslint-plugin-simple-import-sort';
+import globals from 'globals';
 
 export default [
   { ignores: ['dist'] },
@@ -19,6 +20,7 @@ export default [
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      'simple-import-sort': simpleSort,
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -28,6 +30,18 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+      'simple-import-sort/imports': [
+        'error',
+        {
+          groups: [
+            ['^react$', '^react-'], // react core + plugins
+            ['^@?\\w'], // other externals
+            ['^\\.\\.(?!/?$)', '^\\.\\./?$'], // parent imports
+            ['^\\./'], // relative imports
+            ['^.+\\.?(css)$'], // styles
+          ],
+        },
+      ],
     },
   },
-]
+];

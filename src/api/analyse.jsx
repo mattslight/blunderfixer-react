@@ -4,9 +4,9 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 async function post(endpoint, data) {
   try {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     });
@@ -24,11 +24,11 @@ async function post(endpoint, data) {
 
 // Specific API call for analysing FEN
 export async function analyseFEN(fen, top_n = 1) {
-  return post("/analyse-fen", { fen, top_n });
+  return post('/analyse-fen', { fen, top_n });
 }
 
 export async function extractFeatures(fen) {
-  return post("/extract-features", { fen });
+  return post('/extract-features', { fen });
 }
 
 // Later you can easily add more like:

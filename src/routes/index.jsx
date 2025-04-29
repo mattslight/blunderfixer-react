@@ -1,14 +1,14 @@
-import { Routes, Route } from "react-router-dom";
-import Insights from "../pages/Insights";
-import AnalysePosition from "../pages/AnalysePosition/index";
-import AnalyseGame from "../pages/AnalyseGame";
-import Profile from "../pages/Profile";
-import GameHistory from "../pages/GameHistory";
-import Training from "../pages/Training";
-import Help from "../pages/Help";
-import Settings from "../pages/Settings";
-import NotFound from "../pages/NotFound";
+import { Route, Routes } from 'react-router-dom';
 
+import AnalyseGame from '../pages/AnalyseGame';
+import AnalysePosition from '../pages/AnalysePosition/index';
+import GameHistory from '../pages/GameHistory';
+import Help from '../pages/Help';
+import Insights from '../pages/Insights';
+import NotFound from '../pages/NotFound';
+import Profile from '../pages/Profile';
+import Settings from '../pages/Settings';
+import Training from '../pages/Training';
 
 export default function AppRoutes() {
   return (

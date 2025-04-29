@@ -1,21 +1,15 @@
 export default function Navbar({ toggleSidebar }) {
   return (
-    <nav class="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
-      <div class="flex flex-wrap justify-between items-center">
-        <div class="flex justify-start items-center">
+    <nav class="fixed top-0 right-0 left-0 z-50 border-b border-gray-200 bg-white px-4 py-2.5 dark:border-gray-700 dark:bg-gray-800">
+      <div class="flex flex-wrap items-center justify-between">
+        <div class="flex items-center justify-start">
           <button
-            className="
-            p-2 mr-2 text-gray-600 rounded-lg cursor-pointer md:hidden
-            hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100
-            focus:ring-2 focus:ring-gray-100 dark:text-gray-400
-            dark:focus:bg-gray-700 dark:focus:ring-gray-700
-            dark:hover:bg-gray-700 dark:hover:text-white
-          "
+            className="mr-2 cursor-pointer rounded-lg p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 md:hidden dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:bg-gray-700 dark:focus:ring-gray-700"
             onClick={toggleSidebar}
           >
             <svg
               aria-hidden="true"
-              className="w-6 h-6"
+              className="h-6 w-6"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +22,7 @@ export default function Navbar({ toggleSidebar }) {
             </svg>
             <svg
               aria-hidden="true"
-              className="hidden w-6 h-6"
+              className="hidden h-6 w-6"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +37,7 @@ export default function Navbar({ toggleSidebar }) {
           </button>
           <a
             href="https://blunderfixer.com"
-            class="flex items-center justify-between mr-4"
+            class="mr-4 flex items-center justify-between"
           >
             <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
               BlunderFixer ‼️
@@ -55,13 +49,13 @@ export default function Navbar({ toggleSidebar }) {
           <button
             type="button"
             data-dropdown-toggle="notification-dropdown"
-            class="p-2 mr-1 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+            class="mr-1 rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:ring-4 focus:ring-gray-300 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-600"
           >
             <span class="sr-only">View notifications</span>
             {/* Bell icon */}
             <svg
               aria-hidden="true"
-              class="w-6 h-6"
+              class="h-6 w-6"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -71,27 +65,27 @@ export default function Navbar({ toggleSidebar }) {
           </button>
           {/* Dropdown menu */}
           <div
-            class="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg dark:divide-gray-600 dark:bg-gray-700 rounded-xl"
+            class="z-50 my-4 hidden max-w-sm list-none divide-y divide-gray-100 overflow-hidden rounded rounded-xl bg-white text-base shadow-lg dark:divide-gray-600 dark:bg-gray-700"
             id="notification-dropdown"
           >
-            <div class="block py-2 px-4 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-600 dark:text-gray-300">
+            <div class="block bg-gray-50 px-4 py-2 text-center text-base font-medium text-gray-700 dark:bg-gray-600 dark:text-gray-300">
               Notifications
             </div>
             <div>
               <a
                 href="#"
-                class="flex py-3 px-4 border-b hover:bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-600"
+                class="flex border-b px-4 py-3 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
               >
                 <div class="flex-shrink-0">
                   <img
-                    class="w-11 h-11 rounded-full"
+                    class="h-11 w-11 rounded-full"
                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png"
                     alt="Bonnie Green avatar"
                   />
-                  <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 rounded-full border border-white bg-primary-700 dark:border-gray-700">
+                  <div class="bg-primary-700 absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white dark:border-gray-700">
                     <svg
                       aria-hidden="true"
-                      class="w-3 h-3 text-white"
+                      class="h-3 w-3 text-white"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -101,33 +95,33 @@ export default function Navbar({ toggleSidebar }) {
                     </svg>
                   </div>
                 </div>
-                <div class="pl-3 w-full">
-                  <div class="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
+                <div class="w-full pl-3">
+                  <div class="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
                     New message from
                     <span class="font-semibold text-gray-900 dark:text-white">
                       Bonnie Green
                     </span>
                     : "Hey, what's up? All set for the presentation?"
                   </div>
-                  <div class="text-xs font-medium text-primary-600 dark:text-primary-500">
+                  <div class="text-primary-600 dark:text-primary-500 text-xs font-medium">
                     a few moments ago
                   </div>
                 </div>
               </a>
               <a
                 href="#"
-                class="flex py-3 px-4 border-b hover:bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-600"
+                class="flex border-b px-4 py-3 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
               >
                 <div class="flex-shrink-0">
                   <img
-                    class="w-11 h-11 rounded-full"
+                    class="h-11 w-11 rounded-full"
                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
                     alt="Jese Leos avatar"
                   />
-                  <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 bg-gray-900 rounded-full border border-white dark:border-gray-700">
+                  <div class="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-gray-900 dark:border-gray-700">
                     <svg
                       aria-hidden="true"
-                      class="w-3 h-3 text-white"
+                      class="h-3 w-3 text-white"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -136,8 +130,8 @@ export default function Navbar({ toggleSidebar }) {
                     </svg>
                   </div>
                 </div>
-                <div class="pl-3 w-full">
-                  <div class="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
+                <div class="w-full pl-3">
+                  <div class="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
                     <span class="font-semibold text-gray-900 dark:text-white">
                       Jese leos
                     </span>
@@ -147,25 +141,25 @@ export default function Navbar({ toggleSidebar }) {
                     </span>
                     started following you.
                   </div>
-                  <div class="text-xs font-medium text-primary-600 dark:text-primary-500">
+                  <div class="text-primary-600 dark:text-primary-500 text-xs font-medium">
                     10 minutes ago
                   </div>
                 </div>
               </a>
               <a
                 href="#"
-                class="flex py-3 px-4 border-b hover:bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-600"
+                class="flex border-b px-4 py-3 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
               >
                 <div class="flex-shrink-0">
                   <img
-                    class="w-11 h-11 rounded-full"
+                    class="h-11 w-11 rounded-full"
                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png"
                     alt="Joseph McFall avatar"
                   />
-                  <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 bg-red-600 rounded-full border border-white dark:border-gray-700">
+                  <div class="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-red-600 dark:border-gray-700">
                     <svg
                       aria-hidden="true"
-                      class="w-3 h-3 text-white"
+                      class="h-3 w-3 text-white"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -178,8 +172,8 @@ export default function Navbar({ toggleSidebar }) {
                     </svg>
                   </div>
                 </div>
-                <div class="pl-3 w-full">
-                  <div class="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
+                <div class="w-full pl-3">
+                  <div class="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
                     <span class="font-semibold text-gray-900 dark:text-white">
                       Joseph Mcfall
                     </span>
@@ -189,25 +183,25 @@ export default function Navbar({ toggleSidebar }) {
                     </span>
                     love your story. See it and view more stories.
                   </div>
-                  <div class="text-xs font-medium text-primary-600 dark:text-primary-500">
+                  <div class="text-primary-600 dark:text-primary-500 text-xs font-medium">
                     44 minutes ago
                   </div>
                 </div>
               </a>
               <a
                 href="#"
-                class="flex py-3 px-4 border-b hover:bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-600"
+                class="flex border-b px-4 py-3 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
               >
                 <div class="flex-shrink-0">
                   <img
-                    class="w-11 h-11 rounded-full"
+                    class="h-11 w-11 rounded-full"
                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/roberta-casas.png"
                     alt="Roberta Casas image"
                   />
-                  <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 bg-green-400 rounded-full border border-white dark:border-gray-700">
+                  <div class="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-green-400 dark:border-gray-700">
                     <svg
                       aria-hidden="true"
-                      class="w-3 h-3 text-white"
+                      class="h-3 w-3 text-white"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -220,36 +214,36 @@ export default function Navbar({ toggleSidebar }) {
                     </svg>
                   </div>
                 </div>
-                <div class="pl-3 w-full">
-                  <div class="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
+                <div class="w-full pl-3">
+                  <div class="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
                     <span class="font-semibold text-gray-900 dark:text-white">
                       Leslie Livingston
                     </span>
                     mentioned you in a comment:
-                    <span class="font-medium text-primary-600 dark:text-primary-500">
+                    <span class="text-primary-600 dark:text-primary-500 font-medium">
                       @bonnie.green
                     </span>
                     what do you say?
                   </div>
-                  <div class="text-xs font-medium text-primary-600 dark:text-primary-500">
+                  <div class="text-primary-600 dark:text-primary-500 text-xs font-medium">
                     1 hour ago
                   </div>
                 </div>
               </a>
               <a
                 href="#"
-                class="flex py-3 px-4 hover:bg-gray-100 dark:hover:bg-gray-600"
+                class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600"
               >
                 <div class="flex-shrink-0">
                   <img
-                    class="w-11 h-11 rounded-full"
+                    class="h-11 w-11 rounded-full"
                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/robert-brown.png"
                     alt="Robert image"
                   />
-                  <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 bg-purple-500 rounded-full border border-white dark:border-gray-700">
+                  <div class="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-purple-500 dark:border-gray-700">
                     <svg
                       aria-hidden="true"
-                      class="w-3 h-3 text-white"
+                      class="h-3 w-3 text-white"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -258,15 +252,15 @@ export default function Navbar({ toggleSidebar }) {
                     </svg>
                   </div>
                 </div>
-                <div class="pl-3 w-full">
-                  <div class="text-gray-500 font-normal text-sm mb-1.5 dark:text-gray-400">
+                <div class="w-full pl-3">
+                  <div class="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
                     <span class="font-semibold text-gray-900 dark:text-white">
                       Robert Brown
                     </span>
                     posted a new video: Glassmorphism - learn how to implement
                     the new design trend.
                   </div>
-                  <div class="text-xs font-medium text-primary-600 dark:text-primary-500">
+                  <div class="text-primary-600 dark:text-primary-500 text-xs font-medium">
                     3 hours ago
                   </div>
                 </div>
@@ -274,12 +268,12 @@ export default function Navbar({ toggleSidebar }) {
             </div>
             <a
               href="#"
-              class="block py-2 text-md font-medium text-center text-gray-900 bg-gray-50 hover:bg-gray-100 dark:bg-gray-600 dark:text-white dark:hover:underline"
+              class="text-md block bg-gray-50 py-2 text-center font-medium text-gray-900 hover:bg-gray-100 dark:bg-gray-600 dark:text-white dark:hover:underline"
             >
               <div class="inline-flex items-center">
                 <svg
                   aria-hidden="true"
-                  class="mr-2 w-4 h-4 text-gray-500 dark:text-gray-400"
+                  class="mr-2 h-4 w-4 text-gray-500 dark:text-gray-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -297,28 +291,28 @@ export default function Navbar({ toggleSidebar }) {
           </div>
           <button
             type="button"
-            class="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+            class="mx-3 flex rounded-full bg-gray-800 text-sm focus:ring-4 focus:ring-gray-300 md:mr-0 dark:focus:ring-gray-600"
             id="user-menu-button"
             aria-expanded="false"
             data-dropdown-toggle="dropdown"
           >
             <span class="sr-only">Open user menu</span>
             <img
-              class="w-8 h-8 rounded-full"
+              class="h-8 w-8 rounded-full"
               src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gough.png"
               alt="user photo"
             />
           </button>
           {/* Dropdown menu */}
           <div
-            class="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl"
+            class="z-50 my-4 hidden w-56 list-none divide-y divide-gray-100 rounded rounded-xl bg-white text-base shadow dark:divide-gray-600 dark:bg-gray-700"
             id="dropdown"
           >
-            <div class="py-3 px-4">
+            <div class="px-4 py-3">
               <span class="block text-sm font-semibold text-gray-900 dark:text-white">
                 Dr Can
               </span>
-              <span class="block text-sm text-gray-900 truncate dark:text-white">
+              <span class="block truncate text-sm text-gray-900 dark:text-white">
                 name@flowbite.com
               </span>
             </div>
@@ -329,7 +323,7 @@ export default function Navbar({ toggleSidebar }) {
               <li>
                 <a
                   href="#"
-                  class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
+                  class="block px-4 py-2 text-sm hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   My profile
                 </a>
@@ -337,7 +331,7 @@ export default function Navbar({ toggleSidebar }) {
               <li>
                 <a
                   href="#"
-                  class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white"
+                  class="block px-4 py-2 text-sm hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   Account settings
                 </a>
@@ -350,10 +344,10 @@ export default function Navbar({ toggleSidebar }) {
               <li>
                 <a
                   href="#"
-                  class="flex items-center py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  class="flex items-center px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   <svg
-                    class="mr-2 w-5 h-5 text-gray-400"
+                    class="mr-2 h-5 w-5 text-gray-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -370,10 +364,10 @@ export default function Navbar({ toggleSidebar }) {
               <li>
                 <a
                   href="#"
-                  class="flex items-center py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  class="flex items-center px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   <svg
-                    class="mr-2 w-5 h-5 text-gray-400"
+                    class="mr-2 h-5 w-5 text-gray-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -386,12 +380,12 @@ export default function Navbar({ toggleSidebar }) {
               <li>
                 <a
                   href="#"
-                  class="flex justify-between items-center py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  class="flex items-center justify-between px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   <span class="flex items-center">
                     <svg
                       aria-hidden="true"
-                      class="mr-2 w-5 h-5 text-primary-600 dark:text-primary-500"
+                      class="text-primary-600 dark:text-primary-500 mr-2 h-5 w-5"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -406,7 +400,7 @@ export default function Navbar({ toggleSidebar }) {
                   </span>
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-gray-400"
+                    class="h-5 w-5 text-gray-400"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -427,7 +421,7 @@ export default function Navbar({ toggleSidebar }) {
               <li>
                 <a
                   href="#"
-                  class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   Sign out
                 </a>

@@ -1,8 +1,10 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
-import "swiper/css";
-import { useRef, useMemo, useEffect } from "react";
-import { Chess } from "chess.js";
+import { useEffect, useMemo, useRef } from 'react';
+
+import { Chess } from 'chess.js';
+import { Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import 'swiper/css';
 
 export default function TopmovesCarousel({ result, onSlideChange }) {
   const prevRef = useRef(null);
@@ -58,19 +60,19 @@ export default function TopmovesCarousel({ result, onSlideChange }) {
             <div className="flex flex-col items-center justify-center rounded-lg bg-white p-6 shadow dark:bg-gray-800">
               <span
                 className={`mb-2 rounded-full px-3 py-1 text-sm font-bold ${
-                  i === 0 ? "bg-green-500 text-white" : "bg-blue-500 text-white"
+                  i === 0 ? 'bg-green-500 text-white' : 'bg-blue-500 text-white'
                 }`}
               >
-                {i === 0 ? "Best Move" : `Alternative ${i}`}
+                {i === 0 ? 'Best Move' : `Alternative ${i}`}
               </span>
               <p className="mb-1 text-lg font-semibold">Move: {m.san}</p>
               <p className="mb-2 text-sm">
-                Eval: {m.evaluation > 0 ? "+" : ""}
+                Eval: {m.evaluation > 0 ? '+' : ''}
                 {m.evaluation}
               </p>
               <p className="text-center text-xs text-gray-700 dark:text-gray-300">
-                {m.line.slice(0, 7).join(" → ")}
-                {m.line.length > 7 ? " ..." : ""}
+                {m.line.slice(0, 7).join(' → ')}
+                {m.line.length > 7 ? ' ...' : ''}
               </p>
             </div>
           </SwiperSlide>

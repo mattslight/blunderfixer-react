@@ -1,6 +1,7 @@
-import { NavLink } from "react-router-dom";
-import { Drawer } from "flowbite-react";
-import { useState } from "react";
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+
+import { Drawer } from 'flowbite-react';
 
 export default function Sidebar({ isSidebarOpen, closeSidebar }) {
   const [analyseOpen, setAnalyseOpen] = useState(false);
@@ -22,8 +23,8 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
               className={({ isActive }) =>
                 `group flex items-center rounded-lg p-2 text-base font-medium ${
                   isActive
-                    ? "bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white"
-                    : "text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                    ? 'bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white'
+                    : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
                 }`
               }
             >
@@ -65,7 +66,7 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
                 aria-hidden="true"
                 className="h-6 w-6 transition-transform"
                 style={{
-                  transform: analyseOpen ? "rotate(180deg)" : "rotate(0deg)",
+                  transform: analyseOpen ? 'rotate(180deg)' : 'rotate(0deg)',
                 }}
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -78,15 +79,15 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
               </svg>
             </button>
 
-            <ul className={`${analyseOpen ? "" : "hidden"} space-y-2 py-2`}>
+            <ul className={`${analyseOpen ? '' : 'hidden'} space-y-2 py-2`}>
               <li>
                 <NavLink
                   to="/analyse/position"
                   className={({ isActive }) =>
                     `group flex w-full items-center rounded-lg p-2 pl-11 text-base font-medium transition duration-75 ${
                       isActive
-                        ? "bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white"
-                        : "text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                        ? 'bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white'
+                        : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
                     }`
                   }
                 >
@@ -99,8 +100,8 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
                   className={({ isActive }) =>
                     `group flex w-full items-center rounded-lg p-2 pl-11 text-base font-medium transition duration-75 ${
                       isActive
-                        ? "bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white"
-                        : "text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                        ? 'bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white'
+                        : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
                     }`
                   }
                 >
@@ -115,8 +116,8 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
               className={({ isActive }) =>
                 `group flex items-center rounded-lg p-2 text-base font-medium ${
                   isActive
-                    ? "bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white"
-                    : "text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                    ? 'bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white'
+                    : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
                 }`
               }
             >
@@ -143,8 +144,8 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
               className={({ isActive }) =>
                 `group flex items-center rounded-lg p-2 text-base font-medium ${
                   isActive
-                    ? "bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white"
-                    : "text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                    ? 'bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white'
+                    : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
                 }`
               }
             >
@@ -168,8 +169,8 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
               className={({ isActive }) =>
                 `group flex items-center rounded-lg p-2 text-base font-medium ${
                   isActive
-                    ? "bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white"
-                    : "text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                    ? 'bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white'
+                    : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
                 }`
               }
             >
@@ -198,8 +199,8 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
           className={({ isActive }) =>
             `group inline-flex cursor-pointer justify-center rounded p-2 transition duration-75 ${
               isActive
-                ? "bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white"
-                : "text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+                ? 'bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white'
+                : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white'
             }`
           }
         >
