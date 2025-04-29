@@ -25,7 +25,7 @@ export default function App() {
     <>
       <Navbar toggleSidebar={toggleSidebar} />
       <Sidebar isSidebarOpen={isSidebarOpen} closeSidebar={closeSidebar} />
-      <main class="h-auto w-full p-4 pt-20 md:ml-64">
+      <main className="h-auto w-full p-4 pt-20 lg:ml-64">
         <AppRoutes />
       </main>
     </>
