@@ -31,6 +31,22 @@ export async function extractFeatures(fen) {
   return post('/extract-features', { fen });
 }
 
-// Later you can easily add more like:
-// export async function analysePGN(pgn) { return post("/api/analyse-pgn", { pgn }); }
-// export async function getProfile(username) { return get(`/api/profile/${username}`); } (if you want GET too)
+// ————————————————
+// NEW: API call for analysing a full PGN
+export async function analysePGN(pgn, top_n = 5) {
+  return post('/analyse-pgn', { pgn, top_n });
+}
+
+export async function getProfile(username) {
+  const res = await fetch(`${BASE_URL}/profile/${username}`);
+  if (!res.ok) throw new Error('Failed to fetch profile');
+  return res.json();
+}
+
+export async function getRecentGames(username, limit = 20) {
+  const res = await fetch(
+    `${BASE_URL}/public/players/${username}/recent-games?limit=${limit}`
+  );
+  if (!res.ok) throw new Error('Failed to fetch recent games');
+  return res.json();
+}
