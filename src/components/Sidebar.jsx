@@ -19,7 +19,7 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
         <ul className="space-y-2">
           <li>
             <NavLink
-              to="/"
+              to="/insights"
               className={({ isActive }) =>
                 `group flex items-center rounded-lg p-2 text-base font-medium ${
                   isActive
@@ -82,20 +82,6 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
             <ul className={`${analyseOpen ? '' : 'hidden'} space-y-2 py-2`}>
               <li>
                 <NavLink
-                  to="/analyse/position"
-                  className={({ isActive }) =>
-                    `group flex w-full items-center rounded-lg p-2 pl-11 text-base font-medium transition duration-75 ${
-                      isActive
-                        ? 'bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white'
-                        : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
-                    }`
-                  }
-                >
-                  Position (FEN)
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
                   to="/analyse/game"
                   className={({ isActive }) =>
                     `group flex w-full items-center rounded-lg p-2 pl-11 text-base font-medium transition duration-75 ${
@@ -105,7 +91,21 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
                     }`
                   }
                 >
-                  Game (PGN)
+                  Game
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/analyse/position"
+                  className={({ isActive }) =>
+                    `group flex w-full items-center rounded-lg p-2 pl-11 text-base font-medium transition duration-75 ${
+                      isActive
+                        ? 'bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white'
+                        : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
+                    }`
+                  }
+                >
+                  Position from FEN
                 </NavLink>
               </li>
             </ul>
