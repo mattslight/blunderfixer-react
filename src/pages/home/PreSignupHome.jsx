@@ -10,6 +10,8 @@ import {
   Trophy,
 } from 'lucide-react';
 
+import CoachingBoard from './CoachingBoard';
+
 export default function HomePage() {
   return (
     <div className="-mt-10 min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-6 text-white sm:p-10">
@@ -49,6 +51,17 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section>
+        <div className="container mx-auto px-4 py-16">
+          <CoachingBoard />
+        </div>
+        <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+          <button className="rounded-lg border-b-4 border-b-green-700 bg-green-500 px-8 py-3 text-lg font-semibold text-white transition hover:bg-green-600">
+            Get Started for Free
+          </button>
+        </div>
+      </section>
+
       {/* Key Features */}
       <section className="container mx-auto mb-10 px-4 py-24">
         {/* Section intro */}
@@ -57,7 +70,7 @@ export default function HomePage() {
             Key Features
           </p>
           <h2 className="text-3xl font-bold text-white">
-            A smarter way to master your game
+            Master your game. Intelligently.
           </h2>
           <p className="mt-4 text-lg text-slate-400">
             From instant blunder alerts to personalised coaching, BlunderFixer
@@ -66,7 +79,7 @@ export default function HomePage() {
         </div>
 
         {/* Feature list */}
-        <ul className="space-y-8">
+        <ul className="mx-auto max-w-2xl space-y-8">
           <li className="flex items-start">
             <Flag className="mt-1 h-6 w-6 text-green-500" />
             <div className="ml-4">
@@ -169,16 +182,14 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* Final CTA */}
-      <section className="mb-20 overflow-hidden rounded-3xl border-r-2 border-b-4 border-l-1 border-r-gray-800 border-b-gray-700 border-l-gray-700 bg-gradient-to-br from-gray-800 to-gray-900">
+      <section className="mb-20 overflow-hidden rounded-3xl border-r-2 border-b-4 border-l-1 border-r-gray-800 border-b-gray-700 border-l-gray-700 bg-gradient-to-br from-gray-800 to-black">
         <div className="container mx-auto px-8 py-20 text-center">
           <h2 className="text-4xl font-bold text-white">
-            Fix mistakes. Chat with your coach. Win more games.
+            From blunder to brilliance.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-400">
-            Instant, human-like insights on every blunder — no waiting, no
-            fluff.
+            Instant, human-like insights on every move — no waiting, no fluff.
           </p>
           <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
             <button className="rounded-lg border-b-4 border-b-green-700 bg-green-500 px-8 py-3 text-lg font-semibold text-white transition hover:bg-green-600">
