@@ -11,11 +11,14 @@ export function useCoachExplanation() {
       setExplanation(null);
       setError(null);
       try {
-        const res = await fetch('http://127.0.0.1:8000/explain-lines', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fen, top_moves, legal_moves, features }),
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/explain-lines`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fen, top_moves, legal_moves, features }),
+          }
+        );
         const data = await res.json();
         if (data.explanation) {
           setExplanation(data.explanation);
