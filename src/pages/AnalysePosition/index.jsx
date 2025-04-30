@@ -8,10 +8,12 @@ import GameLoader from './GameLoader'; // new: fetch & pick games
 export default function AnalyseContainer() {
   const [mode, setMode] = useState('fen');
   const [selectedGamePGN, setSelectedGamePGN] = useState(null);
+  const [analysisKey, setAnalysisKey] = useState(0);
 
   const handleNewAnalysis = () => {
     setMode('fen');
     setSelectedGamePGN(null);
+    setAnalysisKey((k) => k + 1);
   };
 
   return (
@@ -42,7 +44,7 @@ export default function AnalyseContainer() {
         </button>
       </div>
 
-      {mode === 'fen' && <AnalysePosition />}
+      {mode === 'fen' && <AnalysePosition key={analysisKey} />}
 
       {mode === 'pgn' && (
         <>
