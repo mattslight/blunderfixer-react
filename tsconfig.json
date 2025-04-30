@@ -4,7 +4,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "target": "es2017",
+    "target": "es2020",
     "lib": ["DOM", "ES2015", "ES2016", "ES2017"]
   }
 }
