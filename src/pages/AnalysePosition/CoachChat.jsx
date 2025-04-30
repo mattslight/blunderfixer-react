@@ -12,16 +12,19 @@ export default function CoachChat({ result }) {
     if (!userQuestion.trim()) return;
     setChatLoading(true);
     try {
-      const response = await fetch('http://127.0.0.1:8000/coach-chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fen: result.fen,
-          legal_moves: result.legal_moves,
-          past_messages: chatMessages,
-          user_message: userQuestion,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/coach-chat`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fen: result.fen,
+            legal_moves: result.legal_moves,
+            past_messages: chatMessages,
+            user_message: userQuestion,
+          }),
+        }
+      );
       const data = await response.json();
       if (data.reply) {
         setChatMessages([
