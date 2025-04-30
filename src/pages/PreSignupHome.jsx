@@ -1,9 +1,6 @@
 import React from 'react';
 
 import {
-  ArrowRight,
-  Brain,
-  ChartNoAxesCombined,
   Flag,
   MessageCircleWarning,
   Play,
@@ -15,7 +12,7 @@ import {
 
 export default function HomePage() {
   return (
-    <div className="-mt-10 min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-10 text-white">
+    <div className="-mt-10 min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-6 text-white sm:p-10">
       {/* Hero */}
       <section className="bg-noise container mx-auto mt-16 mb-10 p-4 text-center">
         <h1 className="mb-4 text-4xl font-bold sm:text-5xl lg:text-6xl">
