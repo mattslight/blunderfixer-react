@@ -171,7 +171,7 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section className="mb-60 overflow-hidden rounded-3xl bg-gray-900">
+      <section className="mb-20 overflow-hidden rounded-3xl bg-gray-900">
         <div className="container mx-auto px-8 py-20 text-center">
           <h2 className="text-4xl font-bold text-white">
             Fix mistakes. Chat with your coach. Win more games.
