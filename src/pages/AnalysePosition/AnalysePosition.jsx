@@ -9,64 +9,84 @@ import ExamplePositions from './ExamplePositions';
 import PositionFeatures from './PositionFeatures';
 import TopmovesCarousel from './TopmovesCarousel';
 
-import { analyseFEN, extractFeatures } from '@/api/analyse';
+import { extractFeatures } from '@/api/analyse'; // you can replace this with local logic
 import { useCoachExplanation } from '@/hooks/useCoachExplanation';
 import { useStockfish } from '@/hooks/useStockfish';
 
 const DEFAULT_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 
 export default function AnalysePosition({ startingFen, pgnMode = false }) {
-  // state
+  // --- State
   const [fen, setFEN] = useState(startingFen || '');
   const [boardFEN, setBoardFEN] = useState(startingFen || DEFAULT_FEN);
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [features, setFeatures] = useState(null);
   const [error, setError] = useState(null);
+
+  // board highlights
   const [arrows, setArrows] = useState([]);
   const [moveSquares, setMoveSquares] = useState({});
 
-  // Stockfish hook
+  // Stockfish
   const {
-    lines = [], // AnalysisLine[]: { rank, moves, scoreCP, mateIn, searchDepth }
-    bestMove, // string (SAN)
-    runAnalysis, // function(fen, depth?)
+    lines = [], // [{ rank, moves, scoreCP, mateIn, searchDepth }]
+    bestMove, // SAN string
+    currentDepth, // number
+    runAnalysis, // (fen, depth?) => void
+    stopAnalysis,
   } = useStockfish(26, 3);
 
-  console.log('🔍 rendering with lines=', lines);
-
-  console.log('🔍 runAnalysis called with', boardFEN);
-
-  // Draw arrows from SAN bestMove
+  // only run SF + feature extraction once boardFEN changes *after* mount
   useEffect(() => {
-    if (!bestMove) {
+    // if you're still on default and the user never pasted anything, bail
+    if (!startingFen && boardFEN === DEFAULT_FEN) {
+      return;
+    }
+
+    stopAnalysis();
+    runAnalysis(boardFEN, 26);
+
+    extractFeatures(boardFEN)
+      .then((f) => setFeatures(f))
+      .catch(() => setError('Feature extraction failed'));
+  }, [boardFEN, runAnalysis, startingFen, stopAnalysis]);
+
+  // 2) draw arrow from bestMove (SAN) → from/to
+  useEffect(() => {
+    // only if SF gave us a move AND at least one line
+    if (!bestMove || lines[0]?.moves.length === 0) {
       setArrows([]);
       setMoveSquares({});
       return;
     }
-    // Convert SAN → from/to via chess.js
+
     const chess = new Chess(boardFEN);
-    const mv = chess.move(bestMove);
-    if (!mv) return;
+    let mv;
+    try {
+      mv = chess.move(bestMove);
+    } catch (e) {
+      console.warn('Cannot apply SAN:', bestMove, e);
+      return;
+    }
+    if (!mv) {
+      console.warn('SAN not legal:', bestMove);
+      return;
+    }
+
     setArrows([[mv.from, mv.to, 'rgba(0,255,0,0.6)']]);
     setMoveSquares({
       [mv.from]: { backgroundColor: 'rgba(255,255,0,0.5)' },
       [mv.to]: { backgroundColor: 'rgba(0,255,0,0.5)' },
     });
-  }, [bestMove, boardFEN]);
+  }, [bestMove, boardFEN, lines]);
 
-  // PGN stepping or manual input
+  // 3) reset if parent gives new startingFen (e.g. PGN stepping)
   useEffect(() => {
-    if (startingFen) {
-      setFEN(startingFen);
-      setBoardFEN(startingFen);
-      setResult(null);
-      setArrows([]);
-      setMoveSquares({});
-      setError(null);
-    }
+    if (!startingFen) return;
+    setFEN(startingFen);
+    setBoardFEN(startingFen);
   }, [startingFen]);
 
-  // Coach explanation hook
+  // coach explanation
   const {
     explanation,
     loadingExplanation,
@@ -74,70 +94,42 @@ export default function AnalysePosition({ startingFen, pgnMode = false }) {
     getExplanation,
   } = useCoachExplanation();
 
-  // Handle textarea FEN changes
+  // FEN textarea handler
   function handleFenChange(e) {
-    const newFen = e.target.value.trim();
-    setFEN(newFen);
-    setBoardFEN(newFen || DEFAULT_FEN);
-  }
-
-  // One‐click analysis for your own API
-  async function handleAnalyseClick() {
-    setLoading(true);
-    setError(null);
-    setArrows([]);
-    setMoveSquares({});
-    runAnalysis(boardFEN, 26);
-
-    try {
-      const [analysis, features] = await Promise.all([
-        analyseFEN(fen, 5),
-        extractFeatures(fen),
-      ]);
-      setResult({ ...analysis, features });
-    } catch {
-      setError('Failed to analyse position.');
-    } finally {
-      setLoading(false);
-    }
+    const f = e.target.value.trim();
+    setFEN(f);
+    setBoardFEN(f || DEFAULT_FEN);
   }
 
   return (
     <div className="flex flex-col items-center space-y-6">
+      {/* Board & lines */}
       <div className="w-full max-w-lg">
-        {/* Depth display (optional) */}
         <div className="text-sm text-gray-400">
-          Eval {lines[0]?.searchDepth ?? '–'} moves deep
+          <b>Main lines</b> (<i>depth {currentDepth}</i>)
         </div>
-
-        {/* Best lines */}
         <div className="mt-2 space-y-1">
-          {lines.length > 0 &&
-            lines
-              .filter((line) => line.moves.length > 0)
-              .map((line) => (
-                <div
-                  key={line.rank}
-                  className="no-scrollbar flex overflow-x-auto text-sm whitespace-nowrap text-gray-200"
-                >
-                  <span className="min-w-[3rem] shrink-0 text-gray-500">
-                    #{line.rank}
-                  </span>
-                  <span className="flex-1 truncate">
-                    {line.moves.join(' → ')}
-                  </span>
-                  <span className="ml-2 shrink-0 text-gray-400">
-                    <b>
-                      {line.scoreCP != null
-                        ? (line.scoreCP / 100).toFixed(2)
-                        : `#${line.mateIn}`}
-                    </b>
-                  </span>
-                </div>
-              ))}
+          {lines
+            .filter((l) => l.moves.length > 0)
+            .map((l) => (
+              <div
+                key={l.rank}
+                className="no-scrollbar flex overflow-x-auto text-sm whitespace-nowrap text-gray-200"
+              >
+                <span className="min-w-[3rem] shrink-0 text-gray-500">
+                  #{l.rank}
+                </span>
+                <span className="flex-1 truncate">{l.moves.join(' → ')}</span>
+                <span className="ml-2 shrink-0 text-gray-400">
+                  <b>
+                    {l.scoreCP != null
+                      ? (l.scoreCP / 100).toFixed(2)
+                      : `#${l.mateIn}`}
+                  </b>
+                </span>
+              </div>
+            ))}
         </div>
-
-        {/* Chessboard */}
         <Chessboard
           position={boardFEN}
           customArrows={arrows}
@@ -152,54 +144,43 @@ export default function AnalysePosition({ startingFen, pgnMode = false }) {
         />
       </div>
 
-      {/* FEN input & Analyse button */}
-      {!result && (
+      {/* FEN input */}
+      {!pgnMode && (
         <div className="w-full max-w-lg space-y-2">
-          {!pgnMode && (
-            <textarea
-              rows={2}
-              className="w-full rounded border p-2 dark:bg-gray-800 dark:text-white"
-              placeholder="Paste a FEN string…"
-              value={fen}
-              onChange={handleFenChange}
-            />
-          )}
-          <button
-            onClick={handleAnalyseClick}
-            disabled={!fen || loading}
-            className="w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
-          >
-            {loading ? 'Analysing…' : 'Analyse'}
-          </button>
+          <textarea
+            rows={2}
+            className="w-full rounded border p-2 dark:bg-gray-800 dark:text-white"
+            placeholder="Paste a FEN string…"
+            value={fen}
+            onChange={handleFenChange}
+          />
         </div>
       )}
 
-      {/* Example positions + errors */}
-      {!result && !pgnMode && (
+      {/* Examples & errors */}
+      {!pgnMode && (
         <ExamplePositions setFEN={setFEN} setBoardFEN={setBoardFEN} />
       )}
       {(error || explanationError) && (
         <p className="text-red-500">{error || explanationError}</p>
       )}
 
-      {/* Detailed results */}
-      {result && (
-        <div className="w-full max-w-lg space-y-4">
-          <TopmovesCarousel result={result} />
-          {!explanation && (
-            <button
-              onClick={() => getExplanation(result)}
-              disabled={loadingExplanation}
-              className="w-full rounded bg-green-600 py-2 text-white hover:bg-green-700 disabled:opacity-50"
-            >
-              {loadingExplanation ? 'Thinking…' : 'Get Explanation'}
-            </button>
-          )}
-          {explanation && <CoachExplanation explanation={explanation} />}
-          <PositionFeatures features={result.features} />
-          <CoachChat result={result} />
-        </div>
-      )}
+      {/* Explanations & features */}
+      <div className="w-full max-w-lg space-y-4">
+        <TopmovesCarousel lines={lines} />
+        {!explanation && (
+          <button
+            onClick={() => getExplanation({ lines, features })}
+            disabled={loadingExplanation}
+            className="w-full rounded bg-green-600 py-2 text-white hover:bg-green-700 disabled:opacity-50"
+          >
+            {loadingExplanation ? 'Thinking…' : 'Get Explanation'}
+          </button>
+        )}
+        {explanation && <CoachExplanation explanation={explanation} />}
+        <PositionFeatures features={features} />
+        <CoachChat lines={lines} features={features} />
+      </div>
     </div>
   );
 }
