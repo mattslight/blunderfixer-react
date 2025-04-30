@@ -17,9 +17,16 @@ export default function HomePage() {
     <div className="-mt-10 min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-6 text-white sm:p-10">
       {/* Hero */}
       <section className="bg-noise container mx-auto mt-16 mb-10 p-4 text-center">
-        <h1 className="mb-4 text-4xl font-bold sm:text-5xl lg:text-6xl">
-          The #1 AI Chess Coach
+        <h1 className="mb-4 text-4xl font-bold text-white lg:text-6xl">
+          The{' '}
+          <span className="relative inline-block">
+            <span className="relative z-10">#1</span>
+            {/* tilted underline */}
+            <span className="absolute -bottom-2 left-0 block h-2 w-full origin-left -rotate-4 transform bg-green-400 opacity-80" />
+          </span>{' '}
+          AI Chess Coach
         </h1>
+
         <p className="mb-8 text-2xl text-slate-300">
           Learn from your mistakes – <i>fast</i>
         </p>
