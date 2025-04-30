@@ -102,7 +102,7 @@ export default function HomePage() {
         </ul>
       </section>
 
-      <hr className="mx-20 mb-20 border-2 border-t border-black opacity-30" />
+      <hr className="mx-20 mb-20 rounded-full border-b-4 border-black opacity-60" />
 
       {/* How It Works */}
       <section className="mb-20 py-16">
@@ -171,7 +171,7 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section className="mb-20 overflow-hidden rounded-3xl bg-gray-900">
+      <section className="mb-20 overflow-hidden rounded-3xl border-r-2 border-b-4 border-l-1 border-r-gray-800 border-b-gray-700 border-l-gray-700 bg-gradient-to-br from-gray-800 to-gray-900">
         <div className="container mx-auto px-8 py-20 text-center">
           <h2 className="text-4xl font-bold text-white">
             Fix mistakes. Chat with your coach. Win more games.
