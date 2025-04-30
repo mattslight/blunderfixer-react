@@ -47,7 +47,7 @@ export default function AnalysePGN({ pgn, onBack }) {
         onClick={onBack}
         className="text-sm text-blue-500 hover:underline"
       >
-        ← Back to list
+        ← Back to games
       </button>
 
       {/* Step controls */}
