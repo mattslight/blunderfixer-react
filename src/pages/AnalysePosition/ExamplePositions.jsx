@@ -1,6 +1,6 @@
 export default function ExamplePositions({ setFEN, setBoardFEN }) {
   return (
-    <div>
+    <div className="max-w-lg">
       <h2 className="mb-1 text-sm font-semibold">Example Positions</h2>
       <div className="flex flex-wrap gap-2">
         {[
@@ -12,7 +12,10 @@ export default function ExamplePositions({ setFEN, setBoardFEN }) {
             'Simple tactic 🎯',
             '4kb1r/p4ppp/4q3/8/8/1B6/PPP2PPP/2KR4 w - - 0 1',
           ],
-          ['One move ⚔️', '5k1r/2q3p1/p3p2p/1B3p1Q/n4P2/6P1/bbP2N1P/1K1RR3'],
+          [
+            'One move ⚔️',
+            '5k1r/2q3p1/p3p2p/1B3p1Q/n4P2/6P1/bbP2N1P/1K1RR3 w - - 0 1',
+          ],
           [
             'Fried Liver 🗡️',
             'r1bqkb1r/ppp2Npp/2n5/3np3/2B5/8/PPPP1PPP/RNBQK2R b KQkq - 0 6',
