@@ -37,10 +37,7 @@ export default function Navbar({ toggleSidebar }) {
             </svg>
             <span className="sr-only">Toggle sidebar</span>
           </button>
-          <a
-            href="https://blunderfixer.com"
-            className="mr-4 flex items-center justify-between"
-          >
+          <a href="/" className="mr-4 flex items-center justify-between">
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
               BlunderFixer ‼️
             </span>
