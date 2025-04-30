@@ -5,15 +5,19 @@ import AnalysePGN from './AnalysePGN'; // new, for PGN+games
 import AnalysePosition from './AnalysePosition'; // as‐is, for FEN
 import GameLoader from './GameLoader'; // new: fetch & pick games
 
+import { useStockfish } from '@/hooks/useStockfish';
+
 export default function AnalyseContainer() {
   const [mode, setMode] = useState('fen');
   const [selectedGamePGN, setSelectedGamePGN] = useState(null);
   const [analysisKey, setAnalysisKey] = useState(0);
+  const { stopAnalysis } = useStockfish(/* same args */);
 
   const handleNewAnalysis = () => {
     setMode('fen');
     setSelectedGamePGN(null);
     setAnalysisKey((k) => k + 1);
+    stopAnalysis();
   };
 
   return (
