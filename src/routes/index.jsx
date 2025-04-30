@@ -6,6 +6,7 @@ import GameHistory from '../pages/GameHistory';
 import Help from '../pages/Help';
 import Insights from '../pages/Insights';
 import NotFound from '../pages/NotFound';
+import PreSignupHome from '../pages/PreSignupHome';
 import Profile from '../pages/Profile';
 import Settings from '../pages/Settings';
 import Training from '../pages/Training';
@@ -13,7 +14,8 @@ import Training from '../pages/Training';
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Insights />} />
+      <Route path="/" element={<PreSignupHome />} />
+      <Route path="/insights" element={<Insights />} />
       <Route path="/analyse/position" element={<AnalysePosition />} />
       <Route path="/analyse/game" element={<AnalyseGame />} />
       <Route path="/profile" element={<Profile />} />
