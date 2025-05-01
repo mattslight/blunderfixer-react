@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown';
 
 import remarkGfm from 'remark-gfm';
 
-export default function CoachChat({ result }) {
+export default function CoachChat({ fen, legalMoves }) {
   const [chatLoading, setChatLoading] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [userQuestion, setUserQuestion] = useState('');
@@ -18,8 +18,8 @@ export default function CoachChat({ result }) {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            fen: result.fen,
-            legal_moves: result.legal_moves,
+            fen,
+            legal_moves: legalMoves,
             past_messages: chatMessages,
             user_message: userQuestion,
           }),
