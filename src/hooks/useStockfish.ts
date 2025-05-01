@@ -4,6 +4,8 @@ import { Chess, type Square } from 'chess.js';
 
 type Promotion = 'n' | 'b' | 'r' | 'q';
 
+const DEBUG = false;
+
 class StockfishEngine {
   private worker: Worker;
   private send: (c: string) => void;
@@ -27,7 +29,7 @@ class StockfishEngine {
 
     this.worker.addEventListener('message', (e) => {
       const msg = e.data as string;
-      console.log('[SF RAW]', msg);
+      DEBUG && console.log('[SF RAW]', msg);
       // fire subscribers
       for (const cb of this.rawListeners) cb(msg);
       // resolve on readyok
@@ -38,7 +40,7 @@ class StockfishEngine {
     });
 
     this.send = (cmd: string) => {
-      console.log('[SF SEND]', cmd);
+      DEBUG && console.log('[SF SEND]', cmd);
       this.worker.postMessage(cmd);
     };
 
@@ -104,7 +106,7 @@ export function useStockfish(
 } {
   const engine = useMemo(() => {
     if (!_singleton) {
-      console.log('[STOCKFISH] creating singleton engine');
+      DEBUG && console.log('[STOCKFISH] creating singleton engine');
       _singleton = new StockfishEngine(linesCount);
     }
     return _singleton;
