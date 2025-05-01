@@ -2,15 +2,17 @@
 
 ## Phase 1 (MVP Setup)
 
-- [ ] Fav icon
+- [✔] Fav icon
 - [✔] Install and configure React Router
 - [✔] Set up basic route structure
 - [✔] Wire up APIs:
   - [✔] Analyse Position (FEN)
   - [✔] Analyse Game (PGN)
-    - [ ] BUG Failed to fetch games on mobile
+    - [✔] BUG Failed to fetch games on mobile
+    - [✔] Get Coach Explanation -> 422 -> No explanation returned
+    - [ ] Play moves on the board and re-eval
     - [ ] Eval bar component, so need to eval game with stockfish
-    - [ ] Identify which positions to give insight (before a mistake)
+    - [ ] When loading PGN Suggest which positions to give insight on (before a mistake)
     - [ ] Loading spinner when fetching chess.com games
     - [ ] When sending move analysis to coach insights make it clear from which perspective the evals are from when considering best move
     - [ ] when hitting analyse also get coach insights (show skeleton loader?)
