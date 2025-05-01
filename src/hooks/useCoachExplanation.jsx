@@ -6,7 +6,7 @@ export function useCoachExplanation() {
   const [error, setError] = useState(null);
 
   const getExplanation = useCallback(
-    async ({ fen, top_moves, legal_moves, features }) => {
+    async ({ fen, lines, legal_moves, features }) => {
       setLoadingExplanation(true);
       setExplanation(null);
       setError(null);
@@ -16,10 +16,25 @@ export function useCoachExplanation() {
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ fen, top_moves, legal_moves, features }),
+            body: JSON.stringify({ fen, lines, legal_moves, features }),
           }
         );
-        const data = await res.json();
+        const text = await res.text(); // read raw body
+        let data;
+        try {
+          data = JSON.parse(text); // parse JSON once
+        } catch {
+          console.error('❌ Invalid JSON:', text);
+          setError('Invalid JSON from server');
+          return;
+        }
+
+        if (!res.ok) {
+          console.error('❌ Validation errors:', data.detail);
+          setError('Validation error: see console');
+          return;
+        }
+
         if (data.explanation) {
           setExplanation(data.explanation);
         } else {
