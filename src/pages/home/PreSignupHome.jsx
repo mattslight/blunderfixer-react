@@ -17,22 +17,24 @@ export default function HomePage() {
     <div className="-mt-10 min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-6 text-white sm:p-10">
       {/* Hero */}
       <section className="bg-noise container mx-auto mt-16 mb-10 p-4 text-center">
-        <h1 className="mb-4 text-4xl font-bold text-white lg:text-6xl">
-          The{' '}
-          <span className="relative inline-block">
-            <span className="relative z-10">#1</span>
-            {/* tilted underline */}
-            <span className="absolute -bottom-2 left-0 block h-2 w-full origin-left -rotate-4 transform bg-green-400 opacity-80" />
-          </span>{' '}
-          AI Chess Coach
+        <h1 className="mb-4 text-center text-5xl font-extrabold text-white lg:text-7xl">
+          <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+            The <span className="text-white">#1</span> AI Chess Coach
+          </span>
         </h1>
 
         <p className="mb-8 text-2xl text-slate-300">
           Learn from your mistakes – <i>fast</i>
         </p>
-        <p className="text-md mb-8 text-slate-400">
-          <b className="text-slate-200">345,920</b> Blunders Fixed
-        </p>
+        <div className="flex flex-col items-center justify-center space-y-1 md:flex-row md:gap-8">
+          <p className="text-md text-slate-400">
+            <b className="text-slate-200">345,920</b> Blunders Fixed
+          </p>
+          <p className="text-md text-slate-400">
+            <span className="mr-1 text-green-400">♥</span>
+            Trusted by <b className="text-slate-200">3,289</b> Chess lovers
+          </p>
+        </div>
         <div className="mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-6 md:grid-cols-2">
           <div className="cursor-pointer rounded-xl border-b-6 border-b-emerald-900 bg-emerald-500 p-6 text-white shadow-2xl transition hover:bg-green-700">
             <div className="mb-4 flex items-center justify-center">
@@ -73,11 +75,12 @@ export default function HomePage() {
       <section className="container mx-auto mb-10 px-4 py-24">
         {/* Section intro */}
         <div className="mx-auto mb-12 max-w-2xl text-center">
-          <p className="mb-2 font-semibold text-green-400 uppercase">
+          <p className="mb-2 font-semibold tracking-wider text-green-400 uppercase">
             Key Features
           </p>
           <h2 className="text-3xl font-bold text-white">
-            Master your game. Intelligently.
+            Master your game.{' '}
+            <span className="font-black text-amber-400">Intelligently.</span>
           </h2>
           <p className="mt-4 text-lg text-slate-400">
             From instant blunder alerts to personalised coaching, BlunderFixer
@@ -129,11 +132,12 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           {/* Intro */}
           <div className="mb-12 text-center">
-            <p className="font-semibold tracking-wide text-green-400 uppercase">
+            <p className="font-semibold tracking-wider text-green-400 uppercase">
               How It Works
             </p>
             <h2 className="mt-2 text-3xl font-bold text-white">
-              Review. Chat. Improve.
+              Review. Chat.{' '}
+              <span className="font-black text-red-500">Improve.</span>
             </h2>
           </div>
 
@@ -192,8 +196,14 @@ export default function HomePage() {
       {/* Final CTA */}
       <section className="mb-20 overflow-hidden rounded-3xl border-r-2 border-b-4 border-l-1 border-r-gray-800 border-b-gray-700 border-l-gray-700 bg-gradient-to-br from-gray-800 to-black">
         <div className="container mx-auto px-8 py-20 text-center">
-          <h2 className="text-4xl font-bold text-white">
-            From blunder to brilliance.
+          <h2 className="text-center text-4xl font-bold tracking-tight text-white">
+            From blunder to{' '}
+            <span className="relative inline-block">
+              <span className="relative z-10 bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
+                Brilliance.
+              </span>
+              <span className="absolute bottom-0 left-0 block h-2 w-full -skew-x-12 bg-green-400 opacity-60"></span>
+            </span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-400">
             Instant, human-like insights on every move — no waiting, no fluff.
