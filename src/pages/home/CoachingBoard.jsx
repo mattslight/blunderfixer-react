@@ -11,8 +11,9 @@ export default function CoachingBoard({
     <div className="mx-auto grid max-w-4xl grid-cols-1 justify-items-center gap-8 rounded-2xl bg-black p-8 lg:grid-cols-2">
       {/* Left column: heading + board */}
       <div className="flex w-full flex-col items-center text-center lg:items-start lg:text-left">
-        <h2 className="py-10 text-4xl font-bold text-white lg:pt-0">
-          Every move. Perfected.
+        <h2 className="py-10 text-4xl font-bold tracking-tight text-white lg:pt-0">
+          Every move.{' '}
+          <span className="font-black text-green-400">Perfected.</span>
         </h2>
 
         {/* Now this wrapper really is full-width */}
@@ -20,12 +21,20 @@ export default function CoachingBoard({
           <Chessboard
             position={boardFEN}
             customBoardStyle={{
-              borderRadius: '6px',
+              borderRadius: '0.5em',
               boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
             }}
             customDarkSquareStyle={{ backgroundColor: '#2d3748' }}
             customLightSquareStyle={{ backgroundColor: '#1a202c' }}
+            customDarkSquareStyle={{
+              backgroundColor: 'rgb(157,163,180)',
+            }}
+            customLightSquareStyle={{
+              backgroundColor: 'rgb(245,242,230)',
+              mixBlendMode: 'multiply',
+            }}
             boardWidth={boardWidth}
+            showBoardNotation={false}
           />
         </div>
       </div>
