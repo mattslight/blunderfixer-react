@@ -1,10 +1,17 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
     },
-    "target": "es2020",
-    "lib": ["DOM", "ES2015", "ES2016", "ES2017"]
-  }
+    "target": "ES2020",
+    "module": "ESNext",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "lib": ["DOM", "ES2015", "ES2016", "ES2017"],
+    "skipLibCheck": true
+  },
+  "include": ["src", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
 }
