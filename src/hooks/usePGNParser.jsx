@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+// src/hooks/usePGNParser
 
+import { useEffect, useState } from 'react';
 import { Chess } from 'chess.js';
 
 const DEFAULT_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
