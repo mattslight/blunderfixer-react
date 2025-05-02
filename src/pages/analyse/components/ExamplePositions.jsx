@@ -1,4 +1,4 @@
-export default function ExamplePositions({ setFEN, setBoardFEN }) {
+export default function ExamplePositions({ setBoardFEN }) {
   return (
     <div className="max-w-lg">
       <h2 className="mb-1 text-sm font-semibold">Example Positions</h2>
@@ -36,7 +36,6 @@ export default function ExamplePositions({ setFEN, setBoardFEN }) {
           <button
             key={fenStr}
             onClick={() => {
-              setFEN(fenStr);
               setBoardFEN(fenStr);
             }}
             className="rounded bg-gray-200 px-2 py-1 text-xs hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"

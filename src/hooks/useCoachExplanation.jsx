@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-export function useCoachExplanation() {
+export default function useCoachExplanation() {
   const [explanation, setExplanation] = useState(null);
   const [loadingExplanation, setLoadingExplanation] = useState(false);
   const [error, setError] = useState(null);

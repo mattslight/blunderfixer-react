@@ -94,7 +94,7 @@ export type AnalysisLine = {
 
 let _singleton: StockfishEngine | null = null;
 
-export function useStockfish(
+export default function useStockfish(
   initialDepth = 12,
   linesCount = 3
 ): {
@@ -128,6 +128,18 @@ export function useStockfish(
   // parse incoming “info …” lines
   useEffect(() => {
     const handler = (uciLine: string) => {
+      // When debugging always print every raw line, so we can see the FEN it’s tied to:
+      if (DEBUG) {
+        console.log(
+          '%c[SF RAW]',
+          'color: purple; font-weight: bold;',
+          'for FEN →',
+          lastFENRef.current,
+          '\n   msg →',
+          uciLine
+        );
+      }
+
       if (!uciLine.startsWith('info ')) return;
       const dm = uciLine.match(/depth (\d+)/);
       const mm = uciLine.match(/multipv (\d+)/);
