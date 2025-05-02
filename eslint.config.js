@@ -42,11 +42,13 @@ export default [
         'error',
         {
           groups: [
-            ['^react$', '^react-'], // react core + plugins
-            ['^@?\\w'], // other externals
-            ['^\\.\\.(?!/?$)', '^\\.\\./?$'], // parent imports
-            ['^\\./'], // relative imports
-            ['^.+\\.?(css)$'], // styles
+            ['^react$', '^react-', '^@?\\w'], // react, then, other externals
+            [
+              '^\\.\\.(?!/?$)', // parent imports
+              '^\\.\\./?$', // parent index
+              '^\\./', // relative imports
+              '^.+\\.?(css)$', // styles
+            ],
           ],
         },
       ],
