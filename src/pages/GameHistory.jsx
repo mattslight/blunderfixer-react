@@ -1,4 +1,4 @@
-import GameLoader from './AnalysePosition/GameLoader';
+import GameLoader from './analyse/components/GameLoader';
 
 export default function GameHistory() {
   return (

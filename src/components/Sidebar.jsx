@@ -42,10 +42,15 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
             </NavLink>
           </li>
           <li>
-            <button
-              type="button"
-              onClick={() => setAnalyseOpen((o) => !o)}
-              className="group flex w-full items-center rounded-lg p-2 text-base font-medium text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+            <NavLink
+              to="/analyse"
+              className={({ isActive }) =>
+                `group flex items-center rounded-lg p-2 text-base font-medium ${
+                  isActive
+                    ? 'bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white'
+                    : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
+                }`
+              }
             >
               <svg
                 aria-hidden="true"
@@ -59,56 +64,81 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
                   clipRule="evenodd"
                 />
               </svg>
-              <span className="ml-3 flex-1 text-left whitespace-nowrap">
-                Analyse
-              </span>
-              <svg
-                aria-hidden="true"
-                className="h-6 w-6 transition-transform"
-                style={{
-                  transform: analyseOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                }}
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
+              <span className="ml-3">Analyse</span>
+            </NavLink>
 
-            <ul className={`${analyseOpen ? '' : 'hidden'} space-y-2 py-2`}>
-              <li>
-                <NavLink
-                  to="/analyse/game"
-                  className={({ isActive }) =>
-                    `group flex w-full items-center rounded-lg p-2 pl-11 text-base font-medium transition duration-75 ${
-                      isActive
-                        ? 'bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white'
-                        : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
-                    }`
-                  }
+            {false && ( //eslint-disable-line
+              <>
+                <button
+                  type="button"
+                  onClick={() => setAnalyseOpen((o) => !o)}
+                  className="group flex w-full items-center rounded-lg p-2 text-base font-medium text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                 >
-                  Game
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/analyse/position"
-                  className={({ isActive }) =>
-                    `group flex w-full items-center rounded-lg p-2 pl-11 text-base font-medium transition duration-75 ${
-                      isActive
-                        ? 'bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white'
-                        : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
-                    }`
-                  }
-                >
-                  Position from FEN
-                </NavLink>
-              </li>
-            </ul>
+                  <svg
+                    aria-hidden="true"
+                    className="h-6 w-6 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="ml-3 flex-1 text-left whitespace-nowrap">
+                    Analyse
+                  </span>
+                  <svg
+                    aria-hidden="true"
+                    className="h-6 w-6 transition-transform"
+                    style={{
+                      transform: analyseOpen
+                        ? 'rotate(180deg)'
+                        : 'rotate(0deg)',
+                    }}
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <ul className={`${analyseOpen ? '' : 'hidden'} space-y-2 py-2`}>
+                  <li>
+                    <NavLink
+                      to="/analyse/game"
+                      className={({ isActive }) =>
+                        `group flex w-full items-center rounded-lg p-2 pl-11 text-base font-medium transition duration-75 ${
+                          isActive
+                            ? 'bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white'
+                            : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
+                        }`
+                      }
+                    >
+                      Game
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/analyse/position"
+                      className={({ isActive }) =>
+                        `group flex w-full items-center rounded-lg p-2 pl-11 text-base font-medium transition duration-75 ${
+                          isActive
+                            ? 'bg-gray-200 text-blue-600 dark:bg-gray-700 dark:text-white'
+                            : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
+                        }`
+                      }
+                    >
+                      Position from FEN
+                    </NavLink>
+                  </li>
+                </ul>
+              </>
+            )}
           </li>
           <li>
             <NavLink

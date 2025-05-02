@@ -1,4 +1,4 @@
-// src/components/GameLoader.jsx
+// src/pages/AnalysePosition/GameLoader.jsx
 import { useState } from 'react';
 
 import { Calendar, Timer } from 'lucide-react';
@@ -33,7 +33,7 @@ function capitalize(str) {
 
 // parse a PGN header by name
 function parseHeader(pgn, header) {
-  const re = new RegExp(`\\[${header} \\\"(.*?)\\\"\\]`);
+  const re = new RegExp(`\\[${header} "(.*?)"\\]`);
   const match = pgn.match(re);
   return match ? match[1] : '';
 }

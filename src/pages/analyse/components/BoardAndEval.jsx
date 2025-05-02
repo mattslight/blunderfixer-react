@@ -1,9 +1,10 @@
+// src/pages/AnalysePosition/AnalysePosition.jsx
 import { useEffect, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
 
 import { Chess } from 'chess.js';
 
-import CoachChat from './CoachChat';
+import CoachAndChat from './CoachAndChat';
 import CoachExplanation from './CoachExplanation';
 import ExamplePositions from './ExamplePositions';
 import PositionFeatures from './PositionFeatures';
@@ -15,7 +16,7 @@ import { useStockfish } from '@/hooks/useStockfish';
 
 const DEFAULT_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 
-export default function AnalysePosition({ startingFen, pgnMode = false }) {
+export default function BoardAndEval({ startingFen, pgnMode = false }) {
   // --- State
   const [fen, setFEN] = useState(startingFen || '');
   const [boardFEN, setBoardFEN] = useState(startingFen || DEFAULT_FEN);
@@ -171,7 +172,7 @@ export default function AnalysePosition({ startingFen, pgnMode = false }) {
         )}
         {explanation && <CoachExplanation explanation={explanation} />}
         <PositionFeatures features={features} />
-        <CoachChat legalMoves={legalMoves} fen={boardFEN} />
+        <CoachAndChat legalMoves={legalMoves} fen={boardFEN} />
       </div>
     </div>
   );

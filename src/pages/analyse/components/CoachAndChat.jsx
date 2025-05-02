@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown';
 
 import remarkGfm from 'remark-gfm';
 
-export default function CoachChat({ fen, legalMoves }) {
+export default function CoachAndChat({ fen, legalMoves }) {
   const [chatLoading, setChatLoading] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [userQuestion, setUserQuestion] = useState('');

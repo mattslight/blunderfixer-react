@@ -1,9 +1,9 @@
 // src/components/AnalyseContainer.jsx
 import { useState } from 'react';
 
-import AnalysePGN from './AnalysePGN'; // new, for PGN+games
-import AnalysePosition from './AnalysePosition'; // as‐is, for FEN
-import GameLoader from './GameLoader'; // new: fetch & pick games
+import AnalysePGN from '../analyse/components/AnalysePGN'; // new, for PGN+games
+import AnalysePosition from '../analyse/components/BoardAndEval'; // as‐is, for FEN
+import GameLoader from '../analyse/components/GameLoader'; // new: fetch & pick games
 
 import { useStockfish } from '@/hooks/useStockfish';
 

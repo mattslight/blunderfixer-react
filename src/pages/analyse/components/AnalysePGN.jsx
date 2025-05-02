@@ -1,9 +1,9 @@
-// src/components/AnalysePGN.jsx
+// src/pages/analyse/AnalysePGN.jsx
 import { useEffect, useState } from 'react';
 
 import { Chess } from 'chess.js';
 
-import AnalysePosition from './AnalysePosition';
+import AnalysePosition from './BoardAndEval';
 import MoveStepper from './MoveStepper';
 
 export default function AnalysePGN({ pgn, onBack }) {

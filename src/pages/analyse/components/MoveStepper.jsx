@@ -1,3 +1,4 @@
+// src/pages/AnalysePosition/MoveStepper.jsx
 import { useEffect, useRef } from 'react';
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
