@@ -1,10 +1,8 @@
 // src/pages/analyse/index.jsx
 import { useState } from 'react';
-
 import { Button, Modal } from 'flowbite-react';
 
 import { useGameAnalysis } from '../../hooks/useGameAnalysis';
-
 import BoardAndEval from './components/BoardAndEval';
 import CoachAndChat from './components/CoachAndChat';
 import GameLoader from './components/GameLoader';
@@ -22,6 +20,7 @@ export default function AnalysePage() {
     currentDepth,
     arrows,
     moveSquares,
+    evalScore,
 
     features,
     error,
@@ -70,6 +69,7 @@ export default function AnalysePage() {
         {/* Left pane */}
         <div className="w-full p-4 lg:w-1/2">
           <BoardAndEval
+            evalScore={evalScore}
             fen={boardFEN}
             lines={lines}
             arrows={arrows}

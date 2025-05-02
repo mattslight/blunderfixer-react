@@ -36,6 +36,7 @@ export function useGameAnalysis(initialPGN = null) {
 
     // engine & UI
     ...analysis,
+    evalScore: analysis.evalScore,
 
     // coach
     explanation: coach.explanation,
