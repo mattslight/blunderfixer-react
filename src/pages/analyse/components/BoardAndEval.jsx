@@ -1,6 +1,7 @@
 // src/pages/analyse/components/BoardAndEval.jsx
 import { Chessboard } from 'react-chessboard';
 
+import EvalBar from './EvalBar';
 import ExamplePositions from './ExamplePositions';
 import MoveLines from './MoveLines';
 import MoveStepper from './MoveStepper';
@@ -11,6 +12,7 @@ export default function BoardAndEval({
   arrows,
   moveSquares,
   currentDepth,
+  evalScore,
 
   moveList,
   currentIdx,
@@ -34,10 +36,8 @@ export default function BoardAndEval({
     );
   }
 
-  console.log('current fen is:', fen);
-
   return (
-    <div className="flex flex-col items-center space-y-6">
+    <div className="flex flex-col items-center space-y-3">
       {/* 2) MoveStepper navigation */}
       <div className="w-full max-w-lg">
         <MoveStepper
@@ -46,33 +46,37 @@ export default function BoardAndEval({
           setCurrentIdx={setCurrentIdx}
         />
       </div>
-      {/* 3) Board with drag/drop */}
-      <div className="w-full max-w-lg">
-        <Chessboard
-          position={fen}
-          onSquareClick={handleSquareClick}
-          showPromotionDialog={showPromotionDialog}
-          promotionToSquare={moveTo}
-          onPromotionPieceSelect={handlePromotionPieceSelect}
-          customSquareStyles={{
-            ...moveSquares,
-            ...optionSquares,
-          }}
-          onPieceDrop={handleDrop}
-          customArrows={arrows}
-          customBoardStyle={{
-            borderRadius: '0.30rem',
-            boxShadow: `0 4px 12px rgba(0,0,0,0.35),
+      {/* <-- zero-gap flex container --> */}
+      <div className="flex w-full max-w-lg items-stretch gap-0">
+        <div className="flex-1">
+          <Chessboard
+            position={fen}
+            onSquareClick={handleSquareClick}
+            showPromotionDialog={showPromotionDialog}
+            promotionToSquare={moveTo}
+            onPromotionPieceSelect={handlePromotionPieceSelect}
+            customSquareStyles={{
+              ...moveSquares,
+              ...optionSquares,
+            }}
+            onPieceDrop={handleDrop}
+            customArrows={arrows}
+            customBoardStyle={{
+              boxShadow: `0 4px 12px rgba(0,0,0,0.35),
                         inset 0 0 4px rgba(0,0,0,0.15)`,
-          }}
-          customDarkSquareStyle={{
-            backgroundColor: 'rgb(177,183,200)',
-          }}
-          customLightSquareStyle={{
-            backgroundColor: 'rgb(245,242,230)',
-            mixBlendMode: 'multiply',
-          }}
-        />
+            }}
+            customDarkSquareStyle={{
+              backgroundColor: 'rgb(177,183,200)',
+            }}
+            customLightSquareStyle={{
+              backgroundColor: 'rgb(245,242,230)',
+              mixBlendMode: 'multiply',
+            }}
+          />
+        </div>
+
+        {/* EvalBar sits flush to the right, no margin/padding */}
+        <EvalBar score={evalScore} className="w-4" />
       </div>
 
       {/* 4) Engine continuation lines */}
