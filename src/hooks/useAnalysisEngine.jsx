@@ -3,28 +3,31 @@ import { useEffect, useState } from 'react';
 import { Chess } from 'chess.js';
 
 import { extractFeatures } from '../api/analyse';
-import useStockfish from './useStockfish';
+import { useStockfish } from './useStockfish';
 
+const DEBUG = true;
 export default function useAnalysisEngine(boardFEN) {
-  const { lines, bestMove, currentDepth, runAnalysis, stopAnalysis } =
-    useStockfish(26, 3);
+  const { lines, bestMove, currentDepth } = useStockfish(boardFEN, 8, 3);
   const [features, setFeatures] = useState(null);
   const [legalMoves, setLegalMoves] = useState([]);
   const [error, setError] = useState(null);
   const [evalScore, setEvalScore] = useState(0);
 
-  // 1) kick off engine + features + legal‐move list whenever FEN changes
-  useEffect(() => {
-    stopAnalysis();
-    runAnalysis(boardFEN);
+  // DEBUG boardFEN
 
+  useEffect(() => {
+    DEBUG && console.log('▶️ boardFEN changed to', boardFEN);
+  }, [boardFEN]);
+
+  // 1) run feature?extraction & legal?move list whenever FEN changes
+  useEffect(() => {
     extractFeatures(boardFEN)
       .then(setFeatures)
       .catch(() => setError('Features extraction failed'));
 
     const chess = new Chess(boardFEN);
     setLegalMoves(chess.moves());
-  }, [boardFEN, runAnalysis, stopAnalysis]);
+  }, [boardFEN]);
 
   // 2) arrows & moveSquares from bestMove
   const [arrows, setArrows] = useState([]);
