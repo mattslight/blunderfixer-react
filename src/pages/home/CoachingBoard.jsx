@@ -24,8 +24,6 @@ export default function CoachingBoard({
               borderRadius: '0.5em',
               boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
             }}
-            customDarkSquareStyle={{ backgroundColor: '#2d3748' }}
-            customLightSquareStyle={{ backgroundColor: '#1a202c' }}
             customDarkSquareStyle={{
               backgroundColor: 'rgb(157,163,180)',
             }}
