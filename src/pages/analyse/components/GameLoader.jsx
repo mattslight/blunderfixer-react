@@ -1,6 +1,5 @@
 // src/pages/AnalysePosition/GameLoader.jsx
 import { useState } from 'react';
-
 import { Calendar, Timer } from 'lucide-react';
 
 // helper to turn "180+2" → "3 min + 2 s", "600" → "10 min"

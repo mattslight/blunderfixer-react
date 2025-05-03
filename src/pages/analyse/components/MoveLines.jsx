@@ -25,7 +25,7 @@ export default function MoveLines({ lines, currentDepth }) {
               display = `${sign}${(l.scoreCP / 100).toFixed(2)}`;
             }
 
-            // 2) pick pill colors by sign
+            // pick pill colors by sign
             const sign = display.charAt(0);
             const pillClasses =
               sign === '+' ? 'bg-white text-black' : 'bg-black text-white';
