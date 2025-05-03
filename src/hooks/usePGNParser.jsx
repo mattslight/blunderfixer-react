@@ -1,5 +1,4 @@
-// src/hooks/usePGNParser
-
+// src/hooks/usePGNParser.jsx
 import { useEffect, useState } from 'react';
 import { Chess } from 'chess.js';
 
