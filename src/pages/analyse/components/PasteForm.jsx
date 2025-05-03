@@ -1,9 +1,7 @@
 // src/pages/analyse/components/PasteForm.jsx
 import { useState } from 'react';
 
-import { Button } from 'flowbite-react';
-
-export default function PasteForm({ onSubmit }) {
+export default function PasteForm() {
   const [value, setValue] = useState('');
 
   return (
@@ -15,9 +13,6 @@ export default function PasteForm({ onSubmit }) {
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
-      <Button onClick={() => onSubmit(value.trim())} disabled={!value.trim()}>
-        Submit
-      </Button>
     </div>
   );
 }
