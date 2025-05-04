@@ -1,6 +1,6 @@
 // src/pages/analyse/index.jsx
 import { useState } from 'react';
-import { Chess } from 'chess.js';
+
 import {
   Button,
   Modal,
@@ -9,84 +9,45 @@ import {
   ModalHeader,
 } from 'flowbite-react';
 import { Clipboard, ClockPlus, Trash2 } from 'lucide-react';
+import { DEFAULT_POSITION } from 'chess.js';
 
-import { useGameAnalysis } from '../../hooks/useGameAnalysis';
+import useAnalysisEngine from '@/hooks/useAnalysisEngine';
+import useGameHistory from '@/hooks/useGameHistory';
+import useMoveInput from '@/hooks/useMoveInput';
 import BoardAndEval from './components/BoardAndEval';
 import CoachAndChat from './components/CoachAndChat';
 import GameLoader from './components/GameLoader';
 
-export default function AnalysePage() {
+export default function AnalysePage({ initialFEN = DEFAULT_POSITION }) {
   const [pasteOpen, setPasteOpen] = useState(false);
   const [pasteError, setPasteError] = useState('');
   const [gameOpen, setGameOpen] = useState(false);
 
+  const { fen, moveHistory, currentIdx, setIdx, makeMove } =
+    useGameHistory(initialFEN);
+
+  // 2) engine analysis (arrows, eval, lines)
+  const { lines, currentDepth, arrows, evalScore, legalMoves } =
+    useAnalysisEngine(fen);
+
+  const error = '';
+  const moveSquares = {}; // need to add getLegalMoves and show moveSquares
+  const features = {}; // need to extract features using API call
+
+  const doClear = () => {
+    alert('do clear clicked');
+  };
+
+  // 3) click/drag + promotion
   const {
-    setPGN,
-
-    boardFEN,
-    lines,
-    currentDepth,
-    arrows,
-    moveSquares,
-    evalScore,
-
-    features,
-    error,
-    legalMoves,
-
-    explanation,
-    loadingExplanation,
-    getExplanation,
-
-    moveList,
-    currentIdx,
-    setCurrentIdx,
-    handleDrop,
-
-    moveFrom,
-    moveTo,
-    showPromotionDialog,
-    optionSquares,
-    handleSquareClick,
-    handlePromotionPieceSelect,
-  } = useGameAnalysis();
-
-  const looksLikePGN = (raw: string) => /^\s*\[/.test(raw) || /\d+\./.test(raw); // tags or move numbers
-  const isBoardOnlyFEN = (raw: string) =>
-    /^[rnbqkpRNBQKP1-8]+(\/[rnbqkpRNBQKP1-8]+){7}$/.test(raw.trim());
-
-  function handlePaste(raw: string) {
-    const chess = new Chess();
-    setPasteError('');
-    const trimmed = raw.trim();
-
-    // If it's PGN (tags or "1."), parse only as PGN:
-    if (looksLikePGN(trimmed)) {
-      try {
-        chess.loadPgn(trimmed, { strict: false });
-        setPGN(trimmed);
-        setPasteOpen(false);
-      } catch (e) {
-        setPasteError('? Invalid PGN: ' + (e as Error).message);
-      }
-      return;
-    }
-
-    // Otherwise it's FEN territory: maybe just board, so auto-complete:
-    let fen = trimmed;
-    if (isBoardOnlyFEN(trimmed)) {
-      fen = `${trimmed} w - - 0 1`;
-    }
-
-    // Try loading FEN:
-    try {
-      chess.load(fen);
-      setPGN(`[FEN "${fen}"]\n\n`);
-      setPasteOpen(false);
-    } catch (e) {
-      setPasteError('? Invalid FEN: ' + (e as Error).message);
-    }
-  }
+    from,
+    to,
+    showPromo,
+    options: optionSquares,
+    onSquareClick,
+    onPieceDrop,
+    onPromotion,
+  } = useMoveInput(fen, (f, t, prom) => makeMove(f, t, prom));
 
   return (
     <>
@@ -109,7 +70,7 @@ export default function AnalysePage() {
 
         <Button
           className="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-red-700"
-          onClick={() => setPGN(null)}
+          onClick={() => doClear()}
         >
           <Trash2 className="h-5 w-5" />
           Clear
@@ -125,22 +86,19 @@ export default function AnalysePage() {
         <div className="w-full p-4 lg:w-1/2">
           <BoardAndEval
             evalScore={evalScore}
-            fen={boardFEN}
+            fen={fen}
             lines={lines}
             arrows={arrows}
             moveSquares={moveSquares}
             currentDepth={currentDepth}
-            moveList={moveList}
+            moveList={moveHistory}
             currentIdx={currentIdx}
-            setCurrentIdx={setCurrentIdx}
-            setPGN={setPGN}
-            moveFrom={moveFrom}
-            moveTo={moveTo}
-            showPromotionDialog={showPromotionDialog}
+            setCurrentIdx={setIdx}
+            moveFrom={from}
+            moveTo={to}
             optionSquares={optionSquares}
-            handleSquareClick={handleSquareClick}
-            handlePromotionPieceSelect={handlePromotionPieceSelect}
-            handleDrop={handleDrop}
+            onSquareClick={onSquareClick}
+            onPieceDrop={onPieceDrop}
           />
         </div>
 
@@ -149,18 +107,8 @@ export default function AnalysePage() {
           <CoachAndChat
             lines={lines}
             features={features}
-            fen={boardFEN}
+            fen={fen}
             legalMoves={legalMoves}
-            explanation={explanation}
-            loading={loadingExplanation}
-            askCoach={() =>
-              getExplanation({
-                fen: boardFEN,
-                lines,
-                features,
-                legal_moves: legalMoves,
-              })
-            }
           />
         </div>
       </div>
@@ -176,7 +124,10 @@ export default function AnalysePage() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handlePaste(e.target.raw.value);
+            console.log(
+              'this was pasted',
+              (e.target as HTMLInputElement).value
+            );
           }}
         >
           <ModalBody>
@@ -211,7 +162,7 @@ export default function AnalysePage() {
         <ModalBody>
           <GameLoader
             onSelectPGN={(pgn) => {
-              setPGN(pgn);
+              console.log('PGN selected from game loader', pgn);
               setGameOpen(false);
             }}
           />
