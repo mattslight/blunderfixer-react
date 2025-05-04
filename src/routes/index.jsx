@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import AnalyseGame from '../pages/analyse';
 import GameHistory from '../pages/GameHistory';
+import GoldenTest from '../pages/GoldenTest';
 import Help from '../pages/Help';
 import PreSignupHome from '../pages/home/PreSignupHome';
 import Insights from '../pages/Insights';
@@ -21,6 +22,7 @@ export default function AppRoutes() {
       <Route path="/train" element={<Training />} />
       <Route path="/help" element={<Help />} />
       <Route path="/settings" element={<Settings />} />
+      <Route path="/golden-test" element={<GoldenTest />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
