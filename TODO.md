@@ -1,5 +1,15 @@
 # Todo
 
+[ ] Fix PGN / FEN Paste (usePGNparser, what are we going to do)
+[ ] Fix 'orchestration' useGameAnalysis seems to be fubar - do we completely drop this in favour of smaller managable components?
+[ ] Fix loading in a recent game
+[ ] Fix promotion logic
+
+QA
+[ ] Check coach analysis
+[ ] Check coach chat
+[ ] Debug wild eval swings (normalisation doesn't appear to be working) - see this FEN 8/8/8/4p1K1/2k1P3/8/8/8 b - - 0 1
+
 ## Phase 1 (MVP Setup)
 
 - [✔] Fav icon
@@ -10,9 +20,9 @@
   - [✔] Analyse Game (PGN)
     - [✔] BUG Failed to fetch games on mobile
     - [✔] Get Coach Explanation -> 422 -> No explanation returned
-    - [ ] Desktop view can be side by side, board left, coach right
+    - [~] Desktop view can be side by side, board left, coach right
     - [ ] Play moves on the board and re-eval
-    - [ ] Eval bar component, so need to eval game with stockfish
+    - [✔] Eval bar component, so need to eval game with stockfish
     - [ ] When loading PGN Suggest which positions to give insight on (before a mistake)
     - [ ] Loading spinner when fetching chess.com games
     - [ ] When sending move analysis to coach insights make it clear from which perspective the evals are from when considering best move
