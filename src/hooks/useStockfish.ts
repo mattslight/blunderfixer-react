@@ -3,7 +3,7 @@ import { useEffect, useState, useRef, useMemo } from 'react';
 import { StockfishEngine } from '../lib/StockfishEngine';
 import { parseUciInfo, PVLine, makeEmptyLines } from '../lib/uci';
 
-const DEBUG = true;
+const DEBUG = false;
 
 export function useStockfish(
   fen: string,
@@ -48,15 +48,9 @@ export function useStockfish(
         // drop stale messages
         if (myRun !== runId.current) return;
 
-        // log the moment we see our first “info depth”
-        if (raw.startsWith('info depth ')) {
-          console.log(`[useStockfish] ⬅ first depth #${myRun}:`, raw);
-        }
-
         try {
-          DEBUG && console.log(`[useStockfish] RAW #${myRun}:`, raw);
           const info = parseUciInfo(raw, fen);
-          DEBUG && console.log(`[useStockfish] PARSED #${myRun}:`, info);
+          DEBUG && console.log('[useStockfish] PARSED info →', info);
           if (!info) return;
 
           // merge into state
@@ -70,8 +64,8 @@ export function useStockfish(
           });
 
           // first PV → bestMove
-          if (!bestMove && info.rank === 1) {
-            setBestMove(info.moves[0]);
+          if (info.rank === 1) {
+            setBestMove((prev) => prev ?? info.moves[0]);
           }
 
           // track highest depth
