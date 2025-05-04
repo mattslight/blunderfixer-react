@@ -1,7 +1,7 @@
 // src/lib/StockfishEngine.ts
 import { Subject } from 'rxjs';
 
-const DEBUG = true;
+const DEBUG = false;
 
 export class StockfishEngine {
   private worker: Worker;
@@ -51,23 +51,24 @@ export class StockfishEngine {
   }
 
   async analyze(fen: string, depth: number) {
-    console.log('[StockfishEngine] ▶ ANALYZE start', { fen, depth });
+    DEBUG && console.log('[StockfishEngine] ▶ ANALYZE start', { fen, depth });
 
     this.send('stop');
     this.send('isready');
-    console.log('[StockfishEngine] → isready sent, waiting…');
+    DEBUG && console.log('[StockfishEngine] → isready sent, waiting…');
 
     const t0 = performance.now();
     await this.readyPromise;
     const t1 = performance.now();
-    console.log(
-      `[StockfishEngine] ⬅ got readyok after ${(t1 - t0).toFixed(0)}ms`
-    );
+    DEBUG &&
+      console.log(
+        `[StockfishEngine] ⬅ got readyok after ${(t1 - t0).toFixed(0)}ms`
+      );
 
     this.send('ucinewgame');
     this.send(`position fen ${fen}`);
     this.send(`go depth ${depth}`);
-    console.log('[StockfishEngine] → go sent');
+    DEBUG && console.log('[StockfishEngine] → go sent');
   }
 
   stop() {
