@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
+import usePGNParser from './OLD_usePGNParser';
 import useAnalysisEngine from './useAnalysisEngine';
 import useCoachExplanation from './useCoachExplanation';
 import useMoveHistory from './useMoveHistory';
 import useMoveInput from './useMoveInput';
-import usePGNParser from './usePGNParser';
 
 export function useGameAnalysis(initialPGN = null) {
   const [pgndata, setPGN] = useState(initialPGN);
