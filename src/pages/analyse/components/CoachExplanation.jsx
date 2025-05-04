@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-
 import { Lightbulb } from 'lucide-react';
 import remarkGfm from 'remark-gfm';
 

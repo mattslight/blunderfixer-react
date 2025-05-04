@@ -1,9 +1,12 @@
 // src/pages/AnalysePosition/MoveStepper.jsx
 import { useEffect, useRef } from 'react';
-
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-export default function MoveStepper({ moveList, currentIdx, setCurrentIdx }) {
+export default function MoveStepper({
+  moveList = [],
+  currentIdx = 0,
+  setCurrentIdx,
+}) {
   const activeRef = useRef(null);
 
   useEffect(() => {
@@ -58,7 +61,7 @@ export default function MoveStepper({ moveList, currentIdx, setCurrentIdx }) {
   return (
     <div className="flex items-center justify-between gap-4 py-2">
       <button
-        onClick={() => setCurrentIdx((i) => Math.max(0, i - 1))}
+        onClick={() => setCurrentIdx(currentIdx - 1)}
         disabled={currentIdx === 0}
       >
         <ChevronLeft className="h-5 w-5 text-white/80" />
@@ -69,7 +72,7 @@ export default function MoveStepper({ moveList, currentIdx, setCurrentIdx }) {
       </div>
 
       <button
-        onClick={() => setCurrentIdx((i) => Math.min(moveList.length, i + 1))}
+        onClick={() => setCurrentIdx(currentIdx + 1)}
         disabled={currentIdx >= moveList.length}
       >
         <ChevronRight className="h-5 w-5 text-white/80" />

@@ -1,7 +1,6 @@
 // src/components/DevErrorBoundary.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-
 import { MessageCircleWarning, PlayCircle, PlugZap } from 'lucide-react';
 
 export default class DevErrorBoundary extends React.Component {
