@@ -1,15 +1,18 @@
 // src/hooks/useMoveInput.js
 import { useState } from 'react';
-
 import { Chess } from 'chess.js';
 
-export default function useMoveInput(boardFEN, applyMove) {
+/**
+ * @param {string} boardFEN      – current FEN from useGameHistory().fen
+ * @param {(from: string, to: string, promotion?: string) => boolean} makeMove
+ *                                – the new hook’s function
+ */
+export default function useMoveInput(boardFEN, makeMove) {
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
   const [showPromo, setShowPromo] = useState(false);
   const [options, setOptions] = useState({});
 
-  // highlight all legal destinations from `square`
   function getMoveOptions(square) {
     const chess = new Chess(boardFEN);
     const moves = chess.moves({ square, verbose: true });
@@ -31,28 +34,31 @@ export default function useMoveInput(boardFEN, applyMove) {
   }
 
   function onSquareClick(square) {
-    // clear previous highlights
+    // Clear any old highlights
     setOptions({});
 
-    // 1) pick the `from` square
+    // 1) pick up a piece
     if (!from) {
       if (getMoveOptions(square)) setFrom(square);
       return;
     }
 
-    // 2) replay up to current position, then see if this is a legal to-square
+    // 2) try to drop it on another square
     const chess = new Chess(boardFEN);
     const verbose = chess.moves({ verbose: true });
     const found = verbose.find((m) => m.from === from && m.to === square);
 
+    // illegal → either restart from this new square or cancel
     if (!found) {
-      // clicked elsewhere: restart from this new from
-      if (getMoveOptions(square)) setFrom(square);
-      else setFrom(null);
+      if (getMoveOptions(square)) {
+        setFrom(square);
+      } else {
+        setFrom(null);
+      }
       return;
     }
 
-    // 3) promotion?
+    // 3) promotion needed?
     if (
       found.piece === 'p' &&
       ((found.color === 'w' && square[1] === '8') ||
@@ -63,29 +69,26 @@ export default function useMoveInput(boardFEN, applyMove) {
       return;
     }
 
-    // 4) normal move
-    applyMove(found.from, found.to, undefined);
+    // 4) normal move → hand off to history
+    makeMove(from, square);
     setFrom(null);
     setTo(null);
   }
 
-  function onPieceDrop(fromSq, toSq, piece) {
+  function onPieceDrop(fromSq, toSq) {
     const chess = new Chess(boardFEN);
-    const legalUci = chess.moves({ verbose: true }).map((m) => m.from + m.to);
-    if (!legalUci.includes(fromSq + toSq)) {
-      console.warn('Illegal drop', fromSq, toSq);
-      return false;
-    }
-    const promo =
-      piece[1] === 'p' && (toSq[1] === '8' || toSq[1] === '1')
-        ? 'q'
-        : undefined;
-    applyMove(fromSq, toSq, promo);
-    return true;
+    const match = chess
+      .moves({ verbose: true })
+      .find((m) => m.from === fromSq && m.to === toSq);
+    if (!match) return false;
+
+    // hand off to history; pass along promotion type if any
+    return makeMove(fromSq, toSq, match.promotion);
   }
 
   function onPromotion(choice) {
-    applyMove(from, to, choice.toLowerCase());
+    // complete the promotion
+    makeMove(from, to, choice.toLowerCase());
     setFrom(null);
     setTo(null);
     setShowPromo(false);
