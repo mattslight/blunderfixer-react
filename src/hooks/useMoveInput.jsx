@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import { Chess } from 'chess.js';
 
+const DEBUG = false;
+
 /**
  * @param {string} boardFEN      – current FEN from useGameHistory().fen
  * @param {(from: string, to: string, promotion?: string) => boolean} makeMove
@@ -10,7 +12,7 @@ import { Chess } from 'chess.js';
 export default function useMoveInput(boardFEN, makeMove) {
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
-  const [showPromo, setShowPromo] = useState(false);
+  const [showPromotionDialog, setShowPromotionDialog] = useState(false);
   const [options, setOptions] = useState({});
 
   function getMoveOptions(square) {
@@ -35,6 +37,7 @@ export default function useMoveInput(boardFEN, makeMove) {
 
   function onSquareClick(square) {
     // Clear any old highlights
+    DEBUG && console.log('[useMoveInput]', 'onSquareClick fired!');
     setOptions({});
 
     // 1) pick up a piece
@@ -65,7 +68,7 @@ export default function useMoveInput(boardFEN, makeMove) {
         (found.color === 'b' && square[1] === '1'))
     ) {
       setTo(square);
-      setShowPromo(true);
+      setShowPromotionDialog(true);
       return;
     }
 
@@ -81,26 +84,32 @@ export default function useMoveInput(boardFEN, makeMove) {
       .moves({ verbose: true })
       .find((m) => m.from === fromSq && m.to === toSq);
     if (!match) return false;
-
-    // hand off to history; pass along promotion type if any
+    if (match.promotion) {
+      // open the built-in dialog
+      setFrom(fromSq);
+      setTo(toSq);
+      setShowPromotionDialog(true);
+      return false; // tell the board “we’re handling it”
+    }
     return makeMove(fromSq, toSq, match.promotion);
   }
 
-  function onPromotion(choice) {
-    // complete the promotion
-    makeMove(from, to, choice.toLowerCase());
+  function onPromotionPieceSelect(choice) {
+    // extract the second character and lower-case it: "Q" → "q"
+    const promotion = choice.charAt(1).toLowerCase();
+    makeMove(from, to, promotion);
     setFrom(null);
     setTo(null);
-    setShowPromo(false);
+    setShowPromotionDialog(false);
   }
 
   return {
     from,
     to,
-    showPromo,
-    options,
+    showPromotionDialog,
+    optionSquares: options,
     onSquareClick,
     onPieceDrop,
-    onPromotion,
+    onPromotionPieceSelect,
   };
 }
