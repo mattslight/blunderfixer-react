@@ -4,7 +4,15 @@ import { Chess } from 'chess.js';
 import { useStockfish } from './useStockfish';
 import { uciToMove, uciToArrow } from '@/lib/uci';
 
+const DEBUG = false;
 export default function useAnalysisEngine(boardFEN: string) {
+  useEffect(() => {
+    console.log('[useAnalysisEngine] called with fen', boardFEN);
+
+    // skip if fen hasn't changed or still analyzing the same one
+    // run your Stockfish logic here
+  }, [boardFEN]); // ✅ only re-run when FEN changes
+
   const {
     lines: rawLines,
     bestMoveUCI,

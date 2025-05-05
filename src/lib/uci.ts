@@ -1,6 +1,6 @@
 // src/lib/uci.ts
 
-import { Chess, type Square } from 'chess.js';
+import { Chess, type Square, type Move } from 'chess.js';
 
 export type Promotion = 'n' | 'b' | 'r' | 'q';
 
@@ -44,22 +44,34 @@ export function parseUciInfo(raw: string, baseFen: string): PVLine | null {
   const san: string[] = [];
 
   for (const uci of uciMoves) {
-    let m;
+    const from = uci.slice(0, 2);
+    const to = uci.slice(2, 4);
+    const promotion = uci.length > 4 ? uci[4] : undefined;
+
+    DEBUG &&
+      console.log('[parseUciInfo] applying UCI→object', {
+        uci,
+        from,
+        to,
+        promotion,
+      });
+
+    let m: Move | null = null;
     try {
-      // use the string API with strict:false so we can parse UCI coords
-      m = chess.move(uci, { strict: false });
+      m = chess.move({ from, to, promotion });
     } catch (err) {
       DEBUG &&
         console.log(
-          `[parseUciInfo] parse failure PV #${rank} depth=${depth} � invalid UCI "${uci}"`,
+          `[parseUciInfo] invalid UCI "${uci}" at depth=${depth}, rank=${rank}:`,
           err
         );
-      break; // stop as soon as we hit something we can�t make sense of
+      break;
     }
+
     if (!m) {
       DEBUG &&
         console.log(
-          `[parseUciInfo] dropping rest of PV #${rank} at depth=${depth} � illegal move "${uci}"`
+          `[parseUciInfo] illegal UCI "${uci}" at depth=${depth}, rank=${rank}`
         );
       break;
     }
