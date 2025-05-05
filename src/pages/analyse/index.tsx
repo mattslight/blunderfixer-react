@@ -42,11 +42,11 @@ export default function AnalysePage({ initialFEN = DEFAULT_POSITION }) {
   const {
     from,
     to,
-    showPromo,
-    options: optionSquares,
+    showPromotionDialog,
+    optionSquares,
     onSquareClick,
     onPieceDrop,
-    onPromotion,
+    onPromotionPieceSelect,
   } = useMoveInput(fen, (f, t, prom) => makeMove(f, t, prom));
 
   return (
@@ -99,6 +99,8 @@ export default function AnalysePage({ initialFEN = DEFAULT_POSITION }) {
             optionSquares={optionSquares}
             onSquareClick={onSquareClick}
             onPieceDrop={onPieceDrop}
+            onPromotionPieceSelect={onPromotionPieceSelect}
+            showPromotionDialog={showPromotionDialog}
           />
         </div>
 
