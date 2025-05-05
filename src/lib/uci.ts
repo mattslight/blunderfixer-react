@@ -2,7 +2,7 @@
 
 import { Chess, type Square } from 'chess.js';
 
-type Promotion = 'n' | 'b' | 'r' | 'q';
+export type Promotion = 'n' | 'b' | 'r' | 'q';
 
 const DEBUG = true;
 
@@ -73,4 +73,42 @@ export function parseUciInfo(raw: string, baseFen: string): PVLine | null {
     mateIn: mt ? +mt[1] : undefined,
     moves: san,
   };
+}
+
+export function uciToMove(uci: unknown): {
+  from: Square | null;
+  to: Square | null;
+} {
+  // guard: must be a string of at least 4 chars
+  if (typeof uci !== 'string' || uci.length < 4) {
+    return { from: null, to: null };
+  }
+
+  return {
+    from: uci.slice(0, 2) as Square,
+    to: uci.slice(2, 4) as Square,
+  };
+}
+
+/**
+ * Convert a UCI string into a single customArrow tuple
+ * Returns an Arrow tuple e.g. ["e2", "e4", "green"]
+ * Returns [null, null, null] if the input is not a valid UCI (e.g. 'e2e4').
+ *
+ * @param uci   - unknown value, expected to be 'e2e4', 'g1f3', etc.
+ * @param color - arrow color (default: 'green')
+ */
+export function uciToArrow(
+  uci: unknown,
+  color: string = 'green'
+): [Square, Square, string] {
+  // must be a string
+  if (typeof uci !== 'string') return [null, null, null];
+
+  // must match two squares: from + to
+  const m = uci.match(/^([a-h][1-8])([a-h][1-8])/i);
+  if (!m) return [null, null, null];
+
+  const [, from, to] = m; // m[1] = 'e2', m[2] = 'e4'
+  return [from as Square, to as Square, color];
 }
