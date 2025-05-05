@@ -1,9 +1,14 @@
 # Todo
 
-[ ] Fix PGN / FEN Paste (usePGNparser, what are we going to do)
+[✔] Finish wiring up at useAnalysisEngine
+[✔] Wire up useGameAnalysis and check working as expected
+[✔] Fix promotion logic
+[ ] Add missing hook for legal moves to pass to LLM
 [ ] Fix 'orchestration' useGameAnalysis seems to be fubar - do we completely drop this in favour of smaller managable components?
-[ ] Fix loading in a recent game
-[ ] Fix promotion logic
+[ ] Fix best move arrow suggestion logic
+[ ] Fix PGN / FEN Paste (usePGNparser, what are we going to do)
+
+[ ] Fix loading a recent game
 
 QA
 [ ] Check coach analysis
