@@ -50,7 +50,7 @@ export default function TopmovesCarousel({ lines, onSlideChange }) {
           nextEl: slidesToShow.length > 1 ? nextRef.current : null,
         }}
         loop={false}
-        allowTouchMove={slidesToShow.length > 1}
+        allowTouchMove={true}
         spaceBetween={20}
         slidesPerView={1}
         onSlideChange={(s) => onSlideChange?.(s.activeIndex)}
@@ -94,13 +94,37 @@ export default function TopmovesCarousel({ lines, onSlideChange }) {
             ref={prevRef}
             className="absolute top-1/2 left-2 z-10 -translate-y-1/2 cursor-pointer rounded-full bg-white/70 p-1 shadow dark:bg-gray-700/70"
           >
-            {/* …left arrow… */}
+            {/* left arrow SVG */}
+            <svg
+              viewBox="0 0 24 24"
+              className="h-4 w-4 text-black dark:text-white"
+            >
+              <path
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
           </div>
           <div
             ref={nextRef}
             className="absolute top-1/2 right-2 z-10 -translate-y-1/2 cursor-pointer rounded-full bg-white/70 p-1 shadow dark:bg-gray-700/70"
           >
-            {/* …right arrow… */}
+            {/* right arrow SVG */}
+            <svg
+              viewBox="0 0 24 24"
+              className="h-4 w-4 text-black dark:text-white"
+            >
+              <path
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
           </div>
         </>
       )}
