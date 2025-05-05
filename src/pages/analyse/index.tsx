@@ -170,7 +170,8 @@ export default function AnalysePage() {
         <ModalBody>
           <GameLoader
             onSelectPGN={(pgn) => {
-              console.log('PGN selected from game loader', pgn);
+              setRawInput(pgn);
+              setPasteError('');
               setGameOpen(false);
             }}
           />
