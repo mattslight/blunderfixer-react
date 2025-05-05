@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef } from 'react';
+// src/pages/analyse/components/TopmoveCarousel
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -9,44 +10,53 @@ export default function TopmovesCarousel({ lines, onSlideChange }) {
   const nextRef = useRef(null);
   const swiperRef = useRef(null);
 
-  // filter out any “empty” lines (no moves)
+  // only real lines
   const activeLines = useMemo(
     () => lines.filter((l) => l.moves.length > 0),
     [lines]
   );
 
-  // re-bind navigation whenever slides change
+  // cache the previous best‐move line
+  const [prevBest, setPrevBest] = useState(null);
   useEffect(() => {
-    const swiper = swiperRef.current;
-    if (swiper && prevRef.current && nextRef.current) {
-      swiper.params.navigation.prevEl = prevRef.current;
-      swiper.params.navigation.nextEl = nextRef.current;
-      swiper.navigation.destroy();
-      swiper.navigation.init();
-      swiper.navigation.update();
+    if (activeLines.length > 0) {
+      setPrevBest(activeLines[0]);
     }
   }, [activeLines]);
+
+  // rebuild swiper nav when slides change
+  useEffect(() => {
+    const s = swiperRef.current;
+    if (s && prevRef.current && nextRef.current) {
+      s.params.navigation.prevEl = prevRef.current;
+      s.params.navigation.nextEl = nextRef.current;
+      s.navigation.destroy();
+      s.navigation.init();
+      s.navigation.update();
+    }
+  }, [activeLines]);
+
+  // decide what to render
+  const slidesToShow =
+    activeLines.length > 0 ? activeLines : prevBest ? [prevBest] : [];
 
   return (
     <div className="relative mt-4 w-full">
       <Swiper
         modules={[Navigation]}
-        onSwiper={(swiper) => {
-          swiperRef.current = swiper;
-        }}
+        onSwiper={(s) => (swiperRef.current = s)}
         navigation={{
-          // only hook up buttons if more than one slide
-          prevEl: activeLines.length > 1 ? prevRef.current : null,
-          nextEl: activeLines.length > 1 ? nextRef.current : null,
+          prevEl: slidesToShow.length > 1 ? prevRef.current : null,
+          nextEl: slidesToShow.length > 1 ? nextRef.current : null,
         }}
         loop={false}
-        allowTouchMove={activeLines.length > 1}
+        allowTouchMove={slidesToShow.length > 1}
         spaceBetween={20}
         slidesPerView={1}
         onSlideChange={(s) => onSlideChange?.(s.activeIndex)}
         className="rounded-lg"
       >
-        {activeLines.map((line, i) => {
+        {slidesToShow.map((line, i) => {
           const san = line.moves[0];
           const evalText =
             line.scoreCP != null
@@ -60,7 +70,7 @@ export default function TopmovesCarousel({ lines, onSlideChange }) {
                 <span
                   className={`mb-2 rounded-full px-3 py-1 text-sm font-bold ${
                     i === 0
-                      ? 'bg-green-500 text-white'
+                      ? 'bg-green-500 text-white' // real best
                       : 'bg-blue-500 text-white'
                   }`}
                 >
@@ -78,46 +88,19 @@ export default function TopmovesCarousel({ lines, onSlideChange }) {
         })}
       </Swiper>
 
-      {/*
-        Only render nav buttons when there's more than one active slide
-      */}
-      {activeLines.length > 1 && (
+      {slidesToShow.length > 1 && (
         <>
           <div
             ref={prevRef}
             className="absolute top-1/2 left-2 z-10 -translate-y-1/2 cursor-pointer rounded-full bg-white/70 p-1 shadow dark:bg-gray-700/70"
           >
-            {/* left arrow SVG */}
-            <svg
-              viewBox="0 0 24 24"
-              className="h-4 w-4 text-black dark:text-white"
-            >
-              <path
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
+            {/* …left arrow… */}
           </div>
           <div
             ref={nextRef}
             className="absolute top-1/2 right-2 z-10 -translate-y-1/2 cursor-pointer rounded-full bg-white/70 p-1 shadow dark:bg-gray-700/70"
           >
-            {/* right arrow SVG */}
-            <svg
-              viewBox="0 0 24 24"
-              className="h-4 w-4 text-black dark:text-white"
-            >
-              <path
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            {/* …right arrow… */}
           </div>
         </>
       )}
