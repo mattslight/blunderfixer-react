@@ -86,7 +86,6 @@ export default function AnalysePage() {
       </div>
       {/* Error */}
       {error && <p className="text-center text-red-500">{error}</p>}
-      {<pre>fen is: {fen}</pre>}
       {/* Two-column layout */}
       <div className="flex h-full flex-col lg:flex-row">
         {/* Left pane */}
