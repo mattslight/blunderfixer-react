@@ -1,34 +1,30 @@
 import { Chessboard } from 'react-chessboard';
-import type { ComponentProps } from 'react';
+import { DEFAULT_POSITION } from 'chess.js';
 
+import useAnalysisEngine from '@/hooks/useAnalysisEngine';
 import useGameHistory from '@/hooks/useGameHistory';
 import useMoveInput from '@/hooks/useMoveInput';
 import EvalBar from './analyse/components/EvalBar';
 import MoveStepper from './analyse/components/MoveStepper';
-
-//Infer Chessboard’s props & grab `customArrows` type and the element type
-type ChessboardProps = ComponentProps<typeof Chessboard>;
-type ArrowArray = NonNullable<ChessboardProps['customArrows']>;
-type Arrow = ArrowArray[number];
+import MoveLines from './analyse/components/MoveLines';
+import TopMovesCarousel from './analyse/components/TopMovesCarousel';
 
 interface AnalysisBoardProps {
-  initialFEN: string;
-  bestLine: string; // e.g. “e2e4 e7e5 g1f3 …”
-  positionEvaluation: number; // from engine
-  arrows: Arrow[]; // [[from, to, color], …]
+  initialFEN?: string;
 }
 
 export default function AnalysisBoard({
-  initialFEN,
-  bestLine = '',
-  positionEvaluation,
-  arrows,
+  initialFEN = DEFAULT_POSITION,
 }: AnalysisBoardProps) {
   // 1) step through history & manage branching
   const { fen, moveHistory, currentIdx, setIdx, makeMove } =
     useGameHistory(initialFEN);
 
-  // 2) click/drag input + promotion flow
+  // 2) engine analysis (arrows, eval, lines)
+  const { lines, currentDepth, arrows, evalScore, legalMoves } =
+    useAnalysisEngine(fen);
+
+  // 3) click/drag + promotion
   const {
     from,
     to,
@@ -37,15 +33,16 @@ export default function AnalysisBoard({
     onSquareClick,
     onPieceDrop,
     onPromotion,
-  } = useMoveInput(fen, (from, to, promotion) => makeMove(from, to, promotion));
+  } = useMoveInput(fen, (f, t, prom) => makeMove(f, t, prom));
 
-  // split bestLine into an array of SANs for the carousel
-  const engineLines = bestLine.trim().split(' ');
+  // Carousel slide change handler
+  function onSlideChange(props: any) {
+    console.log('onSlideChange', props);
+  }
 
-  // wrap the board + eval in your layout (or drop in directly)
   return (
     <div className="flex flex-col items-center space-y-3">
-      {/* 2) MoveStepper navigation */}
+      {/* Move navigation */}
       <div className="w-full max-w-lg">
         <MoveStepper
           moveList={moveHistory}
@@ -53,10 +50,11 @@ export default function AnalysisBoard({
           setCurrentIdx={setIdx}
         />
       </div>
-      {/* zero-gap flex container*/}
+
+      {/* Board + side-panel row */}
       <div className="flex items-stretch gap-0">
-        {/* 1) Board takes all remaining space */}
-        <div className="h-116 w-116">
+        {/* Board (fixed size) */}
+        <div className="h-116 w-116 flex-none">
           <Chessboard
             position={fen}
             onSquareClick={onSquareClick}
@@ -78,8 +76,20 @@ export default function AnalysisBoard({
           />
         </div>
 
-        {/* 2) EvalBar sits immediately to the right, full-height of the board */}
-        <EvalBar score={positionEvaluation} className="h-full w-4" />
+        {/* Eval bar (fixed width) */}
+        <div className="flex-none">
+          <EvalBar score={evalScore} className="h-full w-4" />
+        </div>
+
+        {/* Move lines (scrollable) */}
+        <div className="w-64 flex-none overflow-auto">
+          <MoveLines lines={lines} currentDepth={currentDepth} />
+        </div>
+
+        {/* Top-moves carousel (fixed width) */}
+        <div className="w-64 flex-none">
+          <TopMovesCarousel lines={lines} onSlideChange={onSlideChange} />
+        </div>
       </div>
     </div>
   );
