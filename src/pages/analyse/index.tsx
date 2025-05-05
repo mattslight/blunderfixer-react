@@ -12,6 +12,7 @@ import { Clipboard, ClockPlus, Trash2 } from 'lucide-react';
 import { DEFAULT_POSITION } from 'chess.js';
 
 import useAnalysisEngine from '@/hooks/useAnalysisEngine';
+
 import useGameHistory from '@/hooks/useGameHistory';
 import useMoveInput from '@/hooks/useMoveInput';
 import BoardAndEval from './components/BoardAndEval';
@@ -27,7 +28,7 @@ export default function AnalysePage({ initialFEN = DEFAULT_POSITION }) {
     useGameHistory(initialFEN);
 
   // 2) engine analysis (arrows, eval, lines)
-  const { lines, currentDepth, arrows, evalScore, legalMoves } =
+  const { lines, currentDepth, evalScore, legalMoves, bestMoveArrow } =
     useAnalysisEngine(fen);
 
   const error = '';
@@ -76,7 +77,6 @@ export default function AnalysePage({ initialFEN = DEFAULT_POSITION }) {
           Clear
         </Button>
       </div>
-
       {/* Error */}
       {error && <p className="text-center text-red-500">{error}</p>}
 
@@ -88,7 +88,7 @@ export default function AnalysePage({ initialFEN = DEFAULT_POSITION }) {
             evalScore={evalScore}
             fen={fen}
             lines={lines}
-            arrows={arrows}
+            arrows={[bestMoveArrow]}
             moveSquares={moveSquares}
             currentDepth={currentDepth}
             moveList={moveHistory}
@@ -114,7 +114,6 @@ export default function AnalysePage({ initialFEN = DEFAULT_POSITION }) {
           />
         </div>
       </div>
-
       {/* Paste Modal */}
       <Modal
         popup
@@ -157,7 +156,6 @@ export default function AnalysePage({ initialFEN = DEFAULT_POSITION }) {
           </ModalFooter>
         </form>
       </Modal>
-
       {/* GameLoader Modal */}
       <Modal show={gameOpen} onClose={() => setGameOpen(false)} popup size="lg">
         <ModalHeader>Load Recent Game</ModalHeader>
