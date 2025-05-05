@@ -2,15 +2,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Chess } from 'chess.js';
 import { useStockfish } from './useStockfish';
+import { uciToMove, uciToArrow } from '@/lib/uci';
 
 export default function useAnalysisEngine(boardFEN: string) {
   const {
     lines: rawLines,
-    bestMove,
+    bestMoveUCI,
     currentDepth,
   } = useStockfish(boardFEN, 8, 3);
   const [evalScore, setEvalScore] = useState(0);
-  const [arrows, setArrows] = useState([]);
 
   // normalize evalScore
   useEffect(() => {
@@ -43,5 +43,13 @@ export default function useAnalysisEngine(boardFEN: string) {
     return chess.moves();
   }, [boardFEN]);
 
-  return { lines, currentDepth, arrows, evalScore, bestMove, legalMoves };
+  return {
+    lines,
+    currentDepth,
+    evalScore,
+    bestMove: uciToMove(bestMoveUCI), // Move object { from: 'e2', to: 'e4'}
+    bestMoveArrow: uciToArrow(bestMoveUCI), // tuple ['e2','e4', 'green']
+    bestMoveUCI, // UCI string e2e4
+    legalMoves,
+  };
 }
