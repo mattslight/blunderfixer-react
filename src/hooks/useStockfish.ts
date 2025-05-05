@@ -9,14 +9,14 @@ export function useStockfish(
   fen: string,
   depth = 12,
   multiPV = 3
-): { lines: PVLine[]; bestMove?: string; currentDepth: number } {
+): { lines: PVLine[]; bestMoveUCI?: string; currentDepth: number } {
   // 1) create one engine per-hook keyed on multiPV
   const engine = useMemo(() => new StockfishEngine(multiPV), [multiPV]);
 
   // 2) local state
   const emptyLines = useMemo(() => makeEmptyLines(multiPV), [multiPV]);
   const [lines, setLines] = useState<PVLine[]>(emptyLines);
-  const [bestMove, setBestMove] = useState<string>();
+  const [bestMoveUCI, setBestUCI] = useState<string>();
   const [currentDepth, setD] = useState(0);
 
   // 3) a counter to drop stale searches
@@ -36,7 +36,7 @@ export function useStockfish(
 
     // reset UI
     setLines(emptyLines);
-    setBestMove(undefined);
+    setBestUCI(undefined);
     setD(0);
 
     // start the engine
@@ -65,7 +65,13 @@ export function useStockfish(
 
           // first PV → bestMove
           if (info.rank === 1) {
-            setBestMove((prev) => prev ?? info.moves[0]);
+            // 1) pull the "pv …" chunk out of the raw string
+            const m = raw.match(/pv\s+((?:[a-h][1-8][a-h][1-8][nbrq]?\s*)+)/i);
+            if (m) {
+              const uciList = m[1].trim().split(/\s+/);
+              // always overwrite so you get the deepest recommendation
+              setBestUCI(uciList[0]);
+            }
           }
 
           // track highest depth
@@ -83,5 +89,5 @@ export function useStockfish(
     };
   }, [fen, depth, engine, emptyLines]);
 
-  return { lines, bestMove, currentDepth };
+  return { lines, bestMoveUCI, currentDepth };
 }
