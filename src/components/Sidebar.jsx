@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-
 import { Drawer } from 'flowbite-react';
 
 export default function Sidebar({ isSidebarOpen, closeSidebar }) {
