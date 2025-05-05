@@ -1,5 +1,5 @@
 // src/pages/analyse/components/BoardAndEval.jsx
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, CSSProperties } from 'react';
 import { Chessboard } from 'react-chessboard';
 
 import EvalBar from './EvalBar';
@@ -11,13 +11,13 @@ export default function BoardAndEval({
   fen,
   lines,
   arrows,
-  moveSquares,
   currentDepth,
   evalScore,
 
   moveList,
   currentIdx,
   setCurrentIdx,
+  lastMove = { from: '', to: '' },
 
   moveTo,
   optionSquares,
@@ -30,6 +30,9 @@ export default function BoardAndEval({
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [boardWidth, setBoardWidth] = useState(464);
+  const [moveSquares, setMoveSquares] = useState<Record<string, CSSProperties>>(
+    {}
+  );
 
   useEffect(() => {
     if (!wrapperRef.current) return;
@@ -41,6 +44,18 @@ export default function BoardAndEval({
     ro.observe(wrapperRef.current);
     return () => ro.disconnect();
   }, []);
+
+  // whenever lastMove updates, highlight the two squares
+  useEffect(() => {
+    if (lastMove) {
+      setMoveSquares({
+        [lastMove.from]: { backgroundColor: 'rgba(255,255,0,0.4)' },
+        [lastMove.to]: { backgroundColor: 'rgba(255,255,0,0.4)' },
+      });
+    } else {
+      setMoveSquares({});
+    }
+  }, [lastMove]);
 
   // 1) If no FEN yet, show your examples picker
   if (!fen) {
@@ -77,8 +92,8 @@ export default function BoardAndEval({
               promotionToSquare={moveTo}
               onPromotionPieceSelect={onPromotionPieceSelect}
               customSquareStyles={{
-                ...moveSquares,
                 ...optionSquares,
+                ...moveSquares,
               }}
               onPieceDrop={onPieceDrop}
               customArrows={arrows}
