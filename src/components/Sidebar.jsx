@@ -12,7 +12,7 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
       backdrop={true}
       placement="left"
       id="drawer-navigation"
-      className="fixed top-0 left-0 z-40 h-screen w-64 border-r border-gray-200 bg-white pt-14 transition-transform lg:translate-x-0 dark:border-gray-700 dark:bg-gray-800"
+      className="fixed top-0 left-0 z-40 h-screen w-64 border-r border-gray-200 bg-white pt-14 transition-transform dark:border-gray-700 dark:bg-gray-800"
     >
       <div className="h-full overflow-y-auto bg-white px-3 py-5 dark:bg-gray-800">
         <ul className="space-y-2">
@@ -221,7 +221,7 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
           </li>
         </ul>
       </div>
-      <div className="absolute bottom-0 left-0 z-20 hidden w-full justify-center space-x-4 bg-white p-4 lg:flex dark:bg-gray-800">
+      <div className="absolute bottom-0 left-0 z-20 hidden w-full justify-center space-x-4 bg-white p-4 dark:bg-gray-800">
         <NavLink
           to="/settings"
           data-tooltip-target="tooltip-settings"
