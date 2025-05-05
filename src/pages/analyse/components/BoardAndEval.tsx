@@ -1,4 +1,5 @@
 // src/pages/analyse/components/BoardAndEval.jsx
+import { useEffect, useRef, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
 
 import EvalBar from './EvalBar';
@@ -27,6 +28,20 @@ export default function BoardAndEval({
 
   setPGN, // for example‐position picker
 }) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [boardWidth, setBoardWidth] = useState(464);
+
+  useEffect(() => {
+    if (!wrapperRef.current) return;
+    const ro = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        setBoardWidth(entry.contentRect.width);
+      }
+    });
+    ro.observe(wrapperRef.current);
+    return () => ro.disconnect();
+  }, []);
+
   // 1) If no FEN yet, show your examples picker
   if (!fen) {
     return (
@@ -47,32 +62,39 @@ export default function BoardAndEval({
         />
       </div>
       {/* <-- zero-gap flex container --> */}
-      <div className="flex w-full max-w-lg items-stretch gap-0">
+      <div
+        ref={wrapperRef}
+        className="flex w-full max-w-lg gap-0 lg:max-w-[464px] xl:max-w-lg"
+      >
         <div className="flex-1">
-          <Chessboard
-            position={fen}
-            promotionDialogVariant={'modal'}
-            onSquareClick={onSquareClick}
-            showPromotionDialog={showPromotionDialog}
-            promotionToSquare={moveTo}
-            onPromotionPieceSelect={onPromotionPieceSelect}
-            customSquareStyles={{
-              ...moveSquares,
-              ...optionSquares,
-            }}
-            onPieceDrop={onPieceDrop}
-            customArrows={arrows}
-            customBoardStyle={{
-              boxShadow: `0 4px 12px rgba(0,0,0,0.35),
+          {boardWidth > 0 && (
+            <Chessboard
+              boardWidth={boardWidth - 16}
+              position={fen}
+              promotionDialogVariant={'modal'}
+              onSquareClick={onSquareClick}
+              showPromotionDialog={showPromotionDialog}
+              promotionToSquare={moveTo}
+              onPromotionPieceSelect={onPromotionPieceSelect}
+              customSquareStyles={{
+                ...moveSquares,
+                ...optionSquares,
+              }}
+              onPieceDrop={onPieceDrop}
+              customArrows={arrows}
+              customBoardStyle={{
+                transition: 'none',
+                boxShadow: `0 4px 12px rgba(0,0,0,0.35),
                         inset 0 0 4px rgba(0,0,0,0.15)`,
-            }}
-            customDarkSquareStyle={{
-              backgroundColor: '#B1B7C8',
-            }}
-            customLightSquareStyle={{
-              backgroundColor: '#F5F2E6',
-            }}
-          />
+              }}
+              customDarkSquareStyle={{
+                backgroundColor: '#B1B7C8',
+              }}
+              customLightSquareStyle={{
+                backgroundColor: '#F5F2E6',
+              }}
+            />
+          )}
         </div>
 
         {/* EvalBar sits flush to the right, no margin/padding */}
