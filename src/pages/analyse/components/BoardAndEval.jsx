@@ -17,13 +17,13 @@ export default function BoardAndEval({
   moveList,
   currentIdx,
   setCurrentIdx,
-  onPieceDrop, // ← pulled in here
 
-  onSquareClick,
-  showPromotionDialog,
   moveTo,
-  onPromotionPieceSelect,
   optionSquares,
+  onPieceDrop,
+  onSquareClick,
+  onPromotionPieceSelect,
+  showPromotionDialog,
 
   setPGN, // for example‐position picker
 }) {
@@ -51,6 +51,7 @@ export default function BoardAndEval({
         <div className="flex-1">
           <Chessboard
             position={fen}
+            promotionDialogVariant={'modal'}
             onSquareClick={onSquareClick}
             showPromotionDialog={showPromotionDialog}
             promotionToSquare={moveTo}
@@ -59,9 +60,6 @@ export default function BoardAndEval({
               ...moveSquares,
               ...optionSquares,
             }}
-            onPromotionCheck={(src, dst, piece) =>
-              piece[1] === 'P' && (dst[1] === '8' || dst[1] === '1')
-            }
             onPieceDrop={onPieceDrop}
             customArrows={arrows}
             customBoardStyle={{
@@ -69,11 +67,10 @@ export default function BoardAndEval({
                         inset 0 0 4px rgba(0,0,0,0.15)`,
             }}
             customDarkSquareStyle={{
-              backgroundColor: 'rgb(177,183,200)',
+              backgroundColor: '#B1B7C8',
             }}
             customLightSquareStyle={{
-              backgroundColor: 'rgb(245,242,230)',
-              mixBlendMode: 'multiply',
+              backgroundColor: '#F5F2E6',
             }}
           />
         </div>
