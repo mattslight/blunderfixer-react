@@ -12,7 +12,7 @@ export default function useAnalysisEngine(boardFEN: string) {
   const [evalScore, setEvalScore] = useState(0);
   const [arrows, setArrows] = useState([]);
 
-  // normalize evalScore as before
+  // normalize evalScore
   useEffect(() => {
     const first = rawLines[0];
     if (first && typeof first.scoreCP === 'number') {
@@ -36,8 +36,12 @@ export default function useAnalysisEngine(boardFEN: string) {
     });
   }, [rawLines, boardFEN]);
 
-  // memoise legalMoves & arrows effect (unchanged) …
-  // return `lines` instead of `rawLines`
+  // **NEW**: memoise legalMoves as SAN strings
+  const legalMoves = useMemo<string[]>(() => {
+    const chess = new Chess(boardFEN);
+    // chess.moves() returns an array of SANs by default
+    return chess.moves();
+  }, [boardFEN]);
 
-  return { lines, currentDepth, arrows, evalScore, bestMove };
+  return { lines, currentDepth, arrows, evalScore, bestMove, legalMoves };
 }
