@@ -16,7 +16,7 @@ export default function CoachAndChat({
   askCoach,
 }) {
   return (
-    <div className="mx-auto max-w-xl space-y-6">
+    <div className="mx-auto max-w-lg space-y-6 xl:w-xl xl:max-w-fit 2xl:w-2xl">
       {/* 1) Best-moves carousel */}
       <TopmovesCarousel lines={lines} />
 
