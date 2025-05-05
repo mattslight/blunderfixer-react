@@ -1,28 +1,48 @@
 // src/hooks/useGameHistory.ts
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import { Chess, DEFAULT_POSITION } from 'chess.js';
 
 export interface GameHistory {
-  /** current FEN to feed into <Chessboard position={fen} /> */
   fen: string;
-  /** full array of SAN moves so far */
   moveHistory: string[];
-  /** index into `moveHistory` for stepping (0 = startpos) */
   currentIdx: number;
-  /** set to step through existing moves */
+  /** whether a new move can be played at the current index */
+  canPlayMove: boolean;
   setIdx(idx: number): void;
-  /** attempt to make a new move from /to; returns true if legal */
   makeMove(from: string, to: string, promotion?: string): boolean;
 }
 
-export default function useGameHistory(
-  initialFEN = DEFAULT_POSITION
-): GameHistory {
-  const chessRef = useRef(new Chess(initialFEN));
+export interface UseGameHistoryOpts {
+  /** Optional custom start FEN */
+  initialFEN?: string;
+  /** Array of SAN moves to seed the history */
+  initialMoves?: string[];
+  /** Whether to land at the end of `initialMoves` on init */
+  startAtEnd?: boolean;
+  /** If false, new moves only allowed at the current tip (no branching) */
+  allowBranching?: boolean;
+}
+
+function arrayEquals(a: string[], b: string[]) {
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}
+
+export default function useGameHistory({
+  initialFEN = DEFAULT_POSITION,
+  initialMoves = [],
+  startAtEnd = true,
+  allowBranching = false,
+}: UseGameHistoryOpts): GameHistory {
+  const chessRef = useRef(new Chess());
+
   const [moveHistory, setHistory] = useState<string[]>([]);
   const [currentIdx, setCurrentIdx] = useState(0);
 
-  // always keep the engine position in sync with currentIdx
+  // helper to replay positions
   const syncPosition = useCallback(
     (idx: number) => {
       const chess = chessRef.current;
@@ -33,7 +53,39 @@ export default function useGameHistory(
     [initialFEN, moveHistory]
   );
 
-  // stepping
+  // track last inputs to avoid unnecessary resets
+  const prevRef = useRef<UseGameHistoryOpts | null>(null);
+  useEffect(() => {
+    const prev = prevRef.current;
+    const movesChanged =
+      !prev || !arrayEquals(prev.initialMoves!, initialMoves);
+    const fenChanged = !prev || prev.initialFEN !== initialFEN;
+    const startChanged = !prev || prev.startAtEnd !== startAtEnd;
+
+    if (movesChanged || fenChanged || startChanged) {
+      const chess = chessRef.current;
+      chess.reset();
+      chess.load(initialFEN);
+
+      const targetIdx = startAtEnd ? initialMoves.length : 0;
+      initialMoves.slice(0, targetIdx).forEach((san) => chess.move(san));
+
+      setHistory(initialMoves);
+      setCurrentIdx(targetIdx);
+      prevRef.current = {
+        initialFEN,
+        initialMoves,
+        startAtEnd,
+        allowBranching,
+      };
+    }
+  }, [initialFEN, initialMoves, startAtEnd]);
+
+  // determine if new moves are permitted
+  const atTip = currentIdx === moveHistory.length;
+  const canPlayMove = allowBranching ? true : atTip;
+
+  // step through moves
   const setIdx = useCallback(
     (idx: number) => {
       const safe = Math.max(0, Math.min(idx, moveHistory.length));
@@ -43,39 +95,31 @@ export default function useGameHistory(
     [moveHistory.length, syncPosition]
   );
 
-  // make a new move (drag-drop or click)
+  // attempt a new move or variation
   const makeMove = useCallback(
     (from: string, to: string, promotion?: string) => {
-      const chess = chessRef.current;
+      if (!canPlayMove) return false;
 
-      // if we're not at the tip, truncate future moves (branch)
-      if (currentIdx < moveHistory.length) {
+      const chess = chessRef.current;
+      // truncate future moves only if branching is allowed
+      if (allowBranching && currentIdx < moveHistory.length) {
         setHistory(moveHistory.slice(0, currentIdx));
       }
 
-      // attempt move
-      const move = chess.move({
-        from,
-        to,
-        promotion: promotion?.toLowerCase(),
-      });
-      if (!move) {
-        // illegal
+      const mv = chess.move({ from, to, promotion: promotion?.toLowerCase() });
+      if (!mv) {
         syncPosition(currentIdx);
         return false;
       }
 
-      // record and advance
-      const newHistory = [...moveHistory.slice(0, currentIdx), move.san];
+      const newHistory = [...moveHistory.slice(0, currentIdx), mv.san];
       setHistory(newHistory);
       setCurrentIdx(currentIdx + 1);
       return true;
     },
-    [currentIdx, moveHistory, syncPosition]
+    [allowBranching, canPlayMove, currentIdx, moveHistory, syncPosition]
   );
 
-  // current FEN
   const fen = chessRef.current.fen();
-
-  return { fen, moveHistory, currentIdx, setIdx, makeMove };
+  return { fen, moveHistory, currentIdx, canPlayMove, setIdx, makeMove };
 }

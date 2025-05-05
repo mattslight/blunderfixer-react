@@ -12,20 +12,20 @@ import { Clipboard, ClockPlus, Trash2 } from 'lucide-react';
 import { DEFAULT_POSITION } from 'chess.js';
 
 import useAnalysisEngine from '@/hooks/useAnalysisEngine';
-
 import useGameHistory from '@/hooks/useGameHistory';
 import useMoveInput from '@/hooks/useMoveInput';
 import BoardAndEval from './components/BoardAndEval';
 import CoachAndChat from './components/CoachAndChat';
 import GameLoader from './components/GameLoader';
 
-export default function AnalysePage({ initialFEN = DEFAULT_POSITION }) {
+export default function AnalysePage() {
   const [pasteOpen, setPasteOpen] = useState(false);
   const [pasteError, setPasteError] = useState('');
   const [gameOpen, setGameOpen] = useState(false);
 
-  const { fen, moveHistory, currentIdx, setIdx, makeMove } =
-    useGameHistory(initialFEN);
+  const { fen, moveHistory, currentIdx, setIdx, makeMove } = useGameHistory(
+    { initialMoves: ['e4', 'e5'] } // our two SAN moves
+  );
 
   // 2) engine analysis (arrows, eval, lines)
   const { lines, currentDepth, evalScore, legalMoves, bestMoveArrow } =
@@ -36,7 +36,7 @@ export default function AnalysePage({ initialFEN = DEFAULT_POSITION }) {
   const features = {}; // need to extract features using API call
 
   const doClear = () => {
-    alert('do clear clicked');
+    alert('doClear clicked');
   };
 
   // 3) click/drag + promotion
@@ -79,7 +79,7 @@ export default function AnalysePage({ initialFEN = DEFAULT_POSITION }) {
       </div>
       {/* Error */}
       {error && <p className="text-center text-red-500">{error}</p>}
-
+      {<pre>fen is: {fen}</pre>}
       {/* Two-column layout */}
       <div className="flex h-full flex-col lg:flex-row">
         {/* Left pane */}
