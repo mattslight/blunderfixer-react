@@ -4,7 +4,7 @@ import { Chess, type Square, type Move } from 'chess.js';
 
 export type Promotion = 'n' | 'b' | 'r' | 'q';
 
-const DEBUG = true;
+const DEBUG = false;
 
 export interface PVLine {
   rank: number; // multipv index (1–N)
