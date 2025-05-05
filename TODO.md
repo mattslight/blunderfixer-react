@@ -10,7 +10,8 @@
 [✔] Modify useGameAnalysis to load up a SAN moveHistory to initalise
 [✔] Support simple linear branching (rewrite current history from earlier move) on useGameAnalysis (enable / disable with a flag)
 [✔] Fix PGN / FEN Paste (usePGNparser needs an overhaul, what are we going to do?)
-[ ] Fix loading a recent game
+[✔] Fix loading a recent game
+[ ] Flip board, especially when loading in a game where I am black
 [ ] Wire back up feature extraction
 [ ] Pass extraction, legalMoves to CoachChat and wire back up get explanation
 
