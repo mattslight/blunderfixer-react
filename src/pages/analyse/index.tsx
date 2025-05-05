@@ -9,8 +9,8 @@ import {
   ModalHeader,
 } from 'flowbite-react';
 import { Clipboard, ClockPlus, Trash2 } from 'lucide-react';
-import { DEFAULT_POSITION } from 'chess.js';
 
+import useGameInputParser from '@/hooks/useGameInputParser';
 import useAnalysisEngine from '@/hooks/useAnalysisEngine';
 import useGameHistory from '@/hooks/useGameHistory';
 import useMoveInput from '@/hooks/useMoveInput';
@@ -19,13 +19,20 @@ import CoachAndChat from './components/CoachAndChat';
 import GameLoader from './components/GameLoader';
 
 export default function AnalysePage() {
+  const [rawInput, setRawInput] = useState<string | null>(null);
   const [pasteOpen, setPasteOpen] = useState(false);
   const [pasteError, setPasteError] = useState('');
   const [gameOpen, setGameOpen] = useState(false);
 
-  const { fen, moveHistory, currentIdx, setIdx, makeMove } = useGameHistory(
-    { initialMoves: ['e4', 'e5'] } // our two SAN moves
-  );
+  // parse FEN/PGN or fallback
+  const { initialFEN, sanHistory, rawErrors } = useGameInputParser(rawInput);
+
+  const { fen, moveHistory, currentIdx, setIdx, makeMove } = useGameHistory({
+    initialFEN,
+    initialMoves: sanHistory,
+    startAtEnd: true,
+    allowBranching: false,
+  });
 
   // 2) engine analysis (arrows, eval, lines)
   const { lines, currentDepth, evalScore, legalMoves, bestMoveArrow } =
@@ -125,10 +132,14 @@ export default function AnalysePage() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            console.log(
-              'this was pasted',
-              (e.target as HTMLInputElement).value
-            );
+            const form = e.target as any;
+            const text = form.raw.value.trim() || null;
+            setRawInput(text);
+            setPasteOpen(false);
+            // surface any parse errors
+            if (rawErrors.length) {
+              setPasteError(rawErrors.join('\n'));
+            }
           }}
         >
           <ModalBody>
