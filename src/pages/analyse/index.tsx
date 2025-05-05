@@ -87,9 +87,9 @@ export default function AnalysePage() {
       {/* Error */}
       {error && <p className="text-center text-red-500">{error}</p>}
       {/* Two-column layout */}
-      <div className="flex h-full flex-col lg:flex-row">
-        {/* Left pane */}
-        <div className="w-full p-4 lg:w-1/2">
+
+      <div className="flex flex-col justify-center gap-y-4 p-4 lg:flex-row lg:gap-x-8">
+        <div className="w-full lg:w-auto lg:max-w-xl">
           <BoardAndEval
             evalScore={evalScore}
             fen={fen}
@@ -109,9 +109,7 @@ export default function AnalysePage() {
             showPromotionDialog={showPromotionDialog}
           />
         </div>
-
-        {/* Right pane */}
-        <div className="w-full space-y-4 p-4 lg:w-1/2">
+        <div className="lg:max-w-xl] w-full lg:w-auto">
           <CoachAndChat
             lines={lines}
             features={features}
