@@ -89,7 +89,6 @@ export default function AnalysePage() {
             moveList={moveHistory}
             currentIdx={currentIdx}
             setCurrentIdx={setIdx}
-            moveFrom={from}
             moveTo={to}
             optionSquares={optionSquares}
             onSquareClick={onSquareClick}

@@ -25,8 +25,6 @@ export default function BoardAndEval({
   onSquareClick,
   onPromotionPieceSelect,
   showPromotionDialog,
-
-  setPGN, // for example‐position picker
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [boardWidth, setBoardWidth] = useState(464);
@@ -47,7 +45,7 @@ export default function BoardAndEval({
 
   // whenever lastMove updates, highlight the two squares
   useEffect(() => {
-    if (lastMove) {
+    if (lastMove.from && lastMove.to) {
       setMoveSquares({
         [lastMove.from]: { backgroundColor: 'rgba(255,255,0,0.4)' },
         [lastMove.to]: { backgroundColor: 'rgba(255,255,0,0.4)' },
@@ -55,16 +53,16 @@ export default function BoardAndEval({
     } else {
       setMoveSquares({});
     }
-  }, [lastMove]);
+  }, [lastMove.from, lastMove.to]);
 
   // 1) If no FEN yet, show your examples picker
-  if (!fen) {
-    return (
-      <div className="p-4">
-        <ExamplePositions onPickFEN={(f) => setPGN(`[FEN "${f}"]\n\n`)} />
-      </div>
-    );
-  }
+  // if (!fen) {
+  //   return (
+  //     <div className="p-4">
+  //       <ExamplePositions onPickFEN={(f) => setPGN(`[FEN "${f}"]\n\n`)} />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex flex-col items-center space-y-3">
