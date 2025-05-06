@@ -33,6 +33,7 @@
   "devDependencies": {
     "@eslint/js": "^9.22.0",
     "@types/chess.js": "^0.13.7",
+    "@types/node": "^22.15.13",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",

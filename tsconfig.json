@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
+    "moduleResolution": "node",
+    "types": ["node"],
     "paths": {
       "@/*": ["src/*"]
     },
@@ -8,7 +10,6 @@
     "module": "ESNext",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
     "jsx": "react-jsx",
     "lib": ["DOM", "ES2015", "ES2016", "ES2017"],
     "skipLibCheck": true
