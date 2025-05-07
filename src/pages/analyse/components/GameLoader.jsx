@@ -37,7 +37,7 @@ function parseHeader(pgn, header) {
   return match ? match[1] : '';
 }
 
-export default function GameLoader({ onSelectPGN }) {
+export default function GameLoader({ onSelect }) {
   const [username, setUsername] = useState('');
   const [games, setGames] = useState([]);
 
@@ -207,7 +207,7 @@ export default function GameLoader({ onSelectPGN }) {
                   </span>
                 </div>
                 <button
-                  onClick={() => onSelectPGN(g.pgn)}
+                  onClick={() => onSelect(g)}
                   className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
                 >
                   Analyse
