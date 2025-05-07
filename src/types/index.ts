@@ -1,5 +1,7 @@
 // types.ts
 
+export type InputType = 'FEN' | 'PARTIAL_FEN' | 'PGN' | 'CHESS_COM' | 'UNKNOWN';
+
 /**
  * Immutable identity for a chess player
  */
@@ -15,52 +17,72 @@ export interface Player {
 export interface GamePlayer {
   player: Player; // reference to the immutable Player identity
   rating: number; // player's rating at game time
-  result: 'win' | 'loss' | 'draw';
+  result: string; // raw result string from the source (e.g. 'win', 'resigned', 'timeout', etc.)
 }
 
 /**
  * Represents one half-move (ply) in a game, with optional branching
  */
 export interface MoveNode {
-  moveNumber: number; // full-move count (1,2,3...)
-  side: 'w' | 'b'; // which side made this move
-  san: string; // move in Standard Algebraic Notation (e.g. "e4", "Nf3")
+  moveNumber: number; // full-move count (1,2,3…)
+  side: 'w' | 'b'; // who moved
+  san: string; // e.g. "e4", "Nf3"
   secondsRemaining?: number; // clock after move, in seconds
-  fen?: string; // resulting FEN after this move
-  from?: string; // UCI source square (e.g. "e2")
-  to?: string; // UCI destination square (e.g. "e4")
-  promotion?: string; // promotion piece, if any ("q","r","b","n")
-  children?: MoveNode[][]; // optional variations branching off this move
+  timeSpent?: number; // seconds the player spent on *this* move
+  fen?: string; // resulting FEN
+  from?: string; // UCI “from” square
+  to?: string; // UCI “to” square
+  promotion?: string; // promotion piece (“q”|“r”|“b”|“n”)
+  children?: MoveNode[][]; // variations branching here
 }
 
-/**
- * Complete record of a game: metadata + move tree
- */
+/** One half-move (ply) with clock info */
+export interface MoveNode {
+  moveNumber: number; // full-move count (1,2,3…)
+  side: 'w' | 'b';
+  san: string; // e.g. "e4", "Nf3"
+  secondsRemaining?: number; // raw from “[%clk …]”
+  timeSpent?: number; // computed delta
+  fen?: string;
+  from?: string;
+  to?: string;
+  promotion?: string;
+  children?: MoveNode[][];
+}
+
+/** Everything you need to rehydrate and re-analyze a game */
 export interface GameRecord {
-  id: string; // internal unique ID for this game
-  source: 'CHESS_COM' | 'LICHESS' | 'PGN' | 'FEN';
-  externalId?: string; // e.g. Chess.com URL or PGN hash
+  id: string; // internal UUID
+  source: InputType; // e.g. 'CHESS_COM'
+  externalId?: string; // e.g. chess.com’s UUID or PGN hash
+  updatedAt?: string; // for localStorage sync
+  moves: MoveNode[];
 
   meta: {
-    initialFEN: string; // starting position FEN
-    timeControl: number; // seconds per side
-    timeClass?: string; // "rapid", "blitz", etc.
-    rated: boolean; // was the game rated?
-    rules?: string; // e.g. "chess"
-    date?: string; // game date tag
-    termination?: string; // how the game ended
+    gameUrl: string; // chess.com URL
+    initialFEN: string; // starting position
+    timeControl: number; // base seconds (e.g. 180)
+    increment: number; // increment seconds (e.g. 2)
+    timeClass?: string; // 'blitz'|'rapid'…
+    rated: boolean;
+    rules?: string; // e.g. 'chess'
+    event?: string; // from [Event “…”]
+    site?: string; // from [Site “…”]
+    date?: string; // from [Date “…”]
+    utcDate?: string; // from [UTCDate “…”]
+    utcTime?: string; // from [UTCTime “…”]
+    endTime?: number; // unix timestamp
+    termination?: string; // how it ended (e.g. “won by resignation”)
 
     players: {
-      white: GamePlayer; // white player's snapshot
-      black: GamePlayer; // black player's snapshot
+      white: GamePlayer;
+      black: GamePlayer;
     };
 
-    eco?: string; // ECO code
-    ecoUrl?: string; // link to ECO opening
-    pgnTags?: Record<string, string>; // any additional PGN tags
+    eco?: string;
+    ecoUrl?: string;
+    pgnTags?: Record<string, string>;
   };
-
-  moves: MoveNode[]; // linear move list with optional subtrees
 }
 
 /**
@@ -73,6 +95,7 @@ export interface AnalysisNode {
   deltaCP: number; // evalCP - previous evalCP
   bestMove?: string; // UCI best move at this position
   pvLines?: PVLine[]; // top-N principal variation lines
+  depth: number; // stockfish depth for anlysis (int)
 }
 
 /**
