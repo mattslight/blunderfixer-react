@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
 import AnalyseGame from '../pages/analyse';
+import DebugGameStore from '../pages/analyse/DebugGameStore';
 import GameHistory from '../pages/GameHistory';
 import Help from '../pages/Help';
 import PreSignupHome from '../pages/home/PreSignupHome';
@@ -15,6 +16,7 @@ export default function AppRoutes() {
     <Routes>
       <Route path="/" element={<PreSignupHome />} />
       <Route path="/insights" element={<Insights />} />
+      <Route path="/analyse/debug" element={<DebugGameStore />} />
       <Route path="/analyse" element={<AnalyseGame />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/games" element={<GameHistory />} />
