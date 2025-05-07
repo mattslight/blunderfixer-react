@@ -20,22 +20,6 @@ export interface GamePlayer {
   result: string; // raw result string from the source (e.g. 'win', 'resigned', 'timeout', etc.)
 }
 
-/**
- * Represents one half-move (ply) in a game, with optional branching
- */
-export interface MoveNode {
-  moveNumber: number; // full-move count (1,2,3…)
-  side: 'w' | 'b'; // who moved
-  san: string; // e.g. "e4", "Nf3"
-  secondsRemaining?: number; // clock after move, in seconds
-  timeSpent?: number; // seconds the player spent on *this* move
-  fen?: string; // resulting FEN
-  from?: string; // UCI “from” square
-  to?: string; // UCI “to” square
-  promotion?: string; // promotion piece (“q”|“r”|“b”|“n”)
-  children?: MoveNode[][]; // variations branching here
-}
-
 /** One half-move (ply) with clock info */
 export interface MoveNode {
   moveNumber: number; // full-move count (1,2,3…)
@@ -57,6 +41,7 @@ export interface GameRecord {
   externalId?: string; // e.g. chess.com’s UUID or PGN hash
   updatedAt?: string; // for localStorage sync
   moves: MoveNode[];
+  pgn: string;
 
   meta: {
     gameUrl: string; // chess.com URL
@@ -93,7 +78,7 @@ export interface AnalysisNode {
   fen: string; // FEN for this position
   evalCP: number; // centipawn evaluation (positive = White better)
   deltaCP: number; // evalCP - previous evalCP
-  bestMove?: string; // UCI best move at this position
+  bestMoveUCI?: string; // UCI best move at this position
   pvLines?: PVLine[]; // top-N principal variation lines
   depth: number; // stockfish depth for anlysis (int)
 }
