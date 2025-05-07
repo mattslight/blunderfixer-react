@@ -184,6 +184,7 @@ export function parseChessComGame(json: any): GameRecord {
     id: json.uuid,
     source: 'CHESS_COM',
     externalId: json.uuid,
+    pgn: json.pgn,
     meta: {
       gameUrl: json.url,
       event: Event,
