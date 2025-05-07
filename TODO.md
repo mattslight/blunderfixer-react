@@ -2,6 +2,13 @@
 
 ## In Progress
 
+- [ ] Sort out GameStoreDebug (what's the UX)
+
+- [ ] Save 'shallow' game analysis so they don't re-run
+- [ ] Move graph and table summary to Analysis page (what's the UX)
+- [ ] Remember user's handle (option to change)
+- [ ] Show which games are synced
+      = [ ] Find the critical positions based on the eval swings
 - [ ] Wire up `ExamplePositions`
 - [ ] Flip board when loading a game as Black
 - [ ] Wire up feature extraction
