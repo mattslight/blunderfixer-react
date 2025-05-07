@@ -1,18 +1,10 @@
 // src/lib/uci.ts
 
 import { Chess, type Square, type Move } from 'chess.js';
-
+import { PVLine } from '@/types';
 export type Promotion = 'n' | 'b' | 'r' | 'q';
 
 const DEBUG = false;
-
-export interface PVLine {
-  rank: number; // multipv index (1–N)
-  depth: number; // search depth
-  scoreCP?: number; // centipawn score
-  mateIn?: number; // mate in N
-  moves: string[]; // SAN moves
-}
 
 export function makeEmptyLines(count: number): PVLine[] {
   return Array.from({ length: count }, (_, i) => ({
