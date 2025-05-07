@@ -2,7 +2,7 @@
 import { Chess } from 'chess.js';
 import usePGNParser from './usePGNParser';
 
-type InputType = 'FEN' | 'PARTIAL_FEN' | 'PGN' | 'UNKNOWN';
+import { InputType, ParsedInput } from '@/types';
 
 function detectInputType(text: string): InputType {
   const trimmed = text.trim();
@@ -15,30 +15,37 @@ function detectInputType(text: string): InputType {
   return 'UNKNOWN';
 }
 
-export default function useGameInputParser(raw: string | null) {
+export default function useGameInputParser(raw: string | null): ParsedInput {
   // Call this hook unconditionally
   const parsedPGN = usePGNParser(raw);
   const type = raw ? detectInputType(raw) : 'UNKNOWN';
 
   switch (type) {
     case 'FEN':
-      return { initialFEN: raw!, sanHistory: [], rawErrors: [] };
+      return {
+        initialFEN: raw!,
+        sanHistory: [],
+        rawErrors: [],
+        inputType: 'FEN',
+      };
 
     case 'PARTIAL_FEN':
       return {
         initialFEN: `${raw} w KQkq - 0 1`,
         sanHistory: [],
         rawErrors: [],
+        inputType: 'PARTIAL_FEN',
       };
 
     case 'PGN':
-      return parsedPGN;
+      return { ...parsedPGN, inputType: 'PGN' };
 
     default:
       return {
         initialFEN: new Chess().fen(),
         sanHistory: [],
         rawErrors: [],
+        inputType: 'CHESS_COM',
       };
   }
 }
