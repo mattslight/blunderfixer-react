@@ -1,4 +1,5 @@
 // src/pages/games/index.tsx
+import React, { useMemo } from 'react';
 import { useGameData } from './hooks/useGameData';
 import { useUsername } from './hooks/useUsername';
 import { useGameAnalysis } from './hooks/useGameAnalysis';
@@ -21,27 +22,27 @@ export default function GamesHistoryPage() {
     reload,
   } = useRecentGames(username);
 
-  // parse recent JSON into GameRecord
-  const recentGames: GameRecord[] = rawRecent.map(parseChessComGame);
+  // parse your recent JSON into GameRecord
+  const recentGames = rawRecent.map(parseChessComGame);
 
-  // filter out those already in recent
-  const recentIds = new Set(recentGames.map((g) => g.id));
-  const filteredSaved = savedGames.filter((g) => !recentIds.has(g.id));
+  // merge recent + saved, dedupe by id, then sort by endTime descending
+  const allGames: GameRecord[] = useMemo(() => {
+    const byId: Record<string, GameRecord> = {};
+    // save analysed first so they appear at top
+    savedGames.forEach((g) => (byId[g.id] = g));
+    recentGames.forEach((g) => {
+      if (!byId[g.id]) byId[g.id] = g;
+    });
+    return Object.values(byId).sort((a, b) => b.meta.endTime - a.meta.endTime);
+  }, [savedGames, recentGames]);
 
-  // click handlers
-  const handleRecentAction = (game: GameRecord) => {
-    if (analysedIds.has(game.id)) {
+  // one handler for every card
+  const handleAction = (game: GameRecord) => {
+    const already = analysedIds.has(game.id);
+    if (already) {
       setSelectedId(game.id);
     } else {
       saveGame(game);
-      analyse(game.id);
-    }
-  };
-
-  const handleSavedAction = (game: GameRecord) => {
-    if (analysedIds.has(game.id)) {
-      setSelectedId(game.id);
-    } else {
       analyse(game.id);
     }
   };
@@ -50,7 +51,6 @@ export default function GamesHistoryPage() {
     <div className="space-y-8 p-4 2xl:ml-12">
       <UsernameInput username={username} onUsernameChange={setUsername} />
 
-      {/* Recent games */}
       <div className="mx-auto max-w-lg space-y-4">
         <div className="flex justify-end">
           <button
@@ -62,21 +62,14 @@ export default function GamesHistoryPage() {
           </button>
         </div>
         {recentError && <p className="text-red-500">{recentError}</p>}
+
         <GameList
-          games={recentGames}
+          games={allGames}
           hero={username}
           isAnalysed={(g) => analysedIds.has(g.id)}
-          onAction={handleRecentAction}
+          onAction={handleAction}
         />
       </div>
-
-      {/* Saved games */}
-      <GameList
-        games={filteredSaved}
-        hero={username}
-        isAnalysed={(g) => analysedIds.has(g.id)}
-        onAction={handleSavedAction}
-      />
 
       {loading && <p>Running analysis…</p>}
       {selectedId && !loading && analysis.length > 0 && (
