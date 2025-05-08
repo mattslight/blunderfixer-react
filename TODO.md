@@ -2,7 +2,7 @@
 
 ## In Progress
 
-- [ ] Sort out GameStoreDebug (what's the UX)
+- [x] Sort out GameStoreDebug (what's the UX)
 
 - [ ] Save 'shallow' game analysis so they don't re-run
 - [ ] Move graph and table summary to Analysis page (what's the UX)
