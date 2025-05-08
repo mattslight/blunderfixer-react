@@ -1,4 +1,4 @@
-// src/hooks/useRecentGames.ts
+// src/pages/games/hooks/useRecentGames.ts
 import { useState, useEffect, useCallback } from 'react';
 
 export interface RecentGame {

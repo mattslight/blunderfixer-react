@@ -1,4 +1,4 @@
-// src/hooks/useGameAnalysis.ts
+// src/pages/games/hooks/useGameAnalysis.ts
 import { useState, useEffect, useCallback } from 'react';
 import { GameRecord, AnalysisNode } from '@/types';
 import { analysePGN } from '@/api';

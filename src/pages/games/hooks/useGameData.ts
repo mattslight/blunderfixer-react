@@ -1,4 +1,4 @@
-// src/hooks/useGameData.ts
+// src/pages/games/hooks/useGameData.ts
 import { useState, useEffect, useCallback } from 'react';
 import { GameRecord } from '@/types';
 
