@@ -1,73 +1,78 @@
 // src/pages/AnalysePosition/GameLoader.jsx
-import { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Calendar, Timer } from 'lucide-react';
 
-// helper to turn "180+2" → "3 min + 2 s", "600" → "10 min"
-function formatTimeControl(tc) {
-  if (!tc) return '';
-  const parts = tc.split('+');
-  const init = parseInt(parts[0], 10) || 0;
-  const inc = parts[1] != null ? parseInt(parts[1], 10) : null;
-  const mins = Math.floor(init / 60);
-  const secs = init % 60;
-  let initialStr = '';
-
-  if (mins > 0) {
-    initialStr = `${mins} min`;
-    if (secs > 0) initialStr += ` ${secs}s`;
-  } else {
-    initialStr = `${secs}s`;
-  }
-
-  if (inc != null && !isNaN(inc)) {
-    return `${initialStr} + ${inc}s`;
-  }
-  return initialStr;
-}
-
-// capitalize first letter
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-// parse a PGN header by name
-function parseHeader(pgn, header) {
-  const re = new RegExp(`\\[${header} "(.*?)"\\]`);
-  const match = pgn.match(re);
-  return match ? match[1] : '';
-}
-
-export default function GameLoader({ onSelect }) {
-  const [username, setUsername] = useState('');
+export default function GameLoader({ username, onSelect }) {
   const [games, setGames] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  async function loadGames() {
-    const res = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/public/players/${username}/recent-games?limit=10`
-    );
-    if (!res.ok) {
-      alert('Failed to fetch games');
-      return;
+  const loadGames = useCallback(async () => {
+    if (!username) return;
+    setLoading(true);
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/public/players/${username}/recent-games?limit=10`
+      );
+      if (!res.ok) throw new Error('Fetch failed');
+      const data = await res.json();
+      setGames(data);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to load games');
+    } finally {
+      setLoading(false);
     }
-    const data = await res.json();
-    setGames(data);
+  }, [username]);
+
+  // auto‐load when `username` prop arrives or changes
+  useEffect(() => {
+    loadGames();
+  }, [loadGames]);
+
+  // helper to turn "180+2" → "3 min + 2 s", "600" → "10 min"
+  function formatTimeControl(tc) {
+    if (!tc) return '';
+    const parts = tc.split('+');
+    const init = parseInt(parts[0], 10) || 0;
+    const inc = parts[1] != null ? parseInt(parts[1], 10) : null;
+    const mins = Math.floor(init / 60);
+    const secs = init % 60;
+    let initialStr = '';
+
+    if (mins > 0) {
+      initialStr = `${mins} min`;
+      if (secs > 0) initialStr += ` ${secs}s`;
+    } else {
+      initialStr = `${secs}s`;
+    }
+
+    if (inc != null && !isNaN(inc)) {
+      return `${initialStr} + ${inc}s`;
+    }
+    return initialStr;
+  }
+
+  // capitalize first letter
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  // parse a PGN header by name
+  function parseHeader(pgn, header) {
+    const re = new RegExp(`\\[${header} "(.*?)"\\]`);
+    const match = pgn.match(re);
+    return match ? match[1] : '';
   }
 
   return (
     <div className="mx-auto min-h-screen max-w-lg space-y-4">
-      <div className="flex gap-2">
-        <input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Chess.com username"
-          className="flex-1 rounded border p-2 dark:bg-gray-700 dark:text-white"
-        />
+      <div className="flex justify-end">
         <button
           onClick={loadGames}
-          disabled={!username.trim()}
-          className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700 disabled:opacity-50"
+          disabled={loading || !username}
+          className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
         >
-          Load
+          {loading ? 'Loading…' : 'Refresh'}
         </button>
       </div>
 
@@ -177,6 +182,7 @@ export default function GameLoader({ onSelect }) {
                   </div>
                 )}
               </div>
+
               {/* Opening */}
               {ecoCode && ecoUrl && (
                 <div className="mb-4 text-sm text-gray-300">

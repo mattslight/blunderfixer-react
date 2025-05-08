@@ -6,6 +6,8 @@ import { GameRecord, AnalysisNode } from '@/types';
 import { analysePGN } from '@/api';
 import { GameSummary } from './components/GameSummary';
 
+const username = 'mattslight';
+
 export default function DebugGameStore() {
   const [gamesMap, setGamesMap] = useState<Record<string, GameRecord>>({});
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -71,7 +73,10 @@ export default function DebugGameStore() {
 
       <section className="mb-8">
         <h2 className="mb-2 text-xl font-semibold">Load a Chess.com Game</h2>
-        <GameLoader onSelect={(json) => saveGame(parseChessComGame(json))} />
+        <GameLoader
+          username={username}
+          onSelect={(json) => saveGame(parseChessComGame(json))}
+        />
       </section>
 
       {Object.keys(gamesMap).length > 0 && (
