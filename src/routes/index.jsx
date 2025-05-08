@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import AnalyseGame from '../pages/analyse';
 import DebugGameStore from '../pages/analyse/DebugGameStore';
-import GameHistory from '../pages/GameHistory';
+import GameHistory from '../pages/games';
 import Help from '../pages/Help';
 import PreSignupHome from '../pages/home/PreSignupHome';
 import Insights from '../pages/Insights';
