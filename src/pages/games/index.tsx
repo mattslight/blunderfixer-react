@@ -4,7 +4,6 @@ import { useUsername } from './hooks/useUsername';
 import { useGameAnalysis } from './hooks/useGameAnalysis';
 import UsernameInput from './components/UsernameInput';
 import GameLoader from './components/GameLoader';
-import GameTable from './components/GameTable';
 import { GameSummary } from './components/GameSummary';
 import { parseChessComGame } from '@/lib/chessComParser';
 
@@ -25,8 +24,6 @@ export default function GamesHistoryPage() {
       <UsernameInput username={username} onUsernameChange={setUsername} />
 
       <GameLoader username={username} onSelect={handleNew} />
-
-      <GameTable games={games} onAnalyse={analyse} />
 
       {loading && <p>Running analysis…</p>}
 
