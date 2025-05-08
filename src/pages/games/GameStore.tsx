@@ -1,67 +1,52 @@
-// src/pages/analyse/DebugGameStore.tsx
+// src/pages/games/DebugGameStore.tsx
 import { useState, useEffect } from 'react';
-import GameLoader from './components/GameLoader';
-import { parseChessComGame } from '@/lib/chessComParser';
 import { GameRecord, AnalysisNode } from '@/types';
-import { analysePGN } from '@/api';
+import GameLoader from './components/GameLoader';
 import { GameSummary } from './components/GameSummary';
+import { parseChessComGame } from '@/lib/chessComParser';
+import { analysePGN } from '@/api';
+
+interface DebugGameStoreProps {
+  gamesMap: Record<string, GameRecord>;
+  saveGame: (game: GameRecord) => void;
+}
 
 const username = 'mattslight';
 
-export default function DebugGameStore() {
-  const [gamesMap, setGamesMap] = useState<Record<string, GameRecord>>({});
+export default function DebugGameStore({
+  gamesMap,
+  saveGame,
+}: DebugGameStoreProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<AnalysisNode[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newId = e.target.value || null;
-    if (newId === selectedId) return; // <— no change, don’t reset
+    if (newId === selectedId) return;
     setSelectedId(newId);
     setAnalysis([]);
   };
 
-  // 1) load stored games
-  useEffect(() => {
-    const raw = localStorage.getItem('bf:games');
-    if (!raw) return;
-    try {
-      setGamesMap(JSON.parse(raw));
-    } catch {}
-  }, []);
-
-  // 2) when a new game arrives, reset analysis state
-  const saveGame = (record: GameRecord) => {
-    const next = { ...gamesMap, [record.id]: record };
-    localStorage.setItem('bf:games', JSON.stringify(next));
-    setGamesMap(next);
-    setSelectedId(record.id);
-    setAnalysis([]);
-  };
-
-  // When a game is selected, fire analysePGN once
+  // when a new game is selected, run analysis once
   useEffect(() => {
     if (!selectedId) return;
     const game = gamesMap[selectedId];
-    if (!game || !game.pgn) return;
+    if (!game?.pgn) return;
 
     setLoading(true);
     analysePGN(game.pgn, 12)
       .then((raw) => {
-        // map your backend shape into AnalysisNode
         const nodes: AnalysisNode[] = raw.map((r) => ({
           halfMoveIndex: r.half_move_index,
           fen: r.fen,
           evalCP: r.eval_cp,
           deltaCP: r.delta_cp,
           depth: 12,
-          // bestMove/pvLines omitted on shallow pass
         }));
         setAnalysis(nodes);
       })
-      .catch((err) => {
-        console.error('shallow analyse failed', err);
-      })
+      .catch(console.error)
       .finally(() => setLoading(false));
   }, [selectedId, gamesMap]);
 
@@ -94,6 +79,7 @@ export default function DebugGameStore() {
           </select>
         </section>
       )}
+
       {loading && <p>Running shallow analysis…</p>}
 
       {game && !loading && analysis.length > 0 && (
