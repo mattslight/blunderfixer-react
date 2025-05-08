@@ -1,4 +1,4 @@
-// src/pages/games/DebugGameStore.tsx
+// src/pages/games/GameStore.tsx
 import { useState, useEffect } from 'react';
 import { GameRecord, AnalysisNode } from '@/types';
 import GameLoader from './components/GameLoader';
@@ -6,17 +6,16 @@ import { GameSummary } from './components/GameSummary';
 import { parseChessComGame } from '@/lib/chessComParser';
 import { analysePGN } from '@/api';
 
-interface DebugGameStoreProps {
+interface GameStoreProps {
   gamesMap: Record<string, GameRecord>;
   saveGame: (game: GameRecord) => void;
+  username: string;
 }
-
-const username = 'mattslight';
-
-export default function DebugGameStore({
+export default function GameStore({
   gamesMap,
   saveGame,
-}: DebugGameStoreProps) {
+  username,
+}: GameStoreProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<AnalysisNode[]>([]);
   const [loading, setLoading] = useState(false);
