@@ -1,25 +1,34 @@
-// src/components/GameList.tsx
+// src/pages/games/components/GameList.tsx
+import { GameRecord } from '@/types';
 import GameCard from './GameCard';
-import { RecentGame } from '../hooks/useRecentGames';
 
 interface GameListProps {
-  games: RecentGame[];
-  username: string;
-  onAnalyse: (g: RecentGame) => void;
+  games: GameRecord[];
+  hero: string;
+  isAnalysed: (game: GameRecord) => boolean;
+  onAction: (game: GameRecord) => void;
 }
 
 export default function GameList({
   games,
-  username,
-  onAnalyse,
+  hero,
+  isAnalysed,
+  onAction,
 }: GameListProps) {
-  if (!games.length) {
+  if (games.length === 0) {
     return <p className="text-center text-gray-400">No games found.</p>;
   }
+
   return (
     <ul className="space-y-2">
-      {games.map((g) => (
-        <GameCard key={g.uuid} game={g} hero={username} onAnalyse={onAnalyse} />
+      {games.map((game) => (
+        <GameCard
+          key={game.id}
+          game={game}
+          hero={hero}
+          isAnalysed={isAnalysed(game)}
+          onAction={onAction}
+        />
       ))}
     </ul>
   );
