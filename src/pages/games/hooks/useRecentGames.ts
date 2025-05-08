@@ -14,11 +14,27 @@ export interface RecentGame {
   termination?: string;
 }
 
+/**
+ * Hook to fetch a user’s recent games from the Chess.com public API.
+ *
+ * @param username - Chess.com username whose games to load.
+ * @param limit - Maximum number of recent games to fetch (default: 10).
+ * @returns An object with:
+ *   - games: array of RecentGame objects.
+ *   - loading: boolean indicating whether the fetch is in progress.
+ *   - error: string message if the fetch failed, or null.
+ *   - reload: function to re-trigger the fetch manually.
+ */
+
 export function useRecentGames(username: string, limit = 10) {
   const [games, setGames] = useState<RecentGame[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  /**
+   * Internal fetch logic: retrieves recent games for the given username.
+   * Resets error, sets loading state, and updates `games` or `error`.
+   */
   const load = useCallback(async () => {
     if (!username) return;
     setLoading(true);
