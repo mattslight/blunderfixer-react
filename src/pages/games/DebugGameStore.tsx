@@ -69,10 +69,7 @@ export default function DebugGameStore() {
 
   return (
     <div className="p-4 2xl:ml-8">
-      <h1 className="mb-6 text-2xl font-bold">GameStore Debug</h1>
-
       <section className="mb-8">
-        <h2 className="mb-2 text-xl font-semibold">Load a Chess.com Game</h2>
         <GameLoader
           username={username}
           onSelect={(json) => saveGame(parseChessComGame(json))}
