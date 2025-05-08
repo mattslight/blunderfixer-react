@@ -1,23 +1,38 @@
 // src/pages/games/index.tsx
 import { useGameData } from './hooks/useGameData';
 import { useUsername } from './hooks/useUsername';
+import { useGameAnalysis } from './hooks/useGameAnalysis';
 import UsernameInput from './components/UsernameInput';
-import AnalysisTable from './components/AnalysisTable';
-import GameStore from './GameStore';
+import GameLoader from './components/GameLoader';
+import GameTable from './components/GameTable';
+import { GameSummary } from './components/GameSummary';
+import { parseChessComGame } from '@/lib/chessComParser';
 
 export default function GamesHistoryPage() {
   const [username, setUsername] = useUsername();
   const { gamesMap, games, saveGame } = useGameData();
+  const { selectedId, analysis, loading, analyse } = useGameAnalysis(gamesMap);
+
+  // when you load a new game, save it and immediately analyse
+  const handleNew = (json: any) => {
+    const rec = parseChessComGame(json);
+    saveGame(rec);
+    analyse(rec.id);
+  };
 
   return (
-    <div className="2xl:ml-12">
-      <div className="max-w-lg">
-        <UsernameInput username={username} onUsernameChange={setUsername} />
-      </div>
+    <div className="space-y-8 p-4 2xl:ml-12">
+      <UsernameInput username={username} onUsernameChange={setUsername} />
 
-      <AnalysisTable games={games} />
+      <GameLoader username={username} onSelect={handleNew} />
 
-      <GameStore gamesMap={gamesMap} saveGame={saveGame} username={username} />
+      <GameTable games={games} onAnalyse={analyse} />
+
+      {loading && <p>Running analysis…</p>}
+
+      {selectedId && !loading && analysis.length > 0 && (
+        <GameSummary game={gamesMap[selectedId]} analysis={analysis} />
+      )}
     </div>
   );
 }
