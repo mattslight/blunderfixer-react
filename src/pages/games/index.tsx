@@ -1,27 +1,21 @@
-import { useState, useEffect } from 'react';
-import { GameRecord } from '@/types';
+// src/pages/games/index.tsx
+import { useGameData } from './hooks/useGameData';
 import UsernameInput from './components/UsernameInput';
-import DebugGameStore from './DebugGameStore';
 import AnalysisTable from './components/AnalysisTable';
+import GameStore from './GameStore';
 
 export default function GamesHistoryPage() {
-  const [games, setGames] = useState<GameRecord[]>([]);
-
-  useEffect(() => {
-    const raw = localStorage.getItem('bf:games');
-    if (raw) {
-      const gamesMap: Record<string, GameRecord> = JSON.parse(raw);
-      setGames(Object.values(gamesMap));
-    }
-  }, []);
+  const { gamesMap, games, saveGame } = useGameData();
 
   return (
     <div className="2xl:ml-12">
       <div className="max-w-lg">
         <UsernameInput />
       </div>
+
       <AnalysisTable games={games} />
-      <DebugGameStore />
+
+      <GameStore gamesMap={gamesMap} saveGame={saveGame} />
     </div>
   );
 }
