@@ -30,9 +30,9 @@ export default function GameCard({
   const lost = resultTag === (side === 'white' ? '0-1' : '1-0');
 
   // button label and color
-  const btnLabel = isAnalysed ? 'View' : 'Analyse';
+  const btnLabel = isAnalysed ? 'View Report' : 'Analyse';
   const btnColor = isAnalysed
-    ? 'bg-gray-600 hover:bg-gray-700'
+    ? 'bg-green-600 hover:bg-green-700'
     : 'bg-blue-600 hover:bg-blue-700';
 
   // date & time control
