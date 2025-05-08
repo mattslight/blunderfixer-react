@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { GameRecord } from '@/types';
 import UsernameInput from './components/UsernameInput';
+import DebugGameStore from './DebugGameStore';
 
 type ItemType = 'game' | 'pgn' | 'fen';
 type Status = 'pending' | 'analysing' | 'done';
@@ -18,28 +19,16 @@ interface GameItem extends BaseItem {
   game: GameRecord;
 }
 
-interface PGNItem extends BaseItem {
-  type: 'pgn';
-  pgn: string;
-}
-
-interface FENItem extends BaseItem {
-  type: 'fen';
-  fen: string;
-}
-
-type AnalysisItem = GameItem | PGNItem | FENItem;
+type AnalysisItem = GameItem;
 
 export default function GamesHistoryPage() {
-  function onSelectPGN(pgn) {
-    console.log('pgn from loader selected', pgn);
-  }
   return (
     <div className="2xl:ml-12">
       <div className="max-w-lg">
         <UsernameInput />
       </div>
       <AnalysisTable />
+      <DebugGameStore />
     </div>
   );
 }
@@ -101,16 +90,6 @@ function AnalysisTable() {
               dateSite = `${new Date(g.meta.endTime * 1000).toLocaleDateString()} • Chess.com`;
               result = g.meta.pgnTags?.Result || '—';
               tc = `${formatTimeControl(g.meta.timeControl + '+' + g.meta.increment)} ${g.meta.timeClass}`;
-            }
-            if (item.type === 'pgn') {
-              dateSite = '—';
-              result = '—';
-              tc = '—';
-            }
-            if (item.type === 'fen') {
-              dateSite = '—';
-              result = '—';
-              tc = '—';
             }
 
             return (
