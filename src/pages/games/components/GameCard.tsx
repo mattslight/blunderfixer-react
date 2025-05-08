@@ -1,94 +1,111 @@
-// src/components/GameCard.tsx
+// src/pages/games/components/GameCard.tsx
 import { Calendar, Timer } from 'lucide-react';
-import { RecentGame } from '../hooks/useRecentGames';
+import { GameRecord } from '@/types';
 
 interface GameCardProps {
-  game: RecentGame;
+  game: GameRecord;
   hero: string;
-  onAnalyse: (g: RecentGame) => void;
+  isAnalysed: boolean;
+  onAction: (game: GameRecord) => void;
 }
 
-export default function GameCard({ game, hero, onAnalyse }: GameCardProps) {
-  // helper formatters (you could also lift these out)
-  const tcParts = game.time_control.split('+').map(Number);
-  const mins = Math.floor(tcParts[0] / 60);
-  const secs = tcParts[0] % 60;
-  const humanTC = `${mins > 0 ? `${mins}m${secs ? ` ${secs}s` : ''}` : `${secs}s}`}${tcParts[1] ? ` +${tcParts[1]}s` : ''}`;
+export default function GameCard({
+  game,
+  hero,
+  isAnalysed,
+  onAction,
+}: GameCardProps) {
+  // extract player metadata
+  const wMeta = game.meta.players.white;
+  const bMeta = game.meta.players.black;
+  const whitePlayer = wMeta.player;
+  const blackPlayer = bMeta.player;
+  const whiteRating = wMeta.rating;
+  const blackRating = bMeta.rating;
 
-  const side = game.white.username === hero ? 'white' : 'black';
-  const opp = side === 'white' ? 'black' : 'white';
-  const won = game[side].result === 'win';
-  const lost = game[opp].result === 'win';
+  // determine side and result
+  const side = whitePlayer.username === hero ? 'white' : 'black';
+  const resultTag = game.meta.pgnTags?.Result;
+  const won = resultTag === (side === 'white' ? '1-0' : '0-1');
+  const lost = resultTag === (side === 'white' ? '0-1' : '1-0');
 
-  const resultLabel = won ? 'Won' : lost ? 'Lost' : 'Draw';
-  const resultClass = won
-    ? 'bg-green-600 text-white'
-    : lost
-      ? 'bg-red-600 text-white'
-      : 'bg-gray-600 text-white';
-  const reasonLabel =
-    won || lost
-      ? game[won ? opp : side].result.charAt(0).toUpperCase() +
-        game[won ? opp : side].result.slice(1)
-      : 'Draw';
-  const reasonClass =
-    won || lost ? 'text-gray-400 bg-gray-800' : 'bg-gray-200 text-gray-800';
+  // button label and color
+  const btnLabel = isAnalysed ? 'View' : 'Analyse';
+  const btnColor = isAnalysed
+    ? 'bg-gray-600 hover:bg-gray-700'
+    : 'bg-blue-600 hover:bg-blue-700';
+
+  // date & time control
+  const dateTime = new Date(game.meta.endTime * 1000);
+  const dateStr = dateTime.toLocaleString();
+  const init = game.meta.timeControl;
+  const inc = game.meta.increment;
+  const mins = Math.floor(init / 60);
+  const secs = init % 60;
+  const tcStr = `${mins > 0 ? `${mins}m${secs}s` : `${secs}s`}${
+    inc ? ` +${inc}s` : ''
+  }`;
 
   return (
     <li
-      className={`mb-6 flex flex-col rounded-lg border-l-4 bg-gray-800 p-6 ${won ? 'border-green-500' : lost ? 'border-red-500' : 'border-gray-500'}`}
+      className={`mb-6 flex flex-col rounded-lg border-l-4 bg-gray-800 p-6 ${
+        won ? 'border-green-500' : lost ? 'border-red-500' : 'border-gray-500'
+      }`}
     >
       <header className="mb-4">
         <h3 className="text-lg font-semibold text-white">
-          {game.white.username}{' '}
-          <span className="text-sm text-gray-400">({game.white.rating})</span>
+          {whitePlayer.username}{' '}
+          <span className="text-sm text-gray-400">({whiteRating})</span>
           <span className="mx-2 text-gray-500">vs</span>
-          {game.black.username}{' '}
-          <span className="text-sm text-gray-400">({game.black.rating})</span>
+          {blackPlayer.username}{' '}
+          <span className="text-sm text-gray-400">({blackRating})</span>
         </h3>
       </header>
 
       <div className="mb-4 grid grid-cols-2 gap-4 text-sm text-gray-400">
         <div className="flex items-center space-x-1">
           <Calendar size={16} />
-          <time dateTime={new Date(game.end_time * 1000).toISOString()}>
-            {new Date(game.end_time * 1000).toLocaleString()}
-          </time>
+          <time dateTime={dateTime.toISOString()}>{dateStr}</time>
         </div>
         <div className="flex items-center space-x-1">
           <Timer size={16} />
           <span>
-            {humanTC} <em>({game.rated ? 'Rated' : 'Casual'})</em>
+            {tcStr}{' '}
+            <em>{game.meta.pgnTags?.Rated === 'true' ? 'Rated' : 'Casual'}</em>
           </span>
         </div>
-        {game.termination && (
-          <div>
-            Termination:{' '}
-            <span className="capitalize">
-              {game.termination.split(' won by ')[1]}
-            </span>
-          </div>
-        )}
       </div>
 
       <footer className="flex items-center justify-between">
         <div className="flex space-x-1">
           <span
-            className={`rounded-full px-3 py-1 text-sm font-medium ${resultClass}`}
+            className={`rounded-full px-3 py-1 text-sm font-medium ${
+              won
+                ? 'bg-green-600 text-white'
+                : lost
+                  ? 'bg-red-600 text-white'
+                  : 'bg-gray-600 text-white'
+            }`}
           >
-            {resultLabel}
+            {won ? 'Won' : lost ? 'Lost' : 'Draw'}
           </span>
-          <span
-            className={`rounded-full px-3 py-1 text-sm font-medium italic ${reasonClass}`}
-          >
-            ({reasonLabel})
-          </span>
+          {resultTag && (
+            <span
+              className={`rounded-full px-3 py-1 text-sm font-medium italic ${
+                won || lost
+                  ? 'bg-gray-800 text-gray-400'
+                  : 'bg-gray-200 text-gray-800'
+              }`}
+            >
+              ({resultTag})
+            </span>
+          )}
         </div>
         <button
-          onClick={() => onAnalyse(game)}
-          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          onClick={() => onAction(game)}
+          className={`rounded-md px-4 py-2 text-sm font-medium text-white ${btnColor}`}
         >
-          Analyse
+          {btnLabel}
         </button>
       </footer>
     </li>
