@@ -1,5 +1,6 @@
 import js from '@eslint/js';
 import importPlugin from 'eslint-plugin-import';
+import prettierPlugin from 'eslint-plugin-prettier';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
@@ -8,6 +9,11 @@ import globals from 'globals';
 
 export default [
   { ignores: ['dist'] },
+  // core + React + Hooks + Prettier
+  js.configs.recommended,
+  reactPlugin.configs.recommended,
+  reactHooks.configs.recommended,
+  prettierPlugin.configs.recommended,
   reactPlugin.configs.flat['jsx-runtime'],
   {
     files: ['**/*.{js,jsx}'],
@@ -26,11 +32,11 @@ export default [
       'react-refresh': reactRefresh,
       'simple-import-sort': simpleSort,
       import: importPlugin,
+      prettier: prettierPlugin,
     },
     rules: {
+      'prettier/prettier': 'error',
       'react/no-unknown-property': ['error', { ignore: [] }],
-      ...js.configs.recommended.rules,
-      ...reactHooks.configs.recommended.rules,
       'no-undef': 'error',
       'react/jsx-no-undef': 'error',
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
