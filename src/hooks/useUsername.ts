@@ -1,21 +1,24 @@
 // src/hooks/useUsername.ts
 import { useState, useEffect, useCallback } from 'react';
 
-export function useUsername(): [string, (u: string) => void] {
-  // 1) initialize from localStorage
+export function useUsername(): {
+  username: string;
+  setUsername: (u: string) => void;
+} {
+  // initialize from localStorage
   const [username, setUsernameState] = useState<string>(
     () => localStorage.getItem('bf:username') ?? ''
   );
 
-  // 2) whenever it changes, persist it
+  // persist on change
   useEffect(() => {
     localStorage.setItem('bf:username', username);
   }, [username]);
 
-  // wrap setter in useCallback
+  // stable setter
   const setUsername = useCallback((u: string) => {
     setUsernameState(u);
   }, []);
 
-  return [username, setUsername];
+  return { username, setUsername };
 }

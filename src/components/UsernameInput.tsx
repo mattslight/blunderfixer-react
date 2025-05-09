@@ -1,4 +1,4 @@
-// src/pages/games/components/UsernameInput.tsx
+// src/components/UsernameInput.tsx
 interface Props {
   username: string;
   onUsernameChange: (u: string) => void;

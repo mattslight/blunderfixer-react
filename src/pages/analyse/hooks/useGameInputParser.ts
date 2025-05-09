@@ -1,8 +1,18 @@
 // src/hooks/useGameInputParser.ts
 import { Chess } from 'chess.js';
-import usePGNParser from './usePGNParser';
+import usePGNParser from '@/hooks/usePGNParser';
 
-import { InputType, ParsedInput } from '@/types';
+import { InputType } from '@/types';
+
+/**
+ * Result of parsing raw input (FEN, PGN, etc.)
+ */
+export interface ParsedInput {
+  initialFEN: string; // The full FEN string to start from
+  sanHistory: string[]; // Array of SAN moves extracted
+  rawErrors: string[]; // Any parsing errors or warnings
+  inputType: InputType;
+}
 
 function detectInputType(text: string): InputType {
   const trimmed = text.trim();
