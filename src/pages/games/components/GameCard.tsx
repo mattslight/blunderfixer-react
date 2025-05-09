@@ -1,6 +1,7 @@
 // src/pages/games/components/GameCard.tsx
 import { Calendar, Timer } from 'lucide-react';
 import { GameRecord } from '@/types';
+import { formatDistanceToNow } from 'date-fns';
 
 interface GameCardProps {
   game: GameRecord;
@@ -25,7 +26,7 @@ export default function GameCard({
 
   // determine side and result
   const side = whitePlayer.username === hero ? 'white' : 'black';
-  const resultTag = game.meta.pgnTags?.Result;
+  const resultTag = game.meta.pgnTags?.Result || '';
   const won = resultTag === (side === 'white' ? '1-0' : '0-1');
   const lost = resultTag === (side === 'white' ? '0-1' : '1-0');
 
@@ -37,14 +38,22 @@ export default function GameCard({
 
   // date & time control
   const dateTime = new Date(game.meta.endTime * 1000);
-  const dateStr = dateTime.toLocaleString();
+  const dateStr = formatDistanceToNow(dateTime, { addSuffix: true });
   const init = game.meta.timeControl;
   const inc = game.meta.increment;
   const mins = Math.floor(init / 60);
   const secs = init % 60;
-  const tcStr = `${mins > 0 ? `${mins}m${secs}s` : `${secs}s`}${
-    inc ? ` +${inc}s` : ''
-  }`;
+  let tcStr = '';
+  if (mins > 0) {
+    tcStr = `${mins}m`;
+    if (secs > 0) tcStr += `${secs}s`;
+  } else {
+    tcStr = `${secs}s`;
+  }
+
+  if (inc > 0) {
+    tcStr += ` +${inc}s`;
+  }
 
   return (
     <li
@@ -52,14 +61,26 @@ export default function GameCard({
         won ? 'border-green-500' : lost ? 'border-red-500' : 'border-gray-500'
       }`}
     >
-      <header className="mb-4">
-        <h3 className="text-lg font-semibold text-white">
-          {whitePlayer.username}{' '}
+      <header className="mb-4 flex items-center justify-between">
+        {/* White side */}
+        <div className="flex items-center space-x-2">
+          <span className="text-xl text-white">♞</span>
+          <span className="text-lg font-semibold text-white">
+            {whitePlayer.username}
+          </span>
           <span className="text-sm text-gray-400">({whiteRating})</span>
-          <span className="mx-2 text-gray-500">vs</span>
-          {blackPlayer.username}{' '}
+        </div>
+
+        <span className="font-medium text-gray-500">vs</span>
+
+        {/* Black side */}
+        <div className="flex items-center space-x-2">
+          <span className="text-xl text-black">♞</span>
+          <span className="text-lg font-semibold text-white">
+            {blackPlayer.username}
+          </span>
           <span className="text-sm text-gray-400">({blackRating})</span>
-        </h3>
+        </div>
       </header>
 
       <div className="mb-4 grid grid-cols-2 gap-4 text-sm text-gray-400">
