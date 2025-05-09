@@ -6,10 +6,10 @@ import {
   GameLoaderModal,
   PasteModal,
 } from './components/AnalysisModals';
-import useGameInputParser from '@/hooks/useGameInputParser';
-import useAnalysisEngine from '@/hooks/useAnalysisEngine';
-import useGameHistory from '@/hooks/useGameHistory';
-import useMoveInput from '@/hooks/useMoveInput';
+import useGameInputParser from './hooks/useGameInputParser';
+import useAnalysisEngine from './hooks/useAnalysisEngine';
+import useGameHistory from './hooks/useGameHistory';
+import useMoveInput from './hooks/useMoveInput';
 import BoardAndEval from './components/BoardAndEval';
 import CoachAndChat from './components/CoachAndChat';
 

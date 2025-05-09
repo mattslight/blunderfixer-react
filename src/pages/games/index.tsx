@@ -1,17 +1,17 @@
 // src/pages/games/index.tsx
 import { useMemo } from 'react';
 import { useGameData } from './hooks/useGameData';
-import { useUsername } from './hooks/useUsername';
+import { useUsername } from '@/hooks/useUsername';
+
 import { useGameAnalysis } from './hooks/useGameAnalysis';
 import { useRecentGames } from './hooks/useRecentGames';
-import UsernameInput from './components/UsernameInput';
 import GameList from './components/GameList';
 import { GameSummary } from './components/GameSummary';
 import { parseChessComGame } from '@/lib/chessComParser';
 import type { GameRecord } from '@/types';
 
 export default function GamesHistoryPage() {
-  const [username, setUsername] = useUsername();
+  const { username } = useUsername();
   const { gamesMap, games: savedGames, saveGame } = useGameData();
   const { selectedId, analysis, loading, analyse, setSelectedId, analysedIds } =
     useGameAnalysis(gamesMap);
@@ -50,10 +50,7 @@ export default function GamesHistoryPage() {
   return (
     <div className="space-y-8 p-4 2xl:ml-12">
       <div className="mx-auto max-w-lg space-y-4">
-        <div>
-          <UsernameInput username={username} onUsernameChange={setUsername} />
-        </div>
-        <div className="flex justify-end">
+        <div className="flex justify-center">
           <button
             onClick={reload}
             disabled={recentLoading || !username}
