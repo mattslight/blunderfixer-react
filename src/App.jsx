@@ -25,7 +25,7 @@ export default function App() {
     <>
       <Navbar toggleSidebar={toggleSidebar} />
       <Sidebar isSidebarOpen={isSidebarOpen} closeSidebar={closeSidebar} />
-      <main className="h-screen w-full pt-20 2xl:pl-32">
+      <main className="min-h-screen w-full pt-20 2xl:pl-32">
         <AppRoutes />
       </main>
     </>
