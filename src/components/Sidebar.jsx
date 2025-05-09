@@ -155,7 +155,7 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
         </ul>
       </div>
       {/* pinned settings at bottom on 2xl+ */}
-      <div className="absolute bottom-0 left-0 hidden w-full justify-center bg-white p-4 2xl:flex dark:bg-gray-800">
+      <div className="absolute bottom-0 left-0 flex w-full justify-center bg-white p-4 dark:bg-gray-800">
         <NavLink
           to="/settings"
           data-tooltip-target="tooltip-settings"
