@@ -3,6 +3,7 @@
     "baseUrl": "./",
     "moduleResolution": "node",
     "types": ["node", "vite/client"],
+    "rootDir": "src",
     "paths": {
       "@/*": ["src/*"]
     },
