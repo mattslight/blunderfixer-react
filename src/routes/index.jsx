@@ -9,7 +9,7 @@ import NotFound from '../pages/NotFound';
 import Profile from '../pages/Profile';
 import Settings from '@/pages/settings';
 import Training from '@/pages/_placeholders/Training';
-import { GameSummary } from '../pages/games/components/GameSummary';
+import ReportPage from '@/pages/report';
 
 export default function AppRoutes() {
   return (
@@ -21,7 +21,7 @@ export default function AppRoutes() {
       <Route path="/games" element={<GameHistory />} />
       <Route path="/train" element={<Training />} />
       <Route path="/help" element={<Help />} />
-      <Route path="/report/:analysisId" element={<GameSummary />} />
+      <Route path="/report/:analysisId" element={<ReportPage />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

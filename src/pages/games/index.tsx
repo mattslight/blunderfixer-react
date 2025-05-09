@@ -2,15 +2,16 @@
 import { useMemo } from 'react';
 import { useGameData } from './hooks/useGameData';
 import { useUsername } from '@/hooks/useUsername';
+import { useNavigate } from 'react-router-dom';
 
 import { useGameAnalysis } from './hooks/useGameAnalysis';
 import { useRecentGames } from './hooks/useRecentGames';
 import GameList from './components/GameList';
-import { GameSummary } from './components/GameSummary';
 import { parseChessComGame } from '@/lib/chessComParser';
 import type { GameRecord } from '@/types';
 
 export default function GamesHistoryPage() {
+  const navigate = useNavigate();
   const { username } = useUsername();
   const { gamesMap, games: savedGames, saveGame } = useGameData();
   const { selectedId, analysis, loading, analyse, setSelectedId, analysedIds } =
@@ -18,12 +19,15 @@ export default function GamesHistoryPage() {
   const {
     games: rawRecent,
     loading: recentLoading,
+    isValidating,
     error: recentError,
     reload,
   } = useRecentGames(username);
 
   // parse your recent JSON into GameRecord
-  const recentGames = rawRecent.map(parseChessComGame);
+  const recentGames = Array.isArray(rawRecent)
+    ? rawRecent.map(parseChessComGame)
+    : [];
 
   // merge recent + saved, dedupe by id, then sort by endTime descending
   const allGames: GameRecord[] = useMemo(() => {
@@ -40,7 +44,7 @@ export default function GamesHistoryPage() {
   const handleAction = (game: GameRecord) => {
     const already = analysedIds.has(game.id);
     if (already) {
-      setSelectedId(game.id);
+      navigate(`/report/${game.id}`);
     } else {
       saveGame(game);
       analyse(game.id);
@@ -52,11 +56,15 @@ export default function GamesHistoryPage() {
       <div className="mx-auto max-w-lg space-y-4">
         <div className="flex justify-center">
           <button
-            onClick={reload}
+            onClick={() => reload()}
             disabled={recentLoading || !username}
             className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
           >
-            {recentLoading ? 'Loading…' : 'Refresh'}
+            {isValidating
+              ? 'Refreshing…'
+              : recentLoading
+                ? 'Loading…'
+                : 'Refresh'}
           </button>
         </div>
         {recentError && <p className="text-red-500">{recentError}</p>}
@@ -68,11 +76,6 @@ export default function GamesHistoryPage() {
           onAction={handleAction}
         />
       </div>
-
-      {loading && <p>Running analysis…</p>}
-      {selectedId && !loading && analysis.length > 0 && (
-        <GameSummary game={gamesMap[selectedId]!} analysis={analysis} />
-      )}
     </div>
   );
 }

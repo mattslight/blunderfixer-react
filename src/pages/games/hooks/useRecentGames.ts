@@ -1,5 +1,5 @@
 // src/pages/games/hooks/useRecentGames.ts
-import { useState, useEffect, useCallback } from 'react';
+import useSWR from 'swr';
 
 export interface RecentGame {
   uuid: string;
@@ -25,36 +25,36 @@ export interface RecentGame {
  *   - error: string message if the fetch failed, or null.
  *   - reload: function to re-trigger the fetch manually.
  */
-
 export function useRecentGames(username: string, limit = 10) {
-  const [games, setGames] = useState<RecentGame[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const url = username
+    ? `${import.meta.env.VITE_API_BASE_URL}/public/players/${username}/recent-games?limit=${limit}`
+    : null;
 
-  /**
-   * Internal fetch logic: retrieves recent games for the given username.
-   * Resets error, sets loading state, and updates `games` or `error`.
-   */
-  const load = useCallback(async () => {
-    if (!username) return;
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/public/players/${username}/recent-games?limit=${limit}`
-      );
-      if (!res.ok) throw new Error(res.statusText);
-      setGames(await res.json());
-    } catch (e: any) {
-      setError(e.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [username, limit]);
+  const fetcher = async (url: string) => {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(res.statusText);
+    return res.json(); // could be RecentGame[] or { games: RecentGame[] }
+  };
 
-  useEffect(() => {
-    load();
-  }, [load]);
+  const { data, error, isLoading, isValidating, mutate } = useSWR<
+    RecentGame[] | { games: RecentGame[] },
+    Error
+  >(url, fetcher, {
+    revalidateOnFocus: false,
+  });
 
-  return { games, loading, error, reload: load };
+  // normalize whatever shape into a flat array
+  const games: RecentGame[] = Array.isArray(data)
+    ? data
+    : Array.isArray(data?.games)
+      ? data.games
+      : [];
+
+  return {
+    games,
+    loading: isLoading,
+    error: error?.message ?? null,
+    reload: mutate,
+    isValidating, // <— flag you can hook a spinner to
+  };
 }
