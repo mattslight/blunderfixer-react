@@ -1,5 +1,5 @@
 // src/pages/games/index.tsx
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useGameData } from './hooks/useGameData';
 import { useUsername } from './hooks/useUsername';
 import { useGameAnalysis } from './hooks/useGameAnalysis';
@@ -49,9 +49,10 @@ export default function GamesHistoryPage() {
 
   return (
     <div className="space-y-8 p-4 2xl:ml-12">
-      <UsernameInput username={username} onUsernameChange={setUsername} />
-
       <div className="mx-auto max-w-lg space-y-4">
+        <div>
+          <UsernameInput username={username} onUsernameChange={setUsername} />
+        </div>
         <div className="flex justify-end">
           <button
             onClick={reload}
