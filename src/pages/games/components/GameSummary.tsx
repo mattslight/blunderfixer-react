@@ -29,14 +29,18 @@ export function GameSummary({ game, analysis }: GameSummaryProps) {
 
   return (
     <article className="mb-6 rounded border border-gray-700 p-4">
-      <div className="mb-6 h-40">
+      <div className="mb-6 -ml-14 h-40">
         <GameSummaryGraph data={chartData} max={MAX} />
       </div>
       <header className="mb-4 flex items-center justify-between">
         <div>
           <h3 className="text-lg font-medium">
-            {game.meta.players.white.player.username} vs{' '}
-            {game.meta.players.black.player.username}
+            {game.meta.players.white.player.username}{' '}
+            <span className="text-xl text-white">♞</span> vs{' '}
+            {game.meta.players.black.player.username}{' '}
+            <span className="text-xl text-black [text-shadow:-0.5px_-0.5px_0_#fff,0.5px_-0.5px_0_#fff,-0.5px_0.5px_0_#fff,0.5px_0.5px_0_#fff]">
+              ♞
+            </span>
           </h3>
           <p className="text-sm text-gray-400">
             {game.meta.date} • {game.meta.timeControl}+{game.meta.increment}s •{' '}

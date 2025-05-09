@@ -75,7 +75,9 @@ export default function GameCard({
 
         {/* Black side */}
         <div className="flex items-center space-x-2">
-          <span className="text-xl text-black">♞</span>
+          <span className="text-xl text-black [text-shadow:-0.5px_-0.5px_0_#fff,0.5px_-0.5px_0_#fff,-0.5px_0.5px_0_#fff,0.5px_0.5px_0_#fff]">
+            ♞
+          </span>
           <span className="text-lg font-semibold text-white">
             {blackPlayer.username}
           </span>

@@ -29,8 +29,9 @@ export default function GameSummaryGraph({ data, max }: GraphProps) {
           dataKey="ply"
           axisLine={false}
           tickLine={false}
-          ticks={data.map((d) => d.ply).filter((p) => p % 5 === 0)}
-          label={{ value: 'Move', position: 'insideBottom', offset: -5 }}
+          tick={false}
+          //ticks={data.map((d) => d.ply).filter((p) => p % 5 === 0)}
+          //label={{ value: 'Move', position: 'insideBottom', offset: -5 }}
         />
         <YAxis
           domain={[-max, max]}
