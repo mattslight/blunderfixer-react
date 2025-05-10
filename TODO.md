@@ -2,7 +2,7 @@
 
 ## In Progress
 
-- [ ] Better way to set username on first load
+- [x] Better way to set username on first load
 - [ ] On game list when clicking analyse show progress spinner
 - [ ] On prod fix 500 error loading /analyse-pgn (check Render.com deploy etc.)
 
