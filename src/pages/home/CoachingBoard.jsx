@@ -20,6 +20,9 @@ export default function CoachingBoard({
         <div className="flex items-center justify-center">
           <Chessboard
             position={boardFEN}
+            arePiecesDraggable={false}
+            onPieceDrop={() => false}
+            onSquareClick={() => {}}
             customBoardStyle={{
               borderRadius: '0.5em',
               boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
