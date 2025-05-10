@@ -4,8 +4,8 @@
 
 - [x] Better way to set username on first load
 - [x] Go back on setting (useNavigate)
-- [ ] On game list when clicking analyse show progress spinner
-- [ ] On prod fix 500 error loading /analyse-pgn (check Render.com deploy etc.)
+- [x] On game list when clicking analyse show progress spinner
+- [x] On prod fix 500 error loading /analyse-pgn (check Render.com deploy etc.)
 
 - [ ] Find the critical positions based on the eval swings
 - [ ] Move graph and table summary to Analysis page (what's the UX)
