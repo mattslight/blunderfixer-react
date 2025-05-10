@@ -1,4 +1,10 @@
-import React from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import ConfirmModal from './ConfirmModal';
+import UsernameModal from './UsernameModal';
+
+import { useUsername } from '@/hooks/useUsername';
 
 import {
   Flag,
@@ -13,6 +19,43 @@ import {
 import CoachingBoard from './CoachingBoard';
 
 export default function HomePage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { username, setUsername } = useUsername();
+
+  const navigate = useNavigate();
+
+  const [pendingProfile, setPendingProfile] = useState<{
+    username: string;
+    name?: string;
+  } | null>(null);
+
+  function handleSubmit(candidate: string) {
+    fetch(`https://api.chess.com/pub/player/${candidate.toLowerCase()}`)
+      .then((res) => {
+        if (!res.ok) throw new Error();
+        return res.json();
+      })
+      .then((profile) => {
+        setPendingProfile({
+          username: profile.username,
+          name: profile.name,
+        });
+      })
+      .catch(() => alert('That handle doesn’t exist on Chess.com.'));
+  }
+
+  function handleConfirm() {
+    if (!pendingProfile) return;
+    setUsername(pendingProfile.username);
+    setPendingProfile(null);
+    setIsModalOpen(false);
+    navigate('/games');
+  }
+
+  function handleCancelConfirm() {
+    setPendingProfile(null);
+  }
+
   return (
     <div className="-mt-10 min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-6 text-white sm:p-10">
       {/* Hero */}
@@ -36,7 +79,10 @@ export default function HomePage() {
           </p>
         </div>
         <div className="mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-6 md:grid-cols-2">
-          <div className="cursor-pointer rounded-xl border-b-6 border-b-emerald-900 bg-emerald-500 p-6 text-white shadow-2xl transition hover:bg-green-700">
+          <div
+            onClick={() => setIsModalOpen(true)}
+            className="cursor-pointer rounded-xl border-b-6 border-b-emerald-900 bg-emerald-500 p-6 text-white shadow-2xl transition hover:bg-green-700"
+          >
             <div className="mb-4 flex items-center justify-center">
               <Trophy className="h-8 w-8" />
             </div>
@@ -46,7 +92,10 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="cursor-pointer rounded-xl border-b-6 border-b-gray-900 bg-gray-700 p-6 text-white shadow-2xl transition hover:bg-gray-600">
+          <div
+            onClick={() => setIsModalOpen(true)}
+            className="cursor-pointer rounded-xl border-b-6 border-b-gray-900 bg-gray-700 p-6 text-white shadow-2xl transition hover:bg-gray-600"
+          >
             <div className="mb-4 flex items-center justify-center">
               <PlugZap className="h-8 w-8" />
             </div>
@@ -60,11 +109,30 @@ export default function HomePage() {
         </div>
       </section>
 
+      {isModalOpen && (
+        <UsernameModal
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleSubmit}
+        />
+      )}
+
+      {pendingProfile && (
+        <ConfirmModal
+          show={true}
+          profile={pendingProfile!}
+          onConfirm={handleConfirm}
+          onCancel={handleCancelConfirm}
+        />
+      )}
+
       <section>
         <div className="container mx-auto px-4 py-16">
           <CoachingBoard />
         </div>
-        <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+        <div
+          onClick={() => setIsModalOpen(true)}
+          className="mt-8 flex flex-col justify-center gap-4 sm:flex-row"
+        >
           <button className="rounded-lg border-b-4 border-b-green-700 bg-green-500 px-8 py-3 text-lg font-semibold text-white transition hover:bg-green-600">
             Get Started for Free
           </button>
@@ -208,7 +276,10 @@ export default function HomePage() {
           <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-400">
             Instant, human-like insights on every move — no waiting, no fluff.
           </p>
-          <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+          <div
+            onClick={() => setIsModalOpen(true)}
+            className="mt-8 flex flex-col justify-center gap-4 sm:flex-row"
+          >
             <button className="rounded-lg border-b-4 border-b-green-700 bg-green-500 px-8 py-3 text-lg font-semibold text-white transition hover:bg-green-600">
               Get Started for Free
             </button>
