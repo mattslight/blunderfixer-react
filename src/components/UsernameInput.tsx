@@ -7,9 +7,6 @@ interface Props {
 export default function UsernameInput({ username, onUsernameChange }: Props) {
   return (
     <div className="mb-4">
-      <label className="mb-1 block text-sm font-medium text-gray-200">
-        Username
-      </label>
       <input
         type="text"
         value={username}

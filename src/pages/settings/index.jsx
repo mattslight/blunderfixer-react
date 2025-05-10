@@ -1,14 +1,81 @@
+// src/pages/settings/index.jsx
 import UsernameInput from '@/components/UsernameInput';
-import { useUsername } from '@/hooks/useUsername';
-export default function Help() {
-  const { username, setUsername } = useUsername();
+import { useDebounce } from '@/hooks/useDebounce';
+import { useProfile } from '@/hooks/useProfile';
+import React, { useEffect, useState } from 'react';
+
+export default function Settings() {
+  const { profile, setUsername } = useProfile();
+
+  // Local input state
+  const [localUsername, setLocalUsername] = useState(profile.username);
+
+  // Whenever the real profile username changes (e.g. on load or outside),
+  // keep the input in sync
+  useEffect(() => {
+    setLocalUsername(profile.username);
+  }, [profile.username]);
+
+  // Debounce the localUsername
+  const debounced = useDebounce(localUsername, 500);
+
+  // When the debounced value differs and is non-empty, update the profile
+  useEffect(() => {
+    if (debounced && debounced !== profile.username) {
+      setUsername(debounced);
+    }
+  }, [debounced, profile.username, setUsername]);
+
+  // derive flag emoji
+  const countryCode = profile.country?.split('/').pop()?.toUpperCase() || '';
+  const flagEmoji = countryCode
+    ? countryCode
+        .split('')
+        .map((c) => String.fromCodePoint(c.charCodeAt(0) + 127397))
+        .join('')
+    : '';
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center">
-      <h1 className="mb-4 text-4xl font-bold">Settings</h1>
-      <p className="text-lg">This is the Settings page.</p>
-      <div>
-        <UsernameInput username={username} onUsernameChange={setUsername} />
+    <div className="flex min-h-screen items-start justify-center bg-gray-900 p-4 sm:p-6">
+      <div className="mt-10 w-full max-w-2xl rounded-2xl border border-gray-700 bg-black/80 p-6 shadow-lg">
+        <h1 className="mb-2 text-3xl font-bold text-white">Settings</h1>
+        <p className="mb-6 text-gray-400">
+          Manage your Chess.com connection and personal profile.
+        </p>
+
+        <div className="mb-6 flex items-center space-x-4">
+          {profile.avatar ? (
+            <img
+              src={profile.avatar}
+              alt={`${profile.username} avatar`}
+              className="h-18 w-18 rounded-full border border-gray-600"
+            />
+          ) : (
+            <div className="h-12 w-12 rounded-full bg-gray-600" />
+          )}
+          <div className="mb-1">
+            <p className="flex items-center text-lg text-white">
+              {profile.name || profile.username}
+              {flagEmoji && <span className="ml-2 text-xl">{flagEmoji}</span>}
+            </p>
+            <p className="text-sm text-gray-500">@{profile.username}</p>
+          </div>
+        </div>
+
+        <label
+          htmlFor="username"
+          className="mb-1 block text-sm font-medium text-gray-200"
+        >
+          Chess.com Username
+        </label>
+        <UsernameInput
+          id="username"
+          username={localUsername}
+          onUsernameChange={setLocalUsername}
+        />
+        <p className="mt-1 text-xs text-gray-500">
+          Enter a new handle to refresh your profile data.
+        </p>
       </div>
     </div>
   );
