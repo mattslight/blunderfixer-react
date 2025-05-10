@@ -7,15 +7,13 @@ interface CombinedEntry {
   isBlunder: boolean;
 }
 
-interface TableProps {
-  combined: CombinedEntry[];
-  tacticThreshold: number;
-}
-
 export default function GameSummaryTable({
   combined,
   tacticThreshold,
-}: TableProps) {
+}: {
+  combined: CombinedEntry[];
+  tacticThreshold: number;
+}) {
   return (
     <table className="w-full table-auto text-sm">
       <thead>
@@ -28,13 +26,13 @@ export default function GameSummaryTable({
         </tr>
       </thead>
       <tbody>
-        {combined.map(({ move, a, isBlunder }, i) => (
+        {combined.map(({ move, a, isBlunder }, ply_0_index) => (
           <tr
-            key={i}
+            key={ply_0_index}
             className={`border-t border-gray-700 ${isBlunder ? 'bg-red-900' : ''}`}
           >
             <td className="px-2 py-1">
-              {move.moveNumber}
+              {ply_0_index + 1}
               {move.side}. {move.san}
             </td>
             <td className="px-2 py-1 text-right">

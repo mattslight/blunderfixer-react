@@ -2,6 +2,8 @@
 import { GameRecord, AnalysisNode } from '@/types';
 import GameSummaryGraph from './GameSummaryGraph';
 import GameSummaryTable from './GameSummaryTable';
+import GameSummaryHeader from './GameSummaryHeader';
+
 interface GameSummaryProps {
   game: GameRecord;
   analysis: AnalysisNode[];
@@ -29,26 +31,10 @@ export function GameSummary({ game, analysis }: GameSummaryProps) {
 
   return (
     <article className="mb-6 rounded border border-gray-700 p-4">
-      <div className="mb-6 -ml-14 h-40">
+      <div className="-ml-14 h-40">
         <GameSummaryGraph data={chartData} max={MAX} />
       </div>
-      <header className="mb-4 flex items-center justify-between">
-        <div>
-          <h3 className="text-lg font-medium">
-            {game.meta.players.white.player.username}{' '}
-            <span className="text-xl text-white">♞</span> vs{' '}
-            {game.meta.players.black.player.username}{' '}
-            <span className="text-xl text-black [text-shadow:-0.5px_-0.5px_0_#fff,0.5px_-0.5px_0_#fff,-0.5px_0.5px_0_#fff,0.5px_0.5px_0_#fff]">
-              ♞
-            </span>
-          </h3>
-          <p className="text-sm text-gray-400">
-            {game.meta.date} • {game.meta.timeControl}+{game.meta.increment}s •{' '}
-            {game.meta.timeClass}
-          </p>
-        </div>
-        <div className="text-sm">Blunders (Δ≤–{TACTIC}): coming soon</div>
-      </header>
+      <GameSummaryHeader game={game} tacticThreshold={TACTIC} />
 
       <GameSummaryTable combined={combined} tacticThreshold={TACTIC} />
     </article>
