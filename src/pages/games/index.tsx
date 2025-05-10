@@ -1,18 +1,20 @@
 // src/pages/games/index.tsx
+import { useProfile } from '@/hooks/useProfile';
 import { useMemo } from 'react';
-import { useGameData } from './hooks/useGameData';
-import { useUsername } from '@/hooks/useUsername';
 import { useNavigate } from 'react-router-dom';
+import { useGameData } from './hooks/useGameData';
 
-import { useGameAnalysis } from './hooks/useGameAnalysis';
-import { useRecentGames } from './hooks/useRecentGames';
-import GameList from './components/GameList';
 import { parseChessComGame } from '@/lib/chessComParser';
 import type { GameRecord } from '@/types';
+import GameList from './components/GameList';
+import { useGameAnalysis } from './hooks/useGameAnalysis';
+import { useRecentGames } from './hooks/useRecentGames';
 
 export default function GamesHistoryPage() {
   const navigate = useNavigate();
-  const { username } = useUsername();
+  const {
+    profile: { username },
+  } = useProfile();
   const { gamesMap, games: savedGames, saveGame } = useGameData();
   const { selectedId, analysis, loading, analyse, setSelectedId, analysedIds } =
     useGameAnalysis(gamesMap);

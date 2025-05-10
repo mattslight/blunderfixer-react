@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ConfirmModal from './ConfirmModal';
 import UsernameModal from './UsernameModal';
 
-import { useUsername } from '@/hooks/useUsername';
+import { useProfile } from '@/hooks/useProfile';
 
 import {
   Flag,
@@ -28,7 +28,7 @@ export default function HomePage() {
     country?: string;
   } | null>(null);
 
-  const { setUsername } = useUsername();
+  const { setUsername } = useProfile();
   const navigate = useNavigate();
 
   function handleSubmit(candidate: string) {

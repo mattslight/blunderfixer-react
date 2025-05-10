@@ -1,9 +1,11 @@
-import { useUsername } from '@/hooks/useUsername';
+import { useProfile } from '@/hooks/useProfile';
 import UserMenu from './UserMenu';
 const NOTIFICATIONS = false;
 
 export default function Navbar({ toggleSidebar }) {
-  const { username } = useUsername();
+  const {
+    profile: { username },
+  } = useProfile();
   return (
     <nav className="fixed top-0 right-0 left-0 z-50 border-b border-gray-200 bg-white py-1.5 pl-2 md:pr-4 2xl:pl-8 dark:border-gray-700 dark:bg-gray-800">
       <div className="flex flex-wrap items-center justify-between">
