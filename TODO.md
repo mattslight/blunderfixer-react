@@ -2,13 +2,12 @@
 
 ## In Progress
 
-- [x] Sort out GameStoreDebug (what's the UX)
+- [ ] Better way to set username on first load
+- [ ] On game list when clicking analyse show progress spinner
+- [ ] On prod fix 500 error loading /analyse-pgn (check Render.com deploy etc.)
 
-- [ ] Save 'shallow' game analysis so they don't re-run
+- [ ] Find the critical positions based on the eval swings
 - [ ] Move graph and table summary to Analysis page (what's the UX)
-- [ ] Remember user's handle (option to change)
-- [ ] Show which games are synced
-      = [ ] Find the critical positions based on the eval swings
 - [ ] Wire up `ExamplePositions`
 - [ ] Flip board when loading a game as Black
 - [ ] Wire up feature extraction
@@ -73,3 +72,7 @@
 - [x] Overhaul PGN/FEN paste (`usePGNparser`)
 - [x] Fix loading a recent game
 - [x] **BUG**: Wild eval swings (normalization issue)
+- [x] Sort out GameStoreDebug (what's the UX)
+- [x] Save 'shallow' game analysis so they don't re-run
+- [x] Remember user's handle (option to change)
+- [x] Show which games are synced
