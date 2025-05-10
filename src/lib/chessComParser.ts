@@ -3,6 +3,8 @@ import { Chess, DEFAULT_POSITION } from 'chess.js';
 import crypto from 'crypto';
 import { GameRecord, GamePlayer, MoveNode, Player } from '../types';
 
+const DEBUG = false;
+
 /**
  * Compute a SHA-256 hash of the normalized PGN string
  */
@@ -101,20 +103,22 @@ export function parseChessComGame(json: any): GameRecord {
   }));
 
   // ── DEBUG CLOCK TOKENS ──
-  console.groupCollapsed('⚙️ Debug moveTokens');
-  moveTokens.forEach((tok, idx) => {
-    const parts = tok.rawClock?.split(':').map(Number) || [];
-    let secondsRemaining: number | undefined;
-    if (parts.length === 2) {
-      secondsRemaining = parts[0] * 60 + parts[1];
-    } else if (parts.length === 3) {
-      secondsRemaining = parts[0] * 3600 + parts[1] * 60 + parts[2];
-    }
-    console.log(
-      `#${idx} SAN=${tok.san.padEnd(6)} rawClock="${tok.rawClock}" → parts=[${parts.join(',')}] → secondsRemaining=${secondsRemaining}`
-    );
-  });
-  console.groupEnd();
+  if (DEBUG) {
+    console.groupCollapsed('⚙️ Debug moveTokens');
+    moveTokens.forEach((tok, idx) => {
+      const parts = tok.rawClock?.split(':').map(Number) || [];
+      let secondsRemaining: number | undefined;
+      if (parts.length === 2) {
+        secondsRemaining = parts[0] * 60 + parts[1];
+      } else if (parts.length === 3) {
+        secondsRemaining = parts[0] * 3600 + parts[1] * 60 + parts[2];
+      }
+      console.log(
+        `#${idx} SAN=${tok.san.padEnd(6)} rawClock="${tok.rawClock}" → parts=[${parts.join(',')}] → secondsRemaining=${secondsRemaining}`
+      );
+    });
+    console.groupEnd();
+  }
   // ── END DEBUG ──
 
   // 7) Replay moves to build MoveNode[]
