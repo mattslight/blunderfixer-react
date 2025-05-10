@@ -1,7 +1,7 @@
 // src/pages/games/components/GameCard.tsx
-import { Calendar, Timer } from 'lucide-react';
 import { GameRecord } from '@/types';
 import { formatDistanceToNow } from 'date-fns';
+import { Calendar, Timer } from 'lucide-react';
 
 interface GameCardProps {
   game: GameRecord;
@@ -38,93 +38,85 @@ export default function GameCard({
 
   // date & time control
   const dateTime = new Date(game.meta.endTime * 1000);
-  let dateStr = formatDistanceToNow(dateTime, { addSuffix: true });
-  dateStr = dateStr.replace(/^about\s*/, '');
+  let dateStr = formatDistanceToNow(dateTime, { addSuffix: true }).replace(
+    /^about\s*/,
+    ''
+  );
+
   const init = game.meta.timeControl;
   const inc = game.meta.increment;
   const mins = Math.floor(init / 60);
   const secs = init % 60;
-  let tcStr = '';
-  if (mins > 0) {
-    tcStr = `${mins}m`;
-    if (secs > 0) tcStr += `${secs}s`;
-  } else {
-    tcStr = `${secs}s`;
-  }
-
-  if (inc > 0) {
-    tcStr += ` +${inc}s`;
-  }
+  let tcStr = mins > 0 ? `${mins}m${secs ? `${secs}s` : ''}` : `${secs}s`;
+  if (inc > 0) tcStr += ` +${inc}s`;
 
   return (
     <li
-      className={`mb-6 flex flex-col rounded-lg border-l-4 bg-gray-800 p-6 ${
-        won ? 'border-green-500' : lost ? 'border-red-500' : 'border-gray-500'
-      }`}
+      className={
+        `mb-4 flex flex-col rounded-lg border-l-4 bg-gray-800 px-5 py-4 ` +
+        (won ? 'border-green-500' : lost ? 'border-red-500' : 'border-gray-500')
+      }
     >
-      <header className="mb-4 flex items-center justify-between">
-        {/* White side */}
-        <div className="flex items-center space-x-2">
-          <span className="text-xl text-white">♞</span>
-          <span className="text-lg font-semibold text-white">
-            {whitePlayer.username}
+      {/* Header: players & ratings */}
+      <header className="mt-2 mb-2 grid grid-cols-[1fr_auto_1fr] items-center gap-x-2">
+        {/* White */}
+        <div className="flex items-center space-x-1 truncate">
+          <span className="mr-2 text-xl">♞</span>
+          <span className="truncate font-semibold">{whitePlayer.username}</span>
+          <span className="hidden text-sm text-gray-400 md:flex">
+            ({whiteRating})
           </span>
-          <span className="text-sm text-gray-400">({whiteRating})</span>
         </div>
 
-        <span className="font-medium text-gray-500">vs</span>
+        {/* vs */}
+        <span className="text-sm text-gray-500">vs</span>
 
-        {/* Black side */}
-        <div className="flex items-center space-x-2">
-          <span className="text-xl text-black [text-shadow:-0.5px_-0.5px_0_#fff,0.5px_-0.5px_0_#fff,-0.5px_0.5px_0_#fff,0.5px_0.5px_0_#fff]">
+        {/* Black */}
+        <div className="flex items-center justify-end space-x-1 truncate">
+          <span className="mr-2 text-xl text-black [text-shadow:-0.5px_-0.5px_0_#fff,0.5px_-0.5px_0_#fff,-0.5px_0.5px_0_#fff,0.5px_0.5px_0_#fff]">
             ♞
           </span>
-          <span className="text-lg font-semibold text-white">
-            {blackPlayer.username}
+          <span className="truncate font-semibold">{blackPlayer.username}</span>
+          <span className="hidden text-sm text-gray-400 md:flex">
+            ({blackRating})
           </span>
-          <span className="text-sm text-gray-400">({blackRating})</span>
         </div>
       </header>
 
-      <div className="mb-4 grid grid-cols-2 gap-4 text-sm text-gray-400">
+      {/* Meta: date & time control */}
+      <div className="mt-1 mb-2 flex space-x-4 text-sm text-gray-500">
         <div className="flex items-center space-x-1">
           <Calendar size={16} />
           <time dateTime={dateTime.toISOString()}>{dateStr}</time>
         </div>
         <div className="flex items-center space-x-1">
-          <Timer size={16} />
-          <span>
-            {tcStr}{' '}
-            <em>{game.meta.pgnTags?.Rated === 'true' ? 'Rated' : 'Casual'}</em>
-          </span>
+          <Timer size={16} /> {tcStr}{' '}
+          <em className="ml-2">
+            {game.meta.rated === true ? '' : '(Unrated)'}
+          </em>
         </div>
       </div>
 
-      <footer className="flex items-center justify-between">
-        <div className="flex space-x-1">
+      {/* Footer: result & action */}
+      <footer className="mt-4 flex items-center justify-between">
+        <div className="flex items-center space-x-2">
           <span
-            className={`rounded-full px-3 py-1 text-sm font-medium ${
-              won
+            className={
+              `rounded-full px-3 py-1 text-sm font-medium ` +
+              (won
                 ? 'bg-green-600 text-white'
                 : lost
                   ? 'bg-red-600 text-white'
-                  : 'bg-gray-600 text-white'
-            }`}
+                  : 'bg-gray-600 text-white')
+            }
           >
             {won ? 'Won' : lost ? 'Lost' : 'Draw'}
           </span>
           {resultTag && (
-            <span
-              className={`rounded-full px-3 py-1 text-sm font-medium italic ${
-                won || lost
-                  ? 'bg-gray-800 text-gray-400'
-                  : 'bg-gray-200 text-gray-800'
-              }`}
-            >
-              ({resultTag})
-            </span>
+            <span className="text-sm text-gray-400 italic">({resultTag})</span>
           )}
         </div>
+
         <button
           onClick={() => onAction(game)}
           className={`rounded-md px-4 py-2 text-sm font-medium text-white ${btnColor}`}
