@@ -1,7 +1,7 @@
 // src/pages/games/hooks/useGameAnalysis.ts
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { GameRecord, AnalysisNode } from '@/types';
 import { analysePGN } from '@/api';
+import { AnalysisNode, GameRecord } from '@/types';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 /**
  * Manages analysis for each game, persisting results across reloads.
@@ -39,35 +39,42 @@ export function useGameAnalysis(gamesMap: Record<string, GameRecord>) {
   }, [analysisMap]);
 
   // run analysis if not cached
+  // inside useGameAnalysis…
   const analyse = useCallback(
-    (id: string) => {
-      setSelectedId(id);
+    async (id: string): Promise<void> => {
+      // cache‐skip
       if (analysisMap[id]?.length) return;
+
       const game = gamesMap[id];
       if (!game?.pgn) return;
+
       setLoading(true);
-      analysePGN(game.pgn, 12)
-        .then((raw) => {
-          const nodes: AnalysisNode[] = raw.map((r) => ({
-            halfMoveIndex: r.half_move_index,
-            side: r.side,
-            moveNumber: r.move_number,
-            san: r.san,
-            fenBefore: r.fen_before,
-            evalBefore: r.eval_before,
-            evalAfter: r.eval_after,
-            evalCP: r.eval_cp,
-            deltaCP: r.delta_cp,
-            depth: r.depth || 12,
-            bestMove: r.best_move,
-            playedMove: r.played_move,
-          }));
-          setAnalysisMap((prev) => ({ ...prev, [id]: nodes }));
-        })
-        .catch(console.error)
-        .finally(() => setLoading(false));
+      setSelectedId(id); // optional, if you still want to know “current” id
+
+      try {
+        const raw = await analysePGN(game.pgn, 12);
+        const nodes: AnalysisNode[] = raw.map((r) => ({
+          halfMoveIndex: r.half_move_index,
+          side: r.side,
+          moveNumber: r.move_number,
+          san: r.san,
+          fenBefore: r.fen_before,
+          evalBefore: r.eval_before,
+          evalAfter: r.eval_after,
+          evalCP: r.eval_cp,
+          deltaCP: r.delta_cp,
+          depth: r.depth || 12,
+          bestMove: r.best_move,
+          playedMove: r.played_move,
+        }));
+        setAnalysisMap((prev) => ({ ...prev, [id]: nodes }));
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     },
-    [analysisMap, gamesMap]
+    [analysisMap, gamesMap, setAnalysisMap, setLoading, setSelectedId]
   );
 
   return { selectedId, analysis, loading, analyse, setSelectedId, analysedIds };
