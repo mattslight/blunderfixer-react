@@ -3,7 +3,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { parseChessComGame } from '@/lib/chessComParser';
 import type { GameRecord } from '@/types';
 import { RefreshCw } from 'lucide-react';
-import { useEffect, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameList from './components/GameList';
 import { useGameAnalysis } from './hooks/useGameAnalysis';
@@ -12,6 +12,7 @@ import { useRecentGames } from './hooks/useRecentGames';
 
 export default function GamesHistoryPage() {
   const navigate = useNavigate();
+  const [loadingIds, setLoadingIds] = useState<Set<string>>(new Set());
   const {
     profile: { username },
   } = useProfile();
@@ -42,22 +43,29 @@ export default function GamesHistoryPage() {
     return Object.values(byId).sort((a, b) => b.meta.endTime - a.meta.endTime);
   }, [savedGames, recentGames]);
 
-  // Whenever loading goes false, clear the selectedId
-  useEffect(() => {
-    if (!loading && selectedId) {
-      setSelectedId(''); // or null if you update the hook type
-    }
-  }, [loading, selectedId, setSelectedId]);
-
   // one handler for every card
-  const handleAction = (game: GameRecord) => {
-    const already = analysedIds.has(game.id);
-    if (already) {
+  const handleAction = async (game: GameRecord) => {
+    if (analysedIds.has(game.id)) {
+      return navigate(`/report/${game.id}`);
+    }
+
+    saveGame(game);
+
+    // mark this game as loading
+    setLoadingIds((ids) => new Set(ids).add(game.id));
+
+    try {
+      // await the analysis promise
+      await analyse(game.id);
+      // once done, immediately navigate into the report
       navigate(`/report/${game.id}`);
-    } else {
-      saveGame(game);
-      setSelectedId(game.id);
-      analyse(game.id);
+    } finally {
+      // remove it from loading set no matter success or failure
+      setLoadingIds((ids) => {
+        const next = new Set(ids);
+        next.delete(game.id);
+        return next;
+      });
     }
   };
 
@@ -94,7 +102,7 @@ export default function GamesHistoryPage() {
           games={allGames}
           hero={username}
           isAnalysed={(g) => analysedIds.has(g.id)}
-          isLoading={(g) => selectedId === g.id}
+          isLoading={(g) => loadingIds.has(g.id)}
           onAction={handleAction}
         />
       </div>
