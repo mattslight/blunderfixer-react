@@ -1,8 +1,8 @@
-import { formatDistanceToNow } from 'date-fns';
+// import { formatDistanceToNow } from 'date-fns';
 
 export default function GameSummaryHeader({ game }) {
-  let dateStr = formatDistanceToNow(game.meta.date, { addSuffix: true });
-  dateStr = dateStr.replace(/^about\s*/, '');
+  // let dateStr = formatDistanceToNow(game.meta.date, { addSuffix: true });
+  //dateStr = dateStr.replace(/^about\s*/, '');
   return (
     <header className="mb-4 flex items-center justify-between">
       <div>
@@ -16,7 +16,7 @@ export default function GameSummaryHeader({ game }) {
           </span>
         </h3>
         <p className="text-sm text-gray-400">
-          {dateStr} • {game.meta.timeControl}+{game.meta.increment}s •{' '}
+          {/*dateStr*/} • {game.meta.timeControl}+{game.meta.increment}s •{' '}
           {game.meta.timeClass}
         </p>
       </div>
