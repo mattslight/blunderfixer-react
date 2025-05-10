@@ -1,5 +1,5 @@
 // src/components/UsernameModal.tsx
-import { X } from 'lucide-react';
+import { Loader, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 interface UsernameModalProps {
@@ -14,6 +14,7 @@ export default function UsernameModal({
   error,
 }: UsernameModalProps) {
   const [username, setUsername] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Close on Escape
@@ -33,6 +34,12 @@ export default function UsernameModal({
     document.addEventListener('mousedown', onClick);
     return () => document.removeEventListener('mousedown', onClick);
   }, [onClose]);
+
+  const handleContinue = () => {
+    if (!username.trim()) return;
+    setIsLoading(true);
+    onSubmit(username.trim());
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-2 backdrop-blur-md">
@@ -81,7 +88,8 @@ export default function UsernameModal({
           placeholder="e.g. MagnusCarlsen"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="mb-5 w-full rounded-full border-2 border-gray-600 bg-black/90 px-4 py-2 text-white placeholder-gray-500 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none"
+          disabled={isLoading}
+          className="mb-5 w-full rounded-full border-2 border-gray-600 bg-black/90 px-4 py-2 text-white placeholder-gray-500 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none disabled:opacity-50"
         />
         {error && (
           <p className="mb-4 text-center text-sm text-red-400">{error}</p>
@@ -91,16 +99,21 @@ export default function UsernameModal({
         <div className="flex justify-end space-x-3">
           <button
             onClick={onClose}
-            className="px-3 py-1 text-sm text-gray-300 hover:text-white focus:outline-none"
+            disabled={isLoading}
+            className="px-3 py-1 text-sm text-gray-300 hover:text-white focus:outline-none disabled:opacity-50"
           >
             Cancel
           </button>
           <button
-            onClick={() => onSubmit(username.trim())}
-            disabled={!username.trim()}
-            className="flex flex-row rounded-full bg-green-500 px-5 py-2 align-middle text-sm font-semibold text-white hover:bg-green-600 focus:outline-none disabled:bg-gray-500 disabled:opacity-50"
+            onClick={handleContinue}
+            disabled={!username.trim() || isLoading}
+            className="flex items-center space-x-2 rounded-full bg-green-500 px-5 py-2 text-sm font-semibold text-white hover:bg-green-600 focus:outline-none disabled:bg-gray-500 disabled:opacity-50"
           >
-            Continue
+            {isLoading ? (
+              <Loader className="h-5 w-5 animate-spin" />
+            ) : (
+              <span>Continue</span>
+            )}
           </button>
         </div>
       </div>
