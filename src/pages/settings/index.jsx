@@ -5,10 +5,11 @@ import { useProfile } from '@/hooks/useProfile';
 import { formatDistanceToNow } from 'date-fns';
 import { Gem, MapPin, Table, Users } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Settings() {
   const { profile, setUsername } = useProfile();
-
+  const navigate = useNavigate();
   // Local input state
   const [localUsername, setLocalUsername] = useState(profile.username);
 
@@ -39,10 +40,18 @@ export default function Settings() {
 
   return (
     <div className="flex min-h-screen items-start justify-center bg-gray-900 p-4 sm:p-6">
+      <div className="absolute top-16 left-4 md:hidden">
+        <button
+          onClick={() => navigate(-1)}
+          className="whitespace-pre text-blue-600 hover:underline"
+        >
+          ← Back
+        </button>
+      </div>
       <div className="mt-10 w-full max-w-2xl rounded-2xl border border-gray-700 bg-black/80 p-6 shadow-lg">
         <h1 className="mb-2 text-3xl font-bold text-white">Settings</h1>
-        <p className="mb-6 text-gray-400">
-          Manage your Chess.com connection and personal profile.
+        <p className="mb-6 text-lg text-gray-400">
+          Manage your Chess.com connection and profile
         </p>
 
         <div className="mb-6 flex items-center space-x-4">
@@ -88,14 +97,14 @@ export default function Settings() {
 
           {/* Chess.com Premium badge */}
           {profile.status === 'premium' && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-yellow-500 px-3 py-1.5 text-xs font-semibold text-black">
+            <span className="inline-flex items-center gap-1 rounded-full bg-blue-500 px-3 py-1.5 text-xs font-semibold text-white">
               <Gem className="h-4 w-4" /> Chess.com Premium
             </span>
           )}
 
           {/* League */}
           {profile.league && (
-            <span className="inline-flex rounded-full bg-green-700 px-3 py-1.5 text-xs font-semibold text-white">
+            <span className="inline-flex rounded-full bg-amber-500 px-3 py-1.5 text-xs font-semibold text-white">
               <Table className="mr-1 h-4 w-4" />
               {profile.league} league
             </span>
