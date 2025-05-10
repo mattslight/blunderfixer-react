@@ -38,7 +38,8 @@ export default function GameCard({
 
   // date & time control
   const dateTime = new Date(game.meta.endTime * 1000);
-  const dateStr = formatDistanceToNow(dateTime, { addSuffix: true });
+  let dateStr = formatDistanceToNow(dateTime, { addSuffix: true });
+  dateStr = dateStr.replace(/^about\s*/, '');
   const init = game.meta.timeControl;
   const inc = game.meta.increment;
   const mins = Math.floor(init / 60);

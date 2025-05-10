@@ -30,12 +30,9 @@ export function GameSummary({ game, analysis }: GameSummaryProps) {
   });
 
   return (
-    <article className="mb-6 rounded border border-gray-700 p-4">
-      <div className="-ml-14 h-40">
-        <GameSummaryGraph data={chartData} max={MAX} />
-      </div>
-      <GameSummaryHeader game={game} tacticThreshold={TACTIC} />
-
+    <article className="p- mx-auto mb-6 max-w-3xl">
+      <GameSummaryHeader game={game} />
+      <GameSummaryGraph data={chartData} max={MAX} />
       <GameSummaryTable combined={combined} tacticThreshold={TACTIC} />
     </article>
   );
