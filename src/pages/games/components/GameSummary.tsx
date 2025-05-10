@@ -1,8 +1,8 @@
-// src/components/GameSummary/GameSummary.tsx
-import { GameRecord, AnalysisNode } from '@/types';
+// src/pages/games/components/GameSummary.tsx
+import { AnalysisNode, GameRecord } from '@/types';
 import GameSummaryGraph from './GameSummaryGraph';
-import GameSummaryTable from './GameSummaryTable';
 import GameSummaryHeader from './GameSummaryHeader';
+import GameSummaryTable from './GameSummaryTable';
 
 interface GameSummaryProps {
   game: GameRecord;
@@ -30,7 +30,7 @@ export function GameSummary({ game, analysis }: GameSummaryProps) {
   });
 
   return (
-    <article className="p- mx-auto mb-6 max-w-3xl">
+    <article className="mx-auto mb-6 w-full max-w-3xl md:p-4">
       <GameSummaryHeader game={game} />
       <GameSummaryGraph data={chartData} max={MAX} />
       <GameSummaryTable combined={combined} tacticThreshold={TACTIC} />
