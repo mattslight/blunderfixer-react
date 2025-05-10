@@ -26,27 +26,71 @@ export default function HomePage() {
     name?: string;
     avatar?: string;
     country?: string;
+    location?: string;
+    last_online?: number;
+    last_played?: number;
   } | null>(null);
 
   const { setUsername } = useProfile();
   const navigate = useNavigate();
 
+  // inside HomePage component
   function handleSubmit(candidate: string) {
     setUsernameError(undefined);
-    fetch(`https://api.chess.com/pub/player/${candidate.toLowerCase()}`)
-      .then((res) => {
-        if (!res.ok) throw new Error();
-        return res.json();
-      })
-      .then((profile: any) => {
+
+    const uname = candidate.toLowerCase();
+    const playerUrl = `https://api.chess.com/pub/player/${uname}`;
+
+    // Build YYYY/MM for this month and last month
+    const now = new Date();
+    const year = now.getUTCFullYear();
+    const month = now.getUTCMonth() + 1;
+    let prevY = year,
+      prevM = month - 1;
+    if (prevM < 1) {
+      prevM = 12;
+      prevY = year - 1;
+    }
+
+    const fmt = (y: number, m: number) =>
+      `https://api.chess.com/pub/player/${uname}/games/${y}/${String(m).padStart(2, '0')}`;
+
+    const thisMonthUrl = fmt(year, month);
+    const lastMonthUrl = fmt(prevY, prevM);
+
+    // Fire off all three at once
+    Promise.all([fetch(playerUrl), fetch(thisMonthUrl), fetch(lastMonthUrl)])
+      .then(async ([pRes, currRes, prevRes]) => {
+        if (!pRes.ok) throw new Error('Profile not found');
+
+        // parse profile
+        const pData: any = await pRes.json();
+
+        // parse games (fall back to empty list on error)
+        const currData = currRes.ok ? await currRes.json() : { games: [] };
+        const prevData = prevRes.ok ? await prevRes.json() : { games: [] };
+
+        // merge both months’ games
+        const allGames = [...currData.games, ...prevData.games];
+        const lastPlayed = allGames.length
+          ? Math.max(...allGames.map((g: any) => g.end_time))
+          : undefined;
+
+        // now we have everything—open the modal
         setPendingProfile({
-          username: profile.username,
-          name: profile.name,
-          avatar: profile.avatar, // url to their avatar
-          country: profile.country, // free-text location
+          username: pData.username,
+          name: pData.name,
+          avatar: pData.avatar,
+          country: pData.country,
+          location: pData.location,
+          last_online: pData.last_online,
+          last_played: lastPlayed,
         });
+        setIsModalOpen(true);
       })
-      .catch(() => setUsernameError('That handle doesn’t exist on Chess.com.'));
+      .catch(() => {
+        setUsernameError('That handle doesn’t exist on Chess.com.');
+      });
   }
 
   function handleConfirm() {

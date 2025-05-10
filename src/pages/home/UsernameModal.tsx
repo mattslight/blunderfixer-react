@@ -35,7 +35,7 @@ export default function UsernameModal({
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-2 backdrop-blur-md">
       <div
         ref={modalRef}
         className="relative w-full max-w-md rounded-xl border border-gray-700 bg-black/80 p-6 shadow-xl"
@@ -58,11 +58,23 @@ export default function UsernameModal({
         </p>
 
         {/* Benefits */}
-        <div className="mb-6 space-y-1 text-center text-xs text-gray-300">
-          <p>🔁 Review lost positions, ask questions</p>
-          <p>🎯 Get clear answers on what went wrong</p>
-          <p>🏆 Practice key ideas until mastery</p>
+        <div className="mx-auto mb-6 max-w-xs text-left text-xs text-gray-300">
+          <ul className="ml-10 space-y-1">
+            <li className="flex items-start">
+              <span className="mr-2">🔁</span>
+              <span>Review lost positions, ask questions</span>
+            </li>
+            <li className="flex items-start">
+              <span className="mr-2">🎯</span>
+              <span>Get clear answers on what went wrong</span>
+            </li>
+            <li className="flex items-start">
+              <span className="mr-2">🏆</span>
+              <span>Practice key ideas until mastery</span>
+            </li>
+          </ul>
         </div>
+
         {/* Input */}
         <input
           type="text"
