@@ -1,9 +1,10 @@
 // src/pages/report/index.tsx
-import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useGameData } from '@/pages/games/hooks/useGameData';
-import { useGameAnalysis } from '@/pages/games/hooks/useGameAnalysis';
 import { GameSummary } from '@/pages/games/components/GameSummary';
+import { useGameAnalysis } from '@/pages/games/hooks/useGameAnalysis';
+import { useGameData } from '@/pages/games/hooks/useGameData';
+import { Loader } from 'lucide-react';
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function ReportPage() {
   const { analysisId } = useParams<{ analysisId: string }>();
@@ -17,7 +18,6 @@ export default function ReportPage() {
       navigate('/games');
       return;
     }
-    // if we already analysed, just pick it; if not, kick off analysis
     if (analysedIds.has(analysisId)) {
       setSelectedId(analysisId);
     } else {
@@ -25,9 +25,17 @@ export default function ReportPage() {
     }
   }, [analysisId, analysedIds, analyse, navigate, setSelectedId]);
 
+  // guard
   if (!analysisId) return null;
+
+  // show spinner while we’re waiting
   if (loading || !analysis.length) {
-    return <p className="p-4">Running analysis…</p>;
+    return (
+      <div className="flex flex-col items-center justify-center p-8">
+        <Loader className="h-8 w-8 animate-spin text-green-400" />
+        <p className="mt-4 text-lg text-gray-300">Running analysis…</p>
+      </div>
+    );
   }
 
   const game = gamesMap[analysisId]!;
