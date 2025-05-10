@@ -20,28 +20,33 @@ import CoachingBoard from './CoachingBoard';
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { username, setUsername } = useUsername();
-
-  const navigate = useNavigate();
-
+  const [usernameError, setUsernameError] = useState<string | undefined>();
   const [pendingProfile, setPendingProfile] = useState<{
     username: string;
     name?: string;
+    avatar?: string;
+    country?: string;
   } | null>(null);
 
+  const { setUsername } = useUsername();
+  const navigate = useNavigate();
+
   function handleSubmit(candidate: string) {
+    setUsernameError(undefined);
     fetch(`https://api.chess.com/pub/player/${candidate.toLowerCase()}`)
       .then((res) => {
         if (!res.ok) throw new Error();
         return res.json();
       })
-      .then((profile) => {
+      .then((profile: any) => {
         setPendingProfile({
           username: profile.username,
           name: profile.name,
+          avatar: profile.avatar, // url to their avatar
+          country: profile.country, // free-text location
         });
       })
-      .catch(() => alert('That handle doesn’t exist on Chess.com.'));
+      .catch(() => setUsernameError('That handle doesn’t exist on Chess.com.'));
   }
 
   function handleConfirm() {
@@ -54,6 +59,7 @@ export default function HomePage() {
 
   function handleCancelConfirm() {
     setPendingProfile(null);
+    setIsModalOpen(true);
   }
 
   return (
@@ -113,6 +119,7 @@ export default function HomePage() {
         <UsernameModal
           onClose={() => setIsModalOpen(false)}
           onSubmit={handleSubmit}
+          error={usernameError}
         />
       )}
 

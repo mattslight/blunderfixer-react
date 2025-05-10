@@ -1,57 +1,94 @@
 // src/components/UsernameModal.tsx
-import { useState } from 'react';
+import { X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 interface UsernameModalProps {
-  /** Called when the user clicks “Cancel” or outside the modal */
   onClose(): void;
-  /** Called with the entered username when the user confirms */
   onSubmit(username: string): void;
+  error?: string;
 }
 
 export default function UsernameModal({
   onClose,
   onSubmit,
+  error,
 }: UsernameModalProps) {
   const [username, setUsername] = useState('');
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // Close on Escape
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  // Click outside to close
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    };
+    document.addEventListener('mousedown', onClick);
+    return () => document.removeEventListener('mousedown', onClick);
+  }, [onClose]);
 
   return (
-    <div
-      className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black"
-      onClick={onClose}
-      aria-modal="true"
-      role="dialog"
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md">
       <div
-        className="w-full max-w-sm rounded-lg bg-white p-6 shadow-lg"
-        onClick={(e) => e.stopPropagation()}
+        ref={modalRef}
+        className="relative w-full max-w-md rounded-xl border border-gray-700 bg-black/80 p-6 shadow-xl"
       >
-        <h2 className="mb-4 text-lg font-semibold text-gray-800">
+        {/* Close */}
+        <button
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute top-4 right-4 text-gray-400 hover:text-white"
+        >
+          <X size={20} />
+        </button>
+
+        {/* Header */}
+        <h2 className="mt-4 mb-2 text-center text-xl font-medium text-white">
           Enter your Chess.com username
         </h2>
+        <p className="mb-6 text-center text-sm text-gray-400">
+          We’ll pull in your latest games for instant analysis.
+        </p>
 
+        {/* Benefits */}
+        <div className="mb-6 space-y-1 text-center text-xs text-gray-300">
+          <p>🔁 Review lost positions, ask questions</p>
+          <p>🎯 Get clear answers on what went wrong</p>
+          <p>🏆 Practice key ideas until mastery</p>
+        </div>
+        {/* Input */}
         <input
           type="text"
           placeholder="e.g. MagnusCarlsen"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="w-full rounded border border-gray-300 px-3 py-2 text-black focus:ring focus:outline-none"
+          className="mb-5 w-full rounded-full border-2 border-gray-600 bg-black/90 px-4 py-2 text-white placeholder-gray-500 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none"
         />
+        {error && (
+          <p className="mb-4 text-center text-sm text-red-400">{error}</p>
+        )}
 
-        <div className="mt-6 flex justify-end space-x-3">
+        {/* Actions */}
+        <div className="flex justify-end space-x-3">
           <button
-            type="button"
             onClick={onClose}
-            className="rounded px-4 py-2 text-gray-700 hover:bg-gray-100 focus:outline-none"
+            className="px-3 py-1 text-sm text-gray-300 hover:text-white focus:outline-none"
           >
             Cancel
           </button>
           <button
-            type="button"
             onClick={() => onSubmit(username.trim())}
             disabled={!username.trim()}
-            className="rounded bg-green-500 px-4 py-2 font-semibold text-white hover:bg-green-600 focus:outline-none disabled:opacity-50"
+            className="flex flex-row rounded-full bg-green-500 px-5 py-2 align-middle text-sm font-semibold text-white hover:bg-green-600 focus:outline-none disabled:bg-gray-500 disabled:opacity-50"
           >
-            OK
+            Continue
           </button>
         </div>
       </div>
