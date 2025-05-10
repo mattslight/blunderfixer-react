@@ -1,12 +1,13 @@
 // src/pages/games/components/GameCard.tsx
 import { GameRecord } from '@/types';
 import { formatDistanceToNow } from 'date-fns';
-import { Calendar, Timer } from 'lucide-react';
+import { Calendar, Loader, Timer } from 'lucide-react';
 
 interface GameCardProps {
   game: GameRecord;
   hero: string;
   isAnalysed: boolean;
+  isLoading: boolean;
   onAction: (game: GameRecord) => void;
 }
 
@@ -14,6 +15,7 @@ export default function GameCard({
   game,
   hero,
   isAnalysed,
+  isLoading,
   onAction,
 }: GameCardProps) {
   // extract player metadata
@@ -119,9 +121,14 @@ export default function GameCard({
 
         <button
           onClick={() => onAction(game)}
+          disabled={isLoading}
           className={`rounded-md px-4 py-2 text-sm font-medium text-white ${btnColor}`}
         >
-          {btnLabel}
+          {isLoading ? (
+            <Loader className="h-4 w-4 animate-spin" />
+          ) : (
+            <span>{btnLabel}</span>
+          )}
         </button>
       </footer>
     </li>

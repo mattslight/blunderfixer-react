@@ -6,6 +6,7 @@ interface GameListProps {
   games: GameRecord[];
   hero: string;
   isAnalysed: (game: GameRecord) => boolean;
+  isLoading: (game: GameRecord) => boolean;
   onAction: (game: GameRecord) => void;
 }
 
@@ -13,6 +14,7 @@ export default function GameList({
   games,
   hero,
   isAnalysed,
+  isLoading,
   onAction,
 }: GameListProps) {
   if (games.length === 0) {
@@ -27,6 +29,7 @@ export default function GameList({
           game={game}
           hero={hero}
           isAnalysed={isAnalysed(game)}
+          isLoading={isLoading(game)}
           onAction={onAction}
         />
       ))}

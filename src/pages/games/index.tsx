@@ -3,7 +3,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { parseChessComGame } from '@/lib/chessComParser';
 import type { GameRecord } from '@/types';
 import { RefreshCw } from 'lucide-react';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameList from './components/GameList';
 import { useGameAnalysis } from './hooks/useGameAnalysis';
@@ -42,6 +42,13 @@ export default function GamesHistoryPage() {
     return Object.values(byId).sort((a, b) => b.meta.endTime - a.meta.endTime);
   }, [savedGames, recentGames]);
 
+  // Whenever loading goes false, clear the selectedId
+  useEffect(() => {
+    if (!loading && selectedId) {
+      setSelectedId(''); // or null if you update the hook type
+    }
+  }, [loading, selectedId, setSelectedId]);
+
   // one handler for every card
   const handleAction = (game: GameRecord) => {
     const already = analysedIds.has(game.id);
@@ -49,6 +56,7 @@ export default function GamesHistoryPage() {
       navigate(`/report/${game.id}`);
     } else {
       saveGame(game);
+      setSelectedId(game.id);
       analyse(game.id);
     }
   };
@@ -86,6 +94,7 @@ export default function GamesHistoryPage() {
           games={allGames}
           hero={username}
           isAnalysed={(g) => analysedIds.has(g.id)}
+          isLoading={(g) => selectedId === g.id}
           onAction={handleAction}
         />
       </div>
