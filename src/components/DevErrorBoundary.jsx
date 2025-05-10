@@ -1,7 +1,7 @@
 // src/components/DevErrorBoundary.jsx
+import { MessageCircleWarning, PlayCircle, PlugZap } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MessageCircleWarning, PlayCircle, PlugZap } from 'lucide-react';
 
 export default class DevErrorBoundary extends React.Component {
   state = { error: null };
@@ -18,7 +18,7 @@ export default class DevErrorBoundary extends React.Component {
   render() {
     const { error } = this.state;
     if (error) {
-      if (import.meta.env.DEV) {
+      if (import.meta.env.DEV || true) {
         throw error; // Vite overlay
       }
       // PRODUCTION fallback UI:
