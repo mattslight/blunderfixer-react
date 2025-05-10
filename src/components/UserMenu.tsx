@@ -2,11 +2,12 @@
 import { useProfile } from '@/hooks/useProfile';
 import { ChevronDown, LogOut } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 export default function UserMenu() {
   const { profile, setUsername } = useProfile();
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -69,7 +70,10 @@ export default function UserMenu() {
             <ul className="py-1 text-gray-300">
               <li>
                 <button
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    setOpen(false);
+                    navigate('/settings');
+                  }}
                   className="flex w-full items-center px-4 py-2 text-sm hover:bg-gray-700"
                 >
                   My profile
@@ -79,8 +83,7 @@ export default function UserMenu() {
                 <button
                   onClick={() => {
                     setOpen(false);
-                    // navigate to settings page, e.g.:
-                    // navigate('/settings')
+                    navigate('/settings');
                   }}
                   className="flex w-full items-center px-4 py-2 text-sm hover:bg-gray-700"
                 >

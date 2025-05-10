@@ -2,6 +2,8 @@
 import UsernameInput from '@/components/UsernameInput';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useProfile } from '@/hooks/useProfile';
+import { formatDistanceToNow } from 'date-fns';
+import { Gem, MapPin, Table, Users } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
 export default function Settings() {
@@ -55,11 +57,66 @@ export default function Settings() {
           )}
           <div className="mb-1">
             <p className="flex items-center text-lg text-white">
+              {/* Chess title */}
+              {profile.title && (
+                <span className="mr-2 rounded-full bg-indigo-600 px-2 py-1 text-xs font-semibold text-white">
+                  {profile.title}
+                </span>
+              )}
               {profile.name || profile.username}
               {flagEmoji && <span className="ml-2 text-xl">{flagEmoji}</span>}
             </p>
             <p className="text-sm text-gray-500">@{profile.username}</p>
+            {/* Location */}
+            {profile.location && (
+              <p className="mt-1 flex items-center text-xs text-gray-400">
+                <MapPin className="mr-1 h-4 w-4" />
+                {profile.location}
+              </p>
+            )}
           </div>
+        </div>
+
+        {/* � cool profile info � */}
+        <div className="mb-4 flex flex-wrap items-center gap-3 text-sm text-gray-400">
+          {/* Followers */}
+          {typeof profile.followers === 'number' && (
+            <span className="inline-flex items-center gap-1 text-sm text-gray-400">
+              <Users /> {profile.followers.toLocaleString()} followers
+            </span>
+          )}
+
+          {/* Chess.com Premium badge */}
+          {profile.status === 'premium' && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-yellow-500 px-3 py-1.5 text-xs font-semibold text-black">
+              <Gem className="h-4 w-4" /> Chess.com Premium
+            </span>
+          )}
+
+          {/* League */}
+          {profile.league && (
+            <span className="inline-flex rounded-full bg-green-700 px-3 py-1.5 text-xs font-semibold text-white">
+              <Table className="mr-1 h-4 w-4" />
+              {profile.league} league
+            </span>
+          )}
+        </div>
+
+        {/* � join/last?online metadata � */}
+        <div className="mb-6 space-y-1 text-xs text-gray-500">
+          {profile.joined && (
+            <div>
+              Joined {new Date(profile.joined * 1000).toLocaleDateString()}
+            </div>
+          )}
+          {profile.last_online && (
+            <div className="text-xs text-gray-500">
+              Last online{' '}
+              {formatDistanceToNow(new Date(profile.last_online * 1000), {
+                addSuffix: true,
+              })}
+            </div>
+          )}
         </div>
 
         <label
