@@ -9,7 +9,7 @@ import {
 import useGameInputParser from './hooks/useGameInputParser';
 import useAnalysisEngine from './hooks/useAnalysisEngine';
 import useGameHistory from './hooks/useGameHistory';
-import useMoveInput from './hooks/useMoveInput';
+import useMoveInput from '@/pages/analyse/hooks/useMoveInput';
 import BoardAndEval from './components/BoardAndEval';
 import CoachAndChat from './components/CoachAndChat';
 
