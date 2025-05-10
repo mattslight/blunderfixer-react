@@ -1,13 +1,13 @@
 // src/pages/games/index.tsx
 import { useProfile } from '@/hooks/useProfile';
-import { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useGameData } from './hooks/useGameData';
-
 import { parseChessComGame } from '@/lib/chessComParser';
 import type { GameRecord } from '@/types';
+import { RefreshCw } from 'lucide-react';
+import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import GameList from './components/GameList';
 import { useGameAnalysis } from './hooks/useGameAnalysis';
+import { useGameData } from './hooks/useGameData';
 import { useRecentGames } from './hooks/useRecentGames';
 
 export default function GamesHistoryPage() {
@@ -54,20 +54,31 @@ export default function GamesHistoryPage() {
   };
 
   return (
-    <div className="space-y-8 p-4 2xl:ml-12">
+    <div className="p-4 pt-0 2xl:ml-12">
       <div className="mx-auto max-w-lg space-y-4">
-        <div className="flex justify-center">
-          <button
-            onClick={() => reload()}
-            disabled={recentLoading || !username}
-            className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
-          >
-            {isValidating
-              ? 'Refreshing…'
-              : recentLoading
-                ? 'Loading…'
-                : 'Refresh'}
-          </button>
+        <div className="flex flex-row items-baseline justify-between">
+          <div>
+            <h1 className="mt-4 mb-2 text-2xl font-semibold text-white">
+              Recent Games
+            </h1>
+          </div>
+          <div>
+            <button
+              onClick={() => reload()}
+              disabled={isValidating || recentLoading || !username}
+              className="inline-flex items-center rounded border-1 border-blue-800 bg-blue-950 px-3 py-1 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
+            >
+              <RefreshCw
+                className={`mr-2 ${isValidating && `animate-spin`}`}
+                size={14}
+              />
+              {isValidating
+                ? 'Fetching...'
+                : recentLoading
+                  ? 'Loading…'
+                  : 'Refresh'}
+            </button>
+          </div>
         </div>
         {recentError && <p className="text-red-500">{recentError}</p>}
 
