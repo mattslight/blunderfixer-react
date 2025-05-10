@@ -33,7 +33,7 @@ export default function ReportPage() {
   const game = gamesMap[analysisId]!;
 
   return (
-    <div className="p-4">
+    <div className="p-4 2xl:ml-10">
       <button
         onClick={() => navigate(-1)}
         className="mb-4 text-blue-600 hover:underline"
