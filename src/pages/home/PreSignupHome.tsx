@@ -121,7 +121,7 @@ export default function HomePage() {
         </p>
         <div className="flex flex-col items-center justify-center space-y-1 md:flex-row md:gap-8">
           <p className="text-md text-slate-400">
-            <b className="text-slate-200">345,920</b> Blunders Fixed
+            ‼️ <b className="text-slate-200">45,920</b> Blunders Fixed
           </p>
           <p className="text-md text-slate-400">
             <span className="mr-1 text-green-400">♥</span>
