@@ -10,12 +10,12 @@ import 'flowbite';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <DevErrorBoundary>
-      <BrowserRouter>
+    <BrowserRouter>
+      <DevErrorBoundary>
         <ProfileProvider>
           <App />
         </ProfileProvider>
-      </BrowserRouter>
-    </DevErrorBoundary>
+      </DevErrorBoundary>
+    </BrowserRouter>
   </StrictMode>
 );
