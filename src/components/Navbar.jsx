@@ -47,7 +47,7 @@ export default function Navbar({ toggleSidebar }) {
             </button>
           )}
           <a href="/" className="mr-4 flex items-center justify-between">
-            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+            <span className="self-center font-semibold whitespace-nowrap dark:text-gray-200">
               BlunderFixer ‼️
             </span>
           </a>
