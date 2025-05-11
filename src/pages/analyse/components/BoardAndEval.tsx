@@ -5,7 +5,7 @@ import { Chessboard } from 'react-chessboard';
 import EvalBar from './EvalBar';
 //import ExamplePositions from './ExamplePositions';
 import ToggleSwitch from '@/components/ToggleSwitch';
-import MoveList from './MoveList';
+import ContinuationToggle from './ContinuationToggle';
 import MoveStepper from './MoveStepper';
 
 export default function BoardAndEval({
@@ -67,6 +67,13 @@ export default function BoardAndEval({
   //   );
   // }
 
+  const currentDepth = Math.max(
+    lines[0]?.depth,
+    lines[1]?.depth,
+    lines[2]?.depth,
+    0
+  );
+
   return (
     <div className="flex flex-col items-center space-y-3">
       {/* 2) MoveStepper navigation */}
@@ -119,14 +126,29 @@ export default function BoardAndEval({
 
       {/* 4) Engine continuation lines */}
       <div className="w-full max-w-lg">
-        <ToggleSwitch
-          checked={moveListViewMode === 'advanced'}
-          onChange={() =>
-            setMoveListViewMode((m) => (m === 'simple' ? 'advanced' : 'simple'))
-          }
-          label="Full lines"
-        />
-        <MoveList lines={lines} view={moveListViewMode} />
+        <div className="flex flex-row items-center justify-between text-sm text-gray-400">
+          <div>
+            <ToggleSwitch
+              checked={moveListViewMode === 'advanced'}
+              onChange={() =>
+                setMoveListViewMode((m) =>
+                  m === 'simple' ? 'advanced' : 'simple'
+                )
+              }
+              label="Full lines"
+            />
+          </div>
+          <div className="text-xs text-gray-500">
+            (<i>depth {currentDepth}</i>)
+          </div>
+        </div>
+        <div className="mt-2 space-y-1">
+          <ContinuationToggle
+            lines={lines}
+            view={moveListViewMode}
+            currentDepth={currentDepth}
+          />
+        </div>
       </div>
     </div>
   );

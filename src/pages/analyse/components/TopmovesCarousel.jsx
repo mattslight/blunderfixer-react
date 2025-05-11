@@ -41,7 +41,7 @@ export default function TopmovesCarousel({ lines, onSlideChange }) {
     activeLines.length > 0 ? activeLines : prevBest ? [prevBest] : [];
 
   return (
-    <div className="relative mt-4 w-full">
+    <div className="relative w-full">
       <Swiper
         modules={[Navigation]}
         onSwiper={(s) => (swiperRef.current = s)}
@@ -66,7 +66,7 @@ export default function TopmovesCarousel({ lines, onSlideChange }) {
 
           return (
             <SwiperSlide key={i}>
-              <div className="flex flex-col items-center justify-center rounded-lg bg-white p-6 shadow dark:bg-gray-800">
+              <div className="flex flex-col items-center justify-center rounded-lg bg-white p-4 shadow dark:bg-gray-800">
                 <span
                   className={`mb-2 rounded-full px-3 py-1 text-sm font-bold ${
                     i === 0

@@ -1,15 +1,7 @@
 export default function MoveLines({ lines, currentDepth }) {
   return (
     <div className="rounded bg-gray-800 p-2">
-      <div className="flex flex-row items-center justify-between text-sm text-gray-400">
-        <div>
-          <b>Best continuations</b>
-        </div>
-        <div className="text-xs text-gray-500">
-          (<i>depth {currentDepth}</i>)
-        </div>
-      </div>
-      <div className="mt-2 space-y-1">
+      <div className="space-y-1">
         {lines
           .filter((l) => l.moves.length > 0)
           .map((l) => {
