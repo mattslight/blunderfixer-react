@@ -1,0 +1,179 @@
+// src/pages/analyse/components/CoachAndChat.tsx
+import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import useCoachExplanation from '../hooks/useCoachExplanation';
+import PositionFeatures from './PositionFeatures';
+
+const coachImageSrc = '/coach.png';
+
+type Msg = { role: 'coach' | 'user' | 'typing'; text: string };
+type Props = {
+  fen: string;
+  lines: any[];
+  features: any;
+  legalMoves: string[];
+};
+
+export default function CoachAndChat({
+  fen,
+  lines,
+  features,
+  legalMoves,
+}: Props) {
+  // Hook for “full analysis”
+  const {
+    explanation,
+    loading: analysisLoading,
+    error: analysisError,
+    getExplanation,
+  } = useCoachExplanation();
+
+  // Unified bubble stream
+  const [messages, setMessages] = useState<Msg[]>([
+    { role: 'coach', text: 'Hey there! What would you like your coach to do?' },
+  ]);
+  const [input, setInput] = useState('');
+
+  const push = (msg: Msg) => setMessages((m) => [...m, msg]);
+
+  // 1) Full-analysis button
+  const handleFullAnalysis = async () => {
+    push({ role: 'user', text: 'Full analysis please' });
+    push({ role: 'typing', text: 'Coach is typing…' });
+    try {
+      const txt = await getExplanation({
+        fen,
+        lines,
+        legal_moves: legalMoves,
+        features,
+      });
+      // remove “typing…”
+      setMessages((m) => m.filter((x) => x.role !== 'typing'));
+      push({ role: 'coach', text: txt });
+    } catch {
+      setMessages((m) => m.filter((x) => x.role !== 'typing'));
+      push({ role: 'coach', text: 'Oops, something went wrong 😕' });
+    }
+  };
+
+  // 2) Hint-button stub (swap in useCoachHint later)
+  const handleHint = () => {
+    push({ role: 'user', text: 'Give me a hint' });
+    push({ role: 'coach', text: 'Hint endpoint not wired yet.' });
+  };
+
+  // 3) Free-form Q/A against /coach-chat
+  const handleAsk = async () => {
+    const q = input.trim();
+    if (!q) return;
+    // 3a) record user
+    push({ role: 'user', text: q });
+    setInput('');
+    // 3b) show typing
+    push({ role: 'typing', text: 'Coach is thinking…' });
+
+    // build past_messages
+    const past = messages
+      .filter((m) => m.role !== 'typing')
+      .map((m) => ({
+        role: m.role === 'user' ? 'user' : 'assistant',
+        content: m.text,
+      }));
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/coach-chat`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fen,
+            legal_moves: legalMoves,
+            past_messages: past,
+            user_message: q,
+          }),
+        }
+      );
+      const data = await res.json();
+      setMessages((m) => m.filter((x) => x.role !== 'typing'));
+      if (data.reply) {
+        push({ role: 'coach', text: data.reply });
+      } else {
+        push({ role: 'coach', text: `Error: ${data.error}` });
+      }
+    } catch {
+      setMessages((m) => m.filter((x) => x.role !== 'typing'));
+      push({ role: 'coach', text: 'Network error—please try again.' });
+    }
+  };
+
+  return (
+    <div className="mx-auto max-w-md space-y-4 rounded-xl bg-gray-800 p-4 shadow-xl">
+      {/* 👥 Animated bubbles */}
+      <AnimatePresence initial={false}>
+        {messages.map((msg, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -5 }}
+            transition={{ duration: 0.2, delay: i * 0.05 }}
+            className={`flex items-start space-x-2 ${
+              msg.role === 'user' ? 'justify-end' : ''
+            }`}
+          >
+            {msg.role === 'coach' && (
+              <img
+                src={coachImageSrc}
+                alt="Coach"
+                className="h-8 w-8 self-end rounded-full"
+              />
+            )}
+
+            <div
+              className={`max-w-[70%] rounded-xl p-3 ${msg.role === 'coach' ? 'bg-green-600 text-white' : ''} ${msg.role === 'user' ? 'bg-blue-500 text-white' : ''} ${msg.role === 'typing' ? 'bg-gray-700 text-gray-400 italic' : ''} `}
+            >
+              <div className="prose prose-green dark:prose-invert prose-table:border-spacing-y-2 dark:[--tw-prose-td-borders-opacity:0.5] dark:[--tw-prose-td-borders:theme(colors.white)] dark:[--tw-prose-th-borders-opacity:0.5] dark:[--tw-prose-th-borders:theme(colors.white)]">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {msg.text}
+                </ReactMarkdown>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </AnimatePresence>
+
+      {/* 🔘 Action pills */}
+      <div className="flex justify-center space-x-3">
+        <button
+          onClick={handleHint}
+          className="rounded-full bg-purple-500 px-4 py-1 text-white hover:bg-purple-600"
+        >
+          Give me a hint
+        </button>
+        <button
+          onClick={handleFullAnalysis}
+          disabled={analysisLoading}
+          className="rounded-full bg-green-500 px-4 py-1 text-white hover:bg-green-600 disabled:opacity-50"
+        >
+          {analysisLoading ? 'Analyzing…' : 'Full analysis'}
+        </button>
+      </div>
+
+      {/* 💬 Always-on input */}
+      <input
+        type="text"
+        placeholder="Type a question or pick a button above…"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => e.key === 'Enter' && handleAsk()}
+        className="w-full rounded-lg bg-gray-700 p-2 text-white placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:outline-none"
+      />
+
+      {/* 📊 Positional features after a true analysis */}
+      {explanation && <PositionFeatures features={features} />}
+    </div>
+  );
+}
