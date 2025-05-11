@@ -13,19 +13,19 @@ export function AnalysisToolbar({ onOpenPaste, onOpenGames, onClear }) {
     <div className="mt-2 flex flex-wrap justify-center gap-4 text-sm md:mt-4">
       <Button
         onClick={onOpenGames}
-        className="flex items-center gap-2 rounded-none border-b-2 border-green-700 px-0 py-1.5 text-sm font-medium text-gray-200 shadow-sm transition-colors hover:bg-green-700"
+        className="flex items-center gap-2 rounded-none border-b-2 border-green-700 px-0 py-1.5 text-sm font-medium text-gray-200 shadow-sm transition-colors hover:bg-green-950"
       >
         <ClockPlus className="h-4 w-4" /> Recent Games
       </Button>
       <Button
         onClick={onOpenPaste}
-        className="flex items-center gap-2 rounded-none border-b-2 border-b-blue-700 px-0 py-1.5 text-sm font-medium text-gray-200 shadow-sm transition-colors hover:bg-purple-800"
+        className="flex items-center gap-2 rounded-none border-b-2 border-b-blue-700 px-0 py-1.5 text-sm font-medium text-gray-200 shadow-sm transition-colors hover:bg-blue-950"
       >
         <Clipboard className="h-4 w-4" /> Paste PGN
       </Button>
       <Button
         onClick={onClear}
-        className="flex items-center gap-2 rounded-none border-b-2 border-b-red-700 px-0 py-1.5 text-sm font-medium text-gray-200 shadow-sm transition-colors hover:bg-red-700"
+        className="flex items-center gap-2 rounded-none border-b-2 border-b-red-700 px-0 py-1.5 text-sm font-medium text-gray-200 shadow-sm transition-colors hover:bg-red-950"
       >
         <Trash2 className="h-4 w-4" /> Reset
       </Button>

@@ -1,15 +1,14 @@
 import { Route, Routes } from 'react-router-dom';
 
+import Help from '@/pages/_placeholders/Help';
+import Insights from '@/pages/_placeholders/Insights';
 import Training from '@/pages/_placeholders/Training';
+import AnalyseGame from '@/pages/analyse';
+import GameHistory from '@/pages/games';
+import PreSignupHome from '@/pages/home/PreSignupHome';
+import NotFound from '@/pages/NotFound';
 import ReportPage from '@/pages/report';
 import Settings from '@/pages/settings';
-import AnalyseGame from '../pages/analyse';
-import GameHistory from '../pages/games';
-import Help from '../pages/Help';
-import PreSignupHome from '../pages/home/PreSignupHome';
-import Insights from '../pages/Insights';
-import NotFound from '../pages/NotFound';
-import Profile from '../pages/Profile';
 import PreSignupGuard from './PreSignupGuard';
 import ProtectedRoute from './ProtectedRoute';
 
@@ -37,14 +36,6 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <AnalyseGame />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute>
-            <Profile />
           </ProtectedRoute>
         }
       />
