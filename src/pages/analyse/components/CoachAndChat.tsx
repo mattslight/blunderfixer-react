@@ -167,19 +167,30 @@ export default function CoachAndChat({
       </div>
 
       {/* ?? Always-on input with send button */}
-      <div className="relative">
-        <input
-          type="text"
+      {/* Always-on auto-resizing textarea with send button */}
+      <div className="relative -m-2 mt-6">
+        <textarea
+          rows={1}
           placeholder="Ask coach a question..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleAsk()}
-          className="w-full rounded-lg bg-gray-700 p-2 pr-10 text-white placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+          onInput={(e) => {
+            const ta = e.currentTarget as HTMLTextAreaElement;
+            ta.style.height = 'auto';
+            ta.style.height = ta.scrollHeight + 'px';
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              handleAsk();
+            }
+          }}
+          className="w-full resize-none overflow-hidden rounded-lg bg-gray-700 p-2 pr-10 text-white placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:outline-none"
         />
         <button
           onClick={handleAsk}
           disabled={!input.trim()}
-          className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full p-1 text-gray-400 hover:text-white disabled:opacity-50"
+          className="absolute top-2 right-2 rounded-full p-1 text-gray-400 hover:text-white disabled:opacity-50"
         >
           <Send className="h-5 w-5 text-white" />
         </button>
