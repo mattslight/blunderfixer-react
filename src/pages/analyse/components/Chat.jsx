@@ -44,7 +44,7 @@ export default function Chat({ fen, legalMoves }) {
 
   return (
     <div className="mt-8 w-full">
-      <h3 className="mb-2 text-lg font-bold">Ask Coach a Question</h3>
+      <h3 className="mb-2 text-lg font-bold">Ask Coach</h3>
 
       <div className="mb-4 space-y-4">
         {chatMessages.map((msg, idx) => (
