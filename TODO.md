@@ -14,8 +14,6 @@
 - [ ] Clarify evaluation perspective (player vs engine) in coach insights
 - [ ] Trigger coach insights on “Analyse” (with skeleton loader)
 
-## Bugs & QA
-
 ## MVP Priorities
 
 1. **Replay & Drills**
