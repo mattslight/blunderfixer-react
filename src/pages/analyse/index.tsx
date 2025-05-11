@@ -1,23 +1,25 @@
 // src/pages/analyse/index.jsx
+import useMoveInput from '@/pages/analyse/hooks/useMoveInput';
 import { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import {
   AnalysisToolbar,
   GameLoaderModal,
   PasteModal,
 } from './components/AnalysisModals';
-import useGameInputParser from './hooks/useGameInputParser';
-import useAnalysisEngine from './hooks/useAnalysisEngine';
-import useGameHistory from './hooks/useGameHistory';
-import useMoveInput from '@/pages/analyse/hooks/useMoveInput';
 import BoardAndEval from './components/BoardAndEval';
 import CoachAndChat from './components/CoachAndChat';
+import useAnalysisEngine from './hooks/useAnalysisEngine';
+import useGameHistory from './hooks/useGameHistory';
+import useGameInputParser from './hooks/useGameInputParser';
 
 export default function AnalysePage() {
   const [rawInput, setRawInput] = useState<string | null>(null);
   const [pasteOpen, setPasteOpen] = useState(false);
   const [pasteError, setPasteError] = useState('');
   const [gameOpen, setGameOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   // parse FEN/PGN or fallback
   const { initialFEN, sanHistory, rawErrors } = useGameInputParser(rawInput);
@@ -68,17 +70,17 @@ export default function AnalysePage() {
   } = useMoveInput(fen, (f, t, prom) => makeMove(f, t, prom));
 
   return (
-    <>
+    <div className="-mt-4">
       <AnalysisToolbar
         onOpenPaste={() => setPasteOpen(true)}
-        onOpenGames={() => setGameOpen(true)}
+        onOpenGames={() => navigate('/games/')}
         onClear={handleClear}
       />
       {/* Error */}
       {error && <p className="text-center text-red-500">{error}</p>}
 
       {/* Two-column layout */}
-      <div className="flex flex-col justify-center gap-y-4 p-4 lg:flex-row lg:gap-x-8">
+      <div className="flex flex-col justify-center gap-y-4 p-2 lg:flex-row lg:gap-x-8">
         <div className="w-full lg:w-auto lg:max-w-xl">
           <BoardAndEval
             evalScore={evalScore}
@@ -120,6 +122,6 @@ export default function AnalysePage() {
         onClose={() => setGameOpen(false)}
         onSelectPGN={handleGameSelect}
       />
-    </>
+    </div>
   );
 }
