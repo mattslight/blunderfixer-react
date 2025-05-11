@@ -1,5 +1,6 @@
 // src/pages/analyse/components/CoachAndChat.tsx
 import { AnimatePresence, motion } from 'framer-motion';
+import { Lightbulb, Zap } from 'lucide-react';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -32,7 +33,7 @@ export default function CoachAndChat({
 
   // Unified bubble stream
   const [messages, setMessages] = useState<Msg[]>([
-    { role: 'coach', text: 'Hey there! What would you like your coach to do?' },
+    { role: 'coach', text: 'Hey there! Choose a position and lets dive in...' },
   ]);
   const [input, setInput] = useState('');
 
@@ -110,7 +111,7 @@ export default function CoachAndChat({
   };
 
   return (
-    <div className="mx-auto max-w-md space-y-4 rounded-xl bg-gray-800 p-4 shadow-xl">
+    <div className="mx-auto max-w-lg space-y-4 rounded bg-gray-800 p-4 shadow-xl">
       {/* 👥 Animated bubbles */}
       <AnimatePresence initial={false}>
         {messages.map((msg, i) => (
@@ -135,7 +136,7 @@ export default function CoachAndChat({
             <div
               className={`max-w-[70%] rounded-xl p-3 ${msg.role === 'coach' ? 'bg-green-600 text-white' : ''} ${msg.role === 'user' ? 'bg-blue-500 text-white' : ''} ${msg.role === 'typing' ? 'bg-gray-700 text-gray-400 italic' : ''} `}
             >
-              <div className="prose prose-green dark:prose-invert prose-table:border-spacing-y-2 dark:[--tw-prose-td-borders-opacity:0.5] dark:[--tw-prose-td-borders:theme(colors.white)] dark:[--tw-prose-th-borders-opacity:0.5] dark:[--tw-prose-th-borders:theme(colors.white)]">
+              <div className="prose prose-green dark:prose-invert prose-table:border-spacing-y-2 leading-normal font-medium dark:[--tw-prose-td-borders-opacity:0.5] dark:[--tw-prose-td-borders:theme(colors.white)] dark:[--tw-prose-th-borders-opacity:0.5] dark:[--tw-prose-th-borders:theme(colors.white)]">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {msg.text}
                 </ReactMarkdown>
@@ -145,27 +146,30 @@ export default function CoachAndChat({
         ))}
       </AnimatePresence>
 
-      {/* 🔘 Action pills */}
-      <div className="flex justify-center space-x-3">
+      {/* 🔥 Action buttons */}
+      <div className="flex justify-center space-x-4">
         <button
           onClick={handleHint}
-          className="rounded-full bg-purple-500 px-4 py-1 text-white hover:bg-purple-600"
+          className="inline-flex items-center space-x-1 rounded-full bg-purple-600 px-3 py-1 text-sm font-semibold text-white shadow-md transition-transform ease-out hover:bg-purple-700 hover:shadow-lg active:scale-95"
         >
-          Give me a hint
+          <Lightbulb className="h-4 w-4" />
+          <span>Hint</span>
         </button>
+
         <button
           onClick={handleFullAnalysis}
           disabled={analysisLoading}
-          className="rounded-full bg-green-500 px-4 py-1 text-white hover:bg-green-600 disabled:opacity-50"
+          className={`inline-flex items-center space-x-2 rounded-full bg-green-600 px-3 py-1 text-sm font-semibold text-white shadow-md transition-transform ease-out hover:bg-green-700 hover:shadow-lg active:scale-95 ${analysisLoading && 'cursor-not-allowed opacity-50'} `}
         >
-          {analysisLoading ? 'Analyzing…' : 'Full analysis'}
+          <Zap className="h-4 w-4" />
+          <span>{analysisLoading ? 'Analyzing…' : 'Full analysis'}</span>
         </button>
       </div>
 
       {/* 💬 Always-on input */}
       <input
         type="text"
-        placeholder="Type a question or pick a button above…"
+        placeholder="Ask coach a question..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && handleAsk()}
