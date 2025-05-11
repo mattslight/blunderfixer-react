@@ -1,14 +1,14 @@
 // src/components/GameSummary/GameSummaryGraph.tsx
+import type { AnalysisNode } from '@/types';
 import {
-  ResponsiveContainer,
+  Bar,
   BarChart,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  Tooltip,
-  Bar,
-  Cell,
 } from 'recharts';
-import type { AnalysisNode } from '@/types';
 
 interface ChartEntry extends AnalysisNode {
   ply: number;
@@ -63,7 +63,7 @@ export default function GameSummaryGraph({ data, max }: GraphProps) {
                 key={i}
                 fill={entry.raw >= 0 ? '#fff' : 'transparent'}
                 stroke={entry.raw < 0 ? '#4F46E5' : 'none'}
-                strokeWidth={1}
+                strokeWidth={0.5}
               />
             ))}
           </Bar>
