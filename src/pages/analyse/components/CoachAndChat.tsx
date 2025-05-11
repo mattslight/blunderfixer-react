@@ -1,6 +1,6 @@
 // src/pages/analyse/components/CoachAndChat.tsx
 import { AnimatePresence, motion } from 'framer-motion';
-import { Lightbulb, Zap } from 'lucide-react';
+import { Lightbulb, Send, Zap } from 'lucide-react';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -129,12 +129,12 @@ export default function CoachAndChat({
               <img
                 src={coachImageSrc}
                 alt="Coach"
-                className="h-8 w-8 self-end rounded-full"
+                className="h-8 w-8 -scale-x-100 transform self-end rounded-full border-1 border-green-900"
               />
             )}
 
             <div
-              className={`max-w-[70%] rounded-xl p-3 ${msg.role === 'coach' ? 'bg-green-600 text-white' : ''} ${msg.role === 'user' ? 'bg-blue-500 text-white' : ''} ${msg.role === 'typing' ? 'bg-gray-700 text-gray-400 italic' : ''} `}
+              className={`max-w-[70%] rounded-xl p-3 ${msg.role === 'coach' ? 'rounded-bl-none bg-green-600 text-white' : ''} ${msg.role === 'user' ? 'rounded-br-none bg-blue-500 text-white' : ''} ${msg.role === 'typing' ? 'bg-gray-700 text-gray-400 italic' : ''} `}
             >
               <div className="prose prose-green dark:prose-invert prose-table:border-spacing-y-2 leading-normal font-medium dark:[--tw-prose-td-borders-opacity:0.5] dark:[--tw-prose-td-borders:theme(colors.white)] dark:[--tw-prose-th-borders-opacity:0.5] dark:[--tw-prose-th-borders:theme(colors.white)]">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
@@ -150,7 +150,7 @@ export default function CoachAndChat({
       <div className="flex justify-center space-x-4">
         <button
           onClick={handleHint}
-          className="inline-flex items-center space-x-1 rounded-full bg-purple-600 px-3 py-1 text-sm font-semibold text-white shadow-md transition-transform ease-out hover:bg-purple-700 hover:shadow-lg active:scale-95"
+          className="inline-flex items-center space-x-1 rounded-full border-b-2 border-b-purple-800 bg-purple-600 px-3 py-1 text-sm font-semibold text-white shadow-md transition-transform ease-out hover:bg-purple-700 hover:shadow-lg active:scale-95"
         >
           <Lightbulb className="h-4 w-4" />
           <span>Hint</span>
@@ -159,22 +159,31 @@ export default function CoachAndChat({
         <button
           onClick={handleFullAnalysis}
           disabled={analysisLoading}
-          className={`inline-flex items-center space-x-2 rounded-full bg-green-600 px-3 py-1 text-sm font-semibold text-white shadow-md transition-transform ease-out hover:bg-green-700 hover:shadow-lg active:scale-95 ${analysisLoading && 'cursor-not-allowed opacity-50'} `}
+          className={`inline-flex items-center space-x-2 rounded-full border-b-2 border-b-green-900 bg-green-600 px-3 py-1 text-sm font-semibold text-white shadow-md transition-transform ease-out hover:bg-green-700 hover:shadow-lg active:scale-95 ${analysisLoading && 'cursor-not-allowed opacity-50'} `}
         >
           <Zap className="h-4 w-4" />
           <span>{analysisLoading ? 'Analyzing…' : 'Full analysis'}</span>
         </button>
       </div>
 
-      {/* 💬 Always-on input */}
-      <input
-        type="text"
-        placeholder="Ask coach a question..."
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' && handleAsk()}
-        className="w-full rounded-lg bg-gray-700 p-2 text-white placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:outline-none"
-      />
+      {/* ?? Always-on input with send button */}
+      <div className="relative">
+        <input
+          type="text"
+          placeholder="Ask coach a question..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleAsk()}
+          className="w-full rounded-lg bg-gray-700 p-2 pr-10 text-white placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+        />
+        <button
+          onClick={handleAsk}
+          disabled={!input.trim()}
+          className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full p-1 text-gray-400 hover:text-white disabled:opacity-50"
+        >
+          <Send className="h-5 w-5 text-white" />
+        </button>
+      </div>
 
       {/* 📊 Positional features after a true analysis */}
       {explanation && <PositionFeatures features={features} />}
