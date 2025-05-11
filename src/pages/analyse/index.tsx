@@ -1,6 +1,6 @@
 // src/pages/analyse/index.jsx
 import useMoveInput from '@/pages/analyse/hooks/useMoveInput';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -11,6 +11,8 @@ import {
 import BoardAndEval from './components/BoardAndEval';
 import CoachAndChat from './components/CoachAndChat';
 import useAnalysisEngine from './hooks/useAnalysisEngine';
+import useCoachExplanation from './hooks/useCoachExplanation';
+import useFeatureExtraction from './hooks/useFeatureExtraction';
 import useGameHistory from './hooks/useGameHistory';
 import useGameInputParser from './hooks/useGameInputParser';
 
@@ -30,8 +32,15 @@ export default function AnalysePage() {
       initialFEN,
       initialMoves: sanHistory,
       startAtEnd: true,
-      allowBranching: false,
+      allowBranching: true,
     });
+
+  // fetch positional features whenever `fen` changes
+  const {
+    features,
+    loading: loadingFeatures,
+    error: featuresError,
+  } = useFeatureExtraction(fen);
 
   // Handlers
   const handlePasteSubmit = (text: string | null) => {
@@ -57,8 +66,25 @@ export default function AnalysePage() {
     useAnalysisEngine(fen);
 
   const error = '';
-  const features = {}; // need to extract features using API call
 
+  // 3a) wire up coach-explanation hook
+  const {
+    explanation,
+    loadingExplanation,
+    error: coachError,
+    getExplanation,
+  } = useCoachExplanation();
+
+  const askCoach = useCallback(
+    () =>
+      getExplanation({
+        fen,
+        lines,
+        legal_moves: legalMoves,
+        features,
+      }),
+    [fen, lines, legalMoves, features]
+  );
   // 3) click/drag + promotion
   const {
     from,
@@ -77,8 +103,15 @@ export default function AnalysePage() {
         onOpenGames={() => navigate('/games/')}
         onClear={handleClear}
       />
-      {/* Error */}
+      {/* Errors */}
       {error && <p className="text-center text-red-500">{error}</p>}
+      {loadingFeatures && (
+        <p className="mt-2 text-sm text-gray-500">Loading features</p>
+      )}
+      {featuresError && (
+        <p className="mt-2 text-sm text-red-500">{featuresError}</p>
+      )}
+      {coachError && <p className="mt-2 text-sm text-red-500">{coachError}</p>}
 
       {/* Two-column layout */}
       <div className="flex flex-col justify-center gap-y-4 p-2 lg:flex-row lg:gap-x-8">
@@ -106,7 +139,13 @@ export default function AnalysePage() {
             features={features}
             fen={fen}
             legalMoves={legalMoves}
+            explanation={explanation}
+            loading={loadingExplanation}
+            askCoach={askCoach}
           />
+          {coachError && (
+            <p className="mt-2 text-sm text-red-500">{coachError}</p>
+          )}
         </div>
       </div>
       {/* Modals */}
