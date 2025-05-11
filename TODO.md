@@ -2,28 +2,19 @@
 
 ## In Progress
 
-- [x] Better way to set username on first load
-- [x] Go back on setting (useNavigate)
-- [x] On game list when clicking analyse show progress spinner
-- [x] On prod fix 500 error loading /analyse-pgn (check Render.com deploy etc.)
-- [ ] View error boundary - clearly not working!
+- [ ] _BUG_: View error boundary - clearly not working!
+- [ ] _BUG_: if stockfish analysis is ongoing (e.g. depth = 40) then move arrows don't update, so I guess stockfish evals are overlapping, we need to kill the previous analysis before starting a new one
+- [ ] _BUG_: Mate evaluation swings still occur
 
-- [ ] Find the critical positions based on the eval swings
-- [ ] Move graph and table summary to Analysis page (what's the UX)
+- [ ] **FEAT**: Find the critical positions based on the eval swings
+- [ ] **UX**: Move graph and table summary to Analysis page (what's the UX)
 - [ ] Wire up `ExamplePositions`
 - [ ] Flip board when loading a game as Black
-- [ ] Wire up feature extraction
-- [ ] Pass `extraction` and `legalMoves` to `CoachChat` and wire up `getExplanation`
 - [ ] Suggest positions for insight (i.e. the move before the 12=-076543567890-1§ qa~mistake) when loading PGN
-- [ ] Add loading spinner when fetching Chess.com games
 - [ ] Clarify evaluation perspective (player vs engine) in coach insights
 - [ ] Trigger coach insights on “Analyse” (with skeleton loader)
 
 ## Bugs & QA
-
-- [ ] **BUG**: Mate evaluation swings still occur
-- [ ] QA: Verify coach analysis accuracy
-- [ ] QA: Verify coach chat behavior
 
 ## MVP Priorities
 
@@ -37,7 +28,6 @@
    - [ ] (PoC) Allow changing user
 3. **Authentication** (optional)
    - [ ] Email/password (Gmail sign-up)
-   - [ ] Link Chess.com via OAuth
    - [ ] Link Lichess via OAuth
 
 ## Future Ideas
@@ -78,3 +68,13 @@
 - [x] Save 'shallow' game analysis so they don't re-run
 - [x] Remember user's handle (option to change)
 - [x] Show which games are synced
+- [x] Wire up feature extraction
+- [x] Pass `extraction` and `legalMoves` to `CoachChat` and wire up `getExplanation`
+- [x] Add loading spinner when fetching Chess.com games
+- [x] Better way to set username on first load
+- [x] Go back on setting (useNavigate)
+- [x] On game list when clicking analyse show progress spinner
+- [x] On prod fix 500 error loading /analyse-pgn (check Render.com deploy etc.)
+- [x] Link Chess.com
+- [x] QA: Verify coach analysis accuracy
+- [x] QA: Verify coach chat behavior
