@@ -70,7 +70,7 @@ export default function AnalysePage() {
   } = useMoveInput(fen, (f, t, prom) => makeMove(f, t, prom));
 
   return (
-    <div className="-mt-4">
+    <>
       <AnalysisToolbar
         onOpenPaste={() => setPasteOpen(true)}
         onOpenGames={() => navigate('/games/')}
@@ -122,6 +122,6 @@ export default function AnalysePage() {
         onClose={() => setGameOpen(false)}
         onSelectPGN={handleGameSelect}
       />
-    </div>
+    </>
   );
 }
