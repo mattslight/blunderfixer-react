@@ -6,7 +6,10 @@
 - [ ] _BUG_: if stockfish analysis is ongoing (e.g. depth = 40) then move arrows don't update, so I guess stockfish evals are overlapping, we need to kill the previous analysis before starting a new one
 - [ ] _BUG_: Mate evaluation swings still occur
 
+- [ ] **FEAT**: Scroll coach chat separately from board on desktop
+- [x] **FEAT**: Empty state for coach chat?
 - [ ] **FEAT**: Find the critical positions based on the eval swings
+- [x] **FEAT**: Chat, press enter to ask!
 - [ ] **UX**: Move graph and table summary to Analysis page (what's the UX)
 - [ ] Wire up `ExamplePositions`
 - [ ] Flip board when loading a game as Black
