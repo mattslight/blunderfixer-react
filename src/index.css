@@ -36,3 +36,6 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
+.bubble {
+  @apply max-w-xs rounded-tr-xl rounded-br-xl rounded-bl-xl p-3;
+}
