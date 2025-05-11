@@ -134,7 +134,7 @@ export default function CoachAndChat({
             )}
 
             <div
-              className={`max-w-[70%] rounded-xl p-3 ${msg.role === 'coach' ? 'rounded-bl-none bg-green-600 text-white' : ''} ${msg.role === 'user' ? 'rounded-br-none bg-blue-500 text-white' : ''} ${msg.role === 'typing' ? 'bg-gray-700 text-gray-400 italic' : ''} `}
+              className={`max-w-[70%] rounded-xl border-b-2 border-b-black p-3 ${msg.role === 'coach' ? 'rounded-bl-none bg-green-600 text-white' : ''} ${msg.role === 'user' ? 'rounded-br-none bg-blue-500 text-white' : ''} ${msg.role === 'typing' ? 'bg-gray-700 text-gray-400 italic' : ''} `}
             >
               <div className="prose prose-green dark:prose-invert prose-table:border-spacing-y-2 leading-normal font-medium dark:[--tw-prose-td-borders-opacity:0.5] dark:[--tw-prose-td-borders:theme(colors.white)] dark:[--tw-prose-th-borders-opacity:0.5] dark:[--tw-prose-th-borders:theme(colors.white)]">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
