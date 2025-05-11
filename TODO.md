@@ -5,17 +5,21 @@
 - [ ] _BUG_: View error boundary - clearly not working!
 - [ ] _BUG_: if stockfish analysis is ongoing (e.g. depth = 40) then move arrows don't update, so I guess stockfish evals are overlapping, we need to kill the previous analysis before starting a new one
 - [ ] _BUG_: Mate evaluation swings still occur
-
+- [ ] _FIX_: Load in recent game position into board
+- [ ] _FIX_: Fix issue where full analysis is needed to give good advice
+- [ ] _FIX_: Wire up hint button
+- [ ] _FIX_: Reset (board position and chat) not working
+- [ ] **FEAT**: Hide lines / best move
+- [ ] **FEAT**: When stepping best move show button on board
 - [ ] **FEAT**: Scroll coach chat separately from board on desktop
-- [x] **FEAT**: Empty state for coach chat?
 - [ ] **FEAT**: Find the critical positions based on the eval swings
-- [x] **FEAT**: Chat, press enter to ask!
+- [ ] **FEAT**: Coach or engine to play a move / reply
+- [ ] **FEAT**: If coach mentions a move show on the board
 - [ ] **UX**: Move graph and table summary to Analysis page (what's the UX)
 - [ ] Wire up `ExamplePositions`
 - [ ] Flip board when loading a game as Black
 - [ ] Suggest positions for insight (i.e. the move before the 12=-076543567890-1§ qa~mistake) when loading PGN
 - [ ] Clarify evaluation perspective (player vs engine) in coach insights
-- [ ] Trigger coach insights on “Analyse” (with skeleton loader)
 
 ## MVP Priorities
 
@@ -79,3 +83,5 @@
 - [x] Link Chess.com
 - [x] QA: Verify coach analysis accuracy
 - [x] QA: Verify coach chat behavior
+- [x] **FEAT**: Chat, press enter to ask!
+- [x] **FEAT**: Empty state for coach chat?
