@@ -5,6 +5,7 @@ import { Chessboard } from 'react-chessboard';
 import EvalBar from './EvalBar';
 //import ExamplePositions from './ExamplePositions';
 import ToggleSwitch from '@/components/ToggleSwitch';
+import { useStickyValue } from '@/hooks/useStickyValue';
 import ContinuationToggle from './ContinuationToggle';
 import MoveStepper from './MoveStepper';
 
@@ -27,9 +28,9 @@ export default function BoardAndEval({
   showPromotionDialog,
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [moveListViewMode, setMoveListViewMode] = useState<
+  const [moveListViewMode, setMoveListViewMode] = useStickyValue<
     'simple' | 'advanced'
-  >('simple');
+  >('moveListViewMode', 'simple');
   const [boardWidth, setBoardWidth] = useState(464);
   const [moveSquares, setMoveSquares] = useState<Record<string, CSSProperties>>(
     {}
