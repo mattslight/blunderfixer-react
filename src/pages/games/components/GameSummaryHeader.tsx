@@ -15,7 +15,7 @@ export default function GameSummaryHeader({ game }) {
           <span className="text-2xl text-white">♞</span>{' '}
           <span className="px-2 text-lg text-gray-400">vs.</span>{' '}
           {game.meta.players.black.player.username}{' '}
-          <span className="text-2xl text-black [text-shadow:-0.5px_-0.5px_0_#fff,0.5px_-0.5px_0_#fff,-0.5px_0.5px_0_#fff,0.5px_0.5px_0_#fff]">
+          <span className="text-2xl text-black [text-shadow:-0.5px_-0.5px_0_#4F46E5,0.5px_-0.5px_0_#4F46E5,-0.5px_0.5px_0_#4F46E5,0.5px_0.5px_0_#4F46E5]">
             ♞
           </span>
         </h3>
