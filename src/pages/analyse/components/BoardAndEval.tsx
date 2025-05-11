@@ -1,17 +1,17 @@
 // src/pages/analyse/components/BoardAndEval.jsx
-import { useEffect, useRef, useState, CSSProperties } from 'react';
+import { CSSProperties, useEffect, useRef, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
 
 import EvalBar from './EvalBar';
-import ExamplePositions from './ExamplePositions';
-import MoveLines from './MoveLines';
+//import ExamplePositions from './ExamplePositions';
+import ToggleSwitch from '@/components/ToggleSwitch';
+import MoveList from './MoveList';
 import MoveStepper from './MoveStepper';
 
 export default function BoardAndEval({
   fen,
   lines,
   arrows,
-  currentDepth,
   evalScore,
 
   moveList,
@@ -27,6 +27,9 @@ export default function BoardAndEval({
   showPromotionDialog,
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const [moveListViewMode, setMoveListViewMode] = useState<
+    'simple' | 'advanced'
+  >('simple');
   const [boardWidth, setBoardWidth] = useState(464);
   const [moveSquares, setMoveSquares] = useState<Record<string, CSSProperties>>(
     {}
@@ -116,7 +119,14 @@ export default function BoardAndEval({
 
       {/* 4) Engine continuation lines */}
       <div className="w-full max-w-lg">
-        <MoveLines lines={lines} currentDepth={currentDepth} />
+        <ToggleSwitch
+          checked={moveListViewMode === 'advanced'}
+          onChange={() =>
+            setMoveListViewMode((m) => (m === 'simple' ? 'advanced' : 'simple'))
+          }
+          label="Full lines"
+        />
+        <MoveList lines={lines} view={moveListViewMode} />
       </div>
     </div>
   );
