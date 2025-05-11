@@ -111,7 +111,7 @@ export default function CoachAndChat({
   };
 
   return (
-    <div className="mx-auto max-w-lg space-y-4 rounded bg-gray-800 p-4 shadow-xl">
+    <div className="mx-auto max-w-lg space-y-4 rounded bg-gray-800 p-4 shadow-xl lg:mt-12 lg:mr-2 lg:max-w-2xl">
       {/* 👥 Animated bubbles */}
       <AnimatePresence initial={false}>
         {messages.map((msg, i) => (
@@ -129,12 +129,12 @@ export default function CoachAndChat({
               <img
                 src={coachImageSrc}
                 alt="Coach"
-                className="h-8 w-8 -scale-x-100 transform self-end rounded-full border-1 border-green-900"
+                className="relative top-6 h-10 w-10 -scale-x-100 transform self-end rounded-full border-1 border-green-900"
               />
             )}
 
             <div
-              className={`max-w-[70%] rounded-xl border-b-2 border-b-black p-3 ${msg.role === 'coach' ? 'rounded-bl-none bg-green-600 text-white' : ''} ${msg.role === 'user' ? 'rounded-br-none bg-blue-500 text-white' : ''} ${msg.role === 'typing' ? 'bg-gray-700 text-gray-400 italic' : ''} `}
+              className={`max-w-[80%] rounded-xl border-b-2 border-b-black p-3 ${msg.role === 'coach' ? 'rounded-bl-none bg-green-600 text-white' : ''} ${msg.role === 'user' ? 'rounded-br-none bg-blue-500 text-white' : ''} ${msg.role === 'typing' ? 'bg-gray-700 text-gray-400 italic' : ''} `}
             >
               <div className="prose prose-green dark:prose-invert prose-table:border-spacing-y-2 leading-normal font-medium dark:[--tw-prose-td-borders-opacity:0.5] dark:[--tw-prose-td-borders:theme(colors.white)] dark:[--tw-prose-th-borders-opacity:0.5] dark:[--tw-prose-th-borders:theme(colors.white)]">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
