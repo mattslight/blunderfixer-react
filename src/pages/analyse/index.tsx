@@ -2,6 +2,7 @@
 import useMoveInput from '@/pages/analyse/hooks/useMoveInput';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import {
   AnalysisToolbar,
   GameLoaderModal,
@@ -87,7 +88,6 @@ export default function AnalysePage() {
             fen={fen}
             lines={lines}
             arrows={[bestMoveArrow]}
-            currentDepth={currentDepth}
             moveList={moveHistory}
             currentIdx={currentIdx}
             setCurrentIdx={setIdx}
