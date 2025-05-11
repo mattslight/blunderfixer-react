@@ -6,6 +6,7 @@
 - [x] Go back on setting (useNavigate)
 - [x] On game list when clicking analyse show progress spinner
 - [x] On prod fix 500 error loading /analyse-pgn (check Render.com deploy etc.)
+- [ ] View error boundary - clearly not working!
 
 - [ ] Find the critical positions based on the eval swings
 - [ ] Move graph and table summary to Analysis page (what's the UX)
