@@ -114,7 +114,7 @@ export default function AnalysePage() {
       {coachError && <p className="mt-2 text-sm text-red-500">{coachError}</p>}
 
       {/* Two-column layout */}
-      <div className="flex flex-col justify-center gap-y-4 p-2 lg:flex-row lg:gap-x-8">
+      <div className="flex flex-col justify-center gap-y-4 p-2 lg:flex-row lg:gap-x-16">
         <div className="w-full lg:w-auto lg:max-w-xl">
           <BoardAndEval
             evalScore={evalScore}
@@ -139,9 +139,6 @@ export default function AnalysePage() {
             features={features}
             fen={fen}
             legalMoves={legalMoves}
-            explanation={explanation}
-            loading={loadingExplanation}
-            askCoach={askCoach}
           />
           {coachError && (
             <p className="mt-2 text-sm text-red-500">{coachError}</p>
