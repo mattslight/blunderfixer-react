@@ -9,9 +9,7 @@ export default function PositionFeatures({ features }) {
         onClick={() => setShowFeatures((f) => !f)}
         className="mt-6 rounded bg-purple-600 px-4 py-2 text-white hover:bg-purple-700"
       >
-        {showFeatures
-          ? 'Hide 🧩 Position Features'
-          : 'Show 🧩 Position Features'}
+        {showFeatures ? 'HIDE 🧩 Features' : 'DEBUG 🧩 Features'}
       </button>
 
       {/* collapsible panel */}
