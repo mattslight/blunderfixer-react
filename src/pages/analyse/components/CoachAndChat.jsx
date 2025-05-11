@@ -4,7 +4,6 @@ import { Button } from 'flowbite-react';
 import Chat from './Chat';
 import CoachExplanation from './CoachExplanation';
 import PositionFeatures from './PositionFeatures';
-import TopmovesCarousel from './TopmovesCarousel';
 
 export default function CoachAndChat({
   lines,
@@ -17,9 +16,6 @@ export default function CoachAndChat({
 }) {
   return (
     <div className="mx-auto max-w-lg space-y-6 xl:w-xl xl:max-w-fit 2xl:w-2xl">
-      {/* 1) Best-moves carousel */}
-      <TopmovesCarousel lines={lines} />
-
       {/* 2) Ask Coach button (only if no explanation) */}
       {!explanation && (
         <Button onClick={askCoach} disabled={loading} className="w-full">
