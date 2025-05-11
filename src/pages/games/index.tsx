@@ -72,17 +72,17 @@ export default function GamesHistoryPage() {
   return (
     <div className="p-4 pt-0 2xl:ml-12">
       <div className="mx-auto max-w-lg space-y-4">
-        <div className="flex flex-row items-baseline justify-between">
-          <div>
-            <h1 className="mt-4 mb-2 text-2xl font-semibold text-white">
-              Recent Games
-            </h1>
-          </div>
+        <span className="inline-blockpy-0.5 text-xs font-semibold tracking-wider text-green-500 uppercase">
+          Your Activity
+        </span>
+        <div className="flex items-baseline justify-between">
+          <h1 className="text-2xl font-bold text-white">Recent Games</h1>
+
           <div>
             <button
               onClick={() => reload()}
               disabled={isValidating || recentLoading || !username}
-              className="inline-flex items-center rounded border-1 border-blue-800 bg-blue-950 px-3 py-1 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
+              className="inline-flex items-center rounded border-1 border-blue-900 bg-blue-950 px-3 py-1 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
             >
               <RefreshCw
                 className={`mr-2 ${isValidating && `animate-spin`}`}
