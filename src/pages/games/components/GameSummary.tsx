@@ -41,8 +41,6 @@ export function GameSummary({ game, analysis }: GameSummaryProps) {
     username === game.meta.players.white.player.username ? 'w' : 'b';
   const MAX = 6;
 
-  console.log(analysis);
-
   const chartData = analysis.map((a) => ({
     ply: a.halfMoveIndex,
     raw: a.evalCP / 100,
