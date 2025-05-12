@@ -2,7 +2,7 @@ import { Flag, PlayCircle, Target } from 'lucide-react';
 
 export default function Training() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 px-8 text-white">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-8 text-white">
       {/* Hero */}
       <h1 className="mb-4 items-center justify-center text-center text-4xl font-extrabold md:text-5xl">
         🔥 Training Coming Soon!
