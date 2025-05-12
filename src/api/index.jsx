@@ -33,7 +33,7 @@ export async function extractFeatures(fen) {
 
 // ————————————————
 // NEW: API call for analysing a full PGN
-export async function analysePGN(pgn, depth = 8) {
+export async function analysePGN(pgn, depth = 12) {
   return post('/analyse-pgn', { pgn, depth });
 }
 
