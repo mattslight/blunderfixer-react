@@ -32,6 +32,7 @@ export interface MoveNode {
   to?: string;
   promotion?: string;
   children?: MoveNode[][];
+  mateIn?: number; // if applicable, mate-in-N
 }
 
 /** Everything you need to rehydrate and re-analyze a game */
@@ -82,6 +83,11 @@ export interface AnalysisNode {
   bestMoveUCI?: string; // UCI best move at this position
   pvLines?: PVLine[]; // top-N principal variation lines
   depth: number; // stockfish depth for anlysis (int)
+  mateIn?: number; // if applicable, mate-in-N
+  playedMove?: string; // UCI move string (e.g. e2e4)
+  san?: string; // SAN move string (e.g. e4)
+  side: 'w' | 'b'; // side to move
+  moveNumber: number; // full-move count (1,2,3…)
 }
 
 /**
