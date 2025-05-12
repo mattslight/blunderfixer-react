@@ -82,40 +82,49 @@ export default function UsernameModal({
           </ul>
         </div>
 
-        {/* Input */}
-        <input
-          type="text"
-          placeholder="e.g. MagnusCarlsen"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          disabled={isLoading}
-          className="mb-5 w-full rounded-full border-2 border-gray-600 bg-black/90 px-4 py-2 text-white placeholder-gray-500 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none disabled:opacity-50"
-        />
-        {error && (
-          <p className="mb-4 text-center text-sm text-red-400">{error}</p>
-        )}
-
-        {/* Actions */}
-        <div className="flex justify-end space-x-3">
-          <button
-            onClick={onClose}
+        {/* Input – this is a form so Enter submits */}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleContinue();
+          }}
+          className="w-full"
+        >
+          <input
+            type="text"
+            placeholder="e.g. MagnusCarlsen"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             disabled={isLoading}
-            className="px-3 py-1 text-sm text-gray-300 hover:text-white focus:outline-none disabled:opacity-50"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={handleContinue}
-            disabled={!username.trim() || isLoading}
-            className="flex items-center space-x-2 rounded-full bg-green-500 px-5 py-2 text-sm font-semibold text-white hover:bg-green-600 focus:outline-none disabled:bg-gray-500 disabled:opacity-50"
-          >
-            {isLoading ? (
-              <Loader className="h-5 w-5 animate-spin" />
-            ) : (
-              <span>Continue</span>
-            )}
-          </button>
-        </div>
+            className="mb-5 w-full rounded-full border-2 border-gray-600 bg-black/90 px-4 py-2 text-white placeholder-gray-500 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none disabled:opacity-50"
+          />
+          {error && (
+            <p className="mb-4 text-center text-sm text-red-400">{error}</p>
+          )}
+
+          {/* Actions */}
+          <div className="flex justify-end space-x-3">
+            <button
+              onClick={onClose}
+              disabled={isLoading}
+              className="px-3 py-1 text-sm text-gray-300 hover:text-white focus:outline-none disabled:opacity-50"
+              type="button"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={!username.trim() || isLoading}
+              className="flex items-center space-x-2 rounded-full bg-green-500 px-5 py-2 text-sm font-semibold text-white hover:bg-green-600 focus:outline-none disabled:bg-gray-500 disabled:opacity-50"
+            >
+              {isLoading ? (
+                <Loader className="h-5 w-5 animate-spin" />
+              ) : (
+                <span>Continue</span>
+              )}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
