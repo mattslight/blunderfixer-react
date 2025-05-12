@@ -11,7 +11,6 @@
 - [ ] _FIX_: Reset (board position and chat) not working
 - [ ] **FEAT**: Hide lines / best move
 - [ ] **FEAT**: When stepping best move show button on board
-- [ ] **FEAT**: Scroll coach chat separately from board on desktop
 - [ ] **FEAT**: Find the critical positions based on the eval swings
 - [ ] **FEAT**: Coach or engine to play a move / reply
 - [ ] **FEAT**: If coach mentions a move show on the board
@@ -85,3 +84,4 @@
 - [x] QA: Verify coach chat behavior
 - [x] **FEAT**: Chat, press enter to ask!
 - [x] **FEAT**: Empty state for coach chat?
+- [x] **FEAT**: Scroll coach chat separately from board on desktop
