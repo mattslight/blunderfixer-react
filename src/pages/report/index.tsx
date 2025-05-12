@@ -46,7 +46,7 @@ export default function ReportPage() {
         onClick={() => navigate(-1)}
         className="mb-4 text-blue-600 hover:underline"
       >
-        ← Back to games
+        ← Back
       </button>
       <GameSummary game={game} analysis={analysis} />
     </div>
