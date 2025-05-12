@@ -70,7 +70,7 @@ export default function GamesHistoryPage() {
   };
 
   return (
-    <div className="p-4 pt-0 2xl:ml-12">
+    <div className="p-4 pt-8 2xl:ml-12">
       <div className="mx-auto max-w-lg space-y-4">
         <span className="inline-blockpy-0.5 text-xs font-semibold tracking-wider text-green-500 uppercase">
           Your Activity
