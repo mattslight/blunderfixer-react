@@ -127,8 +127,8 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
                   {Math.abs(r.analysis.evalBefore) > 1000
                     ? `Mate in ${prevMateIn}`
                     : r.analysis.evalBefore > 0
-                      ? `+${r.analysis.evalBefore / 100}`
-                      : r.analysis.evalBefore / 100}
+                      ? `+${r.analysis.evalBefore}`
+                      : r.analysis.evalBefore}
                 </span>
                 <span
                   className={`flex items-center font-medium ${r.impact < 0 ? 'text-red-500' : 'text-green-500'}`}
