@@ -61,7 +61,7 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
         {/* header */}
         <div className="mb-4">
           <span className="mb-1 block text-xs font-semibold tracking-wider text-green-500 uppercase">
-            Analysis
+            Review
           </span>
           <h2 className="mb-2 text-2xl font-bold text-white">Key Moves</h2>
         </div>
