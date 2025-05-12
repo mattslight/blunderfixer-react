@@ -105,7 +105,7 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
           return (
             <div
               key={i}
-              className="mb-4 space-y-2 rounded-lg bg-gray-800 p-4 shadow-lg transition duration-200 ease-in-out hover:scale-102 hover:shadow-xl"
+              className="mb-4 space-y-4 rounded-lg bg-gray-800 p-4 shadow-lg transition duration-200 ease-in-out hover:scale-102 hover:shadow-xl"
             >
               <div className="flex items-center justify-between">
                 <span className="block justify-end text-xs font-semibold tracking-wider text-green-600 uppercase">
