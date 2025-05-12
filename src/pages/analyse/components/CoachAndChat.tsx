@@ -54,7 +54,7 @@ function ChatMessage({ msg }: { msg: Msg }) {
       <div
         className={`max-w-[85%] rounded-xl p-3 font-medium md:max-w-[80%] ${styles.bubble}`}
       >
-        <div className="prose prose-green dark:prose-invert prose-table:border-spacing-y-2 text-sm leading-normal font-medium md:text-base dark:[--tw-prose-td-borders-opacity:0.5] dark:[--tw-prose-td-borders:theme(colors.white)] dark:[--tw-prose-th-borders-opacity:0.5] dark:[--tw-prose-th-borders:theme(colors.white)]">
+        <div className="prose prose-green dark:prose-invert prose-table:border-spacing-y-2 leading-normal font-medium dark:[--tw-prose-td-borders-opacity:0.5] dark:[--tw-prose-td-borders:theme(colors.white)] dark:[--tw-prose-th-borders-opacity:0.5] dark:[--tw-prose-th-borders:theme(colors.white)]">
           <ReactMarkdown remarkPlugins={[remarkGfm]} children={msg.text} />
         </div>
       </div>
