@@ -5,7 +5,7 @@ import GameSummaryGraph from './GameSummaryGraph';
 import GameSummaryHeader from './GameSummaryHeader';
 import GameSummaryTable from './GameSummaryTable';
 
-const BLUNDER = 200; // ≥3-pawn
+const BLUNDER = 200; // ≥2-pawn
 const MISTAKE = 100; // ≥1-pawn
 const INACCURACY = 40; // ≥0.2-pawn
 
