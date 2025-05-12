@@ -54,7 +54,7 @@ function ChatMessage({ msg }: { msg: Msg }) {
       <div
         className={`max-w-[85%] rounded-xl p-3 font-medium md:max-w-[80%] ${styles.bubble}`}
       >
-        <div className="prose prose-green dark:prose-invert prose-table:border-spacing-y-2 leading-normal font-medium dark:[--tw-prose-td-borders-opacity:0.5] dark:[--tw-prose-td-borders:theme(colors.white)] dark:[--tw-prose-th-borders-opacity:0.5] dark:[--tw-prose-th-borders:theme(colors.white)]">
+        <div className="prose prose-green dark:prose-invert prose-table:border-spacing-y-2 leading-tight font-medium dark:[--tw-prose-td-borders-opacity:0.5] dark:[--tw-prose-td-borders:theme(colors.white)] dark:[--tw-prose-th-borders-opacity:0.5] dark:[--tw-prose-th-borders:theme(colors.white)]">
           <ReactMarkdown remarkPlugins={[remarkGfm]} children={msg.text} />
         </div>
       </div>
@@ -75,7 +75,7 @@ function ControlButtons({
     <div className="flex justify-center space-x-4 pt-2">
       <button
         onClick={onHint}
-        className="inline-flex items-center space-x-1 rounded-full border-b-2 border-purple-800 bg-purple-600 px-3 py-1 text-sm font-semibold text-white shadow-md hover:bg-purple-700 active:scale-95"
+        className="inline-flex items-center space-x-1 rounded-full border-b-2 border-blue-800 bg-blue-600 px-3 py-1 text-sm font-semibold text-white shadow-md hover:bg-blue-700 active:scale-95"
       >
         <Lightbulb className="h-4 w-4" />
         <span>Hint</span>
@@ -83,7 +83,7 @@ function ControlButtons({
       <button
         onClick={onFull}
         disabled={loading}
-        className={`inline-flex items-center space-x-2 rounded-full border-b-2 border-green-900 bg-green-600 px-3 py-1 text-sm font-semibold text-white shadow-md hover:bg-green-700 active:scale-95 ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+        className={`inline-flex items-center space-x-2 rounded-full border-b-2 border-purple-900 bg-purple-600 px-3 py-1 text-sm font-semibold text-white shadow-md hover:bg-purple-700 active:scale-95 ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
       >
         <Zap className="h-4 w-4" />
         <span>{loading ? 'Analyzing…' : 'Full analysis'}</span>
@@ -111,7 +111,7 @@ function ChatInput({
   };
 
   return (
-    <div className="sticky bottom-0 z-10 bg-black/20 p-2 backdrop-blur-lg md:w-lg lg:fixed lg:bottom-4 lg:w-lg xl:w-xl">
+    <div className="sticky bottom-0 z-10 bg-black/20 pb-1 backdrop-blur-lg md:w-lg lg:fixed lg:bottom-4 lg:w-lg xl:w-xl">
       <textarea
         ref={textareaRef}
         rows={1}
@@ -127,9 +127,9 @@ function ChatInput({
       <button
         onClick={onSend}
         disabled={!value.trim()}
-        className="absolute inset-y-0 right-6 rounded-full p-1 text-gray-400 hover:text-white disabled:opacity-50"
+        className="absolute inset-y-0 right-2 rounded-full p-2 text-gray-400 hover:text-white disabled:opacity-50"
       >
-        <Send className="h-5 w-5 text-white" />
+        <Send className="relative bottom-1 h-5 w-5 text-white" />
       </button>
     </div>
   );
