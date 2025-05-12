@@ -1,3 +1,5 @@
+// src/hooks/useStickyValue.ts
+
 import { useEffect, useState } from 'react';
 
 const PREFIX = 'bf:params:';
