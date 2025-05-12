@@ -109,7 +109,7 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
             >
               <div className="flex items-center justify-between">
                 <span className="block justify-end text-xs font-semibold tracking-wider text-green-600 uppercase">
-                  Move {r.analysis.halfMoveIndex}.
+                  Move {r.analysis.halfMoveIndex}
                 </span>{' '}
                 <span className="text-lg font-bold text-white">
                   {r.move.side == 'w' ? <WhitePiece /> : <BlackPiece />}{' '}
