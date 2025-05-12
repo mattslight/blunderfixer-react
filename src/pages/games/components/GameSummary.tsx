@@ -39,7 +39,7 @@ export function GameSummary({ game, analysis }: GameSummaryProps) {
   } = useProfile();
   const heroSide =
     username === game.meta.players.white.player.username ? 'w' : 'b';
-  const MAX = 6;
+  const MAX = 4.5;
 
   const chartData = analysis.map((a) => ({
     ply: a.halfMoveIndex,
