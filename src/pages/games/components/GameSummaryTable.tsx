@@ -27,17 +27,13 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
     'card'
   );
 
-  const counts = combined.reduce(
-    (acc, { severity }) => {
-      acc[severity] = (acc[severity] || 0) + 1;
-      return acc;
-    },
-    { blunder: 0, mistake: 0, inaccuracy: 0 } as Record<Severity, number>
-  );
-
-  const rows = showAll
-    ? combined
-    : combined.filter((r) => r.severity !== 'none');
+  // const counts = combined.reduce(
+  //   (acc, { severity }) => {
+  //     acc[severity] = (acc[severity] || 0) + 1;
+  //     return acc;
+  //   },
+  //   { blunder: 0, mistake: 0, inaccuracy: 0 } as Record<Severity, number>
+  // );
 
   const dotColour: Record<Severity, string> = {
     blunder: 'bg-red-600',
@@ -47,11 +43,9 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
   };
 
   const timeClass = (t: number) =>
-    t < 2 ? 'text-yellow-500' : t > 10 ? 'text-red-500' : '';
+    t < 1 ? 'text-red-500' : t > 10 ? 'text-red-500' : 'text-gray-500';
 
   const fmtDelta = (d: number) => (d > 0 ? `+${d}` : `${d}`);
-
-  console.log(combined);
 
   return (
     <>
@@ -104,63 +98,74 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
 
       {/* card view simplified */}
       {viewMode === 'card' &&
-        rows.map((r, i) => (
-          <div
-            key={i}
-            className="mb-4 space-y-2 rounded-lg bg-gray-800 p-4 shadow-lg transition duration-200 ease-in-out hover:scale-102 hover:shadow-xl"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-lg font-bold text-white">
-                {r.analysis.halfMoveIndex}. {r.move.san}
-              </span>
-              <span
-                className={`-mr-1 rounded-full px-3 py-1 text-xs font-semibold ${dotColour[r.severity]} text-white`}
-              >
-                {r.severity !== 'none' && r.severity.toUpperCase()}
-              </span>
+        combined.map((r, i, all) => {
+          if (!showAll && r.severity === 'none') return null; // skip non-severe moves
+          const prev = all[i - 1]; // previous row (or undefined if i===0)
+          const prevMateIn = prev?.analysis.mateIn;
+          return (
+            <div
+              key={i}
+              className="mb-4 space-y-2 rounded-lg bg-gray-800 p-4 shadow-lg transition duration-200 ease-in-out hover:scale-102 hover:shadow-xl"
+            >
+              <div className="flex items-center justify-between">
+                <span className="block justify-end text-xs font-semibold tracking-wider text-green-600 uppercase">
+                  Move {r.analysis.halfMoveIndex}.
+                </span>{' '}
+                <span className="text-lg font-bold text-white">
+                  {r.move.side == 'w' ? <WhitePiece /> : <BlackPiece />}{' '}
+                  {r.move.san}
+                </span>
+                <span
+                  className={`-mr-1 rounded-full px-3 py-1 text-xs font-semibold ${dotColour[r.severity]} text-white`}
+                >
+                  {r.severity !== 'none' && r.severity.toUpperCase()}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-sm text-gray-300">
+                <span className="flex items-center">
+                  <BarChart className="mr-1 text-blue-400" size={16} />
+                  {Math.abs(r.analysis.evalBefore) > 1000
+                    ? `Mate in ${prevMateIn}`
+                    : r.analysis.evalBefore > 0
+                      ? `+${r.analysis.evalBefore / 100}`
+                      : r.analysis.evalBefore / 100}
+                </span>
+                <span
+                  className={`flex items-center font-medium ${r.impact < 0 ? 'text-red-500' : 'text-green-500'}`}
+                >
+                  {Math.abs(r.impact) > INACCURACY && (
+                    <>
+                      {r.impact > 0 ? (
+                        <TrendingUp className="mr-1" size={16} />
+                      ) : (
+                        <TrendingDown className="mr-1" size={16} />
+                      )}
+                      {r.impact >= 1000
+                        ? `Mate in ${r.analysis.mateIn}`
+                        : r.impact <= -1000
+                          ? 'Missed mate'
+                          : fmtDelta(r.impact)}
+                    </>
+                  )}
+                </span>
+                <span
+                  className={`flex items-center font-medium ${timeClass(r.move.timeSpent!)}`}
+                >
+                  <Timer className="mr-1" size={16} />
+                  {r.move.timeSpent?.toFixed(1) ?? '–'}s
+                </span>
+              </div>
+              {onDrill && (
+                <button
+                  className="text-xs text-blue-400 underline hover:text-blue-300"
+                  onClick={() => onDrill(r.analysis.fen)}
+                >
+                  Drill this position
+                </button>
+              )}
             </div>
-            <div className="flex items-center justify-between text-sm text-gray-300">
-              <span className="flex items-center">
-                <BarChart className="mr-1 text-blue-400" size={16} />
-                {r.analysis.evalBefore > 0
-                  ? `+${r.analysis.evalBefore}`
-                  : r.analysis.evalBefore}
-              </span>
-              <span
-                className={`flex items-center font-medium ${r.impact < 0 ? 'text-red-400' : 'text-green-400'}`}
-              >
-                {Math.abs(r.impact) > INACCURACY && (
-                  <>
-                    {r.impact > 0 ? (
-                      <TrendingUp className="mr-1" size={16} />
-                    ) : (
-                      <TrendingDown className="mr-1" size={16} />
-                    )}
-                    {r.impact >= 1000
-                      ? `Mate in ${r.analysis.mateIn}`
-                      : r.impact <= -1000
-                        ? 'Missed mate'
-                        : fmtDelta(r.impact)}
-                  </>
-                )}
-              </span>
-              <span
-                className={`flex items-center font-medium ${timeClass(r.move.timeSpent!)}`}
-              >
-                <Timer className="mr-1" size={16} />
-                {r.move.timeSpent?.toFixed(1) ?? '–'}s
-              </span>
-            </div>
-            {onDrill && (
-              <button
-                className="text-xs text-blue-400 underline hover:text-blue-300"
-                onClick={() => onDrill(r.analysis.fen)}
-              >
-                Drill this position
-              </button>
-            )}
-          </div>
-        ))}
+          );
+        })}
 
       {/* table view */}
       {viewMode === 'table' && (
@@ -178,7 +183,7 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
             </tr>
           </thead>
           <tbody>
-            {rows.map(({ move, analysis, severity, impact }, idx) => (
+            {combined.map(({ move, analysis, severity, impact }, idx) => (
               <tr
                 key={idx}
                 className="border-t border-gray-800 hover:bg-gray-700"
@@ -197,7 +202,7 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
                 <td className="px-2 py-1">{move.san}</td>
 
                 <td
-                  className={`px-2 py-1 text-right font-medium ${impact < 0 ? 'text-red-400' : 'text-green-400'}`}
+                  className={`px-2 py-1 text-right font-medium ${impact < 0 ? 'text-red-500' : 'text-green-500'}`}
                 >
                   {impact >= 1000
                     ? `Mate in ${analysis.mateIn}`
@@ -236,11 +241,11 @@ function ToggleSwitch({ checked, onChange }) {
 
 function BlackPiece() {
   return (
-    <span className="text-2xl text-black [text-shadow:-0.5px_-0.5px_0_#4F46E5,0.5px_-0.5px_0_#4F46E5,-0.5px_0.5px_0_#4F46E5,0.5px_0.5px_0_#4F46E5]">
+    <span className="text-xl text-black [text-shadow:-0.5px_-0.5px_0_#4F46E5,0.5px_-0.5px_0_#4F46E5,-0.5px_0.5px_0_#4F46E5,0.5px_0.5px_0_#4F46E5]">
       ♞
     </span>
   );
 }
 function WhitePiece() {
-  return <span className="text-2xl text-white">♞</span>;
+  return <span className="text-xl text-white">♞</span>;
 }
