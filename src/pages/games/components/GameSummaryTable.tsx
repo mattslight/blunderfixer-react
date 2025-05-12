@@ -1,9 +1,12 @@
-// src/pages/games/components/GameSummaryTable.tsx
-import ToggleSwitch from '@/components/ToggleSwitch';
 import { useStickyValue } from '@/hooks/useStickyValue';
 import type { AnalysisNode, GameRecord } from '@/types';
+import { BarChart, Timer, TrendingDown, TrendingUp } from 'lucide-react';
 
 type Severity = 'blunder' | 'mistake' | 'inaccuracy' | 'none';
+
+const BLUNDER = 200; // ≥2-pawn
+const MISTAKE = 100; // ≥1-pawn
+const INACCURACY = 40; // ≥0.2-pawn
 
 interface CombinedEntry {
   move: GameRecord['moves'][0];
@@ -14,180 +17,226 @@ interface CombinedEntry {
 
 interface Props {
   combined: CombinedEntry[];
+  onDrill?: (fen: string) => void;
 }
 
-export default function GameSummaryTable({ combined }: Props) {
+export default function GameSummaryTable({ combined, onDrill }: Props) {
   const [showAll, setShowAll] = useStickyValue<boolean>('showAllMoves', false);
+  const [viewMode, setViewMode] = useStickyValue<'card' | 'table'>(
+    'viewMode',
+    'card'
+  );
 
-  // tally severities
   const counts = combined.reduce(
     (acc, { severity }) => {
       acc[severity] = (acc[severity] || 0) + 1;
       return acc;
     },
-    { blunder: 0, mistake: 0, inaccuracy: 0, none: 0 } as Record<
-      Severity,
-      number
-    >
+    { blunder: 0, mistake: 0, inaccuracy: 0 } as Record<Severity, number>
   );
 
-  // filter out non‐hero / non‐critical moves
   const rows = showAll
     ? combined
     : combined.filter((r) => r.severity !== 'none');
 
-  // severity → dot colour
   const dotColour: Record<Severity, string> = {
-    blunder: 'bg-red-500',
-    mistake: 'bg-orange-500',
-    inaccuracy: 'bg-yellow-400',
+    blunder: 'bg-red-600',
+    mistake: 'bg-orange-600',
+    inaccuracy: 'bg-yellow-500',
     none: 'bg-gray-800',
   };
 
-  // fast / slow time highlighting
   const timeClass = (t: number) =>
     t < 2 ? 'text-yellow-500' : t > 10 ? 'text-red-500' : '';
 
-  // format ΔEval, placeholder for large swings
-  const fmtDelta = (d: number) => {
-    if (d >= 1000) return 'Mate';
-    if (d <= -1000) return 'Missed mate';
-    return d > 0 ? `+${d}` : `${d}`;
-  };
+  const fmtDelta = (d: number) => (d > 0 ? `+${d}` : `${d}`);
+
+  console.log(combined);
 
   return (
     <>
-      {/* title */}
-      <div className="mb-4">
-        <span className="mb-1 block text-xs font-semibold tracking-wider text-green-500 uppercase">
-          Analysis
-        </span>
-        <h2 className="mb-2 text-2xl font-bold text-white">Key Moves</h2>
-      </div>
+      {/* toggles beneath legend */}
 
-      {/* legend & toggle */}
-      <div className="mb-2 flex items-center justify-between">
-        <div className="flex items-center space-x-4 text-sm text-gray-300">
-          <LegendDot
-            colour="bg-red-500"
-            label={`${counts.blunder} blunder${counts.blunder !== 1 ? 's' : ''}`}
-          />
-          <LegendDot
-            colour="bg-orange-500"
-            label={`${counts.mistake} mistake${counts.mistake !== 1 ? 's' : ''}`}
-          />
-          <LegendDot
-            colour="bg-yellow-400"
-            label={`${counts.inaccuracy} inaccurac${counts.inaccuracy !== 1 ? 'ies' : 'y'}`}
-          />
+      <div className="grid grid-cols-2 gap-4">
+        {/* header */}
+        <div className="mb-4">
+          <span className="mb-1 block text-xs font-semibold tracking-wider text-green-500 uppercase">
+            Analysis
+          </span>
+          <h2 className="mb-2 text-2xl font-bold text-white">Key Moves</h2>
         </div>
-        <ToggleSwitch
-          checked={showAll}
-          onChange={() => setShowAll((v) => !v)}
-          label="All moves"
-        />
+
+        <div className="mb-4 flex flex-col items-end px-2">
+          <div>
+            <span className="mr-2 text-sm text-gray-500">Show all</span>
+            <ToggleSwitch
+              checked={showAll}
+              onChange={() => setShowAll((v) => !v)}
+            />
+          </div>
+          <div>
+            <span className="mr-2 text-sm text-gray-500">Card view</span>
+            <ToggleSwitch
+              checked={viewMode === 'card'}
+              onChange={() =>
+                setViewMode((v) => (v === 'card' ? 'table' : 'card'))
+              }
+            />
+          </div>
+        </div>
       </div>
 
-      {/* moves table */}
-      <table className="w-full table-auto text-sm">
-        <thead>
-          <tr className="bg-gray-800">
-            <th className="px-2 py-1" />
-            <th className="px-2 py-1 text-left">Ply</th>
-            <th className="px-2 py-1 text-left">Move</th>
-            <th className="px-2 py-1 text-right">Eval Before</th>
-            <th className="px-2 py-1 text-right">Move Impact</th>
-            <th className="px-2 py-1 text-right">Ratio</th>
-            <th className="px-2 py-1 text-right">Ratio 2</th>
-            <th className="px-2 py-1 text-right">Time spent (s)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map(({ move, analysis, severity, impact }, idx) => (
-            <tr key={idx} className="border-t border-gray-700">
-              <td className="px-2 py-1">
-                {dotColour[severity] !== 'none' && (
-                  <span
-                    className={`inline-block h-2 w-2 rounded-full ${dotColour[severity]}`}
-                  />
+      {/* legend */}
+      <div className="mb-2 flex items-center space-x-4 px-2 text-xs text-gray-400">
+        <span className="flex items-center">
+          <span className="mr-1 inline-block h-2 w-2 rounded-full bg-red-500" />{' '}
+          {counts.blunder} blunder{counts.blunder > 1 ? 's' : ''}
+        </span>
+        <span className="flex items-center">
+          <span className="mr-1 inline-block h-2 w-2 rounded-full bg-orange-500" />{' '}
+          {counts.mistake} mistake{counts.mistake > 1 ? 's' : ''}
+        </span>
+        <span className="flex items-center">
+          <span className="mr-1 inline-block h-2 w-2 rounded-full bg-yellow-400" />{' '}
+          {counts.inaccuracy} inaccurac{counts.inaccuracy > 1 ? 'ies' : 'y'}
+        </span>
+      </div>
+
+      {/* card view simplified */}
+      {viewMode === 'card' &&
+        rows.map((r, i) => (
+          <div
+            key={i}
+            className="mb-4 space-y-2 rounded-lg bg-gray-800 p-4 shadow-lg transition duration-200 ease-in-out hover:scale-102 hover:shadow-xl"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-lg font-bold text-white">
+                {r.analysis.halfMoveIndex}. {r.move.san}
+              </span>
+              <span
+                className={`-mr-1 rounded-full px-3 py-1 text-xs font-semibold ${dotColour[r.severity]} text-white`}
+              >
+                {r.severity !== 'none' && r.severity.toUpperCase()}
+              </span>
+            </div>
+            <div className="flex items-center justify-between text-sm text-gray-300">
+              <span className="flex items-center">
+                <BarChart className="mr-1 text-blue-400" size={16} />
+                {r.analysis.evalBefore > 0
+                  ? `+${r.analysis.evalBefore}`
+                  : r.analysis.evalBefore}
+              </span>
+              <span
+                className={`flex items-center font-medium ${r.impact < 0 ? 'text-red-400' : 'text-green-400'}`}
+              >
+                {Math.abs(r.impact) > INACCURACY && (
+                  <>
+                    {r.impact > 0 ? (
+                      <TrendingUp className="mr-1" size={16} />
+                    ) : (
+                      <TrendingDown className="mr-1" size={16} />
+                    )}
+                    {r.impact >= 1000
+                      ? `Mate in ${r.analysis.mateIn}`
+                      : r.impact <= -1000
+                        ? 'Missed mate'
+                        : fmtDelta(r.impact)}
+                  </>
                 )}
-              </td>
-              <td className="px-2 py-1">{analysis.halfMoveIndex}</td>
-              <td className="px-2 py-1">
-                {move.side}. {move.san}
-              </td>
-              <td className="px-2 py-1 text-right">
-                {analysis.evalBefore > 0
-                  ? `+${analysis.evalBefore}`
-                  : analysis.evalBefore}
-              </td>
-              <td
-                className={`px-2 py-1 text-right ${
-                  severity === 'blunder'
-                    ? 'text-red-400'
-                    : severity === 'mistake'
-                      ? 'text-orange-400'
-                      : severity === 'inaccuracy'
-                        ? 'text-yellow-400'
-                        : ''
-                }`}
+              </span>
+              <span
+                className={`flex items-center font-medium ${timeClass(r.move.timeSpent!)}`}
               >
-                {fmtDelta(impact)}
-              </td>
-              <td
-                className={`px-2 py-1 text-right ${
-                  severity === 'blunder'
-                    ? 'text-red-400'
-                    : severity === 'mistake'
-                      ? 'text-orange-400'
-                      : severity === 'inaccuracy'
-                        ? 'text-yellow-400'
-                        : ''
-                }`}
+                <Timer className="mr-1" size={16} />
+                {r.move.timeSpent?.toFixed(1) ?? '–'}s
+              </span>
+            </div>
+            {onDrill && (
+              <button
+                className="text-xs text-blue-400 underline hover:text-blue-300"
+                onClick={() => onDrill(r.analysis.fen)}
               >
-                {Math.abs(
-                  Math.round(impact / Math.abs(analysis.evalBefore + 100))
-                )}
-              </td>
-              <td
-                className={`px-2 py-1 text-right ${
-                  severity === 'blunder'
-                    ? 'text-red-400'
-                    : severity === 'mistake'
-                      ? 'text-orange-400'
-                      : severity === 'inaccuracy'
-                        ? 'text-yellow-400'
-                        : ''
-                }`}
-              >
-                {Math.abs(
-                  Math.round(
-                    impact /
-                      (Math.log1p(Math.abs(analysis.evalBefore)) * 50 + 50)
-                  )
-                )}
-              </td>
-              <td
-                className={`px-2 py-1 text-right ${
-                  move.timeSpent != null ? timeClass(move.timeSpent) : ''
-                }`}
-              >
-                {move.timeSpent != null ? move.timeSpent.toFixed(1) : '–'}
-              </td>
+                Drill this position
+              </button>
+            )}
+          </div>
+        ))}
+
+      {/* table view */}
+      {viewMode === 'table' && (
+        <table className="w-full table-auto text-sm">
+          <thead>
+            <tr className="bg-gray-800">
+              <th className="px-2 py-1" />
+              <th className="px-2 py-1 text-left">Ply</th>
+              <th className="px-2 py-1" />
+              <th className="px-2 py-1 text-left">Move</th>
+              <th className="px-2 py-1 text-right">Impact</th>
+              <th className="px-2 py-1 text-right">Time</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map(({ move, analysis, severity, impact }, idx) => (
+              <tr
+                key={idx}
+                className="border-t border-gray-800 hover:bg-gray-700"
+              >
+                <td className="px-2 py-1">
+                  <span
+                    className={`inline-block h-4 w-4 rounded-full ${dotColour[severity]}`}
+                  />
+                </td>
+                <td className="px-2 py-1">{analysis.halfMoveIndex}</td>
+                <td className="px-2 py-1">
+                  {move.side == 'w' ? <WhitePiece /> : <BlackPiece />}
+                </td>
+                <td className="px-2 py-1">{move.san}</td>
+
+                <td
+                  className={`px-2 py-1 text-right font-medium ${impact < 0 ? 'text-red-400' : 'text-green-400'}`}
+                >
+                  {impact >= 1000
+                    ? `Mate in ${analysis.mateIn}`
+                    : impact <= -1000
+                      ? 'Missed mate'
+                      : fmtDelta(impact)}
+                </td>
+                <td
+                  className={`px-2 py-1 text-right font-medium ${timeClass(move.timeSpent!)}`}
+                >
+                  {move.timeSpent?.toFixed(1) ?? '–'}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </>
   );
 }
 
-// small legend helper
-function LegendDot({ colour, label }: { colour: string; label: string }) {
+function ToggleSwitch({ checked, onChange }) {
   return (
-    <div className="flex items-center space-x-1">
-      <span className={`inline-block h-2 w-2 rounded-full ${colour}`} />
-      <span className="text-xs text-gray-400">{label}</span>
-    </div>
+    <label className="relative inline-flex cursor-pointer items-center">
+      <input
+        type="checkbox"
+        className="peer sr-only"
+        checked={checked}
+        onChange={onChange}
+      />
+      <div className="h-3 w-7 rounded-full bg-gray-300 transition-colors duration-200 peer-checked:bg-blue-500 dark:bg-gray-600" />
+      <div className="absolute left-0.25 h-3.5 w-3.5 rounded-full bg-white transition-transform duration-200 ease-in-out peer-checked:translate-x-3" />
+    </label>
   );
+}
+
+function BlackPiece() {
+  return (
+    <span className="text-2xl text-black [text-shadow:-0.5px_-0.5px_0_#4F46E5,0.5px_-0.5px_0_#4F46E5,-0.5px_0.5px_0_#4F46E5,0.5px_0.5px_0_#4F46E5]">
+      ♞
+    </span>
+  );
+}
+function WhitePiece() {
+  return <span className="text-2xl text-white">♞</span>;
 }
