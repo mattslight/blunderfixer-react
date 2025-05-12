@@ -60,12 +60,12 @@ export default function GameCard({
       }
     >
       {/* Header: players & ratings */}
-      <header className="mt-2 mb-2 grid grid-cols-[1fr_auto_1fr] items-center gap-x-2">
+      <header className="mt-2 mb-0 grid grid-cols-[1fr_auto_1fr] items-center gap-x-2">
         {/* White */}
         <div className="flex items-center space-x-1 truncate">
           <span className="mr-2 text-xl">♞</span>
           <span className="truncate font-semibold">{whitePlayer.username}</span>
-          <span className="hidden text-sm text-gray-400 md:flex">
+          <span className="xs:flex hidden text-sm text-gray-400">
             ({whiteRating})
           </span>
         </div>
@@ -79,7 +79,7 @@ export default function GameCard({
             ♞
           </span>
           <span className="truncate font-semibold">{blackPlayer.username}</span>
-          <span className="hidden text-sm text-gray-400 md:flex">
+          <span className="xs:flex hidden text-sm text-gray-400">
             ({blackRating})
           </span>
         </div>
@@ -100,7 +100,7 @@ export default function GameCard({
       </div>
 
       {/* Footer: result & action */}
-      <footer className="mt-4 flex items-center justify-between">
+      <footer className="mt-2 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <span
             className={
