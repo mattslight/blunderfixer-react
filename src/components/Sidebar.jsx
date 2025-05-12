@@ -1,8 +1,8 @@
 // src/components/Sidebar.jsx
-import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { Drawer } from 'flowbite-react';
 import { motion } from 'framer-motion';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 export default function Sidebar({ isSidebarOpen, closeSidebar }) {
   const mainNav = [
@@ -18,6 +18,21 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
         >
           <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" />
           <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" />
+        </svg>
+      ),
+    },
+    {
+      to: '/games',
+      label: 'Games',
+      Icon: ({ className }) => (
+        <svg
+          aria-hidden="true"
+          className={className}
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7z" />
+          <path d="M4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
         </svg>
       ),
     },
@@ -55,21 +70,6 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
             d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z"
             clipRule="evenodd"
           ></path>
-        </svg>
-      ),
-    },
-    {
-      to: '/games',
-      label: 'Games',
-      Icon: ({ className }) => (
-        <svg
-          aria-hidden="true"
-          className={className}
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7z" />
-          <path d="M4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
         </svg>
       ),
     },
