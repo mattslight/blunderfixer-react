@@ -183,40 +183,43 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
             </tr>
           </thead>
           <tbody>
-            {combined.map(({ move, analysis, severity, impact }, idx) => (
-              <tr
-                key={idx}
-                className="border-t border-gray-800 hover:bg-gray-700"
-              >
-                <td className="px-2 py-1">
-                  <span
-                    className={`inline-block h-4 w-4 rounded-full ${dotColour[severity]}`}
-                  />
-                </td>
-                <td className="px-2 py-1 text-gray-500">
-                  {analysis.halfMoveIndex}.
-                </td>
-                <td className="px-2 py-1">
-                  {move.side == 'w' ? <WhitePiece /> : <BlackPiece />}
-                </td>
-                <td className="px-2 py-1">{move.san}</td>
+            {combined.map(({ move, analysis, severity, impact }, idx) => {
+              if (!showAll && severity === 'none') return null; // skip non-severe moves
+              return (
+                <tr
+                  key={idx}
+                  className="border-t border-gray-800 hover:bg-gray-700"
+                >
+                  <td className="px-2 py-1">
+                    <span
+                      className={`inline-block h-4 w-4 rounded-full ${dotColour[severity]}`}
+                    />
+                  </td>
+                  <td className="px-2 py-1 text-gray-500">
+                    {analysis.halfMoveIndex}.
+                  </td>
+                  <td className="px-2 py-1">
+                    {move.side == 'w' ? <WhitePiece /> : <BlackPiece />}
+                  </td>
+                  <td className="px-2 py-1">{move.san}</td>
 
-                <td
-                  className={`px-2 py-1 text-right font-medium ${impact < 0 ? 'text-red-500' : 'text-green-500'}`}
-                >
-                  {impact >= 1000
-                    ? `Mate in ${analysis.mateIn}`
-                    : impact <= -1000
-                      ? 'Missed mate'
-                      : fmtDelta(impact)}
-                </td>
-                <td
-                  className={`px-2 py-1 text-right font-medium ${timeClass(move.timeSpent!)}`}
-                >
-                  {move.timeSpent?.toFixed(1) ?? '–'}
-                </td>
-              </tr>
-            ))}
+                  <td
+                    className={`px-2 py-1 text-right font-medium ${impact < 0 ? 'text-red-500' : 'text-green-500'}`}
+                  >
+                    {impact >= 1000
+                      ? `Mate in ${analysis.mateIn}`
+                      : impact <= -1000
+                        ? 'Missed mate'
+                        : fmtDelta(impact)}
+                  </td>
+                  <td
+                    className={`px-2 py-1 text-right font-medium ${timeClass(move.timeSpent!)}`}
+                  >
+                    {move.timeSpent?.toFixed(1) ?? '–'}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}
