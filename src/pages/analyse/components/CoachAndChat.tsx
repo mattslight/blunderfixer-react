@@ -52,9 +52,9 @@ function ChatMessage({ msg }: { msg: Msg }) {
         />
       )}
       <div
-        className={`max-w-[80%] rounded-xl p-3 font-medium ${styles.bubble}`}
+        className={`max-w-[85%] rounded-xl p-3 font-medium md:max-w-[80%] ${styles.bubble}`}
       >
-        <div className="prose prose-green dark:prose-invert prose-table:border-spacing-y-2 leading-normal font-medium dark:[--tw-prose-td-borders-opacity:0.5] dark:[--tw-prose-td-borders:theme(colors.white)] dark:[--tw-prose-th-borders-opacity:0.5] dark:[--tw-prose-th-borders:theme(colors.white)]">
+        <div className="prose prose-green dark:prose-invert prose-table:border-spacing-y-2 text-sm leading-normal font-medium md:text-base dark:[--tw-prose-td-borders-opacity:0.5] dark:[--tw-prose-td-borders:theme(colors.white)] dark:[--tw-prose-th-borders-opacity:0.5] dark:[--tw-prose-th-borders:theme(colors.white)]">
           <ReactMarkdown remarkPlugins={[remarkGfm]} children={msg.text} />
         </div>
       </div>
@@ -223,7 +223,7 @@ export default function CoachAndChat({
 
   return (
     <div className="mx-auto flex h-auto max-w-lg flex-col rounded pt-2 shadow-xl lg:mt-4 lg:h-[80vh] lg:w-lg lg:max-w-xl lg:pt-4 xl:w-xl">
-      <div className="space-y-4 px-4 py-2 lg:flex-1 lg:overflow-y-auto lg:pb-8">
+      <div className="space-y-4 py-2 lg:flex-1 lg:overflow-y-auto lg:px-4 lg:pb-8">
         <AnimatePresence initial={false}>
           {messages.map((msg) => (
             <ChatMessage key={`${msg.role}-${msg.text}`} msg={msg} />
