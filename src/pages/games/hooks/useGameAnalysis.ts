@@ -59,14 +59,17 @@ export function useGameAnalysis(gamesMap: Record<string, GameRecord>) {
           moveNumber: r.move_number,
           san: r.san,
           fenBefore: r.fen_before,
+
           evalBefore: r.eval_before,
           evalAfter: r.eval_after,
-          evalCP: r.eval_cp,
+          evalCP: r.eval_after,
           deltaCP: r.delta_cp,
-          depth: r.depth || 12,
-          bestMove: r.best_move,
-          playedMove: r.played_move,
+
+          depth: r.depth,
+          playedMove: r.uci, // alias UCI → playedMove
+          mateIn: r.mate_in, // if you’re consuming it
         }));
+
         setAnalysisMap((prev) => ({ ...prev, [id]: nodes }));
       } catch (err) {
         console.error(err);
