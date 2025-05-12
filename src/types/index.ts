@@ -77,6 +77,7 @@ export interface AnalysisNode {
   halfMoveIndex: number; // index in the ply array (0 = before White’s 1st move)
   fen: string; // FEN for this position
   evalCP: number; // centipawn evaluation (positive = White better)
+  evalBefore: number; // eval before the move
   deltaCP: number; // evalCP - previous evalCP
   bestMoveUCI?: string; // UCI best move at this position
   pvLines?: PVLine[]; // top-N principal variation lines
