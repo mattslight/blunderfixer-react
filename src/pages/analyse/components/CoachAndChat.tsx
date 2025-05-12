@@ -111,7 +111,7 @@ function ChatInput({
   };
 
   return (
-    <div className="sticky bottom-0 -mb-4 bg-gray-800 p-4 md:relative md:pb-4">
+    <div className="sticky bottom-0 z-10 bg-black/20 p-2 backdrop-blur-lg md:w-lg lg:fixed lg:bottom-4 lg:w-lg xl:w-xl">
       <textarea
         ref={textareaRef}
         rows={1}
@@ -222,8 +222,8 @@ export default function CoachAndChat({
   }, [input, fen, legalMoves, messages, push]);
 
   return (
-    <div className="mx-auto flex h-auto max-w-lg flex-col rounded bg-gray-800 shadow-xl md:mt-4 md:h-[80vh] md:max-w-2xl">
-      <div className="space-y-4 px-4 py-2 md:flex-1 md:overflow-y-auto">
+    <div className="mx-auto flex h-auto max-w-lg flex-col rounded pt-2 shadow-xl lg:mt-4 lg:h-[80vh] lg:w-lg lg:max-w-xl lg:pt-4 xl:w-xl">
+      <div className="space-y-4 px-4 py-2 lg:flex-1 lg:overflow-y-auto lg:pb-8">
         <AnimatePresence initial={false}>
           {messages.map((msg) => (
             <ChatMessage key={`${msg.role}-${msg.text}`} msg={msg} />
