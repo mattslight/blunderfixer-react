@@ -87,7 +87,7 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
       </div>
 
       {/* legend */}
-      <div className="mb-2 flex items-center space-x-4 px-2 text-xs text-gray-400">
+      {/* <div className="mb-2 flex items-center space-x-4 px-2 text-xs text-gray-400">
         <span className="flex items-center">
           <span className="mr-1 inline-block h-2 w-2 rounded-full bg-red-500" />{' '}
           {counts.blunder} blunder{counts.blunder > 1 ? 's' : ''}
@@ -100,7 +100,7 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
           <span className="mr-1 inline-block h-2 w-2 rounded-full bg-yellow-400" />{' '}
           {counts.inaccuracy} inaccurac{counts.inaccuracy > 1 ? 'ies' : 'y'}
         </span>
-      </div>
+      </div> */}
 
       {/* card view simplified */}
       {viewMode === 'card' &&
@@ -168,11 +168,13 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
           <thead>
             <tr className="bg-gray-800">
               <th className="px-2 py-1" />
-              <th className="px-2 py-1 text-left">Ply</th>
-              <th className="px-2 py-1" />
               <th className="px-2 py-1 text-left">Move</th>
+              <th className="px-2 py-1" />
+              <th className="px-2 py-1 text-left" />
               <th className="px-2 py-1 text-right">Impact</th>
-              <th className="px-2 py-1 text-right">Time</th>
+              <th className="px-2 py-1 text-right">
+                Time <span className="font-normal text-gray-400">(s)</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -186,7 +188,9 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
                     className={`inline-block h-4 w-4 rounded-full ${dotColour[severity]}`}
                   />
                 </td>
-                <td className="px-2 py-1">{analysis.halfMoveIndex}</td>
+                <td className="px-2 py-1 text-gray-500">
+                  {analysis.halfMoveIndex}.
+                </td>
                 <td className="px-2 py-1">
                   {move.side == 'w' ? <WhitePiece /> : <BlackPiece />}
                 </td>
