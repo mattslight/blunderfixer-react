@@ -46,11 +46,13 @@ export default function Navbar({ toggleSidebar }) {
               <span className="sr-only">Toggle sidebar</span>
             </button>
           )}
-          <a href="/" className="mr-4 flex items-center justify-between">
-            <span className="self-center font-semibold whitespace-nowrap dark:text-gray-200">
-              BlunderFixer ‼️
-            </span>
-          </a>
+          {!username && (
+            <a href="/" className="mr-4 flex items-center justify-between">
+              <span className="self-center font-semibold whitespace-nowrap dark:text-gray-200">
+                BlunderFixer ‼️
+              </span>
+            </a>
+          )}
         </div>
         <div className="flex items-center lg:order-2">
           {/* Notifications */}

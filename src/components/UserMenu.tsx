@@ -1,6 +1,6 @@
 // src/components/UserMenu.tsx
 import { useProfile } from '@/hooks/useProfile';
-import { ChevronDown, LogOut } from 'lucide-react';
+import { ChevronDown, LogOut, UserPen } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 export default function UserMenu() {
@@ -47,7 +47,7 @@ export default function UserMenu() {
       </button>
 
       {open && (
-        <div className="ring-opacity-5 absolute right-0 mt-2 w-56 origin-top-right rounded-xl border border-gray-700 bg-black/80 shadow-lg ring-1 ring-black">
+        <div className="ring-opacity-5 absolute right-0 mt-2 w-56 origin-top-right rounded-xl border border-gray-700 bg-black/50 shadow-lg ring-1 ring-black backdrop-blur-lg">
           <div className="px-4 py-3 text-center">
             <div className="flex items-center justify-center">
               {profile.avatar ? (
@@ -76,10 +76,12 @@ export default function UserMenu() {
                   }}
                   className="flex w-full items-center px-4 py-2 text-sm hover:bg-gray-700"
                 >
-                  My profile
+                  {' '}
+                  <UserPen className="mr-2 h-5 w-5" />
+                  Profile & Settings
                 </button>
               </li>
-              <li>
+              {/* <li>
                 <button
                   onClick={() => {
                     setOpen(false);
@@ -89,7 +91,7 @@ export default function UserMenu() {
                 >
                   Account settings
                 </button>
-              </li>
+              </li> */}
             </ul>
             <ul className="py-1 text-gray-300">
               <li>
