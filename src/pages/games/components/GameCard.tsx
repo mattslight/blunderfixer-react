@@ -52,6 +52,22 @@ export default function GameCard({
   let tcStr = mins > 0 ? `${mins}m${secs ? `${secs}s` : ''}` : `${secs}s`;
   if (inc > 0) tcStr += ` +${inc}s`;
 
+  // result
+  const yourMeta = side === 'white' ? wMeta : bMeta;
+  const opponentMeta = side === 'white' ? bMeta : wMeta;
+  let rawReason: string | undefined;
+  if (won) {
+    rawReason = opponentMeta.result; // how they lost
+  } else if (lost) {
+    rawReason = yourMeta.result; // how you lost
+  } else {
+    rawReason = opponentMeta.result; // draw → “stalemate” / “agreed”
+  }
+  const reason = rawReason
+    ?.split('_')
+    .join(' ') // turn snake_case into words
+    .replace(/\b\w/g, (c) => c.toUpperCase()); // capitalize each word
+
   return (
     <li
       className={
@@ -100,6 +116,7 @@ export default function GameCard({
       </div>
 
       {/* Footer: result & action */}
+
       <footer className="mt-2 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <span
@@ -116,6 +133,9 @@ export default function GameCard({
           </span>
           {resultTag && (
             <span className="text-sm text-gray-400 italic">({resultTag})</span>
+          )}
+          {reason && (
+            <span className="text-sm text-gray-400 italic">({reason})</span>
           )}
         </div>
 
