@@ -59,7 +59,7 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
             Review
           </span>
           <h2 className="mb-2 text-2xl font-bold text-white">Key Moves</h2>
-          <span className="mr-2 text-sm text-gray-500">Show all</span>
+          <span className="mr-2 text-sm text-gray-600">Show all</span>
           <ToggleSwitch
             checked={showAll}
             onChange={() => setShowAll((v) => !v)}
@@ -93,39 +93,51 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
       {/* card view simplified */}
       {viewMode === 'card' &&
         combined.map((r, i, all) => {
-          if (!showAll && r.severity === 'none') return null; // skip non-severe moves
-          const prev = all[i - 1]; // previous row (or undefined if i===0)
+          if (!showAll && r.severity === 'none') return null;
+          const prev = all[i - 1];
           const prevMateIn = prev?.analysis.mateIn;
+
           return (
             <div
               key={i}
               className="mb-4 space-y-4 rounded-lg bg-gray-800 p-4 shadow-lg transition duration-200 ease-in-out hover:scale-102 hover:shadow-xl"
             >
-              <div className="flex items-center justify-between">
-                <span className="block justify-end text-xs font-semibold tracking-wider text-green-600 uppercase">
-                  Move {r.analysis.halfMoveIndex}
-                </span>{' '}
-                <span className="text-lg font-bold text-white">
-                  {r.move.side == 'w' ? <WhitePiece /> : <BlackPiece />}{' '}
-                  {r.move.san}
-                </span>
-                <span
-                  className={`-mr-1 rounded-full px-3 py-1 text-xs font-semibold ${dotColour[r.severity]} text-white`}
-                >
-                  {r.severity !== 'none' && r.severity.toUpperCase()}
-                </span>
+              {/* header row */}
+              <div className="grid grid-cols-3 items-center">
+                <div className="text-left">
+                  <span className="block text-xs font-semibold tracking-wider text-green-600 uppercase">
+                    Move {r.analysis.halfMoveIndex}
+                  </span>
+                </div>
+                <div className="text-center">
+                  <span className="text-lg font-bold text-white">
+                    {r.move.side === 'w' ? <WhitePiece /> : <BlackPiece />}{' '}
+                    {r.move.san}
+                  </span>
+                </div>
+                <div className="text-right">
+                  <span
+                    className={`-mr-1 inline-block rounded-full px-3 py-1 text-xs font-semibold ${dotColour[r.severity]} text-white`}
+                  >
+                    {r.severity !== 'none' && r.severity.toUpperCase()}
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center justify-between text-sm text-gray-300">
-                <span className="flex items-center">
+
+              {/* detail row */}
+              <div className="grid grid-cols-3 items-center text-sm text-gray-300">
+                <div className="flex items-center">
                   <BarChart className="mr-1 text-blue-400" size={16} />
                   {Math.abs(r.analysis.evalBefore) > 1000
                     ? `Mate in ${prevMateIn}`
                     : r.analysis.evalBefore > 0
                       ? `+${r.analysis.evalBefore}`
                       : r.analysis.evalBefore}
-                </span>
-                <span
-                  className={`flex items-center font-medium ${r.impact < 0 ? 'text-red-500' : 'text-green-500'}`}
+                </div>
+                <div
+                  className={`flex items-center justify-center font-medium ${
+                    r.impact < 0 ? 'text-red-500' : 'text-green-500'
+                  }`}
                 >
                   {Math.abs(r.impact) > INACCURACY && (
                     <>
@@ -141,14 +153,15 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
                           : fmtDelta(r.impact)}
                     </>
                   )}
-                </span>
-                <span
-                  className={`flex items-center font-medium ${timeClass(r.move.timeSpent!)}`}
+                </div>
+                <div
+                  className={`flex items-center justify-end font-medium ${timeClass(r.move.timeSpent!)}`}
                 >
                   <Timer className="mr-1" size={16} />
                   {r.move.timeSpent?.toFixed(1) ?? '–'}s
-                </span>
+                </div>
               </div>
+
               {onDrill && (
                 <button
                   className="text-xs text-blue-400 underline hover:text-blue-300"
