@@ -4,6 +4,7 @@ import { AnalysisNode, GameRecord } from '@/types';
 import GameSummaryGraph from './GameSummaryGraph';
 import GameSummaryHeader from './GameSummaryHeader';
 import GameSummaryTable from './GameSummaryTable';
+import TimeUsageChart from './TimeUsageChart';
 
 interface CombinedEntry {
   move: GameRecord['moves'][0];
@@ -16,6 +17,8 @@ interface GameSummaryProps {
   game: GameRecord;
   analysis: AnalysisNode[];
 }
+
+type TimePoint = { move: number; heroTime: number; oppTime: number };
 
 export function GameSummary({ game, analysis }: GameSummaryProps) {
   const {
@@ -58,10 +61,32 @@ export function GameSummary({ game, analysis }: GameSummaryProps) {
     return { move: mv, analysis: a, severity, impact };
   });
 
+  // new: time usage series (derive actor on the fly)
+
+  const timeData: TimePoint[] = [];
+
+  // fold half-moves into full moves
+  analysis.forEach((a) => {
+    const ply = a.halfMoveIndex;
+    const full = Math.ceil(ply / 2);
+    const mv = game.moves[ply - 1];
+    const isHero = mv.side === heroSide;
+    const t = mv.timeSpent ?? 0;
+
+    let pt = timeData.find((x) => x.move === full);
+    if (!pt) {
+      pt = { move: full, heroTime: 0, oppTime: 0 };
+      timeData.push(pt);
+    }
+    if (isHero) pt.heroTime += t;
+    else pt.oppTime += t;
+  });
+
   return (
     <article className="mx-auto mb-6 w-full max-w-3xl md:p-4">
       <GameSummaryHeader game={game} />
       <GameSummaryGraph data={chartData} max={MAX} />
+      <TimeUsageChart data={timeData} />
       <GameSummaryTable combined={combined} />
     </article>
   );
