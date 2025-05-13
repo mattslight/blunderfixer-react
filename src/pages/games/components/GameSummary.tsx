@@ -9,10 +9,34 @@ const BLUNDER = 200; // ≥2-pawn
 const MISTAKE = 100; // ≥1-pawn
 const INACCURACY = 40; // ≥0.2-pawn
 
-type Severity = 'blunder' | 'mistake' | 'inaccuracy' | 'none';
+const TIME_IMPULSIVE = 1; // “too fast”
+const TIME_OVERUSE = 20; // “took too long”
+
+type Severity =
+  | 'blunder'
+  | 'mistake'
+  | 'inaccuracy'
+  | 'timeImpulsive'
+  | 'timeOveruse'
+  | 'none';
 type Actor = 'hero' | 'opponent';
 
-function getSeverity(deltaCP: number): Severity {
+function getSeverity(
+  deltaCP: number,
+  timeSpent: number | undefined,
+  ply: number
+): Severity {
+  // only run any time-control logic once we're past the first 20 plies
+  if (ply > 20 && timeSpent !== undefined) {
+    if (timeSpent < TIME_IMPULSIVE && Math.abs(deltaCP) > INACCURACY) {
+      return 'timeImpulsive';
+    }
+    if (timeSpent > TIME_OVERUSE) {
+      return 'timeOveruse';
+    }
+  }
+
+  // otherwise fall through to pawn-based severity
   const absΔ = Math.abs(deltaCP);
   if (absΔ >= BLUNDER) return 'blunder';
   if (absΔ >= MISTAKE) return 'mistake';
@@ -50,7 +74,10 @@ export function GameSummary({ game, analysis }: GameSummaryProps) {
 
   const combined: CombinedEntry[] = analysis.map((a) => {
     const mv = game.moves[a.halfMoveIndex - 1];
-    const sev = mv.side === heroSide ? getSeverity(a.deltaCP) : 'none';
+    const sev =
+      mv.side === heroSide
+        ? getSeverity(a.deltaCP, mv.timeSpent, a.halfMoveIndex)
+        : 'none';
     const actor = mv.side === heroSide ? 'hero' : 'opponent';
     const impact = heroSide === 'b' ? -a.deltaCP : a.deltaCP;
 
