@@ -21,7 +21,18 @@ export default function TimeUsageChart({ data }: { data: TimePoint[] }) {
         >
           <XAxis dataKey="ply" axisLine={false} tickLine={false} tick={false} />
           <YAxis axisLine={false} tickLine={false} tick={false} />
-          <Tooltip formatter={(v: number) => `${v.toFixed(1)}s`} />
+          <Tooltip
+            formatter={(v: number) => `${v.toFixed(1)}s`}
+            contentStyle={{
+              backgroundColor: '#1f1f1f',
+              borderColor: '#333',
+              borderRadius: 4,
+              padding: 8,
+              color: '#fff',
+            }}
+            itemStyle={{ color: '#fff' }}
+            cursor={{ fill: 'rgba(255,255,255,0.1)' }}
+          />
           <Bar dataKey="heroTime" name="You" fill="#38bdf8" />
           <Bar dataKey="oppTime" name="Opp." fill="#a78bfa" />{' '}
         </BarChart>
