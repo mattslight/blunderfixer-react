@@ -2,6 +2,7 @@
 
 ## In Progress
 
+- [ ] _BUG_: Fix chart(s) - particularly burndown - right margin/padding on iPhone
 - [x] **FEAT**: Time burndown chart for both players
 
 - [ ] _BUG_: View error boundary - clearly not working!
