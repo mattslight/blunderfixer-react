@@ -1,5 +1,11 @@
+// src/pages/games/components/GameSummary.tsx
 import { useProfile } from '@/hooks/useProfile';
-import { getSeverity, Severity, TimeControl } from '@/lib/severity';
+import {
+  getErrorSeverity,
+  getTimeSeverity,
+  Severity,
+  TimeControl,
+} from '@/lib/severity';
 import { AnalysisNode, GameRecord } from '@/types';
 import GameSummaryGraph from './GameSummaryGraph';
 import GameSummaryHeader from './GameSummaryHeader';
@@ -9,7 +15,7 @@ import TimeUsageChart from './TimeUsageChart';
 interface CombinedEntry {
   move: GameRecord['moves'][0];
   analysis: AnalysisNode;
-  severity: Severity;
+  tags: Severity[];
   impact: number;
 }
 
@@ -44,27 +50,30 @@ export function GameSummary({ game, analysis }: GameSummaryProps) {
     ...a,
   }));
 
-  // combine moves with severities
+  // combine moves with dual-tag severities
   const combined: CombinedEntry[] = analysis.map((a) => {
     const mv = game.moves[a.halfMoveIndex - 1];
-    const severity =
-      mv.side === heroSide
-        ? getSeverity({
-            deltaCP: a.deltaCP,
-            timeSpent: mv.timeSpent,
-            ply: a.halfMoveIndex,
-            tc,
-          })
-        : 'none';
+    // compute both error and time tags
+    let tags: Severity[] = [];
+    if (mv.side === heroSide) {
+      const errTag = getErrorSeverity(a.deltaCP);
+      const timeTag = getTimeSeverity({
+        deltaCP: a.deltaCP,
+        timeSpent: mv.timeSpent,
+        ply: a.halfMoveIndex,
+        tc,
+      });
+      tags = [errTag, timeTag].filter((t) => t !== 'none') as Severity[];
+    }
+    if (tags.length === 0) tags = ['none'];
+
     // impact adjusted for perspective
     const impact = heroSide === 'b' ? -a.deltaCP : a.deltaCP;
-    return { move: mv, analysis: a, severity, impact };
+    return { move: mv, analysis: a, tags, impact };
   });
 
-  // new: time usage series (derive actor on the fly)
+  // build time usage series
   const timeData: TimePoint[] = [];
-
-  // fold half-moves into full moves
   analysis.forEach((a) => {
     const ply = a.halfMoveIndex;
     const full = Math.ceil(ply / 2);
