@@ -35,7 +35,7 @@ export default function GameCard({
   // button label and color
   const btnLabel = isAnalysed ? 'Report' : 'Analyse';
   const btnColor = isAnalysed
-    ? 'bg-purple-900 hover:bg-purple-950'
+    ? 'bg-purple-800 hover:bg-purple-900'
     : 'bg-blue-600 hover:bg-blue-700';
 
   // date & time control
@@ -71,8 +71,8 @@ export default function GameCard({
   return (
     <li
       className={
-        `mt-6 flex flex-col rounded-r-lg border-l-4 bg-gray-800 px-5 py-4 ` +
-        (won ? 'border-green-500' : lost ? 'border-red-500' : 'border-gray-500')
+        `mt-6 flex flex-col rounded-lg border-l-6 bg-gray-800 px-5 py-4 ` +
+        (won ? 'border-green-700' : lost ? 'border-red-700' : 'border-gray-500')
       }
     >
       {/* Header: players & ratings */}
@@ -123,9 +123,9 @@ export default function GameCard({
             className={
               `rounded-full px-3 py-1 text-sm font-medium ` +
               (won
-                ? 'bg-green-600 text-white'
+                ? 'bg-green-700 text-white'
                 : lost
-                  ? 'bg-red-600 text-white'
+                  ? 'bg-red-700 text-white'
                   : 'bg-gray-600 text-white')
             }
           >
@@ -144,7 +144,9 @@ export default function GameCard({
             <Loader className="h-4 w-4 animate-spin" />
           ) : (
             <span>
-              <Activity className="mr-2 inline-flex h-4 w-4" />
+              {btnLabel == 'Report' && (
+                <Activity className="mr-2 inline-flex h-4 w-4" />
+              )}
               {btnLabel}
             </span>
           )}
