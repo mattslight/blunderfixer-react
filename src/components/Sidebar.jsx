@@ -135,10 +135,13 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
       backdrop
       placement="left"
       id="drawer-navigation"
-      className="fixed top-0 left-0 z-40 h-screen w-64 border-r border-gray-200 bg-white pt-14 transition-transform 2xl:w-40 2xl:translate-x-0 2xl:p-0 2xl:pt-14 dark:border-gray-700 dark:bg-gray-800"
+      className="fixed top-0 left-0 z-40 h-screen w-64 border-r border-gray-200 pt-14 transition-transform 2xl:w-40 2xl:translate-x-0 2xl:p-0 2xl:pt-14 dark:border-gray-700 dark:bg-gray-800"
     >
-      <div className="h-full overflow-y-auto bg-white px-3 py-5 dark:bg-gray-800">
-        <ul className="space-y-2">
+      <div className="h-full overflow-y-auto bg-gray-800 px-3 py-5">
+        <div className="mb-4 text-sm font-medium tracking-wider whitespace-nowrap dark:text-gray-300">
+          BlunderFixer ‼️
+        </div>
+        <ul className="space-y-2 border-t border-gray-700 pt-8">
           {mainNav.map(({ to, label, Icon }) => (
             <li key={to}>
               <LinkItem to={to} label={label} Icon={Icon} />
