@@ -36,8 +36,8 @@ export default function TimeUsageChart({
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={data}
-              barCategoryGap="1%" // ← leave half the category empty
-              barGap={0} // ← 2px between the two bars
+              barCategoryGap="5%" // ← leave half the category empty
+              barGap={2} // ← 2px between the two bars
             >
               <XAxis
                 dataKey="move"
