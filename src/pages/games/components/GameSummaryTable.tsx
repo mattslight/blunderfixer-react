@@ -1,6 +1,7 @@
 import { useStickyValue } from '@/hooks/useStickyValue';
 import type { AnalysisNode, GameRecord } from '@/types';
 import { BarChart, Timer, TrendingDown, TrendingUp } from 'lucide-react';
+import ListToggle from './ListToggle';
 
 type Severity = 'blunder' | 'mistake' | 'inaccuracy' | 'none';
 
@@ -51,31 +52,24 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
     <>
       {/* toggles beneath legend */}
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="mb-4 grid grid-cols-2 gap-4">
         {/* header */}
-        <div className="mb-4">
-          <span className="mb-1 block text-xs font-semibold tracking-wider text-green-500 uppercase">
+        <div>
+          <span className="block text-xs font-semibold tracking-wider text-green-500 uppercase">
             Review
           </span>
           <h2 className="mb-2 text-2xl font-bold text-white">Key Moves</h2>
+          <span className="mr-2 text-sm text-gray-500">Show all</span>
+          <ToggleSwitch
+            checked={showAll}
+            onChange={() => setShowAll((v) => !v)}
+          />
         </div>
 
-        <div className="mb-4 flex flex-col items-end px-2">
+        <div className="flex flex-col items-end justify-end">
+          <div></div>
           <div>
-            <span className="mr-2 text-sm text-gray-500">Show all</span>
-            <ToggleSwitch
-              checked={showAll}
-              onChange={() => setShowAll((v) => !v)}
-            />
-          </div>
-          <div>
-            <span className="mr-2 text-sm text-gray-500">Card view</span>
-            <ToggleSwitch
-              checked={viewMode === 'card'}
-              onChange={() =>
-                setViewMode((v) => (v === 'card' ? 'table' : 'card'))
-              }
-            />
+            <ListToggle viewMode={viewMode} onChange={setViewMode} />
           </div>
         </div>
       </div>
