@@ -61,8 +61,8 @@ export default function GameSummaryGraph({ data, max }: GraphProps) {
                 return (
                   <div className="rounded bg-gray-800 p-2 text-white">
                     <div>{`Move ${label}`}</div>
-                    {mateIn !== undefined && mateIn > 0 ? (
-                      <div>{`Mate in ${mateIn}`}</div>
+                    {mateIn !== undefined && Math.abs(mateIn) > 0 ? (
+                      <div>{`Mate in ${Math.abs(mateIn)}`}</div>
                     ) : (
                       <div>{raw.toFixed(2)}</div>
                     )}
