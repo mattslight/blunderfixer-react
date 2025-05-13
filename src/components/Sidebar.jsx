@@ -1,8 +1,9 @@
 // src/components/Sidebar.jsx
 import { Drawer } from 'flowbite-react';
 import { motion } from 'framer-motion';
-import React from 'react';
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import EasterEggCredits, { useRapidTaps } from './EasterEggCredits';
 
 export default function Sidebar({ isSidebarOpen, closeSidebar }) {
   const mainNav = [
@@ -128,6 +129,10 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
     </svg>
   );
 
+  const [showCredits, setShowCredits] = useState(false);
+  // attach rapid-tap handler
+  const onTapSidebar = useRapidTaps(3, 1000, () => setShowCredits(true));
+
   return (
     <Drawer
       open={isSidebarOpen}
@@ -138,7 +143,10 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
       className="fixed top-0 left-0 z-40 h-screen w-64 border-r border-gray-200 pt-14 transition-transform 2xl:w-40 2xl:translate-x-0 2xl:p-0 2xl:pt-14 dark:border-gray-700 dark:bg-gray-800"
     >
       <div className="h-full overflow-y-auto bg-gray-800 px-3 py-5">
-        <div className="mb-4 text-sm font-medium tracking-wider whitespace-nowrap dark:text-gray-300">
+        <div
+          className="mb-4 text-sm font-medium tracking-wider whitespace-nowrap dark:text-gray-300"
+          onClick={onTapSidebar}
+        >
           BlunderFixer ‼️
         </div>
         <ul className="space-y-2 border-t border-gray-700 pt-8">
@@ -176,6 +184,9 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
           <div className="tooltip-arrow" data-popper-arrow></div>
         </div>
       </div>
+      {showCredits && (
+        <EasterEggCredits onClose={() => setShowCredits(false)} />
+      )}
     </Drawer>
   );
 }
