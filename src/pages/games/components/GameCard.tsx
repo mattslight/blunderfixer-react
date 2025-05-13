@@ -80,7 +80,9 @@ export default function GameCard({
         {/* White */}
         <div className="flex items-center space-x-1 truncate">
           <span className="mr-2 text-xl">♞</span>
-          <span className="truncate font-semibold">{whitePlayer.username}</span>
+          <span className="truncate text-lg font-semibold">
+            {whitePlayer.username}
+          </span>
           <span className="xs:flex hidden text-sm text-gray-400">
             ({whiteRating})
           </span>
@@ -94,7 +96,9 @@ export default function GameCard({
           <span className="mr-2 text-xl text-black [text-shadow:-0.5px_-0.5px_0_#fff,0.5px_-0.5px_0_#fff,-0.5px_0.5px_0_#fff,0.5px_0.5px_0_#fff]">
             ♞
           </span>
-          <span className="truncate font-semibold">{blackPlayer.username}</span>
+          <span className="truncate text-lg font-semibold">
+            {blackPlayer.username}
+          </span>
           <span className="xs:flex hidden text-sm text-gray-400">
             ({blackRating})
           </span>
