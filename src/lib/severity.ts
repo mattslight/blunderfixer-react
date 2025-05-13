@@ -20,7 +20,7 @@ export const INACCURACY = 40; // 0.4 pawns
 const IMPULSIVE_FACTOR = 0.2; // 20% of time budget per move
 const OVERUSE_FACTOR = 2; // 200% of time budget per move
 
-const BOOK_KNOWLEDGE_PLY = 20; // ply to start time checks
+const BOOK_KNOWLEDGE_PLY = 10; // ply to start time checks
 const MID_GAME_PLY = 50; // ply to switch to end budget
 
 // Configurable color mappings
