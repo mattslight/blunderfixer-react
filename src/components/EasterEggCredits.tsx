@@ -43,8 +43,7 @@ const credits = [
   { move: '7… Bxf5', credit: '🎞️ Framer Motion — Framer Team' },
   { move: '8. exf5', credit: '📊 Recharts — Recharts Contributors' },
   { move: '8… d5', credit: '🕰️ date-fns — Contributors' },
-  { move: '9. O-O-O', credit: '🧑‍🔬 Playtesters — bharatmp & merlinjose' },
-  { move: '9… Nxe4', credit: '🧪 QA — bharatmp & merlinjose' },
+  { move: '9. O-O-O', credit: '🧑‍🔬 QA / Playtesters — bharatmp & merlinjose' },
   { move: '9… Nxe4', credit: '📜 Remark GFM — Unified Collective' },
   { move: '10. Nxe4', credit: '📘 Lucide Icons — Lucide Contributors' },
   { move: '10… dxe4', credit: '♞ chess.js — Jeff Hlywa' },
@@ -55,7 +54,6 @@ const credits = [
 
 type Props = { onClose: () => void };
 export default function EasterEggCredits({ onClose }: Props) {
-  const totalHeight = credits.length * 70; // increased per-item spacing
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Starfield canvas animation
@@ -95,24 +93,39 @@ export default function EasterEggCredits({ onClose }: Props) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const SCROLL_DURATION = credits.length * 2; // your existing scroll time
+  const FADE_DURATION = 3; // 1s fade-out
+
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center px-8 backdrop-blur-sm">
-      {/* Starfield background */}
+    <motion.div
+      className="fixed inset-0 z-50 flex items-end justify-center px-8 backdrop-blur-sm"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: [1, 1, 0] }}
+      transition={{
+        times: [0, (SCROLL_DURATION - FADE_DURATION) / SCROLL_DURATION, 1],
+        duration: SCROLL_DURATION,
+        ease: 'linear',
+      }}
+      onAnimationComplete={onClose}
+    >
+      {/* Starfield */}
       <canvas ref={canvasRef} className="absolute inset-0" />
+
       {/* click overlay */}
       <div className="absolute inset-0 cursor-pointer" onClick={onClose} />
+
       <div className="relative h-screen w-full max-w-full overflow-hidden py-4 sm:max-w-xl">
         <motion.div
           style={{ position: 'absolute', bottom: 0, width: '100%' }}
           initial={{ y: '100%' }}
-          animate={{ y: '-100%' }}
-          transition={{ duration: credits.length * 2, ease: 'linear' }}
-          className="space-y-8 text-white"
+          animate={{ y: '-65%' }}
+          transition={{ duration: SCROLL_DURATION, ease: 'linear' }}
+          className="space-y-8 break-words text-white"
         >
           {credits.map((c, i) => (
             <p
               key={i}
-              className="text-center text-xl font-semibold break-words drop-shadow-xl md:text-2xl"
+              className="text-center text-xl font-semibold drop-shadow-xl md:text-2xl"
             >
               <span className="text-md mr-3 md:text-3xl">{c.move}</span>
               <span className="text-sm font-medium md:text-xl">{c.credit}</span>
@@ -120,6 +133,6 @@ export default function EasterEggCredits({ onClose }: Props) {
           ))}
         </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }
