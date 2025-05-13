@@ -244,7 +244,7 @@ function ToggleSwitch({ checked, onChange }) {
         onChange={onChange}
       />
       <div className="h-3 w-7 rounded-full bg-gray-300 transition-colors duration-200 peer-checked:bg-blue-500 dark:bg-gray-600" />
-      <div className="absolute left-0.25 h-3.5 w-3.5 rounded-full bg-white transition-transform duration-200 ease-in-out peer-checked:translate-x-3" />
+      <div className="absolute left-0.25 h-3.5 w-3.5 rounded-full bg-gray-200 transition-transform duration-200 ease-in-out peer-checked:translate-x-3" />
     </label>
   );
 }
