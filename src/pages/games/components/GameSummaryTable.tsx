@@ -92,17 +92,17 @@ function CardView({
                 </span>
               </div>
               <div className="text-center">
-                <span className="text-lg font-bold text-white">
+                <span className={`text-lg font-bold text-white`}>
                   {r.move.side === 'w' ? <WhitePiece /> : <BlackPiece />}{' '}
                   {r.move.san}
                 </span>
               </div>
-              <div className="space-x-1 text-right">
+              <div className="text-right">
                 {r.tags.map((t) =>
                   t !== 'none' ? (
                     <span
                       key={t}
-                      className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${DOT_COLOR[t]} text-white`}
+                      className={`ml-1 inline-block rounded-full px-2.5 py-0.5 text-[8pt] font-semibold ${DOT_COLOR[t]} text-white`}
                     >
                       {t.toUpperCase()}
                     </span>
@@ -308,7 +308,7 @@ export default function GameSummaryTable({
         ))}
         {counts.timeImpulsive + counts.timeOveruse > 0 && (
           <span className="flex items-center text-xs text-gray-500">
-            <span className="-mr-1 inline-block h-2 w-2 rounded-full bg-cyan-500" />
+            <span className="mr-0.5 inline-block h-2 w-2 rounded-full bg-cyan-500" />
             <span className="mr-1 inline-block h-2 w-2 rounded-full bg-purple-600" />
             {counts.timeImpulsive + counts.timeOveruse} time control
           </span>

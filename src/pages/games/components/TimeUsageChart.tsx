@@ -70,24 +70,33 @@ export default function TimeUsageChart({
         <h3 className="mb-2 block text-center text-xs font-semibold tracking-wider text-gray-600 uppercase">
           Time
         </h3>
-        <span className="justify-center space-x-4 rounded-xl border-1 border-gray-600 bg-gray-800 p-2 px-4 text-xs font-semibold tracking-wider text-gray-300">
+        {/* mode toggle segmented control */}
+        <div
+          role="group"
+          aria-label="Time Chart Mode"
+          className="mx-auto inline-flex overflow-hidden rounded-lg border border-gray-700"
+        >
           <button
             onClick={() => setMode('burndown')}
-            className={
-              mode === 'burndown' ? 'font-bold' : 'font-normal text-gray-500'
-            }
+            className={`block flex-1 cursor-pointer px-4 py-2 text-center text-xs font-semibold tracking-wider transition-colors focus:outline-none ${
+              mode === 'burndown'
+                ? 'bg-gray-800 text-gray-300'
+                : 'bg-transparent text-gray-500'
+            } border-r border-gray-700`}
           >
             burndown
           </button>
           <button
             onClick={() => setMode('per-move')}
-            className={
-              mode === 'per-move' ? 'font-bold' : 'font-normal text-gray-500'
-            }
+            className={`block flex-1 cursor-pointer px-4 py-2 text-center text-xs font-semibold tracking-wider transition-colors focus:outline-none ${
+              mode === 'per-move'
+                ? 'bg-gray-800 text-gray-300'
+                : 'bg-transparent text-gray-500'
+            }`}
           >
-            per move
+            per-move
           </button>
-        </span>
+        </div>
       </div>
 
       <div className="-mr-6 -ml-14 h-40">
