@@ -25,6 +25,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html,
+body {
+  overflow-x: hidden; /* clip anything beyond the viewport */
+  overscroll-behavior-x: none; /* prevent the “rubber-band” effect in the x-axis */
+}
+
 body {
   margin: 0;
   display: flex;
