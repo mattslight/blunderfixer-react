@@ -36,7 +36,7 @@ export default function GameCard({
   const btnLabel = isAnalysed ? 'Report' : 'Analyse';
   const btnColor = isAnalysed
     ? 'bg-purple-800 hover:bg-purple-900'
-    : 'bg-blue-600 hover:bg-blue-700';
+    : 'bg-blue-700 hover:bg-blue-700';
 
   // date & time control
   const dateTime = new Date(game.meta.endTime * 1000);
@@ -121,7 +121,7 @@ export default function GameCard({
 
       {/* Footer: result & action */}
 
-      <footer className="mt-2 flex items-center justify-between">
+      <footer className="mt-4 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <span
             className={
