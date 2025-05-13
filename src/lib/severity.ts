@@ -12,13 +12,32 @@ export interface TimeControl {
 }
 
 // pawn-loss thresholds
-const BLUNDER = 200;
-const MISTAKE = 100;
-export const INACCURACY = 40;
+const BLUNDER = 200; // 2 pawns
+const MISTAKE = 100; // 1 pawn
+export const INACCURACY = 40; // 0.4 pawns
 
 // percentage factors for time checks
-const IMPULSIVE_FACTOR = 0.2;
-const OVERUSE_FACTOR = 2;
+const IMPULSIVE_FACTOR = 0.2; // 20% of time budget per move
+const OVERUSE_FACTOR = 2; // 200% of time budget per move
+
+// Configurable color mappings
+export const DOT_COLOR: Record<Severity, string> = {
+  blunder: 'bg-red-600',
+  mistake: 'bg-orange-600',
+  inaccuracy: 'bg-yellow-500',
+  timeImpulsive: 'bg-cyan-500',
+  timeOveruse: 'bg-purple-600',
+  none: 'bg-gray-800',
+};
+
+export const TIME_TEXT_COLOR: Record<Severity, string> = {
+  blunder: 'text-gray-500',
+  mistake: 'text-gray-500',
+  inaccuracy: 'text-gray-500',
+  timeImpulsive: 'text-cyan-400',
+  timeOveruse: 'text-purple-500',
+  none: 'text-gray-500',
+};
 
 /**
  * Options for computing severity
@@ -36,14 +55,7 @@ export interface SeverityOptions {
  * Returns a Severity for a move based on pawn-loss and time-control factors.
  */
 export function getSeverity(opts: SeverityOptions): Severity {
-  const {
-    deltaCP,
-    timeSpent,
-    ply,
-    tc,
-    openingPly = 20,
-    midGamePly = 50,
-  } = opts;
+  const { deltaCP, timeSpent, ply, tc, openingPly = 0, midGamePly = 50 } = opts;
 
   // 1) Time-control checks (after opening theory)
   if (ply > openingPly && timeSpent !== undefined) {
