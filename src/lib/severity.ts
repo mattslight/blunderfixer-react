@@ -20,6 +20,9 @@ export const INACCURACY = 40; // 0.4 pawns
 const IMPULSIVE_FACTOR = 0.2; // 20% of time budget per move
 const OVERUSE_FACTOR = 2; // 200% of time budget per move
 
+const BOOK_KNOWLEDGE_PLY = 20; // ply to start time checks
+const MID_GAME_PLY = 50; // ply to switch to end budget
+
 // Configurable color mappings
 export const DOT_COLOR: Record<Severity, string> = {
   blunder: 'bg-red-600',
@@ -55,7 +58,14 @@ export interface SeverityOptions {
  * Returns a Severity for a move based on pawn-loss and time-control factors.
  */
 export function getSeverity(opts: SeverityOptions): Severity {
-  const { deltaCP, timeSpent, ply, tc, openingPly = 0, midGamePly = 50 } = opts;
+  const {
+    deltaCP,
+    timeSpent,
+    ply,
+    tc,
+    openingPly = BOOK_KNOWLEDGE_PLY,
+    midGamePly = MID_GAME_PLY,
+  } = opts;
 
   // 1) Time-control checks (after opening theory)
   if (ply > openingPly && timeSpent !== undefined) {
