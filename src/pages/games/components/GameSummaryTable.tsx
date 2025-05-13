@@ -3,11 +3,20 @@ import type { AnalysisNode, GameRecord } from '@/types';
 import { BarChart, Timer, TrendingDown, TrendingUp } from 'lucide-react';
 import ListToggle from './ListToggle';
 
-type Severity = 'blunder' | 'mistake' | 'inaccuracy' | 'none';
+type Severity =
+  | 'blunder'
+  | 'mistake'
+  | 'inaccuracy'
+  | 'timeImpulsive'
+  | 'timeOveruse'
+  | 'none';
 
 const BLUNDER = 200; // ≥2-pawn
 const MISTAKE = 100; // ≥1-pawn
-const INACCURACY = 40; // ≥0.2-pawn
+const INACCURACY = 40; // ≥0.4-pawn
+
+const TIME_IMPULSIVE = 1; // “too fast”
+const TIME_OVERUSE = 20; // “took too long”
 
 interface CombinedEntry {
   move: GameRecord['moves'][0];
@@ -21,30 +30,43 @@ interface Props {
   onDrill?: (fen: string) => void;
 }
 
-export default function GameSummaryTable({ combined, onDrill }: Props) {
+export default function GameSummaryTable({ combined }: Props) {
   const [showAll, setShowAll] = useStickyValue<boolean>('showAllMoves', false);
   const [viewMode, setViewMode] = useStickyValue<'card' | 'table'>(
     'viewMode',
     'card'
   );
 
-  // const counts = combined.reduce(
-  //   (acc, { severity }) => {
-  //     acc[severity] = (acc[severity] || 0) + 1;
-  //     return acc;
-  //   },
-  //   { blunder: 0, mistake: 0, inaccuracy: 0 } as Record<Severity, number>
-  // );
+  const counts = combined.reduce(
+    (acc, { severity }) => {
+      acc[severity] = (acc[severity] || 0) + 1;
+      return acc;
+    },
+    {
+      blunder: 0,
+      mistake: 0,
+      inaccuracy: 0,
+      timeImpulsive: 0,
+      timeOveruse: 0,
+      none: 0,
+    } as Record<Severity, number>
+  );
 
   const dotColour: Record<Severity, string> = {
     blunder: 'bg-red-600',
     mistake: 'bg-orange-600',
     inaccuracy: 'bg-yellow-500',
+    timeImpulsive: 'bg-cyan-500',
+    timeOveruse: 'bg-purple-600',
     none: 'bg-gray-800',
   };
 
-  const timeClass = (t: number) =>
-    t < 1 ? 'text-red-500' : t > 10 ? 'text-red-500' : 'text-gray-500';
+  const timeClass = (t: number, moveNumber: number) =>
+    t < TIME_IMPULSIVE && moveNumber > 10
+      ? 'text-cyan-400'
+      : t > TIME_OVERUSE
+        ? 'text-purple-500'
+        : 'text-gray-500';
 
   const fmtDelta = (d: number) => (d > 0 ? `+${d}` : `${d}`);
 
@@ -75,7 +97,7 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
       </div>
 
       {/* legend */}
-      {/* <div className="mb-2 flex items-center space-x-4 px-2 text-xs text-gray-400">
+      <div className="mb-2 flex flex-wrap items-center space-x-4 px-2 text-xs text-gray-500">
         <span className="flex items-center">
           <span className="mr-1 inline-block h-2 w-2 rounded-full bg-red-500" />{' '}
           {counts.blunder} blunder{counts.blunder > 1 ? 's' : ''}
@@ -88,7 +110,14 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
           <span className="mr-1 inline-block h-2 w-2 rounded-full bg-yellow-400" />{' '}
           {counts.inaccuracy} inaccurac{counts.inaccuracy > 1 ? 'ies' : 'y'}
         </span>
-      </div> */}
+        {counts.timeImpulsive + counts.timeOveruse > -1 && (
+          <span className="flex items-center">
+            <span className="-mr-1 inline-block h-2 w-2 rounded-full bg-cyan-500" />{' '}
+            <span className="mr-1 inline-block h-2 w-2 rounded-full bg-purple-600" />{' '}
+            {counts.timeImpulsive + counts.timeOveruse} time control
+          </span>
+        )}
+      </div>
 
       {/* card view simplified */}
       {viewMode === 'card' &&
@@ -147,29 +176,20 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
                         <TrendingDown className="mr-1" size={16} />
                       )}
                       {r.impact >= 1000
-                        ? `Mate in ${r.analysis.mateIn}`
+                        ? `mate in ${r.analysis.mateIn}`
                         : r.impact <= -1000
-                          ? 'Missed mate'
+                          ? 'missed mate'
                           : fmtDelta(r.impact)}
                     </>
                   )}
                 </div>
                 <div
-                  className={`flex items-center justify-end font-medium ${timeClass(r.move.timeSpent!)}`}
+                  className={`flex items-center justify-end font-medium ${timeClass(r.move.timeSpent!, r.move.moveNumber)}`}
                 >
                   <Timer className="mr-1" size={16} />
                   {r.move.timeSpent?.toFixed(1) ?? '–'}s
                 </div>
               </div>
-
-              {onDrill && (
-                <button
-                  className="text-xs text-blue-400 underline hover:text-blue-300"
-                  onClick={() => onDrill(r.analysis.fen)}
-                >
-                  Drill this position
-                </button>
-              )}
             </div>
           );
         })}
@@ -214,9 +234,9 @@ export default function GameSummaryTable({ combined, onDrill }: Props) {
                     className={`px-2 py-1 text-right font-medium ${impact < 0 ? 'text-red-500' : 'text-green-500'}`}
                   >
                     {impact >= 1000
-                      ? `Mate in ${analysis.mateIn}`
+                      ? `mate in ${analysis.mateIn}`
                       : impact <= -1000
-                        ? 'Missed mate'
+                        ? 'missed mate'
                         : fmtDelta(impact)}
                   </td>
                   <td
