@@ -108,7 +108,7 @@ function CardView({
               <div className="flex items-center">
                 <BarChart className="mr-1 text-blue-400" size={16} />
                 {Math.abs(r.analysis.evalBefore) > 1000
-                  ? `Mate in ${prevMate}`
+                  ? `Mate in ${Math.abs(prevMate)}`
                   : r.analysis.evalBefore > 0
                     ? `+${r.analysis.evalBefore / 100}`
                     : r.analysis.evalBefore / 100}
@@ -124,7 +124,7 @@ function CardView({
                       <TrendingDown className="mr-1" size={16} />
                     )}
                     {r.impact >= 1000
-                      ? `Mate in ${r.analysis.mateIn}`
+                      ? `Mate in ${Math.abs(r.analysis.mateIn)}`
                       : r.impact <= -1000
                         ? 'Missed mate'
                         : `${r.impact > 0 ? '+' : ''}${r.impact / 100}`}
@@ -138,15 +138,6 @@ function CardView({
                 {r.move.timeSpent?.toFixed(1) ?? '–'}s
               </div>
             </div>
-
-            {onDrill && (
-              <button
-                className="text-xs text-blue-400 underline hover:text-blue-300"
-                onClick={() => onDrill(r.analysis.fen)}
-              >
-                Drill this position
-              </button>
-            )}
           </div>
         );
       })}
@@ -201,7 +192,7 @@ function TableView({
                 className={`px-2 py-1 text-right font-medium ${r.impact < 0 ? 'text-red-500' : 'text-green-500'}`}
               >
                 {r.impact >= 1000
-                  ? `Mate in ${r.analysis.mateIn}`
+                  ? `Mate in ${Math.abs(r.analysis.mateIn)}`
                   : r.impact <= -1000
                     ? 'Missed mate'
                     : `${r.impact > 0 ? '+' : ''}${r.impact / 100}`}
