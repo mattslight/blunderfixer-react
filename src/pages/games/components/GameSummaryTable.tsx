@@ -1,22 +1,9 @@
 import { useStickyValue } from '@/hooks/useStickyValue';
+import type { Severity } from '@/lib/severity';
+import { INACCURACY } from '@/lib/severity';
 import type { AnalysisNode, GameRecord } from '@/types';
 import { BarChart, Timer, TrendingDown, TrendingUp } from 'lucide-react';
 import ListToggle from './ListToggle';
-
-type Severity =
-  | 'blunder'
-  | 'mistake'
-  | 'inaccuracy'
-  | 'timeImpulsive'
-  | 'timeOveruse'
-  | 'none';
-
-const BLUNDER = 200; // ≥2-pawn
-const MISTAKE = 100; // ≥1-pawn
-const INACCURACY = 40; // ≥0.4-pawn
-
-const TIME_IMPULSIVE = 1; // “too fast”
-const TIME_OVERUSE = 20; // “took too long”
 
 interface CombinedEntry {
   move: GameRecord['moves'][0];
@@ -25,12 +12,15 @@ interface CombinedEntry {
   impact: number;
 }
 
-interface Props {
+interface GameSummaryTableProps {
   combined: CombinedEntry[];
   onDrill?: (fen: string) => void;
 }
 
-export default function GameSummaryTable({ combined }: Props) {
+export default function GameSummaryTable({
+  combined,
+  onDrill,
+}: GameSummaryTableProps) {
   const [showAll, setShowAll] = useStickyValue<boolean>('showAllMoves', false);
   const [viewMode, setViewMode] = useStickyValue<'card' | 'table'>(
     'viewMode',
@@ -61,21 +51,11 @@ export default function GameSummaryTable({ combined }: Props) {
     none: 'bg-gray-800',
   };
 
-  const timeClass = (t: number, moveNumber: number) =>
-    t < TIME_IMPULSIVE && moveNumber > 10
-      ? 'text-cyan-400'
-      : t > TIME_OVERUSE
-        ? 'text-purple-500'
-        : 'text-gray-500';
-
   const fmtDelta = (d: number) => (d > 0 ? `+${d}` : `${d}`);
 
   return (
     <>
-      {/* toggles beneath legend */}
-
       <div className="mb-4 grid grid-cols-2 gap-4">
-        {/* header */}
         <div>
           <span className="block text-xs font-semibold tracking-wider text-green-500 uppercase">
             Review
@@ -87,51 +67,49 @@ export default function GameSummaryTable({ combined }: Props) {
             onChange={() => setShowAll((v) => !v)}
           />
         </div>
-
         <div className="flex flex-col items-end justify-end">
-          <div></div>
-          <div>
-            <ListToggle viewMode={viewMode} onChange={setViewMode} />
-          </div>
+          <ListToggle viewMode={viewMode} onChange={setViewMode} />
         </div>
       </div>
 
-      {/* legend */}
       <div className="mb-2 flex flex-wrap items-center space-x-4 px-2 text-xs text-gray-500">
-        <span className="flex items-center">
-          <span className="mr-1 inline-block h-2 w-2 rounded-full bg-red-500" />{' '}
-          {counts.blunder} blunder{counts.blunder > 1 ? 's' : ''}
-        </span>
-        <span className="flex items-center">
-          <span className="mr-1 inline-block h-2 w-2 rounded-full bg-orange-500" />{' '}
-          {counts.mistake} mistake{counts.mistake > 1 ? 's' : ''}
-        </span>
-        <span className="flex items-center">
-          <span className="mr-1 inline-block h-2 w-2 rounded-full bg-yellow-400" />{' '}
-          {counts.inaccuracy} inaccurac{counts.inaccuracy > 1 ? 'ies' : 'y'}
-        </span>
-        {counts.timeImpulsive + counts.timeOveruse > -1 && (
+        <LegendDot colour="bg-red-500" count={counts.blunder} label="blunder" />
+        <LegendDot
+          colour="bg-orange-500"
+          count={counts.mistake}
+          label="mistake"
+        />
+        <LegendDot
+          colour="bg-yellow-400"
+          count={counts.inaccuracy}
+          label="inaccuracy"
+        />
+        {counts.timeImpulsive + counts.timeOveruse > 0 && (
           <span className="flex items-center">
-            <span className="-mr-1 inline-block h-2 w-2 rounded-full bg-cyan-500" />{' '}
-            <span className="mr-1 inline-block h-2 w-2 rounded-full bg-purple-600" />{' '}
+            <span className="-mr-1 inline-block h-2 w-2 rounded-full bg-cyan-500" />
+            <span className="mr-1 inline-block h-2 w-2 rounded-full bg-purple-600" />
             {counts.timeImpulsive + counts.timeOveruse} time control
           </span>
         )}
       </div>
 
-      {/* card view simplified */}
       {viewMode === 'card' &&
         combined.map((r, i, all) => {
           if (!showAll && r.severity === 'none') return null;
           const prev = all[i - 1];
           const prevMateIn = prev?.analysis.mateIn;
+          const timeColor =
+            r.severity === 'timeImpulsive'
+              ? 'text-cyan-400'
+              : r.severity === 'timeOveruse'
+                ? 'text-purple-500'
+                : 'text-gray-500';
 
           return (
             <div
               key={i}
               className="mb-4 space-y-4 rounded-lg bg-gray-800 p-4 shadow-lg transition duration-200 ease-in-out hover:scale-102 hover:shadow-xl"
             >
-              {/* header row */}
               <div className="grid grid-cols-3 items-center">
                 <div className="text-left">
                   <span className="block text-xs font-semibold tracking-wider text-green-600 uppercase">
@@ -153,7 +131,6 @@ export default function GameSummaryTable({ combined }: Props) {
                 </div>
               </div>
 
-              {/* detail row */}
               <div className="grid grid-cols-3 items-center text-sm text-gray-300">
                 <div className="flex items-center">
                   <BarChart className="mr-1 text-blue-400" size={16} />
@@ -164,9 +141,7 @@ export default function GameSummaryTable({ combined }: Props) {
                       : r.analysis.evalBefore}
                 </div>
                 <div
-                  className={`flex items-center justify-center font-medium ${
-                    r.impact < 0 ? 'text-red-500' : 'text-green-500'
-                  }`}
+                  className={`flex items-center justify-center font-medium ${r.impact < 0 ? 'text-red-500' : 'text-green-500'}`}
                 >
                   {Math.abs(r.impact) > INACCURACY && (
                     <>
@@ -184,17 +159,25 @@ export default function GameSummaryTable({ combined }: Props) {
                   )}
                 </div>
                 <div
-                  className={`flex items-center justify-end font-medium ${timeClass(r.move.timeSpent!, r.move.moveNumber)}`}
+                  className={`flex items-center justify-end font-medium ${timeColor}`}
                 >
                   <Timer className="mr-1" size={16} />
                   {r.move.timeSpent?.toFixed(1) ?? '–'}s
                 </div>
               </div>
+
+              {onDrill && (
+                <button
+                  className="text-xs text-blue-400 underline hover:text-blue-300"
+                  onClick={() => onDrill(r.analysis.fen)}
+                >
+                  Drill this position
+                </button>
+              )}
             </div>
           );
         })}
 
-      {/* table view */}
       {viewMode === 'table' && (
         <table className="w-full table-auto text-sm">
           <thead>
@@ -211,7 +194,14 @@ export default function GameSummaryTable({ combined }: Props) {
           </thead>
           <tbody>
             {combined.map(({ move, analysis, severity, impact }, idx) => {
-              if (!showAll && severity === 'none') return null; // skip non-severe moves
+              if (!showAll && severity === 'none') return null;
+              const timeColor =
+                severity === 'timeImpulsive'
+                  ? 'text-cyan-400'
+                  : severity === 'timeOveruse'
+                    ? 'text-purple-500'
+                    : 'text-gray-500';
+
               return (
                 <tr
                   key={idx}
@@ -226,10 +216,9 @@ export default function GameSummaryTable({ combined }: Props) {
                     {analysis.halfMoveIndex}.
                   </td>
                   <td className="px-2 py-1">
-                    {move.side == 'w' ? <WhitePiece /> : <BlackPiece />}
+                    {move.side === 'w' ? <WhitePiece /> : <BlackPiece />}
                   </td>
                   <td className="px-2 py-1">{move.san}</td>
-
                   <td
                     className={`px-2 py-1 text-right font-medium ${impact < 0 ? 'text-red-500' : 'text-green-500'}`}
                   >
@@ -240,7 +229,7 @@ export default function GameSummaryTable({ combined }: Props) {
                         : fmtDelta(impact)}
                   </td>
                   <td
-                    className={`px-2 py-1 text-right font-medium ${timeClass(move.timeSpent!)}`}
+                    className={`px-2 py-1 text-right font-medium ${timeColor}`}
                   >
                     {move.timeSpent?.toFixed(1) ?? '–'}
                   </td>
@@ -254,7 +243,13 @@ export default function GameSummaryTable({ combined }: Props) {
   );
 }
 
-function ToggleSwitch({ checked, onChange }) {
+function ToggleSwitch({
+  checked,
+  onChange,
+}: {
+  checked: boolean;
+  onChange: () => void;
+}) {
   return (
     <label className="relative inline-flex cursor-pointer items-center">
       <input
@@ -266,6 +261,24 @@ function ToggleSwitch({ checked, onChange }) {
       <div className="h-3 w-7 rounded-full bg-gray-300 transition-colors duration-200 peer-checked:bg-blue-500 dark:bg-gray-600" />
       <div className="absolute left-0.25 h-3.5 w-3.5 rounded-full bg-gray-200 transition-transform duration-200 ease-in-out peer-checked:translate-x-3" />
     </label>
+  );
+}
+
+function LegendDot({
+  colour,
+  count,
+  label,
+}: {
+  colour: string;
+  count: number;
+  label: string;
+}) {
+  return (
+    <span className="flex items-center">
+      <span className={`mr-1 inline-block h-2 w-2 rounded-full ${colour}`} />{' '}
+      {count} {label}
+      {count !== 1 ? 's' : ''}
+    </span>
   );
 }
 
