@@ -54,7 +54,7 @@ export function useRecentGames(username: string, limit = 10) {
     games,
     loading: isLoading,
     error: error?.message ?? null,
-    reload: mutate,
+    reload: () => mutate(undefined, { revalidate: true }),
     isValidating, // <— flag you can hook a spinner to
   };
 }
