@@ -1,5 +1,6 @@
 // src/pages/games/index.tsx
 import { useProfile } from '@/hooks/useProfile';
+import { usePullToRefresh } from '@/hooks/usePullToRefresh';
 import { parseChessComGame } from '@/lib/chessComParser';
 import type { GameRecord } from '@/types';
 import { RefreshCw } from 'lucide-react';
@@ -26,6 +27,8 @@ export default function GamesHistoryPage() {
     error: recentError,
     reload,
   } = useRecentGames(username);
+
+  usePullToRefresh(reload);
 
   // parse your recent JSON into GameRecord
   const recentGames = Array.isArray(rawRecent)
