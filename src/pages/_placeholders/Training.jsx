@@ -8,7 +8,7 @@ export default function Training() {
         🔥 Training Coming Soon!
       </h1>
       <p className="mb-8 max-w-md text-center text-xl text-slate-300">
-        Identify your top mistakes and drill them with real-game exercises
+        Identify your top mistakes and train with real-game exercises
       </p>
 
       {/* Key Benefits */}
@@ -16,7 +16,7 @@ export default function Training() {
         <li className="flex items-start">
           <Flag className="mt-1 h-6 w-6 text-green-400" />
           <div className="ml-3">
-            <h3 className="font-bold">Quick Detection</h3>
+            <h3 className="font-bold">Auto Detection</h3>
             <p className="text-slate-300">Highlight repeat errors instantly</p>
           </div>
         </li>
@@ -24,13 +24,13 @@ export default function Training() {
           <PlayCircle className="mt-1 h-6 w-6 text-green-400" />
           <div className="ml-3">
             <h3 className="font-bold">Real Drills</h3>
-            <p className="text-slate-300">Practice with your own positions</p>
+            <p className="text-slate-300">Practice positions from your games</p>
           </div>
         </li>
         <li className="flex items-start">
           <Target className="mt-1 h-6 w-6 text-green-400" />
           <div className="ml-3">
-            <h3 className="font-bold">Mastery Score</h3>
+            <h3 className="font-bold">Chess IQ™</h3>
             <p className="text-slate-300">Track progress until mastery</p>
           </div>
         </li>
