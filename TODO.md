@@ -2,6 +2,8 @@
 
 ## In Progress
 
+- [x] **FEAT**: Time burndown chart for both players
+
 - [ ] _BUG_: View error boundary - clearly not working!
 - [ ] _BUG_: if stockfish analysis is ongoing (e.g. depth = 40) then move arrows don't update, so I guess stockfish evals are overlapping, we need to kill the previous analysis before starting a new one
 - [ ] _BUG_: Mate evaluation swings still occur
