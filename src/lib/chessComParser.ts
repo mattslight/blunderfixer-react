@@ -1,7 +1,7 @@
 // src/lib/chessComParser.ts
+import { GamePlayer, GameRecord, MoveNode, Player } from '@/types';
 import { Chess, DEFAULT_POSITION } from 'chess.js';
 import crypto from 'crypto';
-import { GameRecord, GamePlayer, MoveNode, Player } from '../types';
 
 const DEBUG = false;
 
@@ -69,7 +69,7 @@ export function parseChessComGame(json: any): GameRecord {
 
   // 4) Parse time-control + increment
   //    Chess.com gives "180+2"
-  const [tcSec, incSec] = (json.time_control || TimeControl || '')
+  const [tcSec, incSec = 0] = (json.time_control || TimeControl || '')
     .split('+')
     .map((n: string) => parseInt(n, 10) || 0);
 
@@ -104,7 +104,9 @@ export function parseChessComGame(json: any): GameRecord {
 
   // ── DEBUG CLOCK TOKENS ──
   if (DEBUG) {
-    console.groupCollapsed('⚙️ Debug moveTokens');
+    console.groupCollapsed(
+      `⚙️ Debug moveTokens for ${json.white.username} vs ${json.black.username}`
+    );
     moveTokens.forEach((tok, idx) => {
       const parts = tok.rawClock?.split(':').map(Number) || [];
       let secondsRemaining: number | undefined;
