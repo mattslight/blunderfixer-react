@@ -1,7 +1,7 @@
 // src/pages/games/components/GameCard.tsx
 import { GameRecord } from '@/types';
 import { formatDistanceToNow } from 'date-fns';
-import { Calendar, Loader, Timer } from 'lucide-react';
+import { Activity, Calendar, Loader, Timer } from 'lucide-react';
 
 interface GameCardProps {
   game: GameRecord;
@@ -33,9 +33,9 @@ export default function GameCard({
   const lost = resultTag === (side === 'white' ? '0-1' : '1-0');
 
   // button label and color
-  const btnLabel = isAnalysed ? 'View Report' : 'Analyse';
+  const btnLabel = isAnalysed ? 'Report' : 'Analyse';
   const btnColor = isAnalysed
-    ? 'bg-green-600 hover:bg-green-700'
+    ? 'bg-purple-900 hover:bg-purple-950'
     : 'bg-blue-600 hover:bg-blue-700';
 
   // date & time control
@@ -71,7 +71,7 @@ export default function GameCard({
   return (
     <li
       className={
-        `mb-4 flex flex-col rounded-r-lg border-l-4 bg-gray-800 px-5 py-4 ` +
+        `mt-6 flex flex-col rounded-r-lg border-l-4 bg-gray-800 px-5 py-4 ` +
         (won ? 'border-green-500' : lost ? 'border-red-500' : 'border-gray-500')
       }
     >
@@ -131,12 +131,8 @@ export default function GameCard({
           >
             {won ? 'Won' : lost ? 'Lost' : 'Draw'}
           </span>
-          {resultTag && (
-            <span className="text-sm text-gray-400 italic">({resultTag})</span>
-          )}
-          {reason && (
-            <span className="text-sm text-gray-400 italic">({reason})</span>
-          )}
+
+          {reason && <span className="text-sm text-gray-500">{reason}</span>}
         </div>
 
         <button
@@ -147,7 +143,10 @@ export default function GameCard({
           {isLoading ? (
             <Loader className="h-4 w-4 animate-spin" />
           ) : (
-            <span>{btnLabel}</span>
+            <span>
+              <Activity className="mr-2 inline-flex h-4 w-4" />
+              {btnLabel}
+            </span>
           )}
         </button>
       </footer>
