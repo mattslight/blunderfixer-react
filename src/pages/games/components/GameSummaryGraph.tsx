@@ -1,9 +1,8 @@
 // src/components/GameSummary/GameSummaryGraph.tsx
 import type { AnalysisNode } from '@/types';
 import {
-  Bar,
-  BarChart,
-  Cell,
+  Area,
+  ComposedChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -22,53 +21,77 @@ interface GraphProps {
 }
 
 export default function GameSummaryGraph({ data, max }: GraphProps) {
+  // split into two fields so we can color above/below separately
+  const enriched = data.map((d) => ({
+    ...d,
+    positive: d.plot > 0 ? d.plot : 0,
+    negative: d.plot < 0 ? d.plot : 0,
+  }));
+
   return (
-    <div className="-ml-14 h-40">
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data}>
-          <XAxis
-            dataKey="ply"
-            axisLine={false}
-            tickLine={false}
-            tick={false}
-            //ticks={data.map((d) => d.ply).filter((p) => p % 5 === 0)}
-            //label={{ value: 'Move', position: 'insideBottom', offset: -5 }}
-          />
-          <YAxis
-            domain={[-max, max]}
-            ticks={[-max, -max / 2, 0, max / 2, max]}
-            axisLine={false}
-            tickLine={false}
-            tick={false}
-          />
-          <Tooltip
-            formatter={(_value, _name, { payload }) => [
-              payload.raw.toFixed(2),
-              'Eval',
-            ]}
-            labelFormatter={(ply) => `Move ${ply}`}
-            contentStyle={{
-              backgroundColor: '#1f1f1f',
-              borderColor: '#333',
-              borderRadius: 4,
-              padding: 8,
-              color: '#fff',
-            }}
-            itemStyle={{ color: '#fff' }}
-            cursor={{ fill: 'rgba(255,255,255,0.1)' }}
-          />
-          <Bar dataKey="plot" isAnimationActive={false}>
-            {data.map((entry, i) => (
-              <Cell
-                key={i}
-                fill={entry.raw >= 0 ? '#fff' : 'transparent'}
-                stroke={entry.raw < 0 ? '#4F46E5' : 'none'}
-                strokeWidth={0.5}
-              />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+    <div>
+      <h3 className="mb-8 block text-center text-xs font-semibold tracking-wider text-gray-600 uppercase">
+        Eval
+      </h3>
+      <div className="-ml-14 h-40">
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart
+            data={enriched}
+            margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+          >
+            <XAxis
+              dataKey="ply"
+              axisLine={false}
+              tickLine={false}
+              tick={false}
+            />
+            <YAxis
+              domain={[-max, max]}
+              axisLine={false}
+              tickLine={false}
+              tick={false}
+            />
+            <Tooltip
+              content={({ payload, label }) => {
+                if (!payload || !payload.length) return null;
+                const pt =
+                  payload.find((p) => p.dataKey === 'plot') || payload[0];
+                const { raw, mateIn } = pt.payload;
+
+                return (
+                  <div className="rounded bg-gray-800 p-2 text-white">
+                    <div>{`Move ${label}`}</div>
+                    {mateIn !== undefined && mateIn > 0 ? (
+                      <div>{`Mate in ${mateIn}`}</div>
+                    ) : (
+                      <div>{raw.toFixed(2)}</div>
+                    )}
+                  </div>
+                );
+              }}
+            />
+
+            {/* Area above 0 */}
+            <Area
+              type="monotone"
+              dataKey="positive"
+              baseLine={0}
+              stroke="#ffffff"
+              fill="#ffffff"
+              isAnimationActive={true}
+            />
+            {/* Area below 0 */}
+            <Area
+              type="monotone"
+              dataKey="negative"
+              baseLine={0}
+              stroke="#4F46E5"
+              fill="#4F46E5"
+              isAnimationActive={true}
+            />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }

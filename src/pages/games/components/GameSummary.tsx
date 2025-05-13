@@ -62,7 +62,6 @@ export function GameSummary({ game, analysis }: GameSummaryProps) {
   });
 
   // new: time usage series (derive actor on the fly)
-
   const timeData: TimePoint[] = [];
 
   // fold half-moves into full moves
@@ -83,10 +82,10 @@ export function GameSummary({ game, analysis }: GameSummaryProps) {
   });
 
   return (
-    <article className="mx-auto mb-6 w-full max-w-3xl md:p-4">
+    <article className="mx-auto mb-6 w-full max-w-3xl space-y-6 md:p-4">
       <GameSummaryHeader game={game} />
       <GameSummaryGraph data={chartData} max={MAX} />
-      <TimeUsageChart data={timeData} />
+      <TimeUsageChart data={timeData} game={game} heroSide={heroSide} />
       <GameSummaryTable combined={combined} />
     </article>
   );

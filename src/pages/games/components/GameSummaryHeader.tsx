@@ -8,7 +8,7 @@ export default function GameSummaryHeader({ game }) {
     ''
   );
   return (
-    <header className="mb-4 flex items-center justify-between">
+    <header className="mb-8 flex items-center justify-between">
       <div>
         <h3 className="text-xl font-medium">
           {game.meta.players.white.player.username}{' '}
