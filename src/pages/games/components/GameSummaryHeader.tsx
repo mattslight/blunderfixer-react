@@ -20,9 +20,9 @@ export default function GameSummaryHeader({ game }) {
           </span>
         </h3>
         <p className="text-sm font-medium text-gray-600">
-          {dateStr} <span className="text-gray-700">•</span>{' '}
+          {dateStr} <span className="text-gray-800">•</span>{' '}
           {game.meta.timeControl / 60}m+{game.meta.increment}s{' '}
-          <span className="text-gray-700">•</span> {game.meta.timeClass}
+          <span className="text-gray-800">•</span> {game.meta.timeClass}
         </p>
       </div>
     </header>
