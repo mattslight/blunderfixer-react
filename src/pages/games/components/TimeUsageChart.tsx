@@ -1,5 +1,10 @@
 // src/pages/games/components/TimeUsageChart.tsx
+import { useStickyValue } from '@/hooks/useStickyValue';
+import { useMemo } from 'react';
+
 import {
+  Area,
+  AreaChart,
   Bar,
   BarChart,
   ResponsiveContainer,
@@ -8,7 +13,6 @@ import {
   YAxis,
 } from 'recharts';
 
-// after your existing `analysis` + `heroSide` logic…
 type TimePoint = { move: number; heroTime: number; oppTime: number };
 
 export default function TimeUsageChart({
@@ -20,25 +24,76 @@ export default function TimeUsageChart({
   game?: any;
   heroSide?: string;
 }) {
-  // Defensive: default to false if game or heroSide not provided
-  let heroIsWhite = false;
-  if (game && heroSide) {
-    heroIsWhite = game.moves && game.moves[0]?.side === 'w' && heroSide === 'w';
-  }
+  // determine if hero is white
+  const heroIsWhite = useMemo(() => {
+    return Boolean(
+      game && heroSide && game.moves?.[0]?.side === 'w' && heroSide === 'w'
+    );
+  }, [game, heroSide]);
+
+  // compute remaining-time burndown after each full move
+  const burnData = useMemo(() => {
+    let heroRem = game?.meta.timeControl ?? 0;
+    let oppRem = game?.meta.timeControl ?? 0;
+    const inc = game?.meta.increment ?? 0;
+    return data.map((pt) => {
+      heroRem = heroRem - pt.heroTime + inc;
+      oppRem = oppRem - pt.oppTime + inc;
+      return { move: pt.move, heroRem, oppRem };
+    });
+  }, [data, game]);
+
+  // precompute bar configs based on hero side
+  const barSeries = useMemo(() => {
+    const configs = heroIsWhite
+      ? [
+          { dataKey: 'heroTime', name: 'You', fill: '#38bdf8' },
+          { dataKey: 'oppTime', name: 'Opp.', fill: '#a78bfa' },
+        ]
+      : [
+          { dataKey: 'oppTime', name: 'Opp.', fill: '#a78bfa' },
+          { dataKey: 'heroTime', name: 'You', fill: '#38bdf8' },
+        ];
+    return configs;
+  }, [heroIsWhite]);
+
+  // sticky toggle between per-move bars and burndown areas
+  const [mode, setMode] = useStickyValue<'per-move' | 'burndown'>(
+    'timeChartMode',
+    'burndown'
+  );
 
   return (
     <>
-      <h3 className="mb-1 flex justify-center text-xs font-semibold text-gray-600 uppercase">
-        Time per Move
-      </h3>
+      {/* mode toggle */}
+      <div className="-mt-16 flex flex-col items-center">
+        <h3 className="mb-2 block text-center text-xs font-semibold tracking-wider text-gray-600 uppercase">
+          Time
+        </h3>
+        <span className="justify-center space-x-4 rounded-xl border-1 border-gray-600 bg-gray-800 p-2 px-4 text-xs font-semibold tracking-wider text-gray-300">
+          <button
+            onClick={() => setMode('burndown')}
+            className={
+              mode === 'burndown' ? 'font-bold' : 'font-normal text-gray-500'
+            }
+          >
+            burndown
+          </button>
+          <button
+            onClick={() => setMode('per-move')}
+            className={
+              mode === 'per-move' ? 'font-bold' : 'font-normal text-gray-500'
+            }
+          >
+            per move
+          </button>
+        </span>
+      </div>
+
       <div className="-mr-6 -ml-14 h-40">
-        {heroIsWhite && (
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={data}
-              barCategoryGap="5%" // ← leave half the category empty
-              barGap={2} // ← 2px between the two bars
-            >
+        <ResponsiveContainer width="100%" height="100%">
+          {mode === 'per-move' ? (
+            <BarChart data={data} barCategoryGap="5%" barGap={2}>
               <XAxis
                 dataKey="move"
                 axisLine={false}
@@ -58,39 +113,29 @@ export default function TimeUsageChart({
                 itemStyle={{ color: '#fff' }}
                 cursor={{ fill: 'rgba(255,255,255,0.1)' }}
               />
-
-              <Bar
-                dataKey="heroTime"
-                name="You"
-                fill="#38bdf8"
-                isAnimationActive
-              />
-              <Bar
-                dataKey="oppTime"
-                name="Opp."
-                fill="#a78bfa"
-                isAnimationActive
-              />
+              {barSeries.map((s) => (
+                <Bar
+                  key={s.dataKey}
+                  dataKey={s.dataKey}
+                  name={s.name}
+                  fill={s.fill}
+                />
+              ))}
             </BarChart>
-          </ResponsiveContainer>
-        )}
-        {!heroIsWhite && (
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={data}
+          ) : (
+            <AreaChart
+              data={burnData}
               margin={{ top: 0, right: 10, bottom: 0, left: 0 }}
-              barCategoryGap="5%" // ← leave half the category empty
-              barGap={2} // ← 2px between the two bars
             >
               <XAxis
-                dataKey="ply"
+                dataKey="move"
                 axisLine={false}
                 tickLine={false}
                 tick={false}
               />
               <YAxis axisLine={false} tickLine={false} tick={false} />
               <Tooltip
-                formatter={(v: number) => `${v.toFixed(1)}s`}
+                formatter={(v: number) => `${v.toFixed(0)}s`}
                 contentStyle={{
                   backgroundColor: '#1f1f1f',
                   borderColor: '#333',
@@ -101,22 +146,28 @@ export default function TimeUsageChart({
                 itemStyle={{ color: '#fff' }}
                 cursor={{ fill: 'rgba(255,255,255,0.1)' }}
               />
-              <Bar
-                dataKey="oppTime"
-                name="Opp."
-                fill="#a78bfa"
-                isAnimationActive
-              />
-              <Bar
-                dataKey="heroTime"
+              <Area
+                type="monotone"
+                dataKey="heroRem"
                 name="You"
+                stroke="#38bdf8"
                 fill="#38bdf8"
-                isAnimationActive
+                fillOpacity={0.3}
               />
-            </BarChart>
-          </ResponsiveContainer>
-        )}
+              <Area
+                type="monotone"
+                dataKey="oppRem"
+                name="Opp."
+                stroke="#a78bfa"
+                fill="#a78bfa"
+                fillOpacity={0.3}
+              />
+            </AreaChart>
+          )}
+        </ResponsiveContainer>
       </div>
+
+      {/* legend */}
       <div className="-mt-8 mb-16 flex justify-center text-xs font-semibold text-gray-600">
         <span className="mr-2 flex items-center">
           <span className="mr-1 h-2 w-2 rounded-full bg-sky-500" />
