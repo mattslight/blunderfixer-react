@@ -66,7 +66,7 @@ export default function TimeUsageChart({
   return (
     <>
       {/* mode toggle */}
-      <div className="-mt-16 flex flex-col items-center">
+      <div className="flex flex-col items-center">
         <h3 className="mb-2 block text-center text-xs font-semibold tracking-wider text-gray-600 uppercase">
           Time
         </h3>
