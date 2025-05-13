@@ -20,7 +20,7 @@ export default function ListToggle({
       >
         <Rows2
           size={20}
-          className={viewMode === 'card' ? 'text-white' : 'text-gray-500'}
+          className={viewMode === 'card' ? 'text-gray-400' : 'text-gray-500'}
         />
       </button>
       <button
@@ -32,7 +32,7 @@ export default function ListToggle({
       >
         <AlignJustify
           size={20}
-          className={viewMode === 'table' ? 'text-white' : 'text-gray-500'}
+          className={viewMode === 'table' ? 'text-gray-400' : 'text-gray-500'}
         />
       </button>
     </div>
