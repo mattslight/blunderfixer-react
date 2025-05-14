@@ -78,9 +78,9 @@ export default function TimeUsageChart({
         >
           <button
             onClick={() => setMode('burndown')}
-            className={`block flex-1 cursor-pointer px-4 py-2 text-center text-xs font-semibold tracking-wider transition-colors focus:outline-none ${
+            className={`block flex-1 cursor-pointer px-4 py-1.5 text-center text-xs font-semibold tracking-wider transition-colors focus:outline-none ${
               mode === 'burndown'
-                ? 'bg-gray-800 text-gray-300'
+                ? 'bg-gray-800 text-gray-400'
                 : 'bg-transparent text-gray-500'
             } border-r border-gray-700`}
           >
@@ -88,9 +88,9 @@ export default function TimeUsageChart({
           </button>
           <button
             onClick={() => setMode('per-move')}
-            className={`block flex-1 cursor-pointer px-4 py-2 text-center text-xs font-semibold tracking-wider transition-colors focus:outline-none ${
+            className={`block flex-1 cursor-pointer px-4 py-1.5 text-center text-xs font-semibold tracking-wider transition-colors focus:outline-none ${
               mode === 'per-move'
-                ? 'bg-gray-800 text-gray-300'
+                ? 'bg-gray-800 text-gray-400'
                 : 'bg-transparent text-gray-500'
             }`}
           >
@@ -99,7 +99,7 @@ export default function TimeUsageChart({
         </div>
       </div>
 
-      <div className="-mr-6 -ml-14 h-40">
+      <div className="-mr-6 -ml-14 h-20">
         <ResponsiveContainer width="100%" height="100%">
           {mode === 'per-move' ? (
             <BarChart
