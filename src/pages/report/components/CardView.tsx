@@ -146,7 +146,7 @@ export default function CardView({ entry: r, onDrill, pgn }: CardViewProps) {
 
         <div className="my-4 flex justify-center">
           <button
-            className="items-center rounded bg-purple-500 px-3 py-2 text-sm font-semibold text-white hover:bg-purple-600"
+            className="items-center rounded-md border-b-2 border-b-purple-900 bg-purple-600 px-3 py-2 text-sm font-semibold text-white hover:bg-purple-600"
             onClick={() => onDrill?.(pgn, r.analysis.halfMoveIndex)}
           >
             Discuss with coach
