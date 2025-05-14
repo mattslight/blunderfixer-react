@@ -2,25 +2,20 @@
 
 ## In Progress
 
-- [ ] _BUG_: Fix chart(s) - particularly burndown - right margin/padding on iPhone
-- [x] **FEAT**: Time burndown chart for both players
+- [ ] _FIX_: When I click Discuss with Coach load in the position to the LLM flow
+- [ ] _FIX_: Wire up hint button
+- [ ] _FIX_: Flip board when loading a game as Black
 
 - [ ] _BUG_: View error boundary - clearly not working!
 - [ ] _BUG_: if stockfish analysis is ongoing (e.g. depth = 40) then move arrows don't update, so I guess stockfish evals are overlapping, we need to kill the previous analysis before starting a new one
 - [ ] _BUG_: Mate evaluation swings still occur
-- [ ] _FIX_: Load in recent game position into board
 - [ ] _FIX_: Fix issue where full analysis is needed to give good advice
-- [ ] _FIX_: Wire up hint button
 - [ ] _FIX_: Reset (board position and chat) not working
 - [ ] **FEAT**: Hide lines / best move
-- [ ] **FEAT**: When stepping best move show button on board
-- [ ] **FEAT**: Find the critical positions based on the eval swings
+- [ ] **FEAT**: When swiping best move show changing arrow on board
 - [ ] **FEAT**: Coach or engine to play a move / reply
 - [ ] **FEAT**: If coach mentions a move show on the board
 - [ ] **UX**: Move graph and table summary to Analysis page (what's the UX)
-- [ ] Wire up `ExamplePositions`
-- [ ] Flip board when loading a game as Black
-- [ ] Suggest positions for insight (i.e. the move before the 12=-076543567890-1§ qa~mistake) when loading PGN
 - [ ] Clarify evaluation perspective (player vs engine) in coach insights
 
 ## MVP Priorities
@@ -88,3 +83,7 @@
 - [x] **FEAT**: Chat, press enter to ask!
 - [x] **FEAT**: Empty state for coach chat?
 - [x] **FEAT**: Scroll coach chat separately from board on desktop
+- [x] _BUG_: Fix chart(s) - particularly burndown - right margin/padding on iPhone
+- [x] **FEAT**: Time burndown chart for both players
+- [x] **FEAT**: Find the critical positions based on the eval swings
+- [x] Suggest positions for insight (i.e. the move before the 12=-076543567890-1§ qa~mistake) when loading PGN
