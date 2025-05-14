@@ -7,7 +7,7 @@ import {
   TimeControl,
 } from '@/lib/severity';
 import { AnalysisNode, GameRecord } from '@/types';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import EvalGraph from './EvalGraph';
 import GameSummaryHeader from './GameSummaryHeader';
 import StackView from './StackView';
@@ -29,6 +29,8 @@ export function GameSummary({ game, analysis, onDrill }: GameSummaryProps) {
   const heroSide =
     username === game.meta.players.white.player.username ? 'w' : 'b';
   const MAX = 4;
+
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   // 1) Eval‐graph data
   const chartData = useMemo(
@@ -91,6 +93,10 @@ export function GameSummary({ game, analysis, onDrill }: GameSummaryProps) {
     return pts;
   }, [analysis, game.moves, heroSide]);
 
+  const handlePositionSelect = (halfMoveIndex: number) => {
+    setSelectedIndex(halfMoveIndex);
+  };
+
   return (
     <article className="mx-auto mb-6 w-full max-w-6xl space-y-4 p-4">
       {/* Header + graphs */}
@@ -105,13 +111,18 @@ export function GameSummary({ game, analysis, onDrill }: GameSummaryProps) {
         <aside>
           <GameSummaryTable
             combined={combined}
-            onDrill={onDrill}
+            onClick={handlePositionSelect}
             pgn={game.pgn}
           />
         </aside>
         {/* Right pane: board + transport */}
         <section className="space-y-6 lg:sticky lg:top-14 lg:self-start">
-          <StackView entries={combined} onDrill={onDrill} pgn={game.pgn} />
+          <StackView
+            entries={combined}
+            onDrill={onDrill}
+            pgn={game.pgn}
+            selectedIndex={selectedIndex}
+          />
         </section>
       </div>
     </article>

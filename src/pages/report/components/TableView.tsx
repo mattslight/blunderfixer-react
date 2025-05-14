@@ -5,13 +5,11 @@ import type { CombinedEntry } from './SummaryTable';
 export default function TableView({
   entries,
   showAll,
-  onDrill,
-  pgn,
+  onClick,
 }: {
   entries: CombinedEntry[];
   showAll: boolean;
-  onDrill: (pgn: string, halfMoveIndex: number) => void;
-  pgn: string;
+  onClick: (halfMoveIndex: number) => void;
 
   // how do I get the pgn here?
 }) {
@@ -39,7 +37,7 @@ export default function TableView({
             <tr
               key={idx}
               className="border-t border-gray-800 hover:bg-gray-700"
-              onClick={() => onDrill(pgn, r.analysis.halfMoveIndex)}
+              onClick={() => onClick(r.analysis.halfMoveIndex)}
             >
               <td className="px-2 py-1 text-center">
                 {r.tags.map((t) =>

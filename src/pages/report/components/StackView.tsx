@@ -1,5 +1,5 @@
 // src/pages/report/components/StackView.tsx
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import CardView from './CardView';
 import MoveControls from './MoveControls';
 import type { CombinedEntry } from './SummaryTable';
@@ -8,10 +8,12 @@ export default function StackView({
   entries,
   onDrill,
   pgn,
+  selectedIndex,
 }: {
   entries: CombinedEntry[];
   onDrill?: (pgn: string, halfMoveIndex: number) => void;
   pgn: string;
+  selectedIndex?: number | null;
 }) {
   const [current, setCurrent] = useState(0);
   const frameRef = useRef<number>(null);
@@ -48,6 +50,25 @@ export default function StackView({
 
     frameRef.current = requestAnimationFrame(tick);
   }
+
+  // 1) Build a map for O(1) lookups
+  const indexMap = useMemo(() => {
+    const m = new Map<number, number>();
+    entries.forEach((e, i) => {
+      m.set(e.analysis.halfMoveIndex, i);
+    });
+    return m;
+  }, [entries]);
+
+  // 2) useLayoutEffect so we sync current *before* paint
+  useLayoutEffect(() => {
+    if (selectedIndex != null) {
+      const idx = indexMap.get(selectedIndex);
+      if (idx !== undefined && idx !== current) {
+        glideTo(idx);
+      }
+    }
+  }, [selectedIndex, indexMap]); // no need to include `current` here
 
   // cleanup on unmount
   useEffect(() => () => cancelAnimationFrame(frameRef.current!), []);

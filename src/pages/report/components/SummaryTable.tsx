@@ -15,7 +15,7 @@ export interface CombinedEntry {
 
 interface GameSummaryTableProps {
   combined: CombinedEntry[];
-  onDrill: (pgn: string, halfMoveIndex: number) => void;
+  onClick: (halfMoveIndex: number) => void;
   pgn: string;
 }
 
@@ -63,7 +63,7 @@ function LegendDot({
 
 export default function GameSummaryTable({
   combined,
-  onDrill,
+  onClick,
   pgn,
 }: GameSummaryTableProps) {
   const [showAll, setShowAll] = useStickyValue<boolean>('showAllMoves', false);
@@ -159,12 +159,7 @@ export default function GameSummaryTable({
         )}
       </div>
 
-      <TableView
-        entries={entries}
-        showAll={showAll}
-        onDrill={onDrill}
-        pgn={pgn}
-      />
+      <TableView entries={entries} showAll={showAll} onClick={onClick} />
     </>
   );
 }
