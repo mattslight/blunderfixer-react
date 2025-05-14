@@ -4,7 +4,6 @@ import type { Severity } from '@/lib/severity';
 import { DOT_COLOR, scoreMove } from '@/lib/severity';
 import type { AnalysisNode, GameRecord } from '@/types';
 import { useMemo } from 'react';
-import ListToggle from './ListToggle';
 import StackView from './StackView';
 import TableView from './TableView';
 
@@ -134,15 +133,12 @@ export default function GameSummaryTable({
           <span className="block text-xs font-semibold tracking-wider text-green-500 uppercase">
             Review
           </span>
-          <h2 className="mb-2 text-2xl font-bold text-white">Key Moves</h2>
+          <h2 className="mb-2 text-2xl font-bold text-white">Critical Moves</h2>
           <span className="mr-2 text-sm text-gray-600">Show all</span>
           <ToggleSwitch
             checked={showAll}
             onChange={() => setShowAll((v) => !v)}
           />
-        </div>
-        <div className="flex flex-col items-end justify-end">
-          <ListToggle viewMode={viewMode} onChange={setViewMode} />
         </div>
       </div>
 
@@ -164,21 +160,27 @@ export default function GameSummaryTable({
         )}
       </div>
 
-      {viewMode === 'stack' ? (
-        <StackView
-          entries={entries}
-          showAll={showAll}
-          onDrill={onDrill}
-          pgn={pgn}
-        />
-      ) : (
-        <TableView
-          entries={entries}
-          showAll={showAll}
-          onDrill={onDrill}
-          pgn={pgn}
-        />
-      )}
+      <TableView
+        entries={entries}
+        showAll={showAll}
+        onDrill={onDrill}
+        pgn={pgn}
+      />
+
+      <div className="mt-24 mb-4 grid grid-cols-2 gap-4">
+        <div>
+          <span className="block text-xs font-semibold tracking-wider text-green-500 uppercase">
+            Review
+          </span>
+          <h2 className="mb-2 text-2xl font-bold text-white">Key Positions</h2>
+          <span className="mr-2 text-sm text-gray-600">Show all</span>
+          <ToggleSwitch
+            checked={showAll}
+            onChange={() => setShowAll((v) => !v)}
+          />
+        </div>
+      </div>
+      <StackView entries={entries} onDrill={onDrill} pgn={pgn} />
     </>
   );
 }
