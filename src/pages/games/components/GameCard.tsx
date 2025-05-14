@@ -83,7 +83,7 @@ export default function GameCard({
           <span className="truncate text-lg font-semibold">
             {whitePlayer.username}
           </span>
-          <span className="xs:flex hidden text-sm text-gray-400">
+          <span className="xs:flex hidden text-sm text-gray-500">
             ({whiteRating})
           </span>
         </div>
@@ -99,14 +99,14 @@ export default function GameCard({
           <span className="truncate text-lg font-semibold">
             {blackPlayer.username}
           </span>
-          <span className="xs:flex hidden text-sm text-gray-400">
+          <span className="xs:flex hidden text-sm text-gray-500">
             ({blackRating})
           </span>
         </div>
       </header>
 
       {/* Meta: date & time control */}
-      <div className="mt-1 mb-2 flex space-x-4 text-sm text-gray-500">
+      <div className="mt-1 mb-2 flex space-x-4 text-sm text-gray-400">
         <div className="flex items-center space-x-1">
           <Calendar size={16} />
           <time dateTime={dateTime.toISOString()}>{dateStr}</time>
