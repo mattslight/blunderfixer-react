@@ -16,9 +16,21 @@ interface CardViewProps {
   entry: CombinedEntry;
   onDrill?: (pgn: string, halfMoveIndex: number) => void;
   pgn: string;
+  onPrev?: () => void;
+  onNext?: () => void;
+  onPrevKeymove?: () => void;
+  onNextKeymove?: () => void;
 }
 
-export default function CardView({ entry: r, onDrill, pgn }: CardViewProps) {
+export default function CardView({
+  entry: r,
+  onDrill,
+  pgn,
+  onPrev,
+  onNext,
+  onPrevKeymove,
+  onNextKeymove,
+}: CardViewProps) {
   // derive visual elements
   const primaryTag = r.tags[0];
   const timeTag =
@@ -96,31 +108,33 @@ export default function CardView({ entry: r, onDrill, pgn }: CardViewProps) {
       </div>
 
       {/* BOARD */}
-      <div className="flex flex-col items-center border-t border-gray-700 px-4 pb-4">
-        <div className="my-4">
-          <Chessboard
-            position={r.analysis.fenBefore}
-            arePiecesDraggable={false}
-            onPieceDrop={() => false}
-            onSquareClick={() => {}}
-            customArrows={customArrows}
-            boardWidth={320}
-            customArrowColor="#48AD7E"
-            customBoardStyle={{
-              borderRadius: '0.5em',
-              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
-            }}
-            customDarkSquareStyle={{
-              backgroundColor: 'rgb(157,163,180)',
-            }}
-            customLightSquareStyle={{
-              backgroundColor: 'rgb(245,242,230)',
-              mixBlendMode: 'multiply',
-            }}
-          />
+      <div className="space-y-4 bg-gray-800 p-4">
+        <div className="pb- flex flex-row items-center border-gray-700 px-4">
+          <div className="mx-auto my-4">
+            <Chessboard
+              position={r.analysis.fenBefore}
+              arePiecesDraggable={false}
+              onPieceDrop={() => false}
+              onSquareClick={() => {}}
+              customArrows={customArrows}
+              boardWidth={320}
+              customArrowColor="#48AD7E"
+              customBoardStyle={{
+                borderRadius: '0.5em',
+                boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
+              }}
+              customDarkSquareStyle={{
+                backgroundColor: 'rgb(157,163,180)',
+              }}
+              customLightSquareStyle={{
+                backgroundColor: 'rgb(245,242,230)',
+                mixBlendMode: 'multiply',
+              }}
+            />
+          </div>
         </div>
 
-        <div className="mt-4 flex justify-center">
+        <div className="my-4 flex justify-center">
           <button
             className="items-center rounded bg-purple-500 px-3 py-2 text-sm font-semibold text-white hover:bg-purple-600"
             onClick={() => onDrill?.(pgn, r.analysis.halfMoveIndex)}
