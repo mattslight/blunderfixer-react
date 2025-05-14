@@ -136,15 +136,19 @@ export default function HomePage() {
             <div className="mb-4 flex items-center justify-center">
               <Trophy className="h-8 w-8" />
             </div>
-            <h3 className="mb-2 text-center text-xl font-bold">Start Fixing</h3>
+            <h3 className="mb-2 text-center text-xl font-bold">
+              Start Fixing
+              <br />
+              (it's free)
+            </h3>
             <p className="text-center text-sm text-green-100">
-              Analyse recent games or practice positions
+              Human-like coaching on your games
             </p>
           </div>
 
           <div
             onClick={() => setIsModalOpen(true)}
-            className="cursor-pointer rounded-xl border-b-6 border-b-gray-900 bg-gray-700 p-6 text-white shadow-2xl transition hover:bg-gray-600"
+            className="cursor-pointer rounded-xl border-1 border-b-6 border-gray-600 border-b-gray-900 bg-gray-700 p-6 text-white shadow-2xl transition hover:bg-gray-600"
           >
             <div className="mb-4 flex items-center justify-center">
               <PlugZap className="h-8 w-8" />
@@ -152,8 +156,8 @@ export default function HomePage() {
             <h3 className="mb-2 text-center text-xl font-bold">
               Connect Chess.com
             </h3>
-            <p className="text-center text-sm text-slate-300">
-              Instant coaching analysis on recent games
+            <p className="text-center text-sm text-slate-400">
+              Instant reports & discover your Chess IQ™
             </p>
           </div>
         </div>
