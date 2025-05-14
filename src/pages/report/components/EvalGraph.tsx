@@ -18,9 +18,14 @@ interface ChartEntry extends AnalysisNode {
 interface GraphProps {
   data: ChartEntry[];
   max: number;
+  handlePositionSelect: (halfMoveIndex: number) => void;
 }
 
-export default function EvalGraph({ data, max }: GraphProps) {
+export default function EvalGraph({
+  data,
+  max,
+  handlePositionSelect,
+}: GraphProps) {
   // split into two fields so we can color above/below separately
   const enriched = data.map((d) => ({
     ...d,
@@ -38,6 +43,13 @@ export default function EvalGraph({ data, max }: GraphProps) {
           <ComposedChart
             data={enriched}
             margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+            onClick={(data: any) => {
+              console.log('click', data);
+              const ply = data?.activeLabel;
+              if (ply !== undefined) {
+                handlePositionSelect(ply);
+              }
+            }}
           >
             <XAxis
               dataKey="ply"
