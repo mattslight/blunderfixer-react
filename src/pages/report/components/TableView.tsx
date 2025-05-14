@@ -1,6 +1,6 @@
 import { BlackPiece, WhitePiece } from '@/components/ChessPieces';
 import { DOT_COLOR, TIME_TEXT_COLOR } from '@/lib/severity';
-import type { CombinedEntry } from './GameSummaryTable';
+import type { CombinedEntry } from './SummaryTable';
 
 export default function TableView({
   entries,
