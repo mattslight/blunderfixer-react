@@ -20,7 +20,7 @@ interface GraphProps {
   max: number;
 }
 
-export default function GameSummaryGraph({ data, max }: GraphProps) {
+export default function EvalGraph({ data, max }: GraphProps) {
   // split into two fields so we can color above/below separately
   const enriched = data.map((d) => ({
     ...d,
@@ -33,7 +33,7 @@ export default function GameSummaryGraph({ data, max }: GraphProps) {
       <h3 className="mb-8 block text-center text-xs font-semibold tracking-wider text-gray-600 uppercase">
         Eval
       </h3>
-      <div className="-ml-14 h-40">
+      <div className="-ml-14 h-30">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
             data={enriched}
