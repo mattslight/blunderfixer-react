@@ -5,9 +5,15 @@ import type { CombinedEntry } from './GameSummaryTable';
 export default function TableView({
   entries,
   showAll,
+  onDrill,
+  pgn,
 }: {
   entries: CombinedEntry[];
   showAll: boolean;
+  onDrill: (pgn: string, halfMoveIndex: number) => void;
+  pgn: string;
+
+  // how do I get the pgn here?
 }) {
   return (
     <table className="mt-4 w-full table-auto text-sm">
@@ -33,6 +39,7 @@ export default function TableView({
             <tr
               key={idx}
               className="border-t border-gray-800 hover:bg-gray-700"
+              onClick={() => onDrill(pgn, r.analysis.halfMoveIndex)}
             >
               <td className="px-2 py-1 text-center">
                 {r.tags.map((t) =>
