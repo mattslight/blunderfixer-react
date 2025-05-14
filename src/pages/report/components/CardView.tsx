@@ -1,7 +1,7 @@
 // src/pages/report/components/CardView.tsx
 import { BlackPiece, WhitePiece } from '@/components/ChessPieces';
 import { DOT_COLOR, TIME_TEXT_COLOR } from '@/lib/severity';
-import { Square } from 'chess.js'; // ← import chess.js
+import { Square } from 'chess.js';
 import {
   ArrowUpRight,
   BarChart,
@@ -45,9 +45,10 @@ export default function CardView({
           'none';
         const timeColor = TIME_TEXT_COLOR[timeTag];
 
-        const customArrows = [
-          [r.move.from as Square, r.move.to as Square, '#48AD7E' as string],
-        ];
+        const customArrows: [Square, Square][] =
+          r.move.from && r.move.to
+            ? [[r.move.from as Square, r.move.to as Square]]
+            : [];
 
         return (
           <div
@@ -59,19 +60,22 @@ export default function CardView({
               onClick={toggle}
               className="relative cursor-pointer transition-colors hover:bg-gray-700"
             >
-              <div className="grid grid-cols-[auto_1fr_auto] items-center p-4">
+              <div className="grid grid-cols-3 items-center p-4">
+                {/* move number */}
                 <div>
                   <span className="text-xs font-semibold text-green-500 uppercase">
                     Move {r.analysis.halfMoveIndex}
                   </span>
                 </div>
-                <div className="text-center">
+                {/* piece + SAN centered */}
+                <div className="justify-self-center text-center">
                   <span className="text-lg font-bold text-white">
                     {r.move.side === 'w' ? <WhitePiece /> : <BlackPiece />}{' '}
                     <span className="ml-2">{r.move.san}</span>
                   </span>
                 </div>
-                <div className="flex items-center justify-end space-x-1">
+                {/* severity tag + caret */}
+                <div className="flex items-center space-x-1 justify-self-end">
                   {primaryTag !== 'none' && (
                     <span
                       className={`inline-block rounded-full px-2.5 py-0.5 text-[8pt] font-semibold ${DOT_COLOR[primaryTag]} text-white`}
@@ -126,31 +130,32 @@ export default function CardView({
 
             {/* EXPANDED PANEL */}
             {isOpen && (
-              <div className="border-t border-gray-700 px-4 pb-4">
-                <Chessboard
-                  position={r.analysis.fenBefore}
-                  boardWidth={320}
-                  arePiecesDraggable={false}
-                  customArrows={customArrows}
-                  customBoardStyle={{
-                    borderRadius: '0.5em',
-                    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
-                  }}
-                  customDarkSquareStyle={{
-                    backgroundColor: 'rgb(157,163,180)',
-                  }}
-                  customLightSquareStyle={{
-                    backgroundColor: 'rgb(245,242,230)',
-                    mixBlendMode: 'multiply',
-                  }}
-                />
-
-                <div className="mt-4 flex justify-start">
+              <div className="flex flex-col items-center border-t border-gray-700 px-4 pb-4">
+                <div className="mt-4">
+                  <Chessboard
+                    position={r.analysis.fenBefore}
+                    customArrows={customArrows}
+                    boardWidth={320}
+                    customArrowColor="#48AD7E"
+                    customBoardStyle={{
+                      borderRadius: '0.5em',
+                      boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
+                    }}
+                    customDarkSquareStyle={{
+                      backgroundColor: 'rgb(157,163,180)',
+                    }}
+                    customLightSquareStyle={{
+                      backgroundColor: 'rgb(245,242,230)',
+                      mixBlendMode: 'multiply',
+                    }}
+                  />
+                </div>
+                <div className="mt-4 flex justify-center">
                   <button
                     className="items-center rounded bg-purple-500 px-3 py-2 text-sm font-semibold text-white hover:bg-purple-600"
                     onClick={(e) => {
                       stop(e);
-                      onDrill?.(r.analysis.fen);
+                      onDrill?.(r.analysis.fenBefore);
                     }}
                   >
                     Discuss with coach
@@ -158,7 +163,7 @@ export default function CardView({
                   </button>
                 </div>
 
-                <div className="mt-2 flex justify-between">
+                <div className="mt-2 flex w-full max-w-xs justify-between">
                   <button
                     className="px-3 py-1 text-sm font-medium text-white disabled:opacity-50"
                     disabled={!prevValid(i)}
