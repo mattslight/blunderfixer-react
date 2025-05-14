@@ -1,8 +1,8 @@
 // src/pages/report/components/StackView.tsx
 import { useEffect, useRef, useState } from 'react';
 import CardView from './CardView';
-import type { CombinedEntry } from './GameSummaryTable';
 import MoveControls from './MoveControls';
+import type { CombinedEntry } from './SummaryTable';
 
 export default function StackView({
   entries,
@@ -14,7 +14,7 @@ export default function StackView({
   pgn: string;
 }) {
   const [current, setCurrent] = useState(0);
-  const frameRef = useRef<number>();
+  const frameRef = useRef<number>(null);
 
   // ensure index never out of bounds
   const safeCurrent = Math.max(0, Math.min(current, entries.length - 1));
