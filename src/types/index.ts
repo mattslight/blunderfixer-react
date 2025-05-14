@@ -88,6 +88,7 @@ export interface AnalysisNode {
   san?: string; // SAN move string (e.g. e4)
   side: 'w' | 'b'; // side to move
   moveNumber: number; // full-move count (1,2,3…)
+  fenBefore?: string; // FEN before the move
 }
 
 /**
