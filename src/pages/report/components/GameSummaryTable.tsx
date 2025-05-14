@@ -1,13 +1,14 @@
 // src/pages/games/components/GameSummaryTable.tsx
 import { useStickyValue } from '@/hooks/useStickyValue';
 import type { Severity } from '@/lib/severity';
-import { DOT_COLOR, scoreMove, TIME_TEXT_COLOR } from '@/lib/severity';
+import { DOT_COLOR, scoreMove } from '@/lib/severity';
 import type { AnalysisNode, GameRecord } from '@/types';
-import { BarChart, Timer, TrendingDown, TrendingUp } from 'lucide-react';
 import { useMemo } from 'react';
+import CardView from './CardView';
 import ListToggle from './ListToggle';
+import TableView from './TableView';
 
-interface CombinedEntry {
+export interface CombinedEntry {
   move: GameRecord['moves'][0];
   analysis: AnalysisNode;
   tags: Severity[];
@@ -58,160 +59,6 @@ function LegendDot({
       <span className={`mr-1 inline-block h-2 w-2 rounded-full ${colour}`} />
       {count} {formatLabel(label, count)}
     </span>
-  );
-}
-
-function CardView({
-  entries,
-  showAll,
-  onDrill,
-}: {
-  entries: CombinedEntry[];
-  showAll: boolean;
-  onDrill?: (fen: string) => void;
-}) {
-  return (
-    <>
-      {entries.map((r, i, all) => {
-        if (!showAll && r.tags.every((t) => t === 'none')) return null;
-        const prev = all[i - 1];
-        const prevMate = prev?.analysis.mateIn;
-        const timeTag =
-          r.tags.find((t) => t === 'timeImpulsive' || t === 'timeOveruse') ||
-          'none';
-        const timeColor = TIME_TEXT_COLOR[timeTag];
-        return (
-          <div
-            key={i}
-            className="mb-4 space-y-4 rounded-lg bg-gray-800 p-4 shadow-lg transition-transform hover:scale-102 hover:shadow-xl"
-          >
-            <div className="grid grid-cols-3 items-center">
-              <div>
-                <span className="block text-xs font-semibold tracking-wider text-green-500 uppercase">
-                  Move {r.analysis.halfMoveIndex}
-                </span>
-              </div>
-              <div className="text-center">
-                <span className={`text-lg font-bold text-white`}>
-                  {r.move.side === 'w' ? <WhitePiece /> : <BlackPiece />}{' '}
-                  {r.move.san}
-                </span>
-              </div>
-              <div className="text-right">
-                {r.tags.map((t) =>
-                  t !== 'none' ? (
-                    <span
-                      key={t}
-                      className={`ml-1 inline-block rounded-full px-2.5 py-0.5 text-[8pt] font-semibold ${DOT_COLOR[t]} text-white`}
-                    >
-                      {t.toUpperCase()}
-                    </span>
-                  ) : null
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 items-center text-sm text-gray-300">
-              <div className="flex items-center">
-                <BarChart className="mr-1 text-blue-400" size={16} />
-                {Math.abs(r.analysis.evalBefore) > 1000
-                  ? `Mate in ${Math.abs(prevMate)}`
-                  : r.analysis.evalBefore > 0
-                    ? `+${r.analysis.evalBefore / 100}`
-                    : r.analysis.evalBefore / 100}
-              </div>
-              <div
-                className={`flex items-center justify-center font-medium ${r.impact < 0 ? 'text-red-500' : 'text-green-500'}`}
-              >
-                {Math.abs(r.impact) > 0 && (
-                  <>
-                    {r.impact > 0 ? (
-                      <TrendingUp className="mr-1" size={16} />
-                    ) : (
-                      <TrendingDown className="mr-1" size={16} />
-                    )}
-                    {`${r.impact > 0 ? '+' : ''}${(r.impact / 100).toFixed(2)}`}
-                  </>
-                )}
-              </div>
-              <div
-                className={`flex items-center justify-end font-medium ${timeColor}`}
-              >
-                <Timer className="mr-1" size={16} />
-                {r.move.timeSpent?.toFixed(1) ?? '–'}s
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </>
-  );
-}
-
-function TableView({
-  entries,
-  showAll,
-}: {
-  entries: CombinedEntry[];
-  showAll: boolean;
-}) {
-  return (
-    <table className="mt-4 w-full table-auto text-sm">
-      <thead>
-        <tr className="bg-gray-800">
-          <th className="px-2 py-1" />
-          <th className="px-2 py-1 text-left">Move</th>
-          <th className="px-2 py-1" />
-          <th className="px-2 py-1 text-left" />
-          <th className="px-2 py-1 text-right">Impact</th>
-          <th className="px-2 py-1 text-right">
-            Time <span className="font-normal text-gray-400">(s)</span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {entries.map((r, idx) => {
-          if (!showAll && r.tags.every((t) => t === 'none')) return null;
-          const timeTag =
-            r.tags.find((t) => t === 'timeImpulsive' || t === 'timeOveruse') ||
-            'none';
-          return (
-            <tr
-              key={idx}
-              className="border-t border-gray-800 hover:bg-gray-700"
-            >
-              <td className="px-2 py-1 text-center">
-                {r.tags.map((t) =>
-                  t !== 'none' ? (
-                    <span
-                      key={t}
-                      className={`inline-block h-3 w-3 rounded-full ${DOT_COLOR[t]} mr-1`}
-                    />
-                  ) : null
-                )}
-              </td>
-              <td className="px-2 py-1 text-gray-500">
-                {r.analysis.halfMoveIndex}.
-              </td>
-              <td className="px-2 py-1">
-                {r.move.side === 'w' ? <WhitePiece /> : <BlackPiece />}
-              </td>
-              <td className="px-2 py-1 text-white">{r.move.san}</td>
-              <td
-                className={`px-2 py-1 text-right font-medium ${r.impact < 0 ? 'text-red-500' : 'text-green-500'}`}
-              >
-                {`${r.impact > 0 ? '+' : ''}${(r.impact / 100).toFixed(2)}`}
-              </td>
-              <td
-                className={`px-2 py-1 text-right font-medium ${TIME_TEXT_COLOR[timeTag]}`}
-              >
-                {r.move.timeSpent?.toFixed(1) ?? '–'}
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
   );
 }
 
@@ -322,16 +169,4 @@ export default function GameSummaryTable({
       )}
     </>
   );
-}
-
-// helpers
-function BlackPiece() {
-  return (
-    <span className="text-xl text-black [text-shadow:-0.5px_-0.5px_0_#4F46E5,0.5px_-0.5px_0_#4F46E5,-0.5px_0.5px_0_#4F46E5,0.5px_0.5px_0_#4F46E5]">
-      ♞
-    </span>
-  );
-}
-function WhitePiece() {
-  return <span className="text-xl text-white">♞</span>;
 }
