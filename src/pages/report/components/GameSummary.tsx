@@ -7,7 +7,7 @@ import {
   TimeControl,
 } from '@/lib/severity';
 import { AnalysisNode, GameRecord } from '@/types';
-import GameSummaryGraph from './GameSummaryGraph';
+import GameSummaryGraph from './EvalGraph';
 import GameSummaryHeader from './GameSummaryHeader';
 import GameSummaryTable from './GameSummaryTable';
 import TimeUsageChart from './TimeUsageChart';

@@ -87,7 +87,7 @@ function CardView({
           >
             <div className="grid grid-cols-3 items-center">
               <div>
-                <span className="block text-xs font-semibold tracking-wider text-green-600 uppercase">
+                <span className="block text-xs font-semibold tracking-wider text-green-500 uppercase">
                   Move {r.analysis.halfMoveIndex}
                 </span>
               </div>

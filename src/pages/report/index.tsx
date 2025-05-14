@@ -1,7 +1,7 @@
 // src/pages/report/index.tsx
-import { GameSummary } from '@/pages/games/components/GameSummary';
 import { useGameAnalysis } from '@/pages/games/hooks/useGameAnalysis';
 import { useGameData } from '@/pages/games/hooks/useGameData';
+import { GameSummary } from '@/pages/report/components/GameSummary';
 import { Loader } from 'lucide-react';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';

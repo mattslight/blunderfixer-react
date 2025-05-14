@@ -1,7 +1,7 @@
 // src/pages/games/components/GameCard.tsx
 import { GameRecord } from '@/types';
 import { formatDistanceToNow } from 'date-fns';
-import { Activity, Calendar, Loader, Timer } from 'lucide-react';
+import { Calendar, Inspect, ListChecks, Loader, Timer } from 'lucide-react';
 
 interface GameCardProps {
   game: GameRecord;
@@ -148,8 +148,10 @@ export default function GameCard({
             <Loader className="h-4 w-4 animate-spin" />
           ) : (
             <span>
-              {btnLabel == 'Report' && (
-                <Activity className="mr-2 inline-flex h-4 w-4" />
+              {btnLabel == 'Report' ? (
+                <ListChecks className="mr-2 inline-flex h-4 w-4" />
+              ) : (
+                <Inspect className="mr-2 inline-flex h-4 w-4" />
               )}
               {btnLabel}
             </span>
