@@ -32,13 +32,13 @@ export const DOT_COLOR: Record<Severity, string> = {
   timeOveruse: 'bg-purple-600',
   none: 'bg-gray-800',
 };
-export const TIME_TEXT_COLOR: Record<Severity, string> = {
-  blunder: 'text-gray-500',
-  mistake: 'text-gray-500',
-  inaccuracy: 'text-gray-500',
+export const TIME_TEXT_COLOR: Record<
+  'timeImpulsive' | 'timeOveruse' | 'none',
+  string
+> = {
   timeImpulsive: 'text-cyan-400',
-  timeOveruse: 'text-purple-500',
-  none: 'text-gray-500',
+  timeOveruse: 'text-purple-400',
+  none: 'text-gray-300',
 };
 
 /**
