@@ -4,8 +4,8 @@ import type { Severity } from '@/lib/severity';
 import { DOT_COLOR, scoreMove } from '@/lib/severity';
 import type { AnalysisNode, GameRecord } from '@/types';
 import { useMemo } from 'react';
-import CardView from './CardView';
 import ListToggle from './ListToggle';
+import StackView from './StackView';
 import TableView from './TableView';
 
 export interface CombinedEntry {
@@ -17,7 +17,8 @@ export interface CombinedEntry {
 
 interface GameSummaryTableProps {
   combined: CombinedEntry[];
-  onDrill?: (fen: string) => void;
+  onDrill: (pgn: string, halfMoveIndex: number) => void;
+  pgn: string;
 }
 
 function ToggleSwitch({
@@ -65,11 +66,12 @@ function LegendDot({
 export default function GameSummaryTable({
   combined,
   onDrill,
+  pgn,
 }: GameSummaryTableProps) {
   const [showAll, setShowAll] = useStickyValue<boolean>('showAllMoves', false);
-  const [viewMode, setViewMode] = useStickyValue<'card' | 'table'>(
+  const [viewMode, setViewMode] = useStickyValue<'stack' | 'table'>(
     'viewMode',
-    'card'
+    'stack'
   );
 
   // compute top-5 by score
@@ -162,10 +164,20 @@ export default function GameSummaryTable({
         )}
       </div>
 
-      {viewMode === 'card' ? (
-        <CardView entries={entries} showAll={showAll} onDrill={onDrill} />
+      {viewMode === 'stack' ? (
+        <StackView
+          entries={entries}
+          showAll={showAll}
+          onDrill={onDrill}
+          pgn={pgn}
+        />
       ) : (
-        <TableView entries={entries} showAll={showAll} />
+        <TableView
+          entries={entries}
+          showAll={showAll}
+          onDrill={onDrill}
+          pgn={pgn}
+        />
       )}
     </>
   );
