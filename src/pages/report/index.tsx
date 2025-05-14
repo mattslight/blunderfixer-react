@@ -40,6 +40,11 @@ export default function ReportPage() {
 
   const game = gamesMap[analysisId]!;
 
+  const onDrill = (pgn: string, halfMoveIndex: number) => {
+    alert('Drill down to this position');
+    navigate('/analyse', { state: { pgn, halfMoveIndex } });
+  };
+
   return (
     <div className="p-4 2xl:ml-10">
       <button
@@ -48,7 +53,7 @@ export default function ReportPage() {
       >
         ← Back
       </button>
-      <GameSummary game={game} analysis={analysis} />
+      <GameSummary game={game} analysis={analysis} onDrill={onDrill} />
     </div>
   );
 }
