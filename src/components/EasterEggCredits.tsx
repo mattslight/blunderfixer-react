@@ -27,7 +27,10 @@ export function useRapidTaps(threshold = 3, timeout = 1000, onActivate) {
 
 // Enhanced credits list
 const credits = [
-  { move: '1. e4', credit: '♔ Matt “King’s Gambit” Slight — Vision & Engine' },
+  {
+    move: '1. e4',
+    credit: '♔ Matt “King’s Gambit” Slight — Vision, UX, Code-Vibing',
+  },
   { move: '1… c5', credit: '⚙️ Stockfish.js v16 — nmrugg' },
   { move: '2. Nf3', credit: '🖥️ Frontend — Flowbite React Contributors' },
   { move: '2… d6', credit: '🎨 Tailwind CSS — Adam Wathan & Tailwind Labs' },
@@ -118,7 +121,7 @@ export default function EasterEggCredits({ onClose }: Props) {
         <motion.div
           style={{ position: 'absolute', bottom: 0, width: '100%' }}
           initial={{ y: '100%' }}
-          animate={{ y: '-65%' }}
+          animate={{ y: '-60%' }}
           transition={{ duration: SCROLL_DURATION, ease: 'linear' }}
           className="space-y-8 break-words text-white"
         >
