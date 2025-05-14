@@ -102,7 +102,12 @@ export default function TimeUsageChart({
       <div className="-mr-6 -ml-14 h-40">
         <ResponsiveContainer width="100%" height="100%">
           {mode === 'per-move' ? (
-            <BarChart data={data} barCategoryGap="5%" barGap={2}>
+            <BarChart
+              data={data}
+              barCategoryGap="5%"
+              barGap={2}
+              margin={{ right: 24 }}
+            >
               <XAxis
                 dataKey="move"
                 axisLine={false}
@@ -134,7 +139,7 @@ export default function TimeUsageChart({
           ) : (
             <AreaChart
               data={burnData}
-              margin={{ top: 0, right: 10, bottom: 0, left: 0 }}
+              margin={{ top: 0, right: 24, bottom: 0, left: 0 }}
             >
               <XAxis
                 dataKey="move"
