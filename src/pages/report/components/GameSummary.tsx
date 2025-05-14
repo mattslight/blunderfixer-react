@@ -22,11 +22,12 @@ interface CombinedEntry {
 interface GameSummaryProps {
   game: GameRecord;
   analysis: AnalysisNode[];
+  onDrill: (pgn: string, halfMoveIndex: number) => void;
 }
 
 type TimePoint = { move: number; heroTime: number; oppTime: number };
 
-export function GameSummary({ game, analysis }: GameSummaryProps) {
+export function GameSummary({ game, analysis, onDrill }: GameSummaryProps) {
   const {
     profile: { username },
   } = useProfile();
@@ -95,7 +96,7 @@ export function GameSummary({ game, analysis }: GameSummaryProps) {
       <GameSummaryHeader game={game} />
       <GameSummaryGraph data={chartData} max={MAX} />
       <TimeUsageChart data={timeData} game={game} heroSide={heroSide} />
-      <GameSummaryTable combined={combined} />
+      <GameSummaryTable combined={combined} onDrill={onDrill} pgn={game.pgn} />
     </article>
   );
 }
