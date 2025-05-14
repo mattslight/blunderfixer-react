@@ -19,10 +19,12 @@ export default function TimeUsageChart({
   data,
   game,
   heroSide,
+  handlePositionSelect,
 }: {
   data: TimePoint[];
   game?: any;
   heroSide?: string;
+  handlePositionSelect: (halfMoveIndex: number) => void;
 }) {
   // determine if hero is white
   const heroIsWhite = useMemo(() => {
@@ -116,15 +118,38 @@ export default function TimeUsageChart({
               />
               <YAxis axisLine={false} tickLine={false} tick={false} />
               <Tooltip
-                formatter={(v: number) => `${v.toFixed(1)}s`}
-                contentStyle={{
-                  backgroundColor: '#1f1f1f',
-                  borderColor: '#333',
-                  borderRadius: 4,
-                  padding: 8,
-                  color: '#fff',
+                shared={false}
+                // custom content function gives you full control
+                content={({ payload, active }) => {
+                  if (!active || !payload || !payload.length) {
+                    return null;
+                  }
+                  // payload[0] is the hovered bar
+                  const { dataKey, value, payload: pt } = payload[0];
+                  // full-move number
+                  const mv = pt.move;
+                  // which half-move (ply) is this?
+                  const isHeroBar = dataKey === 'heroTime';
+                  const ply = heroIsWhite
+                    ? isHeroBar
+                      ? mv * 2 - 1
+                      : mv * 2
+                    : isHeroBar
+                      ? mv * 2
+                      : mv * 2 - 1;
+
+                  return (
+                    <div
+                      className="rounded bg-gray-800 p-2 text-white"
+                      style={{ pointerEvents: 'none' }}
+                    >
+                      <div className="font-semibold">{`Ply ${ply}`}</div>
+                      <div>
+                        {payload[0].name}: {Number(value).toFixed(1)}s
+                      </div>
+                    </div>
+                  );
                 }}
-                itemStyle={{ color: '#fff' }}
                 cursor={{ fill: 'rgba(255,255,255,0.1)' }}
               />
               {barSeries.map((s) => (
@@ -133,6 +158,20 @@ export default function TimeUsageChart({
                   dataKey={s.dataKey}
                   name={s.name}
                   fill={s.fill}
+                  onClick={({ payload }: any) => {
+                    const mv = payload.move;
+                    let halfMove: number;
+
+                    // hero as white: heroTime=odd ply, oppTime=even ply
+                    // hero as black: heroTime=even ply, oppTime=odd ply
+                    if (s.dataKey === 'heroTime') {
+                      halfMove = heroIsWhite ? mv * 2 - 1 : mv * 2;
+                    } else {
+                      halfMove = heroIsWhite ? mv * 2 : mv * 2 - 1;
+                    }
+
+                    handlePositionSelect(halfMove);
+                  }}
                 />
               ))}
             </BarChart>
@@ -140,6 +179,13 @@ export default function TimeUsageChart({
             <AreaChart
               data={burnData}
               margin={{ top: 0, right: 24, bottom: 0, left: 0 }}
+              onClick={(data: any) => {
+                console.log('click', data);
+                const ply = data?.activeLabel * 2;
+                if (ply !== undefined) {
+                  handlePositionSelect(ply);
+                }
+              }}
             >
               <XAxis
                 dataKey="move"
