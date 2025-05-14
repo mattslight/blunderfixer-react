@@ -1,5 +1,5 @@
 // src/pages/report/components/StackView.tsx
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CardView from './CardView';
 import type { CombinedEntry } from './GameSummaryTable';
 
@@ -7,26 +7,44 @@ export default function StackView({
   entries,
   onDrill,
   pgn,
+  showAll,
 }: {
   entries: CombinedEntry[];
   onDrill?: (pgn: string, halfMoveIndex: number) => void;
   pgn: string;
+  showAll?: boolean;
 }) {
   const [current, setCurrent] = useState(0);
 
-  const prev = () => setCurrent((i) => Math.max(0, i - 1));
-  const next = () => setCurrent((i) => Math.min(entries.length - 1, i + 1));
+  // 1. clamp at render time
+  const safeCurrent = Math.max(0, Math.min(current, entries.length - 1));
+
+  // 2. keep state in sync (optional)
+  useEffect(() => {
+    if (current !== safeCurrent) setCurrent(safeCurrent);
+  }, [current, safeCurrent]);
+
+  if (!entries.length) {
+    return <div>No moves to display</div>;
+  }
 
   return (
     <div>
-      {/* show only the one entry at `current` */}
-      <CardView entry={entries[current]} onDrill={onDrill} pgn={pgn} />
+      <CardView entry={entries[safeCurrent]} onDrill={onDrill} pgn={pgn} />
 
       <div className="mt-2 flex justify-between">
-        <button onClick={prev} disabled={current === 0}>
+        <button
+          onClick={() => setCurrent((i) => i - 1)}
+          disabled={safeCurrent === 0}
+          className="disabled:opacity-40"
+        >
           ← Prev
         </button>
-        <button onClick={next} disabled={current === entries.length - 1}>
+        <button
+          onClick={() => setCurrent((i) => i + 1)}
+          disabled={safeCurrent === entries.length - 1}
+          className="disabled:opacity-40"
+        >
           Next →
         </button>
       </div>
