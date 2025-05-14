@@ -27,8 +27,9 @@
 
 html,
 body {
-  overflow-x: hidden; /* clip anything beyond the viewport */
-  overscroll-behavior-x: none; /* prevent the “rubber-band” effect in the x-axis */
+  overflow-x: clip; /* keep this */
+  overflow-y: visible !important; /* add/override this to restore normal vertical scrolling */
+  overscroll-behavior-x: none;
 }
 
 body {
