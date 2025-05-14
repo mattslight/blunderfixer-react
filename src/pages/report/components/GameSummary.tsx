@@ -101,7 +101,11 @@ export function GameSummary({ game, analysis, onDrill }: GameSummaryProps) {
     <article className="mx-auto mb-6 w-full max-w-6xl space-y-4 p-4">
       {/* Header + graphs */}
       <GameSummaryHeader game={game} />
-      <EvalGraph data={chartData} max={MAX} />
+      <EvalGraph
+        data={chartData}
+        max={MAX}
+        handlePositionSelect={handlePositionSelect}
+      />
       <TimeUsageChart data={timeData} game={game} heroSide={heroSide} />
 
       {/* Responsive layout: 1-col on mobile, 2-pane on desktop.
