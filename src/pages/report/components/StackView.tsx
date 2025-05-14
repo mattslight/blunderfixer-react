@@ -1,53 +1,101 @@
 // src/pages/report/components/StackView.tsx
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CardView from './CardView';
 import type { CombinedEntry } from './GameSummaryTable';
+import MoveControls from './MoveControls';
 
 export default function StackView({
   entries,
   onDrill,
   pgn,
-  showAll,
 }: {
   entries: CombinedEntry[];
   onDrill?: (pgn: string, halfMoveIndex: number) => void;
   pgn: string;
-  showAll?: boolean;
 }) {
   const [current, setCurrent] = useState(0);
+  const frameRef = useRef<number>();
 
-  // 1. clamp at render time
+  // ensure index never out of bounds
   const safeCurrent = Math.max(0, Math.min(current, entries.length - 1));
 
-  // 2. keep state in sync (optional)
-  useEffect(() => {
-    if (current !== safeCurrent) setCurrent(safeCurrent);
-  }, [current, safeCurrent]);
+  // ease-in-out quad curve for natural feel
+  function easeInOutQuad(t: number) {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+  }
+
+  /**
+   * Glide to target index over a fixed duration (~1.5s),
+   * independently of number of steps
+   */
+  function glideTo(target: number) {
+    cancelAnimationFrame(frameRef.current!); // cancel any ongoing
+    const start = current;
+    const delta = target - start;
+    const duration = 1500; // ms, constant total animation time
+    const t0 = performance.now();
+
+    function tick(now: number) {
+      const elapsed = now - t0;
+      const t = Math.min(elapsed / duration, 1);
+      const eased = easeInOutQuad(t);
+      const idx = Math.round(start + delta * eased);
+      setCurrent(idx);
+      if (t < 1) {
+        frameRef.current = requestAnimationFrame(tick);
+      }
+    }
+
+    frameRef.current = requestAnimationFrame(tick);
+  }
+
+  // cleanup on unmount
+  useEffect(() => () => cancelAnimationFrame(frameRef.current!), []);
 
   if (!entries.length) {
-    return <div>No moves to display</div>;
+    return <div className="text-center text-gray-500">No moves to display</div>;
+  }
+
+  // simple step handlers
+  function handlePrev() {
+    cancelAnimationFrame(frameRef.current!);
+    setCurrent((i) => Math.max(0, i - 1));
+  }
+  function handleNext() {
+    cancelAnimationFrame(frameRef.current!);
+    setCurrent((i) => Math.min(entries.length - 1, i + 1));
+  }
+
+  // jumps using glide
+  function handleNextKeymove() {
+    const next = entries.findIndex(
+      (e, i) => i > safeCurrent && e.tags[0] !== 'none'
+    );
+    glideTo(next === -1 ? entries.length - 1 : next);
+  }
+  function handlePrevKeymove() {
+    const prev =
+      entries
+        .slice(0, safeCurrent)
+        .map((e, i) => ({ e, i }))
+        .reverse()
+        .find((x) => x.e.tags[0] !== 'none')?.i ?? 0;
+    glideTo(prev);
   }
 
   return (
     <div>
       <CardView entry={entries[safeCurrent]} onDrill={onDrill} pgn={pgn} />
-
-      <div className="mt-2 flex justify-between">
-        <button
-          onClick={() => setCurrent((i) => i - 1)}
-          disabled={safeCurrent === 0}
-          className="disabled:opacity-40"
-        >
-          ← Prev
-        </button>
-        <button
-          onClick={() => setCurrent((i) => i + 1)}
-          disabled={safeCurrent === entries.length - 1}
-          className="disabled:opacity-40"
-        >
-          Next →
-        </button>
-      </div>
+      <MoveControls
+        onPrev={handlePrev}
+        onNext={handleNext}
+        onPrevKeymove={handlePrevKeymove}
+        onNextKeymove={handleNextKeymove}
+        disablePrev={safeCurrent === 0}
+        disablePrevKeymove={safeCurrent === 0}
+        disableNext={safeCurrent === entries.length - 1}
+        disableNextKeymove={safeCurrent === entries.length - 1}
+      />
     </div>
   );
 }
