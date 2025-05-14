@@ -1,4 +1,4 @@
-import { AlignJustify, Rows2 } from 'lucide-react';
+import { AlignJustify, GalleryThumbnails } from 'lucide-react';
 
 interface ViewModeToggleProps {
   viewMode: 'card' | 'table';
@@ -18,7 +18,7 @@ export default function ListToggle({
           viewMode === 'card' ? 'bg-gray-700' : 'hover:bg-gray-700'
         }`}
       >
-        <Rows2
+        <GalleryThumbnails
           size={20}
           className={viewMode === 'card' ? 'text-gray-400' : 'text-gray-500'}
         />
