@@ -2,11 +2,10 @@
 import { CSSProperties, useEffect, useRef, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
 
-import EvalBar from './EvalBar';
-//import ExamplePositions from './ExamplePositions';
 import ToggleSwitch from '@/components/ToggleSwitch';
 import { useStickyValue } from '@/hooks/useStickyValue';
 import ContinuationToggle from './ContinuationToggle';
+import EvalBar from './EvalBar';
 import MoveStepper from './MoveStepper';
 
 export default function BoardAndEval({
@@ -58,15 +57,6 @@ export default function BoardAndEval({
       setMoveSquares({});
     }
   }, [lastMove.from, lastMove.to]);
-
-  // 1) If no FEN yet, show your examples picker
-  // if (!fen) {
-  //   return (
-  //     <div className="p-4">
-  //       <ExamplePositions onPickFEN={(f) => setPGN(`[FEN "${f}"]\n\n`)} />
-  //     </div>
-  //   );
-  // }
 
   const currentDepth = Math.max(
     lines[0]?.depth,
