@@ -106,7 +106,12 @@ export function GameSummary({ game, analysis, onDrill }: GameSummaryProps) {
         max={MAX}
         handlePositionSelect={handlePositionSelect}
       />
-      <TimeUsageChart data={timeData} game={game} heroSide={heroSide} />
+      <TimeUsageChart
+        data={timeData}
+        game={game}
+        heroSide={heroSide}
+        handlePositionSelect={handlePositionSelect}
+      />
 
       {/* Responsive layout: 1-col on mobile, 2-pane on desktop.
          Make _this_ div the scroll container on lg so sticky works */}
