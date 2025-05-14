@@ -9,6 +9,7 @@ import {
   TrendingDown,
   TrendingUp,
 } from 'lucide-react';
+import { useLayoutEffect, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
 import type { CombinedEntry } from './SummaryTable';
 
@@ -16,21 +17,9 @@ interface CardViewProps {
   entry: CombinedEntry;
   onDrill?: (pgn: string, halfMoveIndex: number) => void;
   pgn: string;
-  onPrev?: () => void;
-  onNext?: () => void;
-  onPrevKeymove?: () => void;
-  onNextKeymove?: () => void;
 }
 
-export default function CardView({
-  entry: r,
-  onDrill,
-  pgn,
-  onPrev,
-  onNext,
-  onPrevKeymove,
-  onNextKeymove,
-}: CardViewProps) {
+export default function CardView({ entry: r, onDrill, pgn }: CardViewProps) {
   // derive visual elements
   const primaryTag = r.tags[0];
   const timeTag =
@@ -47,6 +36,27 @@ export default function CardView({
   const mateLabel = r.analysis.mateIn
     ? `Mate in ${Math.abs(r.analysis.mateIn)}`
     : null;
+
+  // use layout effect to ensure chessboard is rendered before measuring
+  const [boardWidth, setBoardWidth] = useState(400);
+
+  // 2️⃣ Layout effect to measure and respond to resizes
+  useLayoutEffect(() => {
+    function updateBoardWidth() {
+      const w = window.innerWidth;
+      if (w < 440) setBoardWidth(window.innerWidth - 40);
+      else setBoardWidth(400);
+    }
+
+    // run on mount
+    updateBoardWidth();
+
+    // listen to window resize
+    window.addEventListener('resize', updateBoardWidth);
+    return () => {
+      window.removeEventListener('resize', updateBoardWidth);
+    };
+  }, []);
 
   return (
     <div className="mb-4 overflow-hidden rounded-lg bg-gray-800 shadow-lg">
@@ -108,8 +118,8 @@ export default function CardView({
       </div>
 
       {/* BOARD */}
-      <div className="space-y-4 bg-gray-800 p-4">
-        <div className="pb- flex flex-row items-center border-gray-700 px-4">
+      <div className="space-y-4 bg-gray-800">
+        <div className="pb- flex flex-row items-center border-gray-700">
           <div className="mx-auto my-4">
             <Chessboard
               position={r.analysis.fenBefore}
@@ -117,7 +127,7 @@ export default function CardView({
               onPieceDrop={() => false}
               onSquareClick={() => {}}
               customArrows={customArrows}
-              boardWidth={320}
+              boardWidth={boardWidth || 400}
               customArrowColor="#48AD7E"
               customBoardStyle={{
                 borderRadius: '0.5em',

@@ -127,7 +127,7 @@ export default function GameSummaryTable({
 
   return (
     <>
-      <div className="mb-4 grid grid-cols-2 gap-4">
+      <div className="mb-4 gap-4">
         <div>
           <span className="block text-xs font-semibold tracking-wider text-green-500 uppercase">
             Review

@@ -125,7 +125,7 @@ export function GameSummary({ game, analysis, onDrill }: GameSummaryProps) {
           />
         </aside>
         {/* Right pane: board + transport */}
-        <section className="space-y-6 lg:sticky lg:top-14 lg:self-start">
+        <section className="lg:sticky lg:top-14 lg:self-start">
           <StackView
             entries={combined}
             onDrill={onDrill}
