@@ -10,7 +10,7 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import { Chessboard } from 'react-chessboard';
-import type { CombinedEntry } from './GameSummaryTable';
+import type { CombinedEntry } from './SummaryTable';
 
 interface CardViewProps {
   entry: CombinedEntry;
