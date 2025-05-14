@@ -23,14 +23,14 @@ export default function MoveControls({
   disableNextKeymove = false,
 }: MoveControlsProps) {
   return (
-    <div className="mt-4 flex justify-center space-x-2">
+    <div className="mt-4 flex justify-center space-x-3">
       <button
         onClick={onPrevKeymove}
         disabled={disablePrevKeymove}
         aria-label="Jump to previous key move"
         className="rounded bg-gray-700 p-2 hover:bg-gray-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       >
-        <Rewind size={20} className="text-white" />
+        <Rewind size={26} strokeWidth={1} className="text-gray-300" />
       </button>
 
       <button
@@ -39,7 +39,7 @@ export default function MoveControls({
         aria-label="Step back one move"
         className="rounded bg-gray-700 p-2 hover:bg-gray-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       >
-        <ChevronLeft size={20} className="text-white" />
+        <ChevronLeft size={26} strokeWidth={1} className="text-gray-300" />
       </button>
 
       <button
@@ -48,7 +48,7 @@ export default function MoveControls({
         aria-label="Step forward one move"
         className="rounded bg-gray-700 p-2 hover:bg-gray-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       >
-        <ChevronRight size={20} className="text-white" />
+        <ChevronRight size={26} strokeWidth={1} className="text-gray-300" />
       </button>
 
       <button
@@ -57,7 +57,7 @@ export default function MoveControls({
         aria-label="Jump to next key move"
         className="rounded bg-gray-700 p-2 hover:bg-gray-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       >
-        <FastForward size={20} className="text-white" />
+        <FastForward size={26} strokeWidth={1} className="text-gray-300" />
       </button>
     </div>
   );
