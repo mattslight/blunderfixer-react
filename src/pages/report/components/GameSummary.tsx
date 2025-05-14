@@ -7,17 +7,12 @@ import {
   TimeControl,
 } from '@/lib/severity';
 import { AnalysisNode, GameRecord } from '@/types';
-import GameSummaryGraph from './EvalGraph';
+import { useMemo } from 'react';
+import EvalGraph from './EvalGraph';
 import GameSummaryHeader from './GameSummaryHeader';
-import GameSummaryTable from './GameSummaryTable';
+import StackView from './StackView';
+import GameSummaryTable, { CombinedEntry } from './SummaryTable';
 import TimeUsageChart from './TimeUsageChart';
-
-interface CombinedEntry {
-  move: GameRecord['moves'][0];
-  analysis: AnalysisNode;
-  tags: Severity[];
-  impact: number;
-}
 
 interface GameSummaryProps {
   game: GameRecord;
@@ -31,72 +26,94 @@ export function GameSummary({ game, analysis, onDrill }: GameSummaryProps) {
   const {
     profile: { username },
   } = useProfile();
-
-  // determine side and max plot range
   const heroSide =
     username === game.meta.players.white.player.username ? 'w' : 'b';
   const MAX = 4;
 
-  // prepare time control
-  const tc: TimeControl = {
-    base: game.meta.timeControl,
-    inc: game.meta.increment,
-  };
-
-  // build chart data
-  const chartData = analysis.map((a) => ({
-    ply: a.halfMoveIndex,
-    raw: a.evalCP / 100,
-    plot: Math.max(-MAX, Math.min(MAX, a.evalCP / 100)),
-    ...a,
-  }));
-
-  // combine moves with dual-tag severities
-  const combined: CombinedEntry[] = analysis.map((a) => {
-    const mv = game.moves[a.halfMoveIndex - 1];
-    // compute both error and time tags
-    let tags: Severity[] = [];
-    if (mv.side === heroSide) {
-      const errTag = getErrorSeverity(a.deltaCP);
-      const timeTag = getTimeSeverity({
-        deltaCP: a.deltaCP,
-        timeSpent: mv.timeSpent,
+  // 1) Eval‐graph data
+  const chartData = useMemo(
+    () =>
+      analysis.map((a) => ({
         ply: a.halfMoveIndex,
-        tc,
-      });
-      tags = [errTag, timeTag].filter((t) => t !== 'none') as Severity[];
-    }
-    if (tags.length === 0) tags = ['none'];
+        raw: a.evalCP / 100, // ← add this
+        plot: Math.max(-MAX, Math.min(MAX, a.evalCP / 100)),
+        ...a,
+      })),
+    [analysis]
+  );
 
-    // impact adjusted for perspective
-    const impact = heroSide === 'b' ? -a.deltaCP : a.deltaCP;
-    return { move: mv, analysis: a, tags, impact };
-  });
+  // 2) Combined entries for table + board
+  const combined: CombinedEntry[] = useMemo(
+    () =>
+      analysis.map((a) => {
+        const mv = game.moves[a.halfMoveIndex - 1];
+        let tags: Severity[] = [];
 
-  // build time usage series
-  const timeData: TimePoint[] = [];
-  analysis.forEach((a) => {
-    const ply = a.halfMoveIndex;
-    const full = Math.ceil(ply / 2);
-    const mv = game.moves[ply - 1];
-    const isHero = mv.side === heroSide;
-    const t = mv.timeSpent ?? 0;
+        if (mv.side === heroSide) {
+          const err = getErrorSeverity(a.deltaCP);
+          const time = getTimeSeverity({
+            deltaCP: a.deltaCP,
+            timeSpent: mv.timeSpent,
+            ply: a.halfMoveIndex,
+            tc: {
+              base: game.meta.timeControl,
+              inc: game.meta.increment,
+            } as TimeControl,
+          });
+          tags = [err, time].filter((t) => t !== 'none') as Severity[];
+        }
+        if (!tags.length) tags = ['none'];
 
-    let pt = timeData.find((x) => x.move === full);
-    if (!pt) {
-      pt = { move: full, heroTime: 0, oppTime: 0 };
-      timeData.push(pt);
-    }
-    if (isHero) pt.heroTime += t;
-    else pt.oppTime += t;
-  });
+        const impact = heroSide === 'b' ? -a.deltaCP : a.deltaCP;
+        return { move: mv, analysis: a, tags, impact };
+      }),
+    [analysis, game.moves, heroSide]
+  );
+
+  // 3) Time‐usage chart data
+  const timeData: TimePoint[] = useMemo(() => {
+    const pts: TimePoint[] = [];
+    analysis.forEach((a) => {
+      const ply = a.halfMoveIndex;
+      const full = Math.ceil(ply / 2);
+      const mv = game.moves[ply - 1];
+      const isHero = mv.side === heroSide;
+      const t = mv.timeSpent ?? 0;
+
+      let pt = pts.find((x) => x.move === full);
+      if (!pt) {
+        pt = { move: full, heroTime: 0, oppTime: 0 };
+        pts.push(pt);
+      }
+      if (isHero) pt.heroTime += t;
+      else pt.oppTime += t;
+    });
+    return pts;
+  }, [analysis, game.moves, heroSide]);
 
   return (
-    <article className="mx-auto mb-6 w-full max-w-3xl space-y-6 md:p-4">
+    <article className="mx-auto mb-6 w-full max-w-6xl space-y-4 p-4">
+      {/* Header + graphs */}
       <GameSummaryHeader game={game} />
-      <GameSummaryGraph data={chartData} max={MAX} />
+      <EvalGraph data={chartData} max={MAX} />
       <TimeUsageChart data={timeData} game={game} heroSide={heroSide} />
-      <GameSummaryTable combined={combined} onDrill={onDrill} pgn={game.pgn} />
+
+      {/* Responsive layout: 1-col on mobile, 2-pane on desktop.
+         Make _this_ div the scroll container on lg so sticky works */}
+      <div className="grid grid-cols-1 gap-16 lg:grid-cols-[400px_1fr]">
+        {/* Left pane: fixed-width, sticky table */}
+        <aside>
+          <GameSummaryTable
+            combined={combined}
+            onDrill={onDrill}
+            pgn={game.pgn}
+          />
+        </aside>
+        {/* Right pane: board + transport */}
+        <section className="space-y-6 lg:sticky lg:top-14 lg:self-start">
+          <StackView entries={combined} onDrill={onDrill} pgn={game.pgn} />
+        </section>
+      </div>
     </article>
   );
 }
