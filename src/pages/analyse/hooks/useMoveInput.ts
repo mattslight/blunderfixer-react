@@ -1,6 +1,6 @@
-// src/hooks/useMoveInput.js
-import { useState } from 'react';
+// src/hooks/useMoveInput.ts
 import { Chess } from 'chess.js';
+import { useState } from 'react';
 
 const DEBUG = false;
 
