@@ -1,9 +1,9 @@
+// src/pages/analyse/components/CoachAndChat.tsx
 import { AnimatePresence, motion } from 'framer-motion';
 import { Lightbulb, Send, Zap } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import useCoachExplanation from '../hooks/useCoachExplanation';
 
 const coachImageSrc = '/coach.png';
 
@@ -54,7 +54,7 @@ function ChatMessage({ msg }: { msg: Msg }) {
       <div
         className={`max-w-[85%] rounded-xl p-3 font-medium md:max-w-[80%] ${styles.bubble}`}
       >
-        <div className="prose prose-green dark:prose-invert prose-table:border-spacing-y-2 leading-tight font-medium dark:[--tw-prose-td-borders-opacity:0.5] dark:[--tw-prose-td-borders:theme(colors.white)] dark:[--tw-prose-th-borders-opacity:0.5] dark:[--tw-prose-th-borders:theme(colors.white)]">
+        <div className="prose prose-green dark:prose-invert prose-table:border-spacing-y-2 leading-tight font-medium dark:text-white dark:[--tw-prose-td-borders-opacity:0.5] dark:[--tw-prose-td-borders:theme(colors.white)] dark:[--tw-prose-th-borders-opacity:0.5] dark:[--tw-prose-th-borders:theme(colors.white)]">
           <ReactMarkdown remarkPlugins={[remarkGfm]} children={msg.text} />
         </div>
       </div>
@@ -102,14 +102,12 @@ function ChatInput({
   onSend: () => void;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
   const handleInput = (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
     const ta = e.currentTarget;
     ta.style.height = 'auto';
     ta.style.height = `${ta.scrollHeight}px`;
     onChange(ta.value);
   };
-
   return (
     <div className="sticky bottom-0 z-10 bg-black/20 pb-1 backdrop-blur-lg md:w-lg lg:fixed lg:bottom-4 lg:w-lg xl:w-xl">
       <textarea
@@ -117,7 +115,7 @@ function ChatInput({
         rows={1}
         placeholder="Ask coach a question..."
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange(e.currentTarget.value)}
         onInput={handleInput}
         onKeyDown={(e) =>
           e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), onSend())
@@ -141,11 +139,6 @@ export default function CoachAndChat({
   features,
   legalMoves,
 }: Props) {
-  const {
-    explanation,
-    loading: analysisLoading,
-    getExplanation,
-  } = useCoachExplanation();
   const [messages, setMessages] = useState<Msg[]>([
     {
       role: 'coach',
@@ -153,36 +146,101 @@ export default function CoachAndChat({
     },
   ]);
   const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [hasSeededContext, setHasSeededContext] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
+  // scroll to bottom on new messages
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const push = useCallback((msg: Msg) => setMessages((m) => [...m, msg]), []);
+  // reset when fen changes
+  useEffect(() => {
+    setMessages([
+      {
+        role: 'coach',
+        text: 'Hey there! Choose a position and let’s dive in...',
+      },
+    ]);
+    setHasSeededContext(false);
+  }, [fen]);
 
-  const handleFullAnalysis = useCallback(async () => {
-    push({ role: 'user', text: 'Full analysis please' });
-    push({ role: 'typing', text: 'Coach is typing…' });
-    try {
-      const txt = await getExplanation({
+  const push = useCallback((msg: Msg) => {
+    setMessages((m) => [...m, msg]);
+  }, []);
+
+  const sendCoachRequest = useCallback(
+    async (userMessage: string) => {
+      setLoading(true);
+      const past = messages
+        .filter((m) => m.role !== 'typing')
+        .map((m) => ({
+          role: m.role === 'coach' ? 'assistant' : m.role,
+          content: m.text,
+        }));
+
+      const payload: any = {
         fen,
-        lines,
         legal_moves: legalMoves,
-        features,
+        past_messages: past,
+        user_message: userMessage,
+      };
+      if (!hasSeededContext) {
+        // ensure mateIn present
+        const formattedLines = lines.map((l) => ({
+          rank: l.rank,
+          depth: l.depth,
+          scoreCP: l.scoreCP,
+          mateIn: l.mateIn ?? null,
+          moves: l.moves,
+        }));
+        payload.lines = formattedLines;
+        payload.features = features;
+        setHasSeededContext(true);
+      }
+
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/coach`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
+      if (!res.ok) throw new Error(await res.text());
+      const { reply } = await res.json();
+      setLoading(false);
+      return reply as string;
+    },
+    [fen, legalMoves, lines, features, messages, hasSeededContext]
+  );
+
+  const handleHint = useCallback(async () => {
+    const userMsg =
+      'Hint: Can you give me a subtle nudge—no revealing the best move?';
+    push({ role: 'user', text: userMsg });
+    push({ role: 'typing', text: 'Coach is thinking…' });
+    try {
+      const reply = await sendCoachRequest(userMsg);
       setMessages((m) => m.filter((x) => x.role !== 'typing'));
-      push({ role: 'coach', text: txt });
+      push({ role: 'coach', text: reply });
     } catch {
       setMessages((m) => m.filter((x) => x.role !== 'typing'));
       push({ role: 'coach', text: 'Oops, something went wrong 😕' });
     }
-  }, [fen, lines, legalMoves, features, getExplanation, push]);
+  }, [push, sendCoachRequest]);
 
-  const handleHint = useCallback(() => {
-    push({ role: 'user', text: 'Give me a hint' });
-    push({ role: 'coach', text: 'Hint endpoint not wired yet.' });
-  }, [push]);
+  const handleFull = useCallback(async () => {
+    const userMsg = 'Full analysis: please show key moves with pros and cons.';
+    push({ role: 'user', text: userMsg });
+    push({ role: 'typing', text: 'Coach is analyzing…' });
+    try {
+      const reply = await sendCoachRequest(userMsg);
+      setMessages((m) => m.filter((x) => x.role !== 'typing'));
+      push({ role: 'coach', text: reply });
+    } catch {
+      setMessages((m) => m.filter((x) => x.role !== 'typing'));
+      push({ role: 'coach', text: 'Analysis failed—please try again.' });
+    }
+  }, [push, sendCoachRequest]);
 
   const handleAsk = useCallback(async () => {
     const q = input.trim();
@@ -190,36 +248,15 @@ export default function CoachAndChat({
     push({ role: 'user', text: q });
     setInput('');
     push({ role: 'typing', text: 'Coach is thinking…' });
-
-    const past = messages
-      .filter((m) => m.role !== 'typing')
-      .map((m) => ({
-        role: m.role === 'user' ? 'user' : 'assistant',
-        content: m.text,
-      }));
-
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/coach-chat`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            fen,
-            legal_moves: legalMoves,
-            past_messages: past,
-            user_message: q,
-          }),
-        }
-      );
-      const data = await res.json();
+      const reply = await sendCoachRequest(q);
       setMessages((m) => m.filter((x) => x.role !== 'typing'));
-      push({ role: 'coach', text: data.reply || `Error: ${data.error}` });
+      push({ role: 'coach', text: reply });
     } catch {
       setMessages((m) => m.filter((x) => x.role !== 'typing'));
       push({ role: 'coach', text: 'Network error—please try again.' });
     }
-  }, [input, fen, legalMoves, messages, push]);
+  }, [input, push, sendCoachRequest]);
 
   return (
     <div className="mx-auto flex h-auto max-w-lg flex-col rounded pt-2 shadow-xl lg:mt-4 lg:h-[80vh] lg:w-lg lg:max-w-xl lg:pt-4 xl:w-xl">
@@ -231,8 +268,8 @@ export default function CoachAndChat({
         </AnimatePresence>
         <ControlButtons
           onHint={handleHint}
-          onFull={handleFullAnalysis}
-          loading={analysisLoading}
+          onFull={handleFull}
+          loading={loading}
         />
         <div ref={bottomRef} />
       </div>
