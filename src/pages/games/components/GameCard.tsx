@@ -72,7 +72,7 @@ export default function GameCard({
     <li
       className={
         `mt-6 flex flex-col rounded-lg border-l-6 bg-gray-800 px-5 py-4 ` +
-        (won ? 'border-green-700' : lost ? 'border-red-700' : 'border-gray-500')
+        (won ? 'border-green-500' : lost ? 'border-red-600' : 'border-gray-500')
       }
     >
       {/* Header: players & ratings */}
@@ -127,9 +127,9 @@ export default function GameCard({
             className={
               `rounded-full px-3 py-1 text-sm font-medium ` +
               (won
-                ? 'bg-green-700 text-white'
+                ? 'bg-green-500 text-white'
                 : lost
-                  ? 'bg-red-700 text-white'
+                  ? 'bg-red-600 text-white'
                   : 'bg-gray-600 text-white')
             }
           >
