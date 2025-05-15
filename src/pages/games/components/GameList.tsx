@@ -17,13 +17,22 @@ export default function GameList({
   isLoading,
   onAction,
 }: GameListProps) {
-  if (games.length === 0) {
+  // only keep games where hero is either White or Black
+  const filtered = games.filter((g) => {
+    const { white, black } = g.meta.players;
+    return (
+      white.player.username.toLowerCase() === hero.toLowerCase() ||
+      black.player.username.toLowerCase() === hero.toLowerCase()
+    );
+  });
+
+  if (!filtered.length) {
     return <p className="text-center text-gray-400">No games found.</p>;
   }
 
   return (
     <ul className="space-y-2">
-      {games.map((game) => (
+      {filtered.map((game) => (
         <GameCard
           key={game.id}
           game={game}
