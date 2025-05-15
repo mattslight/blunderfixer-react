@@ -1,6 +1,6 @@
-// src/pages/AnalysePosition/MoveStepper.jsx
-import { useEffect, useRef } from 'react';
+// src/pages/analyse/components/MoveStepper.jsx
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 
 export default function MoveStepper({
   moveList = [],
