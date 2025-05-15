@@ -41,7 +41,6 @@ export default function ReportPage() {
   const game = gamesMap[analysisId]!;
 
   const onDrill = (pgn: string, halfMoveIndex: number) => {
-    alert('Drill down to this position');
     navigate('/analyse', { state: { pgn, halfMoveIndex } });
   };
 
