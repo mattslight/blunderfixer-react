@@ -63,9 +63,9 @@ export default function GameSummaryHeader({ game }) {
             className={
               `rounded-full px-2 py-1 text-xs font-medium ` +
               (won
-                ? 'bg-green-600 text-white'
+                ? 'bg-green-500 text-white'
                 : lost
-                  ? 'bg-red-600 text-white'
+                  ? 'bg-red-500 text-white'
                   : 'bg-gray-600 text-white')
             }
           >
