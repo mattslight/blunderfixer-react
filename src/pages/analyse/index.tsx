@@ -1,7 +1,7 @@
 // src/pages/analyse/index.jsx
 import useMoveInput from '@/pages/analyse/hooks/useMoveInput';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import {
   AnalysisToolbar,
@@ -15,13 +15,16 @@ import useFeatureExtraction from './hooks/useFeatureExtraction';
 import useGameHistory from './hooks/useGameHistory';
 import useGameInputParser from './hooks/useGameInputParser';
 
+type AnalyseState = {
+  pgn?: string;
+  halfMoveIndex?: number;
+};
+
 export default function AnalysePage() {
   const [rawInput, setRawInput] = useState<string | null>(null);
   const [pasteOpen, setPasteOpen] = useState(false);
   const [pasteError, setPasteError] = useState('');
   const [gameOpen, setGameOpen] = useState(false);
-
-  const navigate = useNavigate();
 
   // parse FEN/PGN or fallback
   const { initialFEN, sanHistory, rawErrors } = useGameInputParser(rawInput);
@@ -76,6 +79,31 @@ export default function AnalysePage() {
     onPieceDrop,
     onPromotionPieceSelect,
   } = useMoveInput(fen, (f, t, prom) => makeMove(f, t, prom));
+
+  // ———————————————————————————————
+  // grab the drill state
+  const location = useLocation();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const { pgn, halfMoveIndex } = (location.state as AnalyseState) || {};
+    if (pgn) {
+      // 1) load the PGN
+      setRawInput(pgn);
+      setPasteError('');
+      setGameOpen(false);
+
+      // 2) once history is built, jump to that half-move
+      //    (you might need to tweak timing if sanHistory isn’t ready immediately)
+      setIdx(halfMoveIndex ?? 0);
+
+      // scrub the location.state so back/forward doesn’t re-fire this
+      navigate('.', { replace: true, state: {} });
+    }
+  }, []); // run once on mount
+
+  // ———————————————————————————————
 
   return (
     <>
