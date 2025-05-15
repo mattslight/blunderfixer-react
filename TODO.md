@@ -3,6 +3,8 @@
 ## In Progress
 
 - [ ] _FIX_: When I click Discuss with Coach load in the position to the LLM flow
+- [ ] _FIX_: Show eval bar next to board
+- [ ] _FIX_: Show players & clock next to board
 - [ ] _FIX_: Wire up hint button
 - [ ] _FIX_: Flip board when loading a game as Black
 
