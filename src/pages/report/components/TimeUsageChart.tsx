@@ -15,6 +15,17 @@ import {
 
 type TimePoint = { move: number; heroTime: number; oppTime: number };
 
+const GRAPH_COLOURS = {
+  opponent: {
+    htmlString: 'oklch(55% 0.20 310)',
+    twClass: 'bg-purple-600',
+  },
+  hero: {
+    htmlString: 'oklch(75% 0.20 200)',
+    twClass: 'bg-cyan-600',
+  },
+};
+
 export default function TimeUsageChart({
   data,
   game,
@@ -49,12 +60,28 @@ export default function TimeUsageChart({
   const barSeries = useMemo(() => {
     const configs = heroIsWhite
       ? [
-          { dataKey: 'heroTime', name: 'You', fill: '#38bdf8' },
-          { dataKey: 'oppTime', name: 'Opp.', fill: '#a78bfa' },
+          {
+            dataKey: 'heroTime',
+            name: 'You',
+            fill: GRAPH_COLOURS.hero.htmlString,
+          },
+          {
+            dataKey: 'oppTime',
+            name: 'Opp.',
+            fill: GRAPH_COLOURS.opponent.htmlString,
+          },
         ]
       : [
-          { dataKey: 'oppTime', name: 'Opp.', fill: '#a78bfa' },
-          { dataKey: 'heroTime', name: 'You', fill: '#38bdf8' },
+          {
+            dataKey: 'oppTime',
+            name: 'Opp.',
+            fill: GRAPH_COLOURS.opponent.htmlString,
+          },
+          {
+            dataKey: 'heroTime',
+            name: 'You',
+            fill: GRAPH_COLOURS.hero.htmlString,
+          },
         ];
     return configs;
   }, [heroIsWhite]);
@@ -210,16 +237,16 @@ export default function TimeUsageChart({
                 type="monotone"
                 dataKey="heroRem"
                 name="You"
-                stroke="#38bdf8"
-                fill="#38bdf8"
+                stroke={GRAPH_COLOURS.hero.htmlString}
+                fill={GRAPH_COLOURS.hero.htmlString}
                 fillOpacity={0.3}
               />
               <Area
                 type="monotone"
                 dataKey="oppRem"
                 name="Opp."
-                stroke="#a78bfa"
-                fill="#a78bfa"
+                stroke={GRAPH_COLOURS.opponent.htmlString}
+                fill={GRAPH_COLOURS.opponent.htmlString}
                 fillOpacity={0.3}
               />
             </AreaChart>
@@ -228,13 +255,17 @@ export default function TimeUsageChart({
       </div>
 
       {/* legend */}
-      <div className="-mt-8 mb-16 flex justify-center text-xs font-semibold text-gray-600">
+      <div className="-mt-8 mb-16 flex justify-center text-xs font-semibold text-gray-500">
         <span className="mr-2 flex items-center">
-          <span className="mr-1 h-2 w-2 rounded-full bg-sky-500" />
+          <span
+            className={`mr-1 h-2 w-2 rounded-full ${GRAPH_COLOURS.hero.twClass}`}
+          />
           You
         </span>
         <span className="flex items-center">
-          <span className="mr-1 h-2 w-2 rounded-full bg-purple-500" />
+          <span
+            className={`mr-1 h-2 w-2 rounded-full ${GRAPH_COLOURS.opponent.twClass}`}
+          />
           Opponent
         </span>
       </div>
