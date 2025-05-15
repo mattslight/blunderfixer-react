@@ -1,8 +1,8 @@
 // src/pages/analyse/index.jsx
-import useMoveInput from '@/pages/analyse/hooks/useMoveInput';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import useMoveInput from '@/pages/analyse/hooks/useMoveInput';
 import {
   AnalysisToolbar,
   GameLoaderModal,
@@ -43,6 +43,25 @@ export default function AnalysePage() {
     loading: loadingFeatures,
     error: featuresError,
   } = useFeatureExtraction(fen);
+
+  // 1) keyboard navigation
+  //    (left/right arrows to step through history)
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      console.log('onKey', e.key);
+      console.log('currentIdx', currentIdx);
+
+      if (e.key === 'ArrowLeft' && currentIdx > 0) {
+        setIdx(currentIdx - 1);
+      }
+      if (e.key === 'ArrowRight' && currentIdx < moveHistory.length) {
+        setIdx(currentIdx + 1);
+      }
+    };
+    window.addEventListener('keydown', onKey, { capture: true });
+    return () =>
+      window.removeEventListener('keydown', onKey, { capture: true });
+  }, [currentIdx, moveHistory.length, setIdx]);
 
   // Handlers
   const handlePasteSubmit = (text: string | null) => {
@@ -114,9 +133,6 @@ export default function AnalysePage() {
       />
       {/* Errors */}
       {error && <p className="text-center text-red-500">{error}</p>}
-      {loadingFeatures && (
-        <p className="mt-2 text-sm text-gray-500">Loading features</p>
-      )}
       {featuresError && (
         <p className="mt-2 text-sm text-red-500">{featuresError}</p>
       )}
