@@ -45,7 +45,7 @@ export default function ReportPage() {
   };
 
   return (
-    <div className="mx-auto max-w-6xl p-0 md:p-4 2xl:ml-10">
+    <div className="mx-auto max-w-6xl p-0 md:p-4">
       <button
         onClick={() => navigate(-1)}
         className="mb-4 ml-4 text-blue-600 hover:underline"
