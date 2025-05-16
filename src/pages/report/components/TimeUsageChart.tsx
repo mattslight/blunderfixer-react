@@ -18,7 +18,7 @@ type TimePoint = { move: number; heroTime: number; oppTime: number };
 const GRAPH_COLOURS = {
   opponent: {
     htmlString: 'oklch(55% 0.20 310)',
-    twClass: 'bg-purple-600',
+    twClass: 'bg-[oklch(55%_0.20_310)]',
   },
   hero: {
     htmlString: 'oklch(75% 0.20 200)',
@@ -128,7 +128,7 @@ export default function TimeUsageChart({
         </div>
       </div>
 
-      <div className="-mr-6 -ml-14 h-20">
+      <div className="-mr-6 -ml-14 h-30">
         <ResponsiveContainer width="100%" height="100%">
           {mode === 'per-move' ? (
             <BarChart
@@ -139,9 +139,10 @@ export default function TimeUsageChart({
             >
               <XAxis
                 dataKey="move"
-                axisLine={false}
+                axisLine={true}
                 tickLine={false}
                 tick={false}
+                stroke="oklch(32.6% 0.03 256.802)"
               />
               <YAxis axisLine={false} tickLine={false} tick={false} />
               <Tooltip
@@ -216,9 +217,10 @@ export default function TimeUsageChart({
             >
               <XAxis
                 dataKey="move"
-                axisLine={false}
+                axisLine={true}
                 tickLine={false}
                 tick={false}
+                stroke="oklch(32.6% 0.03 256.802)"
               />
               <YAxis axisLine={false} tickLine={false} tick={false} />
               <Tooltip
@@ -238,16 +240,16 @@ export default function TimeUsageChart({
                 dataKey="heroRem"
                 name="You"
                 stroke={GRAPH_COLOURS.hero.htmlString}
-                fill={GRAPH_COLOURS.hero.htmlString}
-                fillOpacity={0.3}
+                //fill={GRAPH_COLOURS.hero.htmlString}
+                fillOpacity={0}
               />
               <Area
                 type="monotone"
                 dataKey="oppRem"
                 name="Opp."
                 stroke={GRAPH_COLOURS.opponent.htmlString}
-                fill={GRAPH_COLOURS.opponent.htmlString}
-                fillOpacity={0.3}
+                //fill={GRAPH_COLOURS.opponent.htmlString}
+                fillOpacity={0}
               />
             </AreaChart>
           )}
