@@ -86,7 +86,7 @@ export function useCoach({
   const ask = useCallback(
     async (text: string) => {
       push({ role: 'user', text });
-      push({ role: 'typing', text: 'Coach is thinking…' });
+      push({ role: 'typing', text: 'Coach is typing' });
       try {
         const reply = await callCoach(text);
         setMessages((m) => m.filter((x) => x.role !== 'typing'));
