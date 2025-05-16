@@ -94,6 +94,11 @@ export default function BoardAndEval({
                 ...optionSquares,
                 ...moveSquares,
               }}
+              customNotationStyle={{
+                fontSize: '1rem',
+                color: 'oklch(55.1% 0.027 264.364)',
+                fontWeight: 700,
+              }}
               onPieceDrop={onPieceDrop}
               customArrows={arrows}
               customBoardStyle={{
