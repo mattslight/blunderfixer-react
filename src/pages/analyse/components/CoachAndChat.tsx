@@ -53,14 +53,39 @@ function ChatMessage({ msg }: { msg: Msg }) {
           className="h-8 w-8 -scale-x-100 self-end rounded-full"
         />
       )}
-      <div
-        className={`max-w-[85%] rounded-xl p-3 font-medium md:max-w-[80%] ${s.bubble}`}
-      >
-        <div className="prose prose-green dark:prose-invert prose-table:border-spacing-y-2 leading-tight font-medium dark:text-white dark:[--tw-prose-td-borders-opacity:0.5] dark:[--tw-prose-td-borders:theme(colors.white)] dark:[--tw-prose-th-borders-opacity:0.5] dark:[--tw-prose-th-borders:theme(colors.white)]">
-          {' '}
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.text}</ReactMarkdown>
+      {msg.role !== 'typing' ? (
+        <div
+          className={`max-w-[85%] rounded-xl p-3 font-medium md:max-w-[80%] ${s.bubble}`}
+        >
+          <div className="prose prose-green dark:prose-invert prose-table:border-spacing-y-2 leading-tight font-medium dark:text-white dark:[--tw-prose-td-borders-opacity:0.5] dark:[--tw-prose-td-borders:theme(colors.white)] dark:[--tw-prose-th-borders-opacity:0.5] dark:[--tw-prose-th-borders:theme(colors.white)]">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {msg.text}
+            </ReactMarkdown>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div
+          className={`max-w-[85%] rounded-xl p-3 font-medium md:max-w-[80%] ${s.bubble}`}
+        >
+          <div className="flex items-end space-x-1">
+            <span className="mr-2 self-end">{msg.text}</span>
+            {[0, 0.1, 0.2].map((d, i) => (
+              <motion.span
+                key={i}
+                className="mb-1 h-1 w-1 rounded-full bg-gray-400"
+                animate={{ y: [0, -6, 0] }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 0.6,
+                  ease: 'easeOut',
+                  delay: d, // stagger start
+                  repeatDelay: 0.4, // pause before next bounce
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 }
