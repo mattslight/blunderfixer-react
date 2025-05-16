@@ -98,7 +98,7 @@ export function GameSummary({ game, analysis, onDrill }: GameSummaryProps) {
   };
 
   return (
-    <article className="mx-auto mb-6 w-full max-w-6xl space-y-4 p-4">
+    <article className="mb-6 w-full max-w-6xl space-y-4 p-4">
       {/* Header + graphs */}
       <GameSummaryHeader game={game} />
       <EvalGraph
