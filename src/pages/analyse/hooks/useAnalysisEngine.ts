@@ -17,7 +17,7 @@ export default function useAnalysisEngine(boardFEN: string) {
     lines: rawLines,
     bestMoveUCI,
     currentDepth,
-  } = useStockfish(boardFEN, 12, 3);
+  } = useStockfish(boardFEN, 18, 5);
   const [evalScore, setEvalScore] = useState(0);
 
   // normalize evalScore
