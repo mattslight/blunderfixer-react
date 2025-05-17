@@ -50,8 +50,6 @@ export default function AnalysePage() {
       allowBranching: true,
     });
 
-  console.log('[Board] currentIdx at render:', currentIdx);
-
   // 6) Feature extraction & analysis engine
   const {
     features,
