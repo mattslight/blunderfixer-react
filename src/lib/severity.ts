@@ -47,7 +47,7 @@ export const TEXT_SEVERITY_COLOR: Record<
   blunder: 'text-red-500',
   mistake: 'text-orange-500',
   inaccuracy: 'text-yellow-400',
-  none: 'text-gray-500',
+  none: 'text-gray-600',
 };
 
 /**
@@ -145,4 +145,23 @@ export function scoreMove(opts: ScoreOptions): number {
   const swingBonus =
     (impact < 0 && evalBefore > 0) || (impact > 0 && evalBefore < 0) ? 3 : 1;
   return sevW * (1 + impW) * swingBonus;
+}
+
+/**
+ * Computes a CSS class for the time remaining based on the time control.
+ * @param secondsRemaining - The number of seconds remaining.
+ * @param timeControl - The total time control in seconds.
+ * @returns A CSS class string for styling the time remaining.
+ */
+export function getTimeRemainingClass(
+  secondsRemaining: number,
+  timeControl: number
+): string {
+  if (!timeControl) return 'text-gray-600';
+
+  const pct = secondsRemaining / timeControl;
+
+  if (pct < 0.05) return 'text-red-700';
+  if (pct < 0.1) return 'text-yellow-500';
+  else return 'text-gray-600';
 }
