@@ -1,4 +1,4 @@
-// src/pages/analyse/components/BoardAndEval.jsx
+// src/pages/analyse/components/BoardAndEval.tsx
 import { CSSProperties, useEffect, useRef, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
 
@@ -25,6 +25,7 @@ export default function BoardAndEval({
   onSquareClick,
   onPromotionPieceSelect,
   showPromotionDialog,
+  boardOrientation = 'white' as 'white' | 'black',
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [moveListViewMode, setMoveListViewMode] = useStickyValue<
@@ -83,6 +84,7 @@ export default function BoardAndEval({
         <div className="flex-1">
           {boardWidth > 0 && (
             <Chessboard
+              boardOrientation={boardOrientation}
               boardWidth={boardWidth - 16}
               position={fen}
               promotionDialogVariant={'modal'}
