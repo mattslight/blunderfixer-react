@@ -14,6 +14,7 @@ type Props = {
   lines: any[];
   features: any;
   legalMoves: string[];
+  heroSide: 'w' | 'b';
 };
 
 /* ---------- role → style map ------------------------------------------------ */
