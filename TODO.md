@@ -2,10 +2,10 @@
 
 ## In Progress
 
-- [ ] _BUG_: if stockfish analysis is ongoing (e.g. depth = 40) then move arrows don't update, so I guess stockfish evals are overlapping, we need to kill the previous analysis before starting a new one
-
 - [ ] _FIX_: Show eval bar next to board on report "Stack" card
 - [ ] _FIX_: Show players & clock next to board
+
+- [ ] _BUG_: if stockfish analysis is ongoing (e.g. depth = 40) then move arrows don't update, so I guess stockfish evals are overlapping, we need to kill the previous analysis before starting a new one
 
 - [ ] _CHORE_: BACKEND - Remove old coach_chat and explain_lines endpoints
 - [ ] _CHORE_: View error boundary - clearly not working!
