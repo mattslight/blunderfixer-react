@@ -1,6 +1,6 @@
 // src/pages/analyse/index.tsx
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Location, useLocation, useNavigate } from 'react-router-dom';
 
 import useAnalysisEngine from './hooks/useAnalysisEngine';
 import useFeatureExtraction from './hooks/useFeatureExtraction';
@@ -21,9 +21,15 @@ type AnalyseState = {
   halfMoveIndex?: number;
 };
 
+type Loc = Location & { state: AnalyseState | null };
+
 export default function AnalysePage() {
-  const location = useLocation<AnalyseState>();
+  const location = useLocation() as Loc;
   const navigate = useNavigate();
+
+  const {
+    state: { heroSide },
+  } = location;
 
   // 1) Pull once from router state, then freeze
   const { pgn: drilledPgn, halfMoveIndex } = location.state || {};
@@ -115,6 +121,7 @@ export default function AnalysePage() {
             onPromotionPieceSelect={() => {}}
             showPromotionDialog={false}
             lastMove={lastMove}
+            boardOrientation={heroSide === 'b' ? 'black' : 'white'}
           />
         </div>
         <div className="w-full lg:w-1/2">
@@ -123,6 +130,7 @@ export default function AnalysePage() {
             features={features}
             legalMoves={legalMoves}
             lines={lines}
+            heroSide={heroSide}
           />
         </div>
       </div>
