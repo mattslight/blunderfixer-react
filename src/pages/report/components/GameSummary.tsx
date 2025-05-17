@@ -122,6 +122,8 @@ export function GameSummary({
             combined={combined}
             onClick={handlePositionSelect}
             pgn={game.pgn}
+            timeControl={game.meta.timeControl}
+            heroSide={heroSide}
           />
         </aside>
         {/* Right pane: board + transport */}
