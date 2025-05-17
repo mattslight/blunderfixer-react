@@ -17,6 +17,8 @@ interface GameSummaryTableProps {
   combined: CombinedEntry[];
   onClick: (halfMoveIndex: number) => void;
   pgn: string;
+  timeControl?: number;
+  heroSide: 'w' | 'b';
 }
 
 function ToggleSwitch({
@@ -65,13 +67,14 @@ export default function GameSummaryTable({
   combined,
   onClick,
   pgn,
+  timeControl,
+  heroSide,
 }: GameSummaryTableProps) {
   const [showAll, setShowAll] = useStickyValue<boolean>('showAllMoves', false);
-  const [viewMode, setViewMode] = useStickyValue<'stack' | 'table'>(
-    'viewMode',
-    'stack'
+  const [heroOnly, setHeroOnly] = useStickyValue<boolean>(
+    'showHeroMovesOnly',
+    false
   );
-
   // compute top-5 by score
   const keyEntries = useMemo(() => {
     return [...combined]
@@ -132,11 +135,18 @@ export default function GameSummaryTable({
           <span className="block text-xs font-semibold tracking-wider text-green-500 uppercase">
             Review
           </span>
-          <h2 className="mb-2 text-2xl font-bold text-white">Critical Moves</h2>
-          <span className="mr-2 text-sm text-gray-600">Show all</span>
+          <h2 className="mb-2 text-2xl font-bold text-white">Move Analysis</h2>
+          <span className="mr-2 text-sm text-gray-600">
+            Critical moves only
+          </span>
           <ToggleSwitch
-            checked={showAll}
+            checked={!showAll}
             onChange={() => setShowAll((v) => !v)}
+          />
+          <span className="mr-2 ml-4 text-sm text-gray-600">My moves only</span>
+          <ToggleSwitch
+            checked={heroOnly}
+            onChange={() => setHeroOnly((v) => !v)}
           />
         </div>
       </div>
@@ -159,7 +169,14 @@ export default function GameSummaryTable({
         )}
       </div>
 
-      <TableView entries={entries} showAll={showAll} onClick={onClick} />
+      <TableView
+        entries={entries.filter((r) => {
+          return !heroOnly || r.analysis.side.substring(0, 1) === heroSide;
+        })}
+        showAll={showAll}
+        onClick={onClick}
+        timeControl={timeControl}
+      />
     </>
   );
 }
