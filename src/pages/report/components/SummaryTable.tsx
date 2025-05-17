@@ -151,7 +151,7 @@ export default function GameSummaryTable({
         </div>
       </div>
 
-      <div className="mb-2 flex flex-wrap items-center space-x-4 px-2 text-xs text-gray-500">
+      <div className="flex flex-wrap items-center space-x-4 bg-gray-900 px-2 pb-2 text-xs text-gray-500 lg:sticky lg:top-12">
         {severityOrder.map((sev) => (
           <LegendDot
             key={sev}
