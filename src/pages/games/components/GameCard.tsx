@@ -1,7 +1,7 @@
 // src/pages/games/components/GameCard.tsx
 import { GameRecord } from '@/types';
 import { formatDistanceToNow } from 'date-fns';
-import { Calendar, Inspect, ListChecks, Loader, Timer } from 'lucide-react';
+import { Calendar, Inspect, Loader, Timer } from 'lucide-react';
 
 interface GameCardProps {
   game: GameRecord;
@@ -31,12 +31,6 @@ export default function GameCard({
   const resultTag = game.meta.pgnTags?.Result || '';
   const won = resultTag === (side === 'white' ? '1-0' : '0-1');
   const lost = resultTag === (side === 'white' ? '0-1' : '1-0');
-
-  // button label and color
-  const btnLabel = isAnalysed ? 'Report' : 'Analyse';
-  const btnColor = isAnalysed
-    ? 'bg-purple-800 hover:bg-purple-900'
-    : 'bg-blue-700 hover:bg-blue-700';
 
   // date & time control
   const dateTime = new Date(game.meta.endTime * 1000);
@@ -142,18 +136,14 @@ export default function GameCard({
         <button
           onClick={() => onAction(game)}
           disabled={isLoading}
-          className={`rounded-md px-4 py-2 text-sm font-medium text-white ${btnColor}`}
+          className={`rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700`}
         >
           {isLoading ? (
             <Loader className="h-4 w-4 animate-spin" />
           ) : (
             <span>
-              {btnLabel == 'Report' ? (
-                <ListChecks className="mr-2 inline-flex h-4 w-4" />
-              ) : (
-                <Inspect className="mr-2 inline-flex h-4 w-4" />
-              )}
-              {btnLabel}
+              <Inspect className="mr-2 inline-flex h-4 w-4" />
+              Analyse
             </span>
           )}
         </button>
