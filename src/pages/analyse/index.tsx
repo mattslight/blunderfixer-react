@@ -1,5 +1,5 @@
 // src/pages/analyse/index.tsx
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import useAnalysisEngine from './hooks/useAnalysisEngine';
@@ -9,11 +9,7 @@ import useGameInputParser from './hooks/useGameInputParser';
 import useKeyboardNavigation from './hooks/useKeyboardNavigation';
 import useMoveInput from './hooks/useMoveInput';
 
-import {
-  AnalysisToolbar,
-  GameLoaderModal,
-  PasteModal,
-} from './components/AnalysisModals';
+import { AnalysisToolbar, PasteModal } from './components/AnalysisModals';
 import BoardAndEval from './components/BoardAndEval';
 import CoachAndChat from './components/CoachAndChat';
 
@@ -25,14 +21,21 @@ type AnalyseState = {
 
 export default function AnalysePage() {
   const navigate = useNavigate();
-
   const location = useLocation();
+
+  useEffect(() => {
+    if (location.state) {
+      navigate('.', { replace: true, state: {} });
+    }
+  }, [location.state, navigate]);
+
   // cast only the `state` to our shape
   const {
     pgn: drilledPgn,
     halfMoveIndex,
     heroSide = 'w',
   } = (location.state as AnalyseState) || {};
+
   // 1) Pull once from router state, then freeze
   const [initialRawInput] = useState<string | null>(() => drilledPgn ?? null);
   const [initialStartAtIdx] = useState<number>(() =>
@@ -43,7 +46,6 @@ export default function AnalysePage() {
   const [rawInput, setRawInput] = useState(initialRawInput);
   const [pasteOpen, setPasteOpen] = useState(false);
   const [pasteError, setPasteError] = useState('');
-  const [gameOpen, setGameOpen] = useState(false);
 
   // 3) Parse PGN → initialFEN & sanHistory
   const { initialFEN, sanHistory, rawErrors } = useGameInputParser(rawInput);
@@ -86,12 +88,6 @@ export default function AnalysePage() {
     setRawInput(text);
     setPasteOpen(false);
     if (rawErrors.length) setPasteError(rawErrors.join('\n'));
-  };
-
-  const handleGameSelect = (pgn: string) => {
-    setRawInput(pgn);
-    setPasteError('');
-    setGameOpen(false);
   };
 
   const handleClear = () => {
@@ -147,12 +143,6 @@ export default function AnalysePage() {
         error={pasteError}
         onClose={() => setPasteOpen(false)}
         onSubmit={handlePasteSubmit}
-      />
-
-      <GameLoaderModal
-        show={gameOpen}
-        onClose={() => setGameOpen(false)}
-        onSelectPGN={handleGameSelect}
       />
     </>
   );
