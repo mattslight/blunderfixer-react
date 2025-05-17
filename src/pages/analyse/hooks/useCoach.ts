@@ -13,6 +13,7 @@ interface UseCoachOpts {
   features: any;
   legalMoves: string[];
   apiBase: string;
+  heroSide: 'w' | 'b';
 }
 
 export function useCoach({
@@ -21,6 +22,7 @@ export function useCoach({
   features,
   legalMoves,
   apiBase,
+  heroSide = 'w',
 }: UseCoachOpts) {
   const [messages, setMessages] = useState<Msg[]>([
     {
@@ -53,6 +55,7 @@ export function useCoach({
         legal_moves: legalMoves,
         past_messages: past,
         user_message: userMessage,
+        hero_side: heroSide,
       };
 
       if (!seeded) {
@@ -78,7 +81,7 @@ export function useCoach({
       setLoading(false);
       return reply as string;
     },
-    [fen, legalMoves, lines, features, messages, seeded, apiBase]
+    [fen, legalMoves, lines, features, messages, seeded, apiBase, heroSide]
   );
 
   /** helpers exposed to UI layer ------------- */
