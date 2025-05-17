@@ -1,6 +1,6 @@
 // src/hooks/useGameHistory.ts
-import { useRef, useState, useCallback, useEffect } from 'react';
 import { Chess, DEFAULT_POSITION, Move } from 'chess.js';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface GameHistory {
   fen: string;
@@ -18,8 +18,8 @@ export interface UseGameHistoryOpts {
   initialFEN?: string;
   /** Array of SAN moves to seed the history */
   initialMoves?: string[];
-  /** Whether to land at the end of `initialMoves` on init */
-  startAtEnd?: boolean;
+  /** Which move index to start at (defaults to 0) */
+  startAtIdx?: number;
   /** If false, new moves only allowed at the current tip (no branching) */
   allowBranching?: boolean;
 }
@@ -27,14 +27,13 @@ export interface UseGameHistoryOpts {
 export default function useGameHistory({
   initialFEN = DEFAULT_POSITION,
   initialMoves = [],
-  startAtEnd = true,
+  startAtIdx = 0,
   allowBranching = false,
 }: UseGameHistoryOpts): GameHistory {
   // 1) one chess instance
   const chessRef = useRef(new Chess());
 
   // 2) synchronous “first‐render” seed
-  //    so fen is already after those SANs on mount
   const initHistory = () => {
     const c = chessRef.current;
     c.reset();
@@ -43,33 +42,10 @@ export default function useGameHistory({
     return initialMoves;
   };
 
-  // runs once on mount, before render
+  // runs once on mount
   const [moveHistory, setHistory] = useState<string[]>(() => initHistory());
-  const initIdx = startAtEnd ? initialMoves.length : 0;
-  const [currentIdx, setCurrentIdx] = useState<number>(initIdx);
+  const [currentIdx, setCurrentIdx] = useState<number>(() => startAtIdx);
   const [lastMove, setLastMove] = useState<{ from: string; to: string }>();
-
-  // 3) respond to *changes* in initialMoves or initialFEN
-  useEffect(() => {
-    const c = chessRef.current;
-    c.reset();
-    c.load(initialFEN);
-    initialMoves.forEach((san) => c.move(san));
-
-    setHistory(initialMoves);
-
-    const targetIdx = startAtEnd ? initialMoves.length : 0;
-    setCurrentIdx(targetIdx);
-
-    if (startAtEnd && initialMoves.length > 0) {
-      // grab verbose history and pull last from/to
-      const full = c.history({ verbose: true }) as Move[];
-      const last = full[full.length - 1];
-      setLastMove({ from: last.from, to: last.to });
-    } else {
-      setLastMove(undefined);
-    }
-  }, [initialFEN, initialMoves.join(','), startAtEnd]);
 
   // helper to replay positions
   const syncPosition = useCallback(
@@ -82,6 +58,25 @@ export default function useGameHistory({
     [initialFEN, moveHistory]
   );
 
+  // 3) respond to changes in initialMoves or initialFEN or startAtIdx
+  useEffect(() => {
+    // 1) stash the new full history
+    setHistory(initialMoves);
+
+    // 2) replay only up to startAtIdx
+    syncPosition(startAtIdx);
+    setCurrentIdx(startAtIdx);
+
+    // 3) record what that last move was
+    if (startAtIdx > 0 && initialMoves.length > 0) {
+      const full = chessRef.current.history({ verbose: true }) as Move[];
+      const last = full[full.length - 1];
+      setLastMove({ from: last.from, to: last.to });
+    } else {
+      setLastMove(undefined);
+    }
+  }, [initialFEN, initialMoves.join(','), startAtIdx, syncPosition]);
+
   // determine if new moves are permitted
   const atTip = currentIdx === moveHistory.length;
   const canPlayMove = allowBranching ? true : atTip;
@@ -93,7 +88,6 @@ export default function useGameHistory({
       syncPosition(safe);
       setCurrentIdx(safe);
       if (safe > 0) {
-        // all moves up to safe, verbose
         const full = chessRef.current.history({ verbose: true }) as Move[];
         const last = full[full.length - 1];
         setLastMove({ from: last.from, to: last.to });
@@ -110,7 +104,6 @@ export default function useGameHistory({
       if (!canPlayMove) return false;
 
       const chess = chessRef.current;
-      // truncate future moves only if branching is allowed
       if (allowBranching && currentIdx < moveHistory.length) {
         setHistory(moveHistory.slice(0, currentIdx));
       }
@@ -133,6 +126,7 @@ export default function useGameHistory({
 
   // 4) always report the current FEN
   const fen = chessRef.current.fen();
+
   return {
     fen,
     moveHistory,
