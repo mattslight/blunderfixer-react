@@ -3,8 +3,8 @@ import { BlackPiece, WhitePiece } from '@/components/ChessPieces';
 import { DOT_COLOR, TIME_TEXT_COLOR } from '@/lib/severity';
 import { Square } from 'chess.js';
 import {
-  ArrowUpRight,
   BarChart,
+  MessagesSquare,
   Timer,
   TrendingDown,
   TrendingUp,
@@ -149,8 +149,8 @@ export default function CardView({ entry: r, onDrill, pgn }: CardViewProps) {
             className="items-center rounded-md border-b-2 border-b-purple-900 bg-purple-600 px-3 py-2 text-sm font-semibold text-white hover:bg-purple-600"
             onClick={() => onDrill?.(pgn, r.analysis.halfMoveIndex)}
           >
+            <MessagesSquare className="mr-2 mb-[1px] inline-flex h-4 w-4" />
             Discuss with coach
-            <ArrowUpRight className="mb-[1px] ml-1 inline-flex h-3 w-3" />
           </button>
         </div>
       </div>
