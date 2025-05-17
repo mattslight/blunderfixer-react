@@ -1,12 +1,13 @@
 // src/pages/analyse/index.tsx
 import { useState } from 'react';
-import { Location, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import useAnalysisEngine from './hooks/useAnalysisEngine';
 import useFeatureExtraction from './hooks/useFeatureExtraction';
 import useGameHistory from './hooks/useGameHistory';
 import useGameInputParser from './hooks/useGameInputParser';
 import useKeyboardNavigation from './hooks/useKeyboardNavigation';
+import useMoveInput from './hooks/useMoveInput';
 
 import {
   AnalysisToolbar,
@@ -19,20 +20,20 @@ import CoachAndChat from './components/CoachAndChat';
 type AnalyseState = {
   pgn?: string;
   halfMoveIndex?: number;
+  heroSide?: 'w' | 'b';
 };
 
-type Loc = Location & { state: AnalyseState | null };
-
 export default function AnalysePage() {
-  const location = useLocation() as Loc;
   const navigate = useNavigate();
 
+  const location = useLocation();
+  // cast only the `state` to our shape
   const {
-    state: { heroSide },
-  } = location;
-
+    pgn: drilledPgn,
+    halfMoveIndex,
+    heroSide = 'w',
+  } = (location.state as AnalyseState) || {};
   // 1) Pull once from router state, then freeze
-  const { pgn: drilledPgn, halfMoveIndex } = location.state || {};
   const [initialRawInput] = useState<string | null>(() => drilledPgn ?? null);
   const [initialStartAtIdx] = useState<number>(() =>
     halfMoveIndex !== undefined ? Math.max(0, halfMoveIndex - 1) : 0
@@ -44,10 +45,10 @@ export default function AnalysePage() {
   const [pasteError, setPasteError] = useState('');
   const [gameOpen, setGameOpen] = useState(false);
 
-  // 4) Parse PGN → initialFEN & sanHistory
+  // 3) Parse PGN → initialFEN & sanHistory
   const { initialFEN, sanHistory, rawErrors } = useGameInputParser(rawInput);
 
-  // 5) Game history with explicit startAtIdx
+  // 4) Game history with explicit startAtIdx
   const { fen, moveHistory, currentIdx, setIdx, makeMove, lastMove } =
     useGameHistory({
       initialFEN,
@@ -56,12 +57,18 @@ export default function AnalysePage() {
       allowBranching: true,
     });
 
-  // 6) Feature extraction & analysis engine
+  // 5) Move input handlers (click/drag/promotion)
   const {
-    features,
-    loading: loadingFeatures,
-    error: featuresError,
-  } = useFeatureExtraction(fen);
+    to,
+    showPromotionDialog,
+    optionSquares,
+    onSquareClick,
+    onPieceDrop,
+    onPromotionPieceSelect,
+  } = useMoveInput(fen, (f, t, prom) => makeMove(f, t, prom));
+
+  // 6) Feature extraction & analysis engine
+  const { features, error: featuresError } = useFeatureExtraction(fen);
   const { lines, evalScore, legalMoves, bestMoveArrow } =
     useAnalysisEngine(fen);
 
@@ -114,12 +121,12 @@ export default function AnalysePage() {
             moveList={moveHistory}
             currentIdx={currentIdx}
             setCurrentIdx={setIdx}
-            moveTo={null} // or your `to` from useMoveInput
-            optionSquares={[]}
-            onSquareClick={() => {}}
-            onPieceDrop={() => {}}
-            onPromotionPieceSelect={() => {}}
-            showPromotionDialog={false}
+            moveTo={to}
+            optionSquares={optionSquares}
+            onSquareClick={onSquareClick}
+            onPieceDrop={onPieceDrop}
+            onPromotionPieceSelect={onPromotionPieceSelect}
+            showPromotionDialog={showPromotionDialog}
             lastMove={lastMove}
             boardOrientation={heroSide === 'b' ? 'black' : 'white'}
           />
