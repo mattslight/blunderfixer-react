@@ -5,7 +5,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from 'flowbite-react';
-import { Clipboard, ClockPlus, Trash2 } from 'lucide-react';
+import { Clipboard, Clock, Trash2 } from 'lucide-react';
 import GameLoader from './GameLoader';
 
 export function AnalysisToolbar({ onOpenPaste, onOpenGames, onClear }) {
@@ -15,7 +15,7 @@ export function AnalysisToolbar({ onOpenPaste, onOpenGames, onClear }) {
         onClick={onOpenGames}
         className="flex items-center gap-2 rounded-none border-b-2 border-green-700 px-0 py-1.5 text-sm font-medium text-gray-200 shadow-sm transition-colors hover:bg-green-950"
       >
-        <ClockPlus className="h-4 w-4" /> Recent Games
+        <Clock className="h-4 w-4" /> Recent Games
       </Button>
       <Button
         onClick={onOpenPaste}
