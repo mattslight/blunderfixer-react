@@ -24,13 +24,13 @@ export default function TableView({
 }) {
   return (
     <table className="mt-4 w-full table-auto text-sm">
-      <thead>
+      <thead className="lg:sticky lg:top-22">
         <tr className="bg-gray-800">
           <th className="px-2 py-1" />
           <th colSpan={3} className="px-2 py-1 text-center align-bottom">
             Move
           </th>
-          <th className="px-2 py-1 text-right align-bottom">Score Impact</th>
+          <th className="px-2 py-1 text-right align-bottom">Eval Change</th>
           <th className="px-2 py-1 text-right align-bottom">
             <Clock size={12} className="inline" />
             <span className="ml-1">Remaining</span>
