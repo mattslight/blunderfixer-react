@@ -40,6 +40,15 @@ export const TIME_TEXT_COLOR: Record<
   timeOveruse: 'text-purple-400',
   none: 'text-gray-300',
 };
+export const TEXT_SEVERITY_COLOR: Record<
+  'blunder' | 'mistake' | 'inaccuracy' | 'none',
+  string
+> = {
+  blunder: 'text-red-500',
+  mistake: 'text-orange-500',
+  inaccuracy: 'text-yellow-400',
+  none: 'text-gray-500',
+};
 
 /**
  * Options for computing severity
@@ -111,8 +120,8 @@ export const SEVERITY_WEIGHT: Record<Severity, number> = {
   blunder: 5,
   mistake: 3,
   inaccuracy: 1.5,
-  timeOveruse: 2,
-  timeImpulsive: 2,
+  timeOveruse: 3,
+  timeImpulsive: 1,
   none: 0,
 };
 
