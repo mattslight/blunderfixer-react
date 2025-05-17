@@ -2,17 +2,18 @@
 
 ## In Progress
 
-- [ ] _FIX_: When I click Discuss with Coach load in the position to the LLM flow
-- [ ] _FIX_: Show eval bar next to board
-- [ ] _FIX_: Show players & clock next to board
-- [ ] _FIX_: Wire up hint button
-- [ ] _FIX_: Flip board when loading a game as Black
-
-- [ ] _BUG_: View error boundary - clearly not working!
 - [ ] _BUG_: if stockfish analysis is ongoing (e.g. depth = 40) then move arrows don't update, so I guess stockfish evals are overlapping, we need to kill the previous analysis before starting a new one
+
+- [ ] _FIX_: Show eval bar next to board on report "Stack" card
+- [ ] _FIX_: Show players & clock next to board
+
+- [ ] _CHORE_: BACKEND - Remove old coach_chat and explain_lines endpoints
+- [ ] _CHORE_: View error boundary - clearly not working!
 - [ ] _BUG_: Mate evaluation swings still occur
-- [ ] _FIX_: Fix issue where full analysis is needed to give good advice
 - [ ] _FIX_: Reset (board position and chat) not working
+
+## Backlog
+
 - [ ] **FEAT**: Hide lines / best move
 - [ ] **FEAT**: When swiping best move show changing arrow on board
 - [ ] **FEAT**: Coach or engine to play a move / reply
@@ -20,17 +21,16 @@
 - [ ] **UX**: Move graph and table summary to Analysis page (what's the UX)
 - [ ] Clarify evaluation perspective (player vs engine) in coach insights
 
-## MVP Priorities
-
 1. **Replay & Drills**
+
+   _READ Pump up your rating and Woodpecker Method Axel Smith_
+
    - [ ] Scan games for difficult positions
    - [ ] Let user replay positions
    - [ ] Show WLWL stats
    - [ ] Allow manual pinning of positions
-2. **Profile Page**
-   - [ ] Display basic profile info
-   - [ ] (PoC) Allow changing user
-3. **Authentication** (optional)
+
+2. **Authentication** (optional)
    - [ ] Email/password (Gmail sign-up)
    - [ ] Link Lichess via OAuth
 
@@ -89,3 +89,12 @@
 - [x] **FEAT**: Time burndown chart for both players
 - [x] **FEAT**: Find the critical positions based on the eval swings
 - [x] Suggest positions for insight (i.e. the move before the 12=-076543567890-1§ qa~mistake) when loading PGN
+- [x] _FIX_: Wire up hint button
+- [x] _FIX_: When I click Discuss with Coach load in the position to the LLM flow
+- [x] _FIX_: Fix issue where full analysis is needed to give good advice
+- [x] _FIX_: when clicking Discuss with Coach go to the correct move on analysis board
+- [x] _FIX_: Flip board when loading a game as Black
+
+2. **Profile Page**
+   - [x] Display basic profile info
+   - [x] (PoC) Allow changing user
