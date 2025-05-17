@@ -17,9 +17,15 @@ interface CardViewProps {
   entry: CombinedEntry;
   onDrill?: (pgn: string, halfMoveIndex: number) => void;
   pgn: string;
+  heroSide: 'w' | 'b';
 }
 
-export default function CardView({ entry: r, onDrill, pgn }: CardViewProps) {
+export default function CardView({
+  entry: r,
+  onDrill,
+  pgn,
+  heroSide,
+}: CardViewProps) {
   // derive visual elements
   const primaryTag = r.tags[0];
   const timeTag =
@@ -122,6 +128,7 @@ export default function CardView({ entry: r, onDrill, pgn }: CardViewProps) {
         <div className="pb- flex flex-row items-center border-gray-700">
           <div className="mx-auto my-4">
             <Chessboard
+              boardOrientation={heroSide === 'b' ? 'black' : 'white'}
               position={r.analysis.fenBefore}
               arePiecesDraggable={false}
               onPieceDrop={() => false}

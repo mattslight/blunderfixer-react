@@ -1,4 +1,5 @@
 // src/pages/report/index.tsx
+import { useProfile } from '@/hooks/useProfile';
 import { useGameAnalysis } from '@/pages/games/hooks/useGameAnalysis';
 import { useGameData } from '@/pages/games/hooks/useGameData';
 import { GameSummary } from '@/pages/report/components/GameSummary';
@@ -40,8 +41,15 @@ export default function ReportPage() {
 
   const game = gamesMap[analysisId]!;
 
+  const {
+    profile: { username },
+  } = useProfile();
+
+  const heroSide =
+    username === game.meta.players.white.player.username ? 'w' : 'b';
+
   const onDrill = (pgn: string, halfMoveIndex: number) => {
-    navigate('/analyse', { state: { pgn, halfMoveIndex } });
+    navigate('/analyse', { state: { pgn, halfMoveIndex, heroSide } });
   };
 
   return (
@@ -52,7 +60,12 @@ export default function ReportPage() {
       >
         ← Back
       </button>
-      <GameSummary game={game} analysis={analysis} onDrill={onDrill} />
+      <GameSummary
+        game={game}
+        analysis={analysis}
+        onDrill={onDrill}
+        heroSide={heroSide}
+      />
     </div>
   );
 }

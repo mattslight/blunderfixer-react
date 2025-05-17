@@ -9,11 +9,13 @@ export default function StackView({
   onDrill,
   pgn,
   selectedIndex,
+  heroSide,
 }: {
   entries: CombinedEntry[];
   onDrill?: (pgn: string, halfMoveIndex: number) => void;
   pgn: string;
   selectedIndex?: number | null;
+  heroSide: 'w' | 'b';
 }) {
   const [current, setCurrent] = useState(0);
   const frameRef = useRef<number>(null);
@@ -106,7 +108,12 @@ export default function StackView({
 
   return (
     <div>
-      <CardView entry={entries[safeCurrent]} onDrill={onDrill} pgn={pgn} />
+      <CardView
+        entry={entries[safeCurrent]}
+        onDrill={onDrill}
+        pgn={pgn}
+        heroSide={heroSide}
+      />
       <MoveControls
         onPrev={handlePrev}
         onNext={handleNext}

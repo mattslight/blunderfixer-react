@@ -1,5 +1,4 @@
 // src/pages/games/components/GameSummary.tsx
-import { useProfile } from '@/hooks/useProfile';
 import {
   getErrorSeverity,
   getTimeSeverity,
@@ -18,16 +17,17 @@ interface GameSummaryProps {
   game: GameRecord;
   analysis: AnalysisNode[];
   onDrill: (pgn: string, halfMoveIndex: number) => void;
+  heroSide: 'w' | 'b';
 }
 
 type TimePoint = { move: number; heroTime: number; oppTime: number };
 
-export function GameSummary({ game, analysis, onDrill }: GameSummaryProps) {
-  const {
-    profile: { username },
-  } = useProfile();
-  const heroSide =
-    username === game.meta.players.white.player.username ? 'w' : 'b';
+export function GameSummary({
+  game,
+  analysis,
+  onDrill,
+  heroSide,
+}: GameSummaryProps) {
   const MAX = 4;
 
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -127,6 +127,7 @@ export function GameSummary({ game, analysis, onDrill }: GameSummaryProps) {
         {/* Right pane: board + transport */}
         <section className="lg:sticky lg:top-14 lg:self-start">
           <StackView
+            heroSide={heroSide}
             entries={combined}
             onDrill={onDrill}
             pgn={game.pgn}
