@@ -15,7 +15,7 @@ import type { CombinedEntry } from './SummaryTable';
 
 interface CardViewProps {
   entry: CombinedEntry;
-  onDrill?: (pgn: string, halfMoveIndex: number) => void;
+  onDrill?: (pgn: string, halfMoveIndex: number, heroSide: 'w' | 'b') => void;
   pgn: string;
   heroSide: 'w' | 'b';
 }
@@ -154,7 +154,7 @@ export default function CardView({
         <div className="my-4 flex justify-center">
           <button
             className="items-center rounded-md border-b-2 border-b-purple-900 bg-purple-600 px-3 py-2 text-sm font-semibold text-white hover:bg-purple-600"
-            onClick={() => onDrill?.(pgn, r.analysis.halfMoveIndex)}
+            onClick={() => onDrill?.(pgn, r.analysis.halfMoveIndex, heroSide)}
           >
             <MessagesSquare className="mr-2 mb-[1px] inline-flex h-4 w-4" />
             Discuss with coach

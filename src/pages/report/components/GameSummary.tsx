@@ -16,7 +16,7 @@ import TimeUsageChart from './TimeUsageChart';
 interface GameSummaryProps {
   game: GameRecord;
   analysis: AnalysisNode[];
-  onDrill: (pgn: string, halfMoveIndex: number) => void;
+  onDrill: (pgn: string, halfMoveIndex: number, heroSide: 'w' | 'b') => void;
   heroSide: 'w' | 'b';
 }
 

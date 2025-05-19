@@ -48,7 +48,7 @@ export default function ReportPage() {
   const heroSide =
     username === game.meta.players.white.player.username ? 'w' : 'b';
 
-  const onDrill = (pgn: string, halfMoveIndex: number) => {
+  const onDrill = (pgn: string, halfMoveIndex: number, heroSide: 'w' | 'b') => {
     navigate('/analyse', { state: { pgn, halfMoveIndex, heroSide } });
   };
 

@@ -36,11 +36,14 @@ export default function AnalysePage() {
     heroSide = 'w',
   } = (location.state as AnalyseState) || {};
 
+  console.log('heroSide', heroSide);
+
   // 1) Pull once from router state, then freeze
   const [initialRawInput] = useState<string | null>(() => drilledPgn ?? null);
   const [initialStartAtIdx] = useState<number>(() =>
     halfMoveIndex !== undefined ? Math.max(0, halfMoveIndex - 1) : 0
   );
+  const [initialHeroSide] = useState<'w' | 'b'>(() => heroSide);
 
   // 2) Raw input (can later be changed by paste or game-loader)
   const [rawInput, setRawInput] = useState(initialRawInput);
@@ -124,7 +127,7 @@ export default function AnalysePage() {
             onPromotionPieceSelect={onPromotionPieceSelect}
             showPromotionDialog={showPromotionDialog}
             lastMove={lastMove}
-            boardOrientation={heroSide === 'b' ? 'black' : 'white'}
+            boardOrientation={initialHeroSide === 'b' ? 'black' : 'white'}
           />
         </div>
         <div className="w-full lg:w-1/2">
