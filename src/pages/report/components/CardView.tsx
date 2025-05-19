@@ -5,7 +5,7 @@ import { Square } from 'chess.js';
 import {
   BarChart,
   MessagesSquare,
-  Timer,
+  TimerReset,
   TrendingDown,
   TrendingUp,
 } from 'lucide-react';
@@ -118,7 +118,7 @@ export default function CardView({
         <div
           className={`flex items-center justify-end font-medium ${timeColor}`}
         >
-          <Timer className="mr-1" size={16} />
+          <TimerReset className="mr-1" size={16} />
           {r.move.timeSpent?.toFixed(1) ?? '–'}s
         </div>
       </div>
