@@ -119,7 +119,11 @@ export default function BoardAndEval({
         </div>
 
         {/* EvalBar sits flush to the right, no margin/padding */}
-        <EvalBar score={evalScore} className="w-4" />
+        <EvalBar
+          score={evalScore}
+          className="w-4"
+          boardOrientation={boardOrientation}
+        />
       </div>
 
       {/* 4) Engine continuation lines */}

@@ -36,8 +36,6 @@ export default function AnalysePage() {
     heroSide = 'w',
   } = (location.state as AnalyseState) || {};
 
-  console.log('heroSide', heroSide);
-
   // 1) Pull once from router state, then freeze
   const [initialRawInput] = useState<string | null>(() => drilledPgn ?? null);
   const [initialStartAtIdx] = useState<number>(() =>
@@ -136,7 +134,7 @@ export default function AnalysePage() {
             features={features}
             legalMoves={legalMoves}
             lines={lines}
-            heroSide={heroSide}
+            heroSide={initialHeroSide}
           />
         </div>
       </div>

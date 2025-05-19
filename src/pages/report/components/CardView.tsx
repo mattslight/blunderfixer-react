@@ -1,6 +1,11 @@
 // src/pages/report/components/CardView.tsx
 import { BlackPiece, WhitePiece } from '@/components/ChessPieces';
-import { DOT_COLOR, TIME_TEXT_COLOR } from '@/lib/severity';
+import {
+  DOT_COLOR,
+  getErrorSeverity,
+  TEXT_SEVERITY_COLOR,
+  TIME_TEXT_COLOR,
+} from '@/lib/severity';
 import { Square } from 'chess.js';
 import {
   BarChart,
@@ -101,7 +106,11 @@ export default function CardView({
         </div>
         <div
           className={`flex items-center justify-center font-medium ${
-            r.impact < 0 ? 'text-red-500' : 'text-green-500'
+            r.impact < 0
+              ? TEXT_SEVERITY_COLOR[getErrorSeverity(r.impact)]
+              : r.impact > 50
+                ? 'text-green-500'
+                : 'text-gray-600'
           }`}
         >
           {Math.abs(r.impact) > 0 && (
