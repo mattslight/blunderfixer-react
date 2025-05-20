@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import useAnalysisEngine from './hooks/useAnalysisEngine';
-import useFeatureExtraction from './hooks/useFeatureExtraction';
 import useGameHistory from './hooks/useGameHistory';
 import useGameInputParser from './hooks/useGameInputParser';
 import useKeyboardNavigation from './hooks/useKeyboardNavigation';
@@ -71,7 +70,6 @@ export default function AnalysePage() {
   } = useMoveInput(fen, (f, t, prom) => makeMove(f, t, prom));
 
   // 6) Feature extraction & analysis engine
-  const { features, error: featuresError } = useFeatureExtraction(fen);
   const { lines, evalScore, legalMoves, bestMoveArrow } =
     useAnalysisEngine(fen);
 
@@ -106,8 +104,6 @@ export default function AnalysePage() {
         onClear={handleClear}
       />
 
-      {featuresError && <p className="text-red-500">{featuresError}</p>}
-
       <div className="flex flex-col gap-8 lg:flex-row">
         <div className="w-full lg:w-1/2">
           <BoardAndEval
@@ -131,7 +127,6 @@ export default function AnalysePage() {
         <div className="w-full lg:w-1/2">
           <CoachAndChat
             fen={fen}
-            features={features}
             legalMoves={legalMoves}
             lines={lines}
             heroSide={initialHeroSide}

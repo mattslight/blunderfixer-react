@@ -12,7 +12,6 @@ const coachImageSrc = '/coach.png';
 type Props = {
   fen: string;
   lines: any[];
-  features: any;
   legalMoves: string[];
   heroSide: 'w' | 'b';
 };
@@ -144,9 +143,15 @@ export const buttonStyles = {
 };
 
 /* ---------- main component ------------------------------------------------- */
-export default function CoachAndChat(props: Props) {
+export default function CoachAndChat({
+  fen,
+  heroSide,
+  lines,
+  legalMoves,
+}: Props) {
   const { messages, loading, ask, onHint, onFull } = useCoach({
-    ...props,
+    fen,
+    heroSide,
     apiBase: import.meta.env.VITE_API_BASE_URL,
   });
 

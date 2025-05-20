@@ -9,21 +9,11 @@ export interface Msg {
 
 interface UseCoachOpts {
   fen: string;
-  lines: any[];
-  features: any;
-  legalMoves: string[];
   apiBase: string;
   heroSide: 'w' | 'b';
 }
 
-export function useCoach({
-  fen,
-  lines,
-  features,
-  legalMoves,
-  apiBase,
-  heroSide = 'w',
-}: UseCoachOpts) {
+export function useCoach({ fen, apiBase, heroSide }: UseCoachOpts) {
   const [messages, setMessages] = useState<Msg[]>([
     {
       role: 'coach',
@@ -31,44 +21,30 @@ export function useCoach({
     },
   ]);
   const [loading, setLoading] = useState(false);
-  const [seeded, setSeeded] = useState(false);
 
-  /** push a chat message */
   const push = useCallback((m: Msg) => {
     setMessages((prev) => [...prev, m]);
   }, []);
 
-  /** build + POST the /coach payload */
   const callCoach = useCallback(
-    async (userMessage: string) => {
+    async (userMessage: string): Promise<string> => {
       setLoading(true);
-
-      const past = messages
+      // build past_messages from your local thread
+      const past_messages = messages
         .filter((m) => m.role !== 'typing')
         .map((m) => ({
           role: m.role === 'coach' ? 'assistant' : m.role,
           content: m.text,
         }));
 
-      const payload: any = {
+      const payload = {
         fen,
-        legal_moves: legalMoves,
-        past_messages: past,
+        past_messages,
         user_message: userMessage,
         hero_side: heroSide,
       };
 
-      if (!seeded) {
-        payload.lines = lines.map((l: any) => ({
-          rank: l.rank,
-          depth: l.depth,
-          scoreCP: l.scoreCP,
-          mateIn: l.mateIn ?? null,
-          moves: l.moves,
-        }));
-        payload.features = features;
-        setSeeded(true);
-      }
+      console.log('→ /coach payload:', payload);
 
       const res = await fetch(`${apiBase}/coach`, {
         method: 'POST',
@@ -77,21 +53,19 @@ export function useCoach({
       });
       if (!res.ok) throw new Error(await res.text());
       const { reply } = await res.json();
-
       setLoading(false);
-      return reply as string;
+      return reply;
     },
-    [fen, legalMoves, lines, features, messages, seeded, apiBase, heroSide]
+    [fen, messages, apiBase, heroSide]
   );
-
-  /** helpers exposed to UI layer ------------- */
 
   const ask = useCallback(
     async (text: string) => {
       push({ role: 'user', text });
-      push({ role: 'typing', text: 'Coach is typing' });
+      push({ role: 'typing', text: 'Coach is typing…' });
       try {
         const reply = await callCoach(text);
+        // remove the typing indicator
         setMessages((m) => m.filter((x) => x.role !== 'typing'));
         push({ role: 'coach', text: reply });
       } catch {
@@ -103,12 +77,11 @@ export function useCoach({
   );
 
   const onHint = () =>
-    ask('Hint: Give me a subtle nudge-without revealing the best move');
-
+    ask('Hint: Give me a subtle nudge–without revealing the best move');
   const onFull = () =>
     ask('Full analysis: please show key moves with pros and cons');
 
-  /** reset on FEN change */
+  // reset thread when the FEN changes
   const firstFEN = useRef(fen);
   useEffect(() => {
     if (fen !== firstFEN.current) {
@@ -118,7 +91,6 @@ export function useCoach({
           text: 'Hey there! Choose a position and let’s dive in...',
         },
       ]);
-      setSeeded(false);
       firstFEN.current = fen;
     }
   }, [fen]);
