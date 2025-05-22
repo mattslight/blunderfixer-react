@@ -107,7 +107,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="-mt-10 min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-6 text-white sm:p-10">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-6 text-white sm:p-10">
       {/* Hero */}
       <section className="bg-noise container mx-auto mt-16 mb-10 p-4 text-center">
         <h1 className="mb-4 text-center text-5xl font-extrabold text-white lg:text-7xl">

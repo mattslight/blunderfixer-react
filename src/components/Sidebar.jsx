@@ -1,4 +1,5 @@
 // src/components/Sidebar.jsx
+import { useProfile } from '@/hooks/useProfile';
 import { Drawer } from 'flowbite-react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
@@ -134,6 +135,14 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
   // attach rapid-tap handler
   const onTapSidebar = useRapidTaps(3, 1000, () => setShowCredits(true));
 
+  const {
+    profile: { username },
+  } = useProfile();
+
+  console.log('username', username);
+
+  if (!username) return null;
+
   return (
     <Drawer
       open={isSidebarOpen}
@@ -145,10 +154,13 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
     >
       <div className="h-full overflow-y-auto bg-gray-800 px-3 py-5">
         <div
-          className="mb-4 text-sm font-medium whitespace-nowrap dark:text-gray-200"
+          className="mb-4 font-medium whitespace-nowrap dark:text-gray-400"
           onClick={onTapSidebar}
         >
-          <img src={blunderLogoSvg} className="mr-2 ml-2 inline-flex h-5 w-5" />
+          <img
+            src={blunderLogoSvg}
+            className="mr-1.5 mb-0.5 ml-2 inline-flex h-6 w-6"
+          />
           BlunderFixer
         </div>
         <ul className="space-y-2 border-t border-gray-700 pt-8">

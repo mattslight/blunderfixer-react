@@ -1,18 +1,25 @@
 import { useProfile } from '@/hooks/useProfile';
+import blunderLogoSvg from '../../public/blunderfixer.svg';
 import UserMenu from './UserMenu';
+
 const NOTIFICATIONS = false;
 
 export default function Navbar({ toggleSidebar }) {
   const {
     profile: { username },
   } = useProfile();
+
+  const loggedIn = !!username;
+
   return (
-    <nav className="fixed top-0 right-0 left-0 z-50 bg-gray-900/50 py-1.5 pl-2 backdrop-blur md:pr-4 2xl:pl-8 dark:bg-gray-900/50">
+    <nav
+      className={`fixed top-0 right-0 left-0 z-50 py-1.5 pr-2 pl-2 2xl:pl-8`}
+    >
       <div className="flex flex-wrap items-center justify-between">
         <div
-          className={`flex items-center justify-start ${!username && 'ml-2 p-1'}`}
+          className={`flex items-center justify-start ${!loggedIn && 'ml-2 p-1'}`}
         >
-          {username && (
+          {loggedIn && (
             <button
               className="mr-2 cursor-pointer rounded-lg p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 2xl:hidden dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:bg-gray-700 dark:focus:ring-gray-700"
               onClick={toggleSidebar}
@@ -46,10 +53,17 @@ export default function Navbar({ toggleSidebar }) {
               <span className="sr-only">Toggle sidebar</span>
             </button>
           )}
-          {!username && (
-            <a href="/" className="mr-4 flex items-center justify-between">
-              <span className="self-center font-semibold whitespace-nowrap dark:text-gray-200">
-                BlunderFixer ‼️
+          {!loggedIn && (
+            <a
+              href="/"
+              className="mr-4 flex items-center justify-between rounded p-1 backdrop-blur"
+            >
+              <span className="self-center text-lg font-semibold whitespace-nowrap dark:text-gray-200">
+                <img
+                  src={blunderLogoSvg}
+                  className="mr-2 mb-0.5 ml-2 inline-flex h-8 w-8"
+                />
+                BlunderFixer
               </span>
             </a>
           )}
