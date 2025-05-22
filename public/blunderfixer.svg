@@ -15,7 +15,7 @@
 
   <!-- Left “?” on top, with red outline -->
   <text x="21" y="36" fill="#FFF"
-        stroke="#E63327"
+        stroke="oklch(50.5% 0.213 27.518)"
         stroke-width="8"
         paint-order="stroke fill markers"
         font-family="sans-serif"
