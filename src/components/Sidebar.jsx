@@ -3,6 +3,7 @@ import { Drawer } from 'flowbite-react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import blunderLogoSvg from '../../public/blunderfixer.svg';
 import EasterEggCredits, { useRapidTaps } from './EasterEggCredits';
 
 export default function Sidebar({ isSidebarOpen, closeSidebar }) {
@@ -140,14 +141,15 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
       backdrop
       placement="left"
       id="drawer-navigation"
-      className="fixed top-0 left-0 z-40 h-screen w-64 border-r border-gray-200 pt-14 transition-transform 2xl:w-40 2xl:translate-x-0 2xl:p-0 2xl:pt-14 dark:border-gray-700 dark:bg-gray-800"
+      className="fixed top-0 left-0 z-100 h-screen w-64 border-r border-gray-200 transition-transform 2xl:w-40 2xl:translate-x-0 2xl:p-0 2xl:pt-0 dark:border-gray-700 dark:bg-gray-800"
     >
       <div className="h-full overflow-y-auto bg-gray-800 px-3 py-5">
         <div
-          className="mb-4 text-sm font-medium tracking-wider whitespace-nowrap dark:text-gray-300"
+          className="mb-4 text-sm font-medium whitespace-nowrap dark:text-gray-200"
           onClick={onTapSidebar}
         >
-          BlunderFixer ‼️
+          <img src={blunderLogoSvg} className="mr-2 ml-2 inline-flex h-5 w-5" />
+          BlunderFixer
         </div>
         <ul className="space-y-2 border-t border-gray-700 pt-8">
           {mainNav.map(({ to, label, Icon }) => (

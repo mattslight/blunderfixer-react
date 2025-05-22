@@ -1,100 +1,91 @@
-# BlunderFixer TODO
+# Epics & User Stories
 
-## In Progress
+---
 
-- [ ] _FIX_: Show eval bar next to board on report "Stack" card
-- [ ] _FIX_: Show players & clock next to board
+## Epic 1: Game-Archive Pipeline
 
-- [ ] _BUG_: if stockfish analysis is ongoing (e.g. depth = 40) then move arrows don't update, so I guess stockfish evals are overlapping, we need to kill the previous analysis before starting a new one
+**Goal:** Reliably fetch and store every user’s Chess.com games for downstream processing.
 
-- [ ] _CHORE_: BACKEND - Remove old coach_chat and explain_lines endpoints
-- [ ] _CHORE_: View error boundary - clearly not working!
-- [ ] _BUG_: Mate evaluation swings still occur
-- [ ] _FIX_: Reset (board position and chat) not working
+**Backend User Stories:**
 
-## Backlog
+- [x] **Enqueue Fetch Jobs:**  
+       As the system, I want to enqueue a fetch-jobs task whenever a user logs in so that their latest games are pulled in the background.
+- [x] **Download Game Archives:**  
+       As the system, I want to download paginated Chess.com archives (by username) and persist the raw JSON/PGN to object storage or a `games` table.
+- [ ] **Record Fetch Metadata:**  
+       As the system, I want to record metadata (fetch timestamp, archive URL, status) so I can retry failures and track freshness.
 
-- [ ] **FEAT**: Hide lines / best move
-- [ ] **FEAT**: When swiping best move show changing arrow on board
-- [ ] **FEAT**: Coach or engine to play a move / reply
-- [ ] **FEAT**: If coach mentions a move show on the board
-- [ ] **UX**: Move graph and table summary to Analysis page (what's the UX)
-- [ ] Clarify evaluation perspective (player vs engine) in coach insights
+---
 
-1. **Replay & Drills**
+## Epic 2: Player-Profile Aggregation
 
-   _READ Pump up your rating and Woodpecker Method Axel Smith_
+**Goal:** Compute per-player metrics summarizing strengths, weaknesses, and play style.
 
-   - [ ] Scan games for difficult positions
-   - [ ] Let user replay positions
-   - [ ] Show WLWL stats
-   - [ ] Allow manual pinning of positions
+**Backend User Stories:**
 
-2. **Authentication** (optional)
-   - [ ] Email/password (Gmail sign-up)
-   - [ ] Link Lichess via OAuth
+- [ ] **Win/Loss/Draw Counts:**  
+       As a user, I want my overall win/loss/draw counts (by time control) so I can gauge where I perform best.
+- [ ] **Average Centipawn Loss (ACPL):**  
+       As a user, I want my ACPL by phase (opening/mid/end) so I can identify where I’m most imprecise.
+- [ ] **Missed Tactics Count:**  
+       As a user, I want counts of missed tactics (blunders ≥1.0 CP drop) so I can see my biggest tactical leaks.
+- [ ] **Opening Performance:**  
+       As a user, I want my most-played and worst-performing openings (by ECO code) so I know where to focus.
 
-## Future Ideas
+---
 
-- [ ] Support complex branching nodes in `useGameHistory` (display in MoveStepper)
-- [ ] Custom coaches with graphics (e.g. “Russian Schoolboy, Danya,” “Hikaru,”, "Gotham", “Alien Gambit”)
-- [ ] Custom instruction presets for coaches
-- [ ] Curated content links by ELO/theme (YouTube: Dr. Can, Danya; Chessable)
-- [ ] Credits page (Playtesters, Stockfish devs, etc.)
+## Epic 3: Drill-Position Extraction
 
-## Completed
+**Goal:** Surface the most instructive moments from a user’s games for targeted practice.
 
-- [x] Favicon
-- [x] Install & configure React Router
-- [x] Basic route structure
-- [x] Wire up APIs
-  - [x] Analyse Position (FEN)
-  - [x] Analyse Game (PGN)
-- [x] Fix “Failed to fetch games” on mobile
-- [x] Handle 422 “No explanation returned”
-- [x] Play moves on board and re-evaluate
-- [x] Eval bar component (Stockfish integration)
-- [x] Desktop view: side-by-side (board left, coach right)
-- [x] Deploy frontend to Vercel
-- [x] Link domain `blunderfixer.com`
-- [x] Finish wiring up `useAnalysisEngine`
-- [x] Wire up `useGameAnalysis` and verify
-- [x] Fix promotion logic
-- [x] Add missing hook for legal moves
-- [x] Fix best-move arrow suggestion
-- [x] Drop “orchestration” in favor of smaller components
-- [x] Modify `useGameAnalysis` to initialize with SAN history
-- [x] Support simple linear branching in `useGameAnalysis` (flag-controlled)
-- [x] Overhaul PGN/FEN paste (`usePGNparser`)
-- [x] Fix loading a recent game
-- [x] **BUG**: Wild eval swings (normalization issue)
-- [x] Sort out GameStoreDebug (what's the UX)
-- [x] Save 'shallow' game analysis so they don't re-run
-- [x] Remember user's handle (option to change)
-- [x] Show which games are synced
-- [x] Wire up feature extraction
-- [x] Pass `extraction` and `legalMoves` to `CoachChat` and wire up `getExplanation`
-- [x] Add loading spinner when fetching Chess.com games
-- [x] Better way to set username on first load
-- [x] Go back on setting (useNavigate)
-- [x] On game list when clicking analyse show progress spinner
-- [x] On prod fix 500 error loading /analyse-pgn (check Render.com deploy etc.)
-- [x] Link Chess.com
-- [x] QA: Verify coach analysis accuracy
-- [x] QA: Verify coach chat behavior
-- [x] **FEAT**: Chat, press enter to ask!
-- [x] **FEAT**: Empty state for coach chat?
-- [x] **FEAT**: Scroll coach chat separately from board on desktop
-- [x] _BUG_: Fix chart(s) - particularly burndown - right margin/padding on iPhone
-- [x] **FEAT**: Time burndown chart for both players
-- [x] **FEAT**: Find the critical positions based on the eval swings
-- [x] Suggest positions for insight (i.e. the move before the 12=-076543567890-1§ qa~mistake) when loading PGN
-- [x] _FIX_: Wire up hint button
-- [x] _FIX_: When I click Discuss with Coach load in the position to the LLM flow
-- [x] _FIX_: Fix issue where full analysis is needed to give good advice
-- [x] _FIX_: when clicking Discuss with Coach go to the correct move on analysis board
-- [x] _FIX_: Flip board when loading a game as Black
+**Backend User Stories:**
 
-2. **Profile Page**
-   - [x] Display basic profile info
-   - [x] (PoC) Allow changing user
+- [ ] **Flag Critical Positions:**  
+       As a user, I want the system to flag “critical positions” where evaluation swung ≥1.0 pawn or where I lost a won position, classified by tactic vs positional vs time.
+- [ ] **Tag Position Metadata:**  
+       As a user, I want each extracted position tagged with phase and theme (e.g. “fork tactic in middlegame”).
+- [ ] **Prioritize Drills:**  
+       As a user, I want a score for each drill indicating urgency (e.g. frequency of that mistake × CP drop).
+
+---
+
+## Epic 4: Player-Profile UI
+
+**Goal:** Present aggregated stats in a clear, actionable dashboard.
+
+**Frontend User Stories:**
+
+- [ ] **Summary Cards:**  
+       As a user, I want a summary card showing key metrics (win rate, ACPL, blunder rate).
+- [ ] **Interactive Charts:**  
+       As a user, I want interactive charts (bar chart for openings, pie for time controls).
+- [ ] **Filter Controls:**  
+       As a user, I want filter controls (by date range, time control) so I can slice my data.
+
+---
+
+## Epic 5: Drill-Training UI
+
+**Goal:** Let users practice extracted positions in a coach-style drill.
+
+**Frontend User Stories:**
+
+- [ ] **Drill Queue Navigation:**  
+       As a user, I want a drill queue where I step through each critical position on a chessboard.
+- [ ] **Immediate Feedback:**  
+       As a user, I want to submit my move and immediately see engine feedback.
+- [ ] **Drill Status Management:**  
+       As a user, I want to mark drills as “mastered” or “retry later” to drive spaced repetition.
+
+---
+
+## Epic 6 (Bonus): Spaced-Repetition Engine
+
+**Goal:** Schedule drills intelligently, à la Woodpecker / Pump Up Your Rating.
+
+**Backend User Stories:**
+
+- [ ] **Follow-Up Scheduling:**  
+       As the system, I want to schedule follow-up drills for positions I’ve failed multiple times, with increasing intervals.
+- [ ] **Mastered Drill De-Prioritization:**  
+       As the system, I want to lower priority on drills I’ve “mastered” to focus on weaknesses.
