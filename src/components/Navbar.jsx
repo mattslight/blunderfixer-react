@@ -58,12 +58,12 @@ export default function Navbar({ toggleSidebar }) {
               href="/"
               className="mr-4 flex items-center justify-between rounded p-1 backdrop-blur"
             >
-              <span className="self-center text-lg font-semibold whitespace-nowrap dark:text-gray-200">
+              <span className="self-center text-lg font-black whitespace-nowrap dark:text-gray-200">
                 <img
                   src={blunderLogoSvg}
                   className="mr-2 mb-0.5 ml-2 inline-flex h-8 w-8"
                 />
-                BlunderFixer
+                Blunder<span className="font-black">Fixer</span>
               </span>
             </a>
           )}
