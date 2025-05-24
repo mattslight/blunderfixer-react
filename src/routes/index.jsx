@@ -4,6 +4,7 @@ import Help from '@/pages/_placeholders/Help';
 import Insights from '@/pages/_placeholders/Insights';
 import Training from '@/pages/_placeholders/Training';
 import AnalyseGame from '@/pages/analyse';
+import Drills from '@/pages/drills';
 import GameHistory from '@/pages/games';
 import PreSignupHome from '@/pages/home/PreSignupHome';
 import NotFound from '@/pages/NotFound';
@@ -52,6 +53,14 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <Training />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/drills"
+        element={
+          <ProtectedRoute>
+            <Drills />
           </ProtectedRoute>
         }
       />
