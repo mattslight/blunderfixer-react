@@ -1,3 +1,5 @@
+// src/api/index.jsx
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // Generic helper to POST data
@@ -48,5 +50,15 @@ export async function getRecentGames(username, limit = 20) {
     `${BASE_URL}/public/players/${username}/recent-games?limit=${limit}`
   );
   if (!res.ok) throw new Error('Failed to fetch recent games');
+  return res.json();
+}
+
+export async function getDrills(username, limit = 50) {
+  const res = await fetch(
+    `${BASE_URL}/drills?username=${encodeURIComponent(username)}&limit=${limit}`
+  );
+  if (!res.ok) {
+    throw new Error(`Failed to fetch drills: ${res.status}`);
+  }
   return res.json();
 }
