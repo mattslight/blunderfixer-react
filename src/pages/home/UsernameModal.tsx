@@ -1,6 +1,7 @@
 // src/components/UsernameModal.tsx
 import { Loader, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import chessComLogo from '../../../public/chessComLogo.png';
 
 interface UsernameModalProps {
   onClose(): void;
@@ -58,10 +59,15 @@ export default function UsernameModal({
 
         {/* Header */}
         <h2 className="mt-4 mb-2 text-center text-xl font-medium text-white">
-          Enter your Chess.com username
+          Enter your{' '}
+          <img
+            src={chessComLogo}
+            className="relative bottom-1 inline-flex h-12"
+          />{' '}
+          username
         </h2>
         <p className="mb-6 text-center text-sm text-gray-400">
-          We’ll pull in your latest games for instant analysis.
+          We’ll pull in your recent games for instant analysis.
         </p>
 
         {/* Benefits */}

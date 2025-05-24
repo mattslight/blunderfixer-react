@@ -1,6 +1,6 @@
+import { TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import ConfirmModal from './ConfirmModal';
 import UsernameModal from './UsernameModal';
 
@@ -112,7 +112,7 @@ export default function HomePage() {
       <section className="bg-noise container mx-auto mt-16 mb-10 p-4 text-center">
         <h1 className="mb-4 text-center text-5xl font-extrabold text-white lg:text-7xl">
           <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-            The <span className="text-white">#1</span> AI Chess Coach
+            The <span className="text-white">#1</span> AI Chess Trainer
           </span>
         </h1>
 
@@ -142,7 +142,8 @@ export default function HomePage() {
               (it's free)
             </h3>
             <p className="text-center text-sm text-green-100">
-              Human-like coaching on your games
+              Turn blunders into wins{' '}
+              <TrendingUp className="inline-flex h-4 w-4" />
             </p>
           </div>
 
@@ -157,7 +158,7 @@ export default function HomePage() {
               Connect Chess.com
             </h3>
             <p className="text-center text-sm text-slate-400">
-              Instant reports & discover your Chess IQ™
+              Instant reports & unlock your Chess IQ™
             </p>
           </div>
         </div>
