@@ -110,3 +110,19 @@ export interface PVLine {
   mateIn?: number; // mate-in-N if applicable
   moves: string[]; // SAN moves in this PV
 }
+
+/**
+ * A drill position, used for training and practice
+ * Contains the FEN, evaluation swing, and other metadata
+ */
+export interface DrillPosition {
+  id: number;
+  game_id: string;
+  opponent: string; // new
+  result: string; // new (“Won”/“Lost”)
+  blunder_type: string; // new (“Tactical”/…)
+  fen: string;
+  ply: number;
+  eval_swing: number;
+  created_at: string;
+}
