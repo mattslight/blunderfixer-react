@@ -1,10 +1,10 @@
 // src/components/Sidebar.jsx
+import blunderLogoSvg from '@/assets/blunderfixer.svg';
 import { useProfile } from '@/hooks/useProfile';
 import { Drawer } from 'flowbite-react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import blunderLogoSvg from '../../public/blunderfixer.svg';
 import EasterEggCredits, { useRapidTaps } from './EasterEggCredits';
 
 export default function Sidebar({ isSidebarOpen, closeSidebar }) {

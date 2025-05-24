@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="64" height="64" viewBox="0 0 64 64">
+  <!-- Red circle -->
+  <circle cx="32" cy="32" r="32" fill="oklch(50.5% 0.213 27.518)" />
+
+  <!-- Right “?” first -->
+  <text x="41" y="36" fill="#FFF"
+        font-family="sans-serif"
+        font-size="48"
+        font-weight="bold"
+        text-anchor="middle"
+        dominant-baseline="middle">
+    ?
+  </text>
+
+  <!-- Left “?” on top, with red outline -->
+  <text x="21" y="36" fill="#FFF"
+        stroke="oklch(50.5% 0.213 27.518)"
+        stroke-width="8"
+        paint-order="stroke fill markers"
+        font-family="sans-serif"
+        font-size="48"
+        font-weight="bold"
+        text-anchor="middle"
+        dominant-baseline="middle">
+    ?
+  </text>
+</svg>

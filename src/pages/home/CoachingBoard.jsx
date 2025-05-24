@@ -1,10 +1,9 @@
-// ./home/CoachingBoard.jsx
-import React from 'react';
+// src/pages/home/CoachingBoard.jsx
 import { Chessboard } from 'react-chessboard';
 
+import coachImageSrc from '@/assets/coach.png';
 export default function CoachingBoard({
   boardFEN = 'r1bqk2r/pppp1pp1/2n2n1p/2b1p3/P1B1P3/2N2N2/1PPP1PPP/R1BQK2R w KQkq - 0 1',
-  coachImageSrc = '/coach.png',
   boardWidth = 360,
 }) {
   return (

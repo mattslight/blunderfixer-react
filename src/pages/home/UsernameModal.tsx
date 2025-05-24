@@ -1,7 +1,7 @@
 // src/components/UsernameModal.tsx
+import chessComLogo from '@/assets/chessComLogo.png';
 import { Loader, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import chessComLogo from '../../../public/chessComLogo.png';
 
 interface UsernameModalProps {
   onClose(): void;
