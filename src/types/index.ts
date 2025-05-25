@@ -118,11 +118,17 @@ export interface PVLine {
 export interface DrillPosition {
   id: number;
   game_id: string;
-  opponent: string; // new
-  result: string; // new (“Won”/“Lost”)
-  blunder_type: string; // new (“Tactical”/…)
+  username: string;
   fen: string;
   ply: number;
   eval_swing: number;
   created_at: string;
+  hero_result: 'win' | 'loss' | 'draw';
+  result_reason: string;
+  time_control: string;
+  time_class: string;
+  hero_rating: number;
+  opponent_username: string;
+  opponent_rating: number;
+  played_at: string;
 }

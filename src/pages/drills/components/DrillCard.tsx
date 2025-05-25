@@ -1,7 +1,8 @@
-// src/components/DrillCard.tsx
+// src/pages/drills/components/DrillCard.tsx
 import type { DrillPosition } from '@/types';
 import { formatDistanceToNow } from 'date-fns';
-import { Clock, Play } from 'lucide-react';
+import { Clock, Play, User } from 'lucide-react';
+import React from 'react';
 import { Chessboard } from 'react-chessboard';
 
 const PHASE_COLORS: Record<string, string> = {
@@ -10,101 +11,102 @@ const PHASE_COLORS: Record<string, string> = {
   Endgame: 'bg-rose-700',
 };
 
-export default function DrillCard({
+const RESULT_COLOUR: Record<string, string> = {
+  win: 'border-green-600',
+  loss: 'border-red-600',
+  draw: 'border-gray-600',
+};
+
+function formatTimeControl(tc: string): string {
+  const [base, inc] = tc.split('+');
+  const minutes = Number(base) / 60;
+  // if it’s a whole number, show “3” not “3.0”
+  const baseStr = Number.isInteger(minutes) ? `${minutes}` : minutes.toFixed(1);
+  return inc
+    ? `${baseStr}m+${inc}` // e.g. “3+2”
+    : `${baseStr}min`; // e.g. “10min”
+}
+
+function DrillCard({
   drill,
   onStartDrill,
 }: {
-  drill: DrillPosition & {
-    game_class: string; // "bullet"|"blitz"|"rapid"|"classical"
-    time_control: string; // e.g. "10+2"
-  };
+  drill: DrillPosition;
   onStartDrill: (fen: string) => void;
 }) {
   const {
     fen,
     ply,
-    created_at,
-    opponent = '—',
-    result = '—',
-    blunder_type,
-    game_class,
+    played_at,
+    time_class,
     time_control,
+    hero_result,
+    result_reason,
+    hero_rating,
+    opponent_username,
+    opponent_rating,
   } = drill;
 
   const moveNum = Math.ceil(ply / 2);
-  const side = ply % 2 === 0 ? 'Black' : 'White';
   const phase =
     moveNum <= 14 ? 'Opening' : moveNum <= 30 ? 'Middlegame' : 'Endgame';
 
-  // mock until real API supplies it:
-  const motif = 'missed_fork';
-  const motifLabel = motif
-    .split('_')
-    .map((w) => w[0].toUpperCase() + w.slice(1))
-    .join(' ');
-
   return (
-    <div className="grid grid-cols-[200px_1fr] gap-4 rounded-lg bg-gray-800 shadow hover:shadow-lg">
-      {/* BOARD */}
-      <div className="self-center">
-        <Chessboard
-          boardOrientation={side.toLowerCase() as 'white' | 'black'}
-          position={fen}
-          boardWidth={200}
-          arePiecesDraggable={false}
-          customBoardStyle={{
-            borderRadius: '0.5rem',
-            boxShadow: '0 1px 4px rgba(0,0,0,0.3)',
-          }}
-        />
-      </div>
+    <div className="grid grid-cols-[200px_1fr] gap-2 rounded-lg bg-gray-800 shadow">
+      {/* Board */}
+      <Chessboard
+        position={fen}
+        boardOrientation={ply % 2 === 0 ? 'black' : 'white'}
+        boardWidth={200}
+        arePiecesDraggable={false}
+        customBoardStyle={{ borderRadius: '0.5rem' }}
+      />
 
-      {/* DETAILS */}
-      <div className="flex flex-col justify-between p-4">
-        {/* TOP ROW: time, class, control, phase, type, motif, move */}
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-wrap items-center justify-between gap-2 text-gray-500">
-            <time className="text-xs whitespace-nowrap" dateTime={created_at}>
-              <Clock className="mr-1 inline-flex h-3 w-3 flex-shrink-0" />
-              {formatDistanceToNow(new Date(created_at))} ago
+      {/* Details */}
+      <div
+        className={`flex flex-col justify-between rounded border-r-4 p-4 ${RESULT_COLOUR[hero_result]}`}
+      >
+        {/* Top row: when drilled & when played */}
+        <div>
+          <div className="flex justify-between text-xs text-gray-400">
+            <time dateTime={played_at}>
+              <Clock className="mr-1 inline h-4 w-4" />
+              {formatDistanceToNow(new Date(played_at))} ago
             </time>
-
-            <div className="flex items-center gap-2">
-              <span
-                className={`inline-flex items-center rounded-full bg-gray-700 px-2 py-0.5 text-xs font-semibold whitespace-nowrap text-gray-400`}
-              >
-                {game_class || 'Blitz'}
-              </span>
-              <span className="inline-flex items-center rounded-full bg-gray-700 px-2 py-0.5 text-xs font-semibold whitespace-nowrap text-gray-400">
-                {time_control || '3+2'}
-              </span>
-            </div>
-          </div>
-          <div className="flex flex-wrap items-center justify-between gap-2 text-gray-500">
-            <span className="inline-flex items-center rounded-full bg-yellow-200 px-2 py-0.5 text-xs font-semibold whitespace-nowrap text-gray-700">
-              {motifLabel}
-            </span>
             <span
-              className={`inline-flex items-center rounded px-2 py-0.5 text-xs font-semibold whitespace-nowrap text-white ${PHASE_COLORS[phase]} `}
+              className={`rounded px-2 py-0.5 text-white ${PHASE_COLORS[phase]}`}
             >
               {phase}
             </span>
           </div>
+          {/* Middle row: game info */}
+          <div className="mt-4 flex items-center gap-2 text-sm">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1 rounded bg-gray-700 px-2 py-0.5 text-xs text-gray-400 capitalize">
+                {time_class}
+              </span>
+              <span className="inline-flex items-center gap-1 rounded bg-gray-700 px-2 py-0.5 text-xs text-gray-400">
+                {formatTimeControl(time_control)}
+              </span>
+              <span className="inline-flex items-center gap-1 rounded bg-gray-700 px-2 py-0.5 text-xs text-gray-400">
+                <User className="h-3 w-3" />
+                {opponent_username}&nbsp;({opponent_rating})
+              </span>
+            </div>
+          </div>
         </div>
 
-        {/* FOOTER */}
-        <div className="mt-4 flex items-center justify-between">
-          <span className="text-sm whitespace-nowrap text-gray-300">
-            vs {opponent} • {result}
-          </span>
-          <button
-            onClick={() => onStartDrill(fen)}
-            className="flex items-center space-x-1 rounded bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700"
-          >
-            Play <Play className="ml-2" size={14} />
-          </button>
-        </div>
+        {/* Play button */}
+        <button
+          onClick={() => onStartDrill(fen)}
+          className="mt-4 inline-flex items-center gap-1 self-end rounded bg-green-600 px-3 py-1 text-sm font-semibold text-white hover:bg-green-700"
+        >
+          <Play size={14} />
+          Drill
+        </button>
       </div>
     </div>
   );
 }
+
+export default React.memo(DrillCard);

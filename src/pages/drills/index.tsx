@@ -56,12 +56,13 @@ export default function DrillsPage() {
         // Swing filter: show only drills with swing ≤ cutoff
         if (Math.abs(d.eval_swing) > cutoffCenti) return false;
 
-        // Search filter
+        // Search filter (case-insensitive against opponent and game ID)
         if (search) {
-          const inId = d.game_id.includes(search);
-          const inOpp = (d.opponent || '').includes(search);
-          if (!inId && !inOpp) return false;
+          const s = search.trim().toLowerCase();
+          const inOpp = d.opponent_username.toLowerCase().includes(s);
+          if (!inOpp) return false;
         }
+
         return true;
       }),
     [drills, phaseFilter, cutoffCenti, search]
@@ -71,9 +72,8 @@ export default function DrillsPage() {
     <div className="p-4 pt-8 2xl:ml-12">
       <div className="mx-auto max-w-lg space-y-4">
         <span className="inline-block py-0.5 text-xs font-semibold tracking-wider text-blue-400 uppercase">
-          Your Drills ({filtered.length}/{drills.length})
+          Your Drills
         </span>
-
         {/* Controls */}
         <div className="flex flex-wrap items-center justify-between gap-2">
           {/* Phase badges */}
@@ -101,7 +101,7 @@ export default function DrillsPage() {
         <div className="mt-2 flex items-center justify-between gap-4">
           {/* Search */}
           <TextInput
-            placeholder="Search"
+            placeholder="Search opponent"
             value={search}
             onChange={(e) => setSearch(e.currentTarget.value)}
             className="flex-1"
@@ -120,7 +120,9 @@ export default function DrillsPage() {
             />
           </div>
         </div>
-
+        <div className="text-sm text-gray-400">
+          Showing {filtered.length} of {drills.length}
+        </div>
         {/* List */}
         <DrillList
           drills={filtered}
