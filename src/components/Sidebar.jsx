@@ -58,8 +58,8 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
       ),
     },
     {
-      to: '/train',
-      label: 'Train',
+      to: '/drills',
+      label: 'Drills',
       Icon: ({ className }) => (
         <svg
           aria-hidden="true"
