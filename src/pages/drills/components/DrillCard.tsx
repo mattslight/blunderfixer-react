@@ -1,6 +1,6 @@
 // src/pages/drills/components/DrillCard.tsx
 import type { DrillPosition } from '@/types';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, parseISO } from 'date-fns';
 import { Clock, Play, User } from 'lucide-react';
 import React from 'react';
 import { Chessboard } from 'react-chessboard';
@@ -41,22 +41,23 @@ function DrillCard({
     time_class,
     time_control,
     hero_result,
-    result_reason,
-    hero_rating,
     opponent_username,
     opponent_rating,
   } = drill;
 
-  const moveNum = Math.ceil(ply / 2);
-  const phase =
-    moveNum <= 14 ? 'Opening' : moveNum <= 30 ? 'Middlegame' : 'Endgame';
+  const phase = ply <= 20 ? 'Opening' : ply <= 40 ? 'Middlegame' : 'Endgame';
+
+  const dt = parseISO(played_at);
+  console.log('played_at →', played_at);
+  console.log('parsed ISO →', dt.toString(), '/', dt.toISOString());
+  console.log('offset mins →', dt.getTimezoneOffset());
 
   return (
     <div className="grid grid-cols-[200px_1fr] gap-2 rounded-lg bg-gray-800 shadow">
       {/* Board */}
       <Chessboard
         position={fen}
-        boardOrientation={ply % 2 === 0 ? 'black' : 'white'}
+        boardOrientation={ply % 2 === 1 ? 'black' : 'white'}
         boardWidth={200}
         arePiecesDraggable={false}
         customBoardStyle={{ borderRadius: '0.5rem' }}
@@ -70,8 +71,10 @@ function DrillCard({
         <div>
           <div className="flex justify-between text-xs text-gray-400">
             <time dateTime={played_at}>
-              <Clock className="mr-1 inline h-4 w-4" />
-              {formatDistanceToNow(new Date(played_at))} ago
+              <Clock className="relative bottom-0.25 mr-1 inline h-3 w-3" />
+              {formatDistanceToNow(parseISO(played_at), {
+                addSuffix: true,
+              }).replace(/^about\s*/, '')}
             </time>
             <span
               className={`rounded px-2 py-0.5 text-white ${PHASE_COLORS[phase]}`}
