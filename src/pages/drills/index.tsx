@@ -54,7 +54,7 @@ export default function DrillsPage() {
       drills.filter((d) => {
         // Phase filter (unchanged)
         const phase =
-          d.ply <= 20 ? 'opening' : d.ply <= 40 ? 'middlegame' : 'endgame';
+          d.ply <= 20 ? 'opening' : d.ply <= 50 ? 'middlegame' : 'endgame';
         if (phaseFilter !== 'all' && phase !== phaseFilter) return false;
 
         // Swing filter: show only drills with  minCutoff ≤ swing ≤ maxCutoff

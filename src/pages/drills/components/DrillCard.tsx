@@ -45,7 +45,7 @@ function DrillCard({
     opponent_rating,
   } = drill;
 
-  const phase = ply <= 20 ? 'Opening' : ply <= 40 ? 'Middlegame' : 'Endgame';
+  const phase = ply <= 20 ? 'Opening' : ply <= 50 ? 'Middlegame' : 'Endgame';
 
   const dt = parseISO(played_at);
   console.log('played_at →', played_at);
@@ -65,7 +65,7 @@ function DrillCard({
 
       {/* Details */}
       <div
-        className={`flex flex-col justify-between rounded border-r-4 p-4 ${RESULT_COLOUR[hero_result]}`}
+        className={`flex flex-col justify-between rounded border-r-4 p-4 tracking-wide ${RESULT_COLOUR[hero_result]}`}
       >
         {/* Top row: when drilled & when played */}
         <div>
@@ -77,7 +77,7 @@ function DrillCard({
               }).replace(/^about\s*/, '')}
             </time>
             <span
-              className={`rounded px-2 py-0.5 text-white ${PHASE_COLORS[phase]}`}
+              className={`rounded px-2 py-0.5 text-xs font-semibold text-gray-300 ${PHASE_COLORS[phase]}`}
             >
               {phase}
             </span>
@@ -102,7 +102,7 @@ function DrillCard({
         {/* Play button */}
         <button
           onClick={() => onStartDrill(fen)}
-          className="mt-4 inline-flex items-center gap-1 self-end rounded bg-green-600 px-3 py-1 text-sm font-semibold text-white hover:bg-green-700"
+          className="mt-4 inline-flex items-center gap-1 self-end rounded bg-green-600 px-3 py-2 text-sm font-semibold text-white hover:bg-green-700"
         >
           <Play size={14} />
           Drill
