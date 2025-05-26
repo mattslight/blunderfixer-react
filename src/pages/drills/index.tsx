@@ -1,12 +1,15 @@
 // src/pages/DrillsPage.tsx
 import { useProfile } from '@/hooks/useProfile';
 import { usePullToRefresh } from '@/hooks/usePullToRefresh';
-import { Badge, RangeSlider, TextInput } from 'flowbite-react';
+import { Badge, TextInput } from 'flowbite-react';
 import { RefreshCw } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
+import RangeSlider from 'react-range-slider-input';
 import { useNavigate } from 'react-router-dom';
 import DrillList from './components/DrillList';
 import { useDrills } from './hooks/useDrills';
+
+import 'react-range-slider-input/dist/style.css';
 
 const PHASE_COLORS: Record<string, string> = {
   all: 'bg-gray-600',
@@ -23,10 +26,6 @@ export default function DrillsPage() {
   const { drills, loading, refresh } = useDrills(username);
   usePullToRefresh(refresh);
 
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
-
   // phase & search
   const [phaseFilter, setPhaseFilter] = useState<
     'all' | 'opening' | 'middlegame' | 'endgame'
@@ -34,27 +33,36 @@ export default function DrillsPage() {
   const [search, setSearch] = useState('');
 
   // 1) Define your thresholds (in pawns), and matching labels:
-  const thresholdOptions = [2.5, 3, 5, 10, Infinity] as const;
-  const thresholdLabels = ['< 2', '< 3', '< 5', '< 10', 'All'] as const;
+  const thresholdOptions = [0, 2.5, 3, 5, 10, 100, Infinity] as const;
 
   // 2) Start slider at the **last index** so default = All
-  const [thrIdx, setThrIdx] = useState(thresholdOptions.length - 1);
+  const [rangeIdx, setRangeIdx] = useState<[number, number]>([
+    0,
+    thresholdOptions.length - 1,
+  ]);
 
   // 3) Convert to centi-pawns once
-  const cutoffCenti = useMemo(() => thresholdOptions[thrIdx] * 100, [thrIdx]);
+  const [minIdx, maxIdx] = rangeIdx;
+  const [minCutoff, maxCutoff] = [
+    thresholdOptions[minIdx] * 100,
+    thresholdOptions[maxIdx] * 100,
+  ];
 
   // 4) Filter drills
   const filtered = useMemo(
     () =>
       drills.filter((d) => {
         // Phase filter (unchanged)
-        const moveNo = Math.ceil(d.ply / 2);
         const phase =
-          moveNo <= 14 ? 'opening' : moveNo <= 30 ? 'middlegame' : 'endgame';
+          d.ply <= 20 ? 'opening' : d.ply <= 40 ? 'middlegame' : 'endgame';
         if (phaseFilter !== 'all' && phase !== phaseFilter) return false;
 
-        // Swing filter: show only drills with swing ≤ cutoff
-        if (Math.abs(d.eval_swing) > cutoffCenti) return false;
+        // Swing filter: show only drills with  minCutoff ≤ swing ≤ maxCutoff
+        if (
+          Math.abs(d.eval_swing) < minCutoff ||
+          Math.abs(d.eval_swing) > maxCutoff
+        )
+          return false;
 
         // Search filter (case-insensitive against opponent and game ID)
         if (search) {
@@ -65,7 +73,7 @@ export default function DrillsPage() {
 
         return true;
       }),
-    [drills, phaseFilter, cutoffCenti, search]
+    [drills, phaseFilter, search, minCutoff, maxCutoff]
   );
 
   return (
@@ -77,7 +85,7 @@ export default function DrillsPage() {
         {/* Controls */}
         <div className="flex flex-wrap items-center justify-between gap-2">
           {/* Phase badges */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 text-gray-300">
             {(['all', 'opening', 'middlegame', 'endgame'] as const).map((p) => (
               <Badge
                 key={p}
@@ -108,19 +116,25 @@ export default function DrillsPage() {
           />
 
           {/* Discrete slider: left = hardest, right = All */}
-          <div className="flex items-baseline space-x-2">
-            <span className="text-sm">Max swing {thresholdLabels[thrIdx]}</span>
-            <RangeSlider
-              value={thrIdx}
-              onChange={(e) => setThrIdx(Number(e.currentTarget.value))}
-              min={0}
-              max={thresholdOptions.length - 1}
-              step={1}
-              className="w-32"
-            />
+          <div className="flex items-baseline space-x-2 border-l border-gray-800 py-2 pl-3">
+            <span className="text-sm font-medium text-gray-300">
+              Blunder Size
+            </span>
+            <span className="text-xs font-bold text-gray-500">xs</span>
+            <div className="w-32">
+              <RangeSlider
+                min={0}
+                max={thresholdOptions.length - 1}
+                step={1}
+                value={rangeIdx}
+                onInput={(vals) => setRangeIdx(vals as [number, number])}
+                className="h-2"
+              />
+            </div>
+            <span className="text-xs font-bold text-gray-500">lg</span>
           </div>
         </div>
-        <div className="text-sm text-gray-400">
+        <div className="mt-10 text-sm text-gray-500">
           Showing {filtered.length} of {drills.length}
         </div>
         {/* List */}
