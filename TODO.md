@@ -1,5 +1,6 @@
 # TODO
 
+[ ] Make drill filters useSticky
 [ ] Ability to actually play the drill
 [ ] Load new games and drills when logging in
 [ ] Load games from DB
