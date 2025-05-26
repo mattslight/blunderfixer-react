@@ -105,7 +105,7 @@ function DrillCard({
         {/* Play button */}
         <button
           onClick={() => onStartDrill(fen)}
-          className="mt-4 inline-flex items-center gap-1 self-end rounded bg-green-600 px-3 py-2 text-sm font-semibold text-white hover:bg-green-700"
+          className="mt-4 inline-flex items-center gap-1 self-end rounded bg-green-600 px-5 py-2 text-sm font-semibold text-white hover:bg-green-700"
         >
           <Play size={14} />
           Drill
