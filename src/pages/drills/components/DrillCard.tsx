@@ -61,6 +61,12 @@ function DrillCard({
         boardWidth={200}
         arePiecesDraggable={false}
         customBoardStyle={{ borderRadius: '0.5rem' }}
+        customDarkSquareStyle={{
+          backgroundColor: '#B1B7C8',
+        }}
+        customLightSquareStyle={{
+          backgroundColor: '#F5F2E6',
+        }}
       />
 
       {/* Details */}
