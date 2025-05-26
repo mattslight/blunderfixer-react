@@ -1,3 +1,5 @@
+// src/pages/drills/hooks/useDrills.ts
+
 import { getDrills } from '@/api';
 import useSWR from 'swr';
 
