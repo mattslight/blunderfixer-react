@@ -139,8 +139,6 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
     profile: { username },
   } = useProfile();
 
-  console.log('username', username);
-
   if (!username) return null;
 
   return (

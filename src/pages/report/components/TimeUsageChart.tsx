@@ -208,7 +208,7 @@ export default function TimeUsageChart({
               data={burnData}
               margin={{ top: 0, right: 24, bottom: 0, left: 0 }}
               onClick={(data: any) => {
-                console.log('click', data);
+                //console.log('click', data);
                 const ply = data?.activeLabel * 2;
                 if (ply !== undefined) {
                   handlePositionSelect(ply);

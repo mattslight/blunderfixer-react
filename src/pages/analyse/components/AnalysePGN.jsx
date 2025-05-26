@@ -6,6 +6,8 @@ import { Chess } from 'chess.js';
 import AnalysePosition from './BoardAndEval';
 import MoveStepper from './MoveStepper';
 
+const DEBUG = false; // Set to true for debugging output
+
 export default function AnalysePGN({ pgn, onBack }) {
   const [fens, setFens] = useState([]);
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -26,7 +28,7 @@ export default function AnalysePGN({ pgn, onBack }) {
 
     const moveList = chess.history(); // <-- get plain SAN strings
     setMoveList(moveList);
-    console.log(moveList);
+    DEBUG && console.log(moveList);
 
     chess.reset();
     const arr = [chess.fen()];
@@ -35,7 +37,7 @@ export default function AnalysePGN({ pgn, onBack }) {
       arr.push(chess.fen());
     });
     setFens(arr);
-    console.log('Parsed FENs:', arr);
+    DEBUG && console.log('Parsed FENs:', arr);
     setCurrentIdx(0);
   }, [pgn]);
 

@@ -44,7 +44,7 @@ export default function EvalGraph({
             data={enriched}
             margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
             onClick={(data: any) => {
-              console.log('click', data);
+              //console.log('click', data);
               const ply = data?.activeLabel;
               if (ply !== undefined) {
                 handlePositionSelect(ply);

@@ -47,11 +47,6 @@ function DrillCard({
 
   const phase = ply <= 20 ? 'Opening' : ply <= 50 ? 'Middlegame' : 'Endgame';
 
-  const dt = parseISO(played_at);
-  console.log('played_at →', played_at);
-  console.log('parsed ISO →', dt.toString(), '/', dt.toISOString());
-  console.log('offset mins →', dt.getTimezoneOffset());
-
   return (
     <div className="grid grid-cols-[200px_1fr] gap-2 rounded-lg bg-gray-800 shadow">
       {/* Board */}
