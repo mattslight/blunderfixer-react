@@ -100,23 +100,23 @@ export default function DrillsPage() {
           <button
             onClick={refresh}
             disabled={loading}
-            className="inline-flex items-center rounded-full bg-gray-800 px-3 py-1 text-xs text-gray-300 hover:bg-gray-700 disabled:opacity-50"
+            className="xs:inline-flex hidden items-center rounded-full bg-gray-800 px-3 py-1 text-xs text-gray-300 hover:bg-gray-700 disabled:opacity-50"
           >
-            <RefreshCw className="mr-2 h-4 w-4" />
-            Refresh
+            <RefreshCw className="h-4 w-4" />
+            <span className="xs:block ml-2 hidden">Refresh</span>
           </button>
         </div>
-        <div className="mt-2 flex items-center justify-between gap-4">
+        <div className="mt-2 flex flex-wrap items-center justify-between gap-4">
           {/* Search */}
           <TextInput
             placeholder="Search opponent"
             value={search}
             onChange={(e) => setSearch(e.currentTarget.value)}
-            className="flex-1"
+            className="min-w-40 flex-1"
           />
 
           {/* Discrete slider: left = hardest, right = All */}
-          <div className="flex items-baseline space-x-2 border-l border-gray-800 py-2 pl-3">
+          <div className="xs:border-l xs:border-gray-800 xs:pl-3 flex items-baseline space-x-2 py-2">
             <span className="text-sm font-medium text-gray-300">
               Blunder Size
             </span>
@@ -128,7 +128,6 @@ export default function DrillsPage() {
                 step={1}
                 value={rangeIdx}
                 onInput={(vals) => setRangeIdx(vals as [number, number])}
-                className="h-2"
               />
             </div>
             <span className="text-xs font-bold text-gray-500">lg</span>

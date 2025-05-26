@@ -48,12 +48,14 @@ function DrillCard({
   const phase = ply <= 20 ? 'Opening' : ply <= 50 ? 'Middlegame' : 'Endgame';
 
   return (
-    <div className="grid grid-cols-[200px_1fr] gap-2 rounded-lg bg-gray-800 shadow">
+    <div
+      className={`xs:grid-cols-[200px_1fr] grid gap-2 rounded-lg bg-gray-800 shadow`}
+    >
       {/* Board */}
       <Chessboard
         position={fen}
         boardOrientation={ply % 2 === 1 ? 'black' : 'white'}
-        boardWidth={200}
+        //boardWidth={200}
         arePiecesDraggable={false}
         customBoardStyle={{ borderRadius: '0.5rem' }}
         customDarkSquareStyle={{
@@ -66,7 +68,7 @@ function DrillCard({
 
       {/* Details */}
       <div
-        className={`flex flex-col justify-between rounded border-r-4 p-4 tracking-wide ${RESULT_COLOUR[hero_result]}`}
+        className={`xs:border-r-4 xs:border-b-0 flex flex-col justify-between rounded border-b-4 p-4 tracking-wide ${RESULT_COLOUR[hero_result]}`}
       >
         {/* Top row: when drilled & when played */}
         <div>
