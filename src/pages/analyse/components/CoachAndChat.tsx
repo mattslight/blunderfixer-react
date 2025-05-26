@@ -1,13 +1,11 @@
 // src/pages/analyse/components/CoachAndChat.tsx
+import coachImageSrc from '@/assets/coach.png';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Lightbulb, Send, Zap } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-
 import { Msg, useCoach } from '../hooks/useCoach';
-
-const coachImageSrc = '/coach.png';
 
 type Props = {
   fen: string;
