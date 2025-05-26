@@ -1,21 +1,13 @@
-# Epics & User Stories
+# TODO
 
----
-
-## Epic 1: Game-Archive Pipeline
-
-**Goal:** Reliably fetch and store every user’s Chess.com games for downstream processing.
-
-**Backend User Stories:**
-
-- [x] **Enqueue Fetch Jobs:**  
-       As the system, I want to enqueue a fetch-jobs task whenever a user logs in so that their latest games are pulled in the background.
-- [x] **Download Game Archives:**  
-       As the system, I want to download paginated Chess.com archives (by username) and persist the raw JSON/PGN to object storage or a `games` table.
-- [x] **Record Fetch Metadata:**  
-       As the system, I want to record metadata (fetch timestamp, archive URL, status) so I can retry failures and track freshness.
-
----
+[ ] Ability to actually play the drill
+[ ] Load new games and drills when logging in
+[ ] Load games from DB
+[ ] Win / loss stats for the drill
+[ ] Mark drill as 'don't show me this again'
+[x] Remove the red / green bar on the drills
+[x] Make range slider full width on mobile
+[x] All / Opening / Middle / Endgame make easier to tap on mobile
 
 ## Epic 2: Player-Profile Aggregation
 
