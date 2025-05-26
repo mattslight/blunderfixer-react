@@ -80,7 +80,7 @@ export default function DrillsPage() {
     <div className="p-4 pt-8 2xl:ml-12">
       <div className="mx-auto max-w-lg space-y-4">
         <span className="inline-block py-0.5 text-xs font-semibold tracking-wider text-blue-400 uppercase">
-          Your Drills
+          Drills
         </span>
         {/* Controls */}
         <div className="flex flex-wrap items-center justify-between gap-2">
@@ -90,7 +90,7 @@ export default function DrillsPage() {
               <Badge
                 key={p}
                 onClick={() => setPhaseFilter(p)}
-                className={`cursor-pointer rounded ${phaseFilter == p && PHASE_COLORS[p]}`}
+                className={`cursor-pointer rounded border-1 border-gray-800 px-3 py-2 ${phaseFilter == p && PHASE_COLORS[p]}`}
               >
                 {p.charAt(0).toUpperCase() + p.slice(1)}
               </Badge>
@@ -116,12 +116,12 @@ export default function DrillsPage() {
           />
 
           {/* Discrete slider: left = hardest, right = All */}
-          <div className="xs:border-l xs:border-gray-800 xs:pl-3 flex items-baseline space-x-2 py-2">
+          <div className="flex items-baseline space-x-2 py-2">
             <span className="text-sm font-medium text-gray-300">
               Blunder Size
             </span>
             <span className="text-xs font-bold text-gray-500">xs</span>
-            <div className="w-32">
+            <div className="w-50">
               <RangeSlider
                 min={0}
                 max={thresholdOptions.length - 1}

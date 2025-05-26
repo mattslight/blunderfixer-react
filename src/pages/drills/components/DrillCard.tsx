@@ -11,11 +11,11 @@ const PHASE_COLORS: Record<string, string> = {
   Endgame: 'bg-rose-700',
 };
 
-const RESULT_COLOUR: Record<string, string> = {
-  win: 'border-green-600',
-  loss: 'border-red-600',
-  draw: 'border-gray-600',
-};
+// const RESULT_COLOUR: Record<string, string> = {
+//   win: 'border-green-600',
+//   loss: 'border-red-600',
+//   draw: 'border-gray-600',
+// };
 
 function formatTimeControl(tc: string): string {
   const [base, inc] = tc.split('+');
@@ -68,7 +68,7 @@ function DrillCard({
 
       {/* Details */}
       <div
-        className={`xs:border-r-4 xs:border-b-0 flex flex-col justify-between rounded border-b-4 p-4 tracking-wide ${RESULT_COLOUR[hero_result]}`}
+        className={`flex flex-col justify-between rounded p-4 tracking-wide`}
       >
         {/* Top row: when drilled & when played */}
         <div>
