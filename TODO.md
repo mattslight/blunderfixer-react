@@ -12,7 +12,7 @@
        As the system, I want to enqueue a fetch-jobs task whenever a user logs in so that their latest games are pulled in the background.
 - [x] **Download Game Archives:**  
        As the system, I want to download paginated Chess.com archives (by username) and persist the raw JSON/PGN to object storage or a `games` table.
-- [ ] **Record Fetch Metadata:**  
+- [x] **Record Fetch Metadata:**  
        As the system, I want to record metadata (fetch timestamp, archive URL, status) so I can retry failures and track freshness.
 
 ---
@@ -40,11 +40,11 @@
 
 **Backend User Stories:**
 
-- [ ] **Flag Critical Positions:**  
+- [x] **Flag Critical Positions:**  
        As a user, I want the system to flag “critical positions” where evaluation swung ≥1.0 pawn or where I lost a won position, classified by tactic vs positional vs time.
 - [ ] **Tag Position Metadata:**  
        As a user, I want each extracted position tagged with phase and theme (e.g. “fork tactic in middlegame”).
-- [ ] **Prioritize Drills:**  
+- [x] **Prioritize Drills:**  
        As a user, I want a score for each drill indicating urgency (e.g. frequency of that mistake × CP drop).
 
 ---
@@ -70,7 +70,7 @@
 
 **Frontend User Stories:**
 
-- [ ] **Drill Queue Navigation:**  
+- [x] **Drill Queue Navigation:**  
        As a user, I want a drill queue where I step through each critical position on a chessboard.
 - [ ] **Immediate Feedback:**  
        As a user, I want to submit my move and immediately see engine feedback.
