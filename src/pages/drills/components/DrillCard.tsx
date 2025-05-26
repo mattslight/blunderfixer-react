@@ -72,7 +72,7 @@ function DrillCard({
       >
         {/* Top row: when drilled & when played */}
         <div>
-          <div className="flex justify-between text-xs text-gray-400">
+          <div className="flex items-center justify-between text-xs text-gray-400">
             <time dateTime={played_at}>
               <Clock className="relative bottom-0.25 mr-1 inline h-3 w-3" />
               {formatDistanceToNow(parseISO(played_at), {
@@ -80,7 +80,7 @@ function DrillCard({
               }).replace(/^about\s*/, '')}
             </time>
             <span
-              className={`rounded px-2 py-0.5 text-xs font-semibold text-gray-300 ${PHASE_COLORS[phase]}`}
+              className={`rounded-full px-2.5 py-1 text-xs font-semibold text-gray-300 ${PHASE_COLORS[phase]}`}
             >
               {phase}
             </span>
