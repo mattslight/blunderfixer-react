@@ -1,6 +1,7 @@
 // src/pages/DrillsPage.tsx
 import { useProfile } from '@/hooks/useProfile';
 import { usePullToRefresh } from '@/hooks/usePullToRefresh';
+import { useStickyValue } from '@/hooks/useStickyValue';
 import { Badge, TextInput } from 'flowbite-react';
 import { RefreshCw } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -27,19 +28,19 @@ export default function DrillsPage() {
   usePullToRefresh(refresh);
 
   // phase & search
-  const [phaseFilter, setPhaseFilter] = useState<
+  const [phaseFilter, setPhaseFilter] = useStickyValue<
     'all' | 'opening' | 'middlegame' | 'endgame'
-  >('all');
+  >('drillPhaseFilter', 'all');
   const [search, setSearch] = useState('');
 
   // 1) Define your thresholds (in pawns), and matching labels:
   const thresholdOptions = [0, 2.5, 3, 5, 10, 100, Infinity] as const;
 
   // 2) Start slider at the **last index** so default = All
-  const [rangeIdx, setRangeIdx] = useState<[number, number]>([
-    0,
-    thresholdOptions.length - 1,
-  ]);
+  const [rangeIdx, setRangeIdx] = useStickyValue<[number, number]>(
+    'drillRangeIdx',
+    [0, thresholdOptions.length - 1]
+  );
 
   // 3) Convert to centi-pawns once
   const [minIdx, maxIdx] = rangeIdx;
