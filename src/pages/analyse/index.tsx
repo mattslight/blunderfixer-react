@@ -2,12 +2,12 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import useAnalysisEngine from './hooks/useAnalysisEngine';
+import useAnalysisEngine from '@/hooks/useAnalysisEngine';
+import useGameHistory from '@/hooks/useGameHistory';
+import useMoveInput from '@/hooks/useMoveInput';
 import useFeatureExtraction from './hooks/useFeatureExtraction';
-import useGameHistory from './hooks/useGameHistory';
 import useGameInputParser from './hooks/useGameInputParser';
 import useKeyboardNavigation from './hooks/useKeyboardNavigation';
-import useMoveInput from './hooks/useMoveInput';
 
 import { AnalysisToolbar, PasteModal } from './components/AnalysisModals';
 import BoardAndEval from './components/BoardAndEval';
