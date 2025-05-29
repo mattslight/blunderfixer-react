@@ -48,6 +48,37 @@ body {
   display: none; /* Chrome, Safari, Opera */
 }
 
+/** icon shake styles */
+.shake-icon {
+  transform-origin: center; /* center pivot for rotation */
+  transform-box: fill-box; /* ensure correct origin in SVG context */
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+.shake-icon:hover {
+  animation: rotate-shake 0.4s ease-in-out;
+}
+@keyframes rotate-shake {
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-10deg);
+  }
+  40% {
+    transform: rotate(10deg);
+  }
+  60% {
+    transform: rotate(-10deg);
+  }
+  80% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
 /** range slider styles */
 .range-slider {
   touch-action: none;
