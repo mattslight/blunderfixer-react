@@ -1,11 +1,12 @@
 # TODO
 
-[ ] Make drill filters useSticky
-[ ] Ability to actually play the drill
+[ ] Ability to actually play the drill - /drills/{id} should load the FEN for the position into a board and use the hooks to capture gameplay against stockfish (need to consider from the /analyse page which hooks are needed, how do we make a play vs stockfish hook)
+
 [ ] Load new games and drills when logging in
 [ ] Load games from DB
 [ ] Win / loss stats for the drill
 [ ] Mark drill as 'don't show me this again'
+[x] Make drill filters useSticky
 [x] Remove the red / green bar on the drills
 [x] Make range slider full width on mobile
 [x] All / Opening / Middle / Endgame make easier to tap on mobile
