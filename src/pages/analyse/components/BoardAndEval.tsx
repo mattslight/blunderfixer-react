@@ -2,11 +2,11 @@
 import { CSSProperties, useEffect, useRef, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
 
+import MoveStepper from '@/components/MoveStepper';
 import ToggleSwitch from '@/components/ToggleSwitch';
 import { useStickyValue } from '@/hooks/useStickyValue';
 import ContinuationToggle from './ContinuationToggle';
 import EvalBar from './EvalBar';
-import MoveStepper from './MoveStepper';
 
 export default function BoardAndEval({
   fen,
