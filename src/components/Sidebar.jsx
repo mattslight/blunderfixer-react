@@ -157,7 +157,7 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
         >
           <img
             src={blunderLogoSvg}
-            className="mr-1.5 mb-0.5 ml-2 inline-flex h-6 w-6"
+            className="shake-icon mr-1.5 mb-0.5 ml-2 inline-flex h-6 w-6"
           />
           BlunderFixer
         </div>
