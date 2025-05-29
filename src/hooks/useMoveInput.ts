@@ -94,13 +94,15 @@ export default function useMoveInput(boardFEN, makeMove) {
     return makeMove(fromSq, toSq, match.promotion);
   }
 
-  function onPromotionPieceSelect(choice) {
-    // extract the second character and lower-case it: "Q" → "q"
+  function onPromotionPieceSelect(choice: string): boolean {
     const promotion = choice.charAt(1).toLowerCase();
-    makeMove(from, to, promotion);
+    if (from && to) {
+      makeMove(from, to, promotion);
+    }
     setFrom(null);
     setTo(null);
     setShowPromotionDialog(false);
+    return true;
   }
 
   return {
