@@ -141,8 +141,10 @@ export default function DrillsPage() {
         <DrillList
           drills={filtered}
           loading={loading}
-          onStartDrill={(fen) =>
-            navigate(`/coach?fen=${encodeURIComponent(fen)}`)
+          onStartDrill={(fen, orientation) =>
+            navigate('/drills/play', {
+              state: { fen, orientation },
+            })
           }
         />
       </div>
