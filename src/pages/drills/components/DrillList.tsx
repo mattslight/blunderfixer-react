@@ -7,7 +7,7 @@ import DrillCard from './DrillCard';
 interface Props {
   drills: DrillPosition[];
   loading: boolean;
-  onStartDrill: (fen: string) => void;
+  onStartDrill: (fen: string, orientation: 'black' | 'white') => void;
 }
 
 export default function DrillList({ drills, loading, onStartDrill }: Props) {
