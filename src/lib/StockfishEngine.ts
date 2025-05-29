@@ -1,5 +1,5 @@
 // src/lib/StockfishEngine.ts
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 const DEBUG = false;
 
@@ -30,12 +30,11 @@ export class StockfishEngine {
       const msg = e.data as string;
       DEBUG && console.log('[StockfishEngine] [RAW]', msg);
       if (msg.trim() === 'readyok') {
-        // resolve handshake, then re-arm
         DEBUG && console.log('[StockfishEngine] ⬅ readyok');
         this.resolveReady();
+        // re-arm for next isready
         this.readyPromise = new Promise((res) => (this.resolveReady = res));
       }
-      // always publish all lines
       this.lines$.next(msg);
     });
 
@@ -50,6 +49,9 @@ export class StockfishEngine {
     this.worker.postMessage(cmd);
   }
 
+  /**
+   * Start a depth-limited analysis (streams info through lines$)
+   */
   async analyze(fen: string, depth: number) {
     DEBUG && console.log('[StockfishEngine] ▶ ANALYZE start', { fen, depth });
 
@@ -57,13 +59,8 @@ export class StockfishEngine {
     this.send('isready');
     DEBUG && console.log('[StockfishEngine] → isready sent, waiting…');
 
-    const t0 = performance.now();
     await this.readyPromise;
-    const t1 = performance.now();
-    DEBUG &&
-      console.log(
-        `[StockfishEngine] ⬅ got readyok after ${(t1 - t0).toFixed(0)}ms`
-      );
+    DEBUG && console.log('[StockfishEngine] ⬅ got readyok');
 
     this.send('ucinewgame');
     this.send(`position fen ${fen}`);
@@ -71,11 +68,49 @@ export class StockfishEngine {
     DEBUG && console.log('[StockfishEngine] → go sent');
   }
 
+  /**
+   * Compute the best move for the given position and depth.
+   * Returns a Promise resolving to the UCI string of the best move.
+   */
+  async bestMove(fen: string, depth: number): Promise<string> {
+    // stop any existing search and wait ready
+    this.send('stop');
+    this.send('isready');
+    await this.readyPromise;
+
+    // set up new game and position
+    this.send('ucinewgame');
+    this.send(`position fen ${fen}`);
+    this.send(`go depth ${depth}`);
+
+    return new Promise<string>((resolve, reject) => {
+      let sub: Subscription;
+      sub = this.lines$.subscribe((msg) => {
+        if (msg.startsWith('bestmove')) {
+          const parts = msg.split(' ');
+          const best = parts[1];
+          if (best) {
+            resolve(best);
+          } else {
+            reject(new Error('StockfishEngine.bestMove: no bestmove token'));
+          }
+          sub.unsubscribe();
+        }
+      });
+    });
+  }
+
+  /**
+   * Cancel any ongoing search
+   */
   stop() {
     DEBUG && console.log('[StockfishEngine] stop');
     this.send('stop');
   }
 
+  /**
+   * Quit the engine (terminate worker)
+   */
   quit() {
     DEBUG && console.log('[StockfishEngine] quit');
     this.send('quit');
