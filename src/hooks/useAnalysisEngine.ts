@@ -2,7 +2,7 @@
 import { uciToArrow, uciToMove } from '@/lib/uci';
 import { Chess } from 'chess.js';
 import { useEffect, useMemo, useState } from 'react';
-import { useStockfish } from './useStockfish';
+import { useStockfish } from '../pages/analyse/hooks/useStockfish';
 
 const DEBUG = false;
 export default function useAnalysisEngine(boardFEN: string) {
