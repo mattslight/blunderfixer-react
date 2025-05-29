@@ -87,7 +87,7 @@ function DrillCard({
           </div>
           {/* Middle row: game info */}
           <div className="mt-4 flex items-center gap-2 text-sm">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1 rounded bg-gray-700 px-2 py-0.5 text-xs text-gray-400 capitalize">
                 {time_class}
               </span>
@@ -96,7 +96,9 @@ function DrillCard({
               </span>
               <span className="inline-flex items-center gap-1 rounded bg-gray-700 px-2 py-0.5 text-xs text-gray-400">
                 <User className="h-3 w-3" />
-                {opponent_username}&nbsp;({opponent_rating})
+                <p className="line-clamp-1">
+                  {opponent_username}&nbsp;({opponent_rating})
+                </p>
               </span>
             </div>
           </div>
