@@ -32,7 +32,7 @@ function DrillCard({
   onStartDrill,
 }: {
   drill: DrillPosition;
-  onStartDrill: (fen: string) => void;
+  onStartDrill: (fen: string, orientation: 'white' | 'black') => void;
 }) {
   const {
     fen,
@@ -47,6 +47,8 @@ function DrillCard({
 
   const phase = ply <= 20 ? 'Opening' : ply <= 50 ? 'Middlegame' : 'Endgame';
 
+  const orientation = ply % 2 === 1 ? 'black' : 'white';
+
   return (
     <div
       className={`xs:grid-cols-[200px_1fr] grid gap-2 rounded-lg bg-gray-800 shadow`}
@@ -54,7 +56,7 @@ function DrillCard({
       {/* Board */}
       <Chessboard
         position={fen}
-        boardOrientation={ply % 2 === 1 ? 'black' : 'white'}
+        boardOrientation={orientation}
         //boardWidth={200}
         arePiecesDraggable={false}
         customBoardStyle={{ borderRadius: '0.5rem' }}
@@ -106,7 +108,7 @@ function DrillCard({
 
         {/* Play button */}
         <button
-          onClick={() => onStartDrill(fen)}
+          onClick={() => onStartDrill(fen, orientation)}
           className="mt-4 inline-flex items-center gap-1 self-end rounded bg-green-600 px-5 py-2 text-sm font-semibold text-white hover:bg-green-700"
         >
           <Play size={14} />
