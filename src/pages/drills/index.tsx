@@ -17,9 +17,6 @@ import { useStickyValue } from '@/hooks/useStickyValue';
 const PHASES = ['all', 'opening', 'middle', 'late', 'endgame'] as const;
 type Phase = (typeof PHASES)[number];
 
-const RESULTS = ['all', 'win', 'draw', 'loss'] as const;
-type Result = (typeof RESULTS)[number];
-
 const PHASE_COLORS: Record<Phase, string> = {
   all: 'bg-gray-600',
   opening: 'bg-blue-700',
@@ -28,12 +25,20 @@ const PHASE_COLORS: Record<Phase, string> = {
   endgame: 'bg-rose-700',
 };
 
-const RESULT_COLOURS: Record<Result, string> = {
-  all: 'bg-gray-600',
-  win: 'bg-green-600',
-  draw: 'bg-gray-700',
-  loss: 'bg-rose-700',
-};
+function ToggleSwitch({ checked, onChange }) {
+  return (
+    <label className="relative inline-flex cursor-pointer items-center">
+      <input
+        type="checkbox"
+        className="peer sr-only"
+        checked={checked}
+        onChange={onChange}
+      />
+      <div className="h-3 w-7 rounded-full bg-gray-300 transition-colors duration-200 peer-checked:bg-blue-500 dark:bg-gray-600" />
+      <div className="absolute left-0.5 h-3.5 w-3.5 rounded-full bg-white transition-transform duration-200 ease-in-out peer-checked:translate-x-3" />
+    </label>
+  );
+}
 
 export default function DrillsPage() {
   const navigate = useNavigate();
@@ -56,12 +61,12 @@ export default function DrillsPage() {
 
   // UI state
   const [phaseFilter, setPhaseFilter] = useStickyValue<Phase>(
-    'drillPhase',
+    'drillPhaseFilter',
     'all'
   );
-  const [resultFilter, setResultFilter] = useStickyValue<Result>(
-    'drillResult',
-    'all'
+  const [excludeWins, setExcludeWins] = useStickyValue<boolean>(
+    'drillExcludeWins',
+    true
   );
 
   const [search, setSearch] = useState('');
@@ -83,7 +88,9 @@ export default function DrillsPage() {
     minEvalSwing: minCutoff,
     maxEvalSwing: Number.isFinite(maxCutoff) ? maxCutoff : undefined,
     phases: phaseFilter === 'all' ? undefined : [phaseFilter],
-    heroResults: resultFilter === 'all' ? undefined : [resultFilter], // NEW
+    heroResults: excludeWins
+      ? (['loss', 'draw'] as Array<'loss' | 'draw'>)
+      : undefined,
     opponent: debouncedSearch || undefined,
     limit: 20,
     openingThreshold: 14,
@@ -110,23 +117,6 @@ export default function DrillsPage() {
                 }`}
               >
                 {p}
-              </Badge>
-            ))}
-          </div>
-          {/* Result badges */}
-          <div className="flex flex-wrap items-center gap-2 text-gray-300">
-            <span className="text-sm font-semibold text-gray-500">
-              Exclude wins
-            </span>
-            {RESULTS.map((r) => (
-              <Badge
-                key={r}
-                onClick={() => setResultFilter(r)}
-                className={`cursor-pointer rounded border-1 border-gray-800 px-3 py-2 text-sm capitalize sm:text-base ${
-                  resultFilter === r && RESULT_COLOURS[r]
-                }`}
-              >
-                {r}
               </Badge>
             ))}
           </div>
@@ -167,8 +157,19 @@ export default function DrillsPage() {
             <span className="text-xs font-bold text-gray-500">lg</span>
           </div>
         </div>
-        <div className="mt-10 text-sm text-gray-500 sm:text-base">
-          {`Showing ${drills.length} result${drills.length === 1 ? '' : 's'}`}
+        <div className="mt-10 flex items-center justify-between">
+          <div className="text-sm text-gray-600 sm:text-base">
+            {`Showing ${drills.length} result${drills.length === 1 ? '' : 's'}`}
+          </div>
+          <div className="flex flex-wrap items-center gap-2 text-gray-300">
+            <span className="text-sm text-gray-600">Exclude games won</span>
+            <div>
+              <ToggleSwitch
+                checked={excludeWins}
+                onChange={() => setExcludeWins(!excludeWins)}
+              />
+            </div>
+          </div>
         </div>
         {/* List */}
         <DrillList
