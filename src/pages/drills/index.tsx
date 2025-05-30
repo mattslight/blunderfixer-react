@@ -19,6 +19,13 @@ const PHASE_COLORS: Record<string, string> = {
   endgame: 'bg-rose-700',
 };
 
+const PHASES = [
+  { label: 'all', value: 'all' },
+  { label: 'opening', value: 'opening' },
+  { label: 'middle', value: 'middlegame' },
+  { label: 'endgame', value: 'endgame' },
+] as const;
+
 export default function DrillsPage() {
   const navigate = useNavigate();
   const {
@@ -87,13 +94,15 @@ export default function DrillsPage() {
         <div className="flex flex-wrap items-center justify-between gap-2">
           {/* Phase badges */}
           <div className="flex flex-wrap items-center gap-2 text-gray-300">
-            {(['all', 'opening', 'middlegame', 'endgame'] as const).map((p) => (
+            {PHASES.map(({ label, value }) => (
               <Badge
-                key={p}
-                onClick={() => setPhaseFilter(p)}
-                className={`cursor-pointer rounded border-1 border-gray-800 px-3 py-2 ${phaseFilter == p && PHASE_COLORS[p]}`}
+                key={value}
+                onClick={() => setPhaseFilter(value)}
+                className={`cursor-pointer rounded border-1 border-gray-800 px-3 py-2 text-sm capitalize ${
+                  phaseFilter === value && PHASE_COLORS[value]
+                }`}
               >
-                {p.charAt(0).toUpperCase() + p.slice(1)}
+                {label}
               </Badge>
             ))}
           </div>
