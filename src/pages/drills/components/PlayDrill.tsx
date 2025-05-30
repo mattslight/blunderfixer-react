@@ -1,7 +1,8 @@
 // src/pages/drills/PlayDrill.tsx
 import { useEffect, useRef, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Location, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Square } from 'chess.js';
 import { RotateCcw } from 'lucide-react';
 
 import useAutoMove from '../hooks/useAutoMove';
@@ -14,18 +15,16 @@ import useGameHistory from '@/hooks/useGameHistory';
 import useMoveInput from '@/hooks/useMoveInput';
 import EvalBar from '@/pages/analyse/components/EvalBar';
 
+type PlayDrillState = {
+  fen: string;
+  orientation: 'white' | 'black';
+};
+
 export default function PlayDrill() {
   const navigate = useNavigate();
-  const { state } = useLocation();
+  const { state } = useLocation() as Location<PlayDrillState>;
 
-  if (!state || typeof state.fen !== 'string') {
-    return <Navigate to="/drills" replace />;
-  }
-
-  const { fen: initialFEN, orientation } = state as {
-    fen: string;
-    orientation: 'white' | 'black';
-  };
+  const { fen: initialFEN, orientation } = state;
 
   // 1) Game history
   const { fen, moveHistory, currentIdx, makeMove, setIdx, lastMove, reset } =
@@ -47,11 +46,11 @@ export default function PlayDrill() {
 
   // 3) Bot & auto-move
   const [strength, setStrength] = useState(8);
-  const { isThinking, playBotMove } = useBotPlayer(fen, strength, makeMove);
+  const { playBotMove } = useBotPlayer(fen, strength, makeMove);
   useAutoMove(moveHistory, playBotMove, 300);
 
   // 4) Eval engine
-  const { evalScore, currentDepth } = useAnalysisEngine(fen);
+  const { evalScore } = useAnalysisEngine(fen);
 
   // 5) Responsive board width
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -67,11 +66,15 @@ export default function PlayDrill() {
     return () => ro.disconnect();
   }, []);
 
+  if (!state || typeof fen !== 'string') {
+    return <Navigate to="/drills" replace />;
+  }
+
   return (
     <div className="mx-auto max-w-lg space-y-6 p-4">
       {/* Move navigation */}
       <button
-        onClick={() => navigate('/drills')}
+        onClick={() => void navigate('/drills')}
         className="text-sm text-blue-500 hover:underline"
       >
         ← Back to list
@@ -89,7 +92,7 @@ export default function PlayDrill() {
                 onPieceDrop={onPieceDrop}
                 onSquareClick={onSquareClick}
                 showPromotionDialog={showPromotionDialog}
-                promotionToSquare={to}
+                promotionToSquare={to as Square}
                 onPromotionPieceSelect={onPromotionPieceSelect}
                 promotionDialogVariant={'modal'}
                 customSquareStyles={{
