@@ -1,5 +1,7 @@
 # TODO
 
+[ ] Drills Only show losses
+[ ] Filter drills on backend (win/loss, eval_swing, phase)
 [ ] Save Win / loss stats for the drill
 [ ] Show win/loss stats on drill page
 [ ] Show win/loss stats on drill list
