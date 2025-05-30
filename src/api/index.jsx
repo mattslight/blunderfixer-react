@@ -53,9 +53,9 @@ export async function getRecentGames(username, limit = 20) {
   return res.json();
 }
 
-export async function getDrills(username, limit = 50) {
+export async function getDrills(username, limit = 50, opening_threshold = 14) {
   const res = await fetch(
-    `${BASE_URL}/drills?username=${encodeURIComponent(username)}&limit=${limit}`
+    `${BASE_URL}/drills?username=${encodeURIComponent(username)}&limit=${limit}&opening_threshold=${opening_threshold}`
   );
   if (!res.ok) {
     throw new Error(`Failed to fetch drills: ${res.status}`);
