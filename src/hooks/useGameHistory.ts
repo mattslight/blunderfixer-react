@@ -10,6 +10,7 @@ export interface GameHistory {
   setIdx(idx: number): void;
   makeMove(from: string, to: string, promotion?: string): boolean;
   lastMove?: { from: string; to: string };
+  reset(): void;
 }
 
 export interface UseGameHistoryOpts {
@@ -126,6 +127,16 @@ export default function useGameHistory({
     [allowBranching, canPlayMove, currentIdx, moveHistory, syncPosition]
   );
 
+  // Reset function
+  const reset = useCallback(() => {
+    const c = chessRef.current;
+    c.reset();
+    c.load(initialFEN);
+    setHistory(initialMoves);
+    setCurrentIdx(0);
+    setLastMove(undefined);
+  }, [initialFEN, initialMoves]);
+
   // current FEN
   const fen = chessRef.current.fen();
 
@@ -137,5 +148,6 @@ export default function useGameHistory({
     setIdx,
     makeMove,
     lastMove,
+    reset,
   };
 }
