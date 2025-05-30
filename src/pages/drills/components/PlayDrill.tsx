@@ -4,6 +4,7 @@ import useAnalysisEngine from '@/hooks/useAnalysisEngine';
 import useGameHistory from '@/hooks/useGameHistory';
 import useMoveInput from '@/hooks/useMoveInput';
 import EvalBar from '@/pages/analyse/components/EvalBar';
+import { RotateCcw } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
@@ -126,9 +127,10 @@ export default function PlayDrill() {
       <BotControls strength={strength} setStrength={setStrength} />
       <button
         onClick={() => reset()}
-        className="rounded bg-blue-600 px-3 py-1 text-white hover:bg-blue-700"
+        className="items-center rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
       >
-        Restart
+        <RotateCcw className="relative bottom-0.25 mr-1 inline-flex h-4 w-4" />
+        Retry
       </button>
     </div>
   );
