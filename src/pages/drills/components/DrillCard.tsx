@@ -1,30 +1,28 @@
-// src/pages/drills/components/DrillCard.tsx
 import type { DrillPosition } from '@/types';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { Clock, Play, User } from 'lucide-react';
 import React from 'react';
 import { Chessboard } from 'react-chessboard';
 
+// Map API phase values to display labels and colors
+const PHASE_DISPLAY: Record<string, string> = {
+  opening: 'Opening',
+  middle: 'Middle',
+  late: 'Late',
+  endgame: 'Endgame',
+};
 const PHASE_COLORS: Record<string, string> = {
   Opening: 'bg-blue-700',
-  Middlegame: 'bg-purple-700',
+  Middle: 'bg-purple-700',
+  Late: 'bg-fuchsia-700',
   Endgame: 'bg-rose-700',
 };
-
-// const RESULT_COLOUR: Record<string, string> = {
-//   win: 'border-green-600',
-//   loss: 'border-red-600',
-//   draw: 'border-gray-600',
-// };
 
 function formatTimeControl(tc: string): string {
   const [base, inc] = tc.split('+');
   const minutes = Number(base) / 60;
-  // if it’s a whole number, show “3” not “3.0”
   const baseStr = Number.isInteger(minutes) ? `${minutes}` : minutes.toFixed(1);
-  return inc
-    ? `${baseStr}m+${inc}` // e.g. “3+2”
-    : `${baseStr}min`; // e.g. “10min”
+  return inc ? `${baseStr}m+${inc}` : `${baseStr}min`;
 }
 
 function DrillCard({
@@ -43,11 +41,15 @@ function DrillCard({
     hero_result,
     opponent_username,
     opponent_rating,
+    phase: apiPhase,
   } = drill;
 
-  const phase = ply <= 20 ? 'Opening' : ply <= 50 ? 'Middlegame' : 'Endgame';
-
+  // Determine board orientation based on ply
   const orientation = ply % 2 === 1 ? 'black' : 'white';
+
+  // Map API phase to display label and color
+  const displayPhase = PHASE_DISPLAY[apiPhase] ?? 'Unknown';
+  const phaseColor = PHASE_COLORS[displayPhase] ?? 'bg-gray-700';
 
   return (
     <div
@@ -57,22 +59,17 @@ function DrillCard({
       <Chessboard
         position={fen}
         boardOrientation={orientation}
-        //boardWidth={200}
         arePiecesDraggable={false}
         customBoardStyle={{ borderRadius: '0.5rem' }}
-        customDarkSquareStyle={{
-          backgroundColor: '#B1B7C8',
-        }}
-        customLightSquareStyle={{
-          backgroundColor: '#F5F2E6',
-        }}
+        customDarkSquareStyle={{ backgroundColor: '#B1B7C8' }}
+        customLightSquareStyle={{ backgroundColor: '#F5F2E6' }}
       />
 
       {/* Details */}
       <div
         className={`flex flex-col justify-between rounded p-4 tracking-wide`}
       >
-        {/* Top row: when drilled & when played */}
+        {/* Top row */}
         <div>
           <div className="flex items-center justify-between text-xs text-gray-400">
             <time dateTime={played_at}>
@@ -82,12 +79,12 @@ function DrillCard({
               }).replace(/^about\s*/, '')}
             </time>
             <span
-              className={`rounded-full px-2.5 py-1 text-xs font-semibold text-gray-300 ${PHASE_COLORS[phase]}`}
+              className={`rounded-full px-2.5 py-1 text-xs font-semibold text-gray-300 ${phaseColor}`}
             >
-              {phase}
+              {displayPhase}
             </span>
           </div>
-          {/* Middle row: game info */}
+          {/* Game info */}
           <div className="mt-4 flex items-center gap-2 text-sm">
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1 rounded bg-gray-700 px-2 py-0.5 text-xs text-gray-400 capitalize">
