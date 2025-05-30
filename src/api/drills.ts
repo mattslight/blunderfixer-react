@@ -1,5 +1,7 @@
 // src/api/drills.ts
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import type { DrillPosition } from '@/types';
+
+const BASE_URL: string = import.meta.env.VITE_API_BASE_URL;
 
 export interface DrillFilters {
   username: string; // required
@@ -41,5 +43,5 @@ export async function getDrills({
   if (!res.ok) {
     throw new Error(`Failed to fetch drills: ${res.status}`);
   }
-  return res.json();
+  return res.json() as Promise<DrillPosition[]>;
 }
