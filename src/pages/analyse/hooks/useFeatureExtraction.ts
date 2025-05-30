@@ -1,6 +1,7 @@
 // src/pages/analyse/hooks/useFeatureExtraction.ts
-import { extractFeatures } from '@/api';
 import { useEffect, useState } from 'react';
+
+import { extractFeatures } from '@/api';
 
 export default function useFeatureExtraction(fen: string | null) {
   const [features, setFeatures] = useState<any>(null);

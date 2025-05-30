@@ -1,3 +1,7 @@
+import { Clock, TimerReset } from 'lucide-react';
+
+import type { CombinedEntry } from './SummaryTable';
+
 import { BlackPiece, WhitePiece } from '@/components/ChessPieces';
 import {
   DOT_COLOR,
@@ -6,8 +10,6 @@ import {
   TEXT_SEVERITY_COLOR,
   TIME_TEXT_COLOR,
 } from '@/lib/severity';
-import { Clock, TimerReset } from 'lucide-react';
-import type { CombinedEntry } from './SummaryTable';
 
 export default function TableView({
   entries,

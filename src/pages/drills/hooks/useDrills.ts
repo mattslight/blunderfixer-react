@@ -1,7 +1,8 @@
 // src/pages/drills/hooks/useDrills.ts
-import { DrillFilters, getDrills } from '@/api/drills';
 import { useMemo } from 'react';
 import useSWR from 'swr';
+
+import { DrillFilters, getDrills } from '@/api/drills';
 
 export function useDrills(filters: DrillFilters) {
   const swrKey = useMemo(

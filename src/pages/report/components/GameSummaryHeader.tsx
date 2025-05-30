@@ -1,5 +1,6 @@
-import { useProfile } from '@/hooks/useProfile';
 import { formatDistanceToNow } from 'date-fns';
+
+import { useProfile } from '@/hooks/useProfile';
 
 export default function GameSummaryHeader({ game }) {
   const {

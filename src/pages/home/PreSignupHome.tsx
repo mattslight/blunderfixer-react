@@ -1,11 +1,6 @@
-import { TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ConfirmModal from './ConfirmModal';
-import UsernameModal from './UsernameModal';
-
-import { useProfile } from '@/hooks/useProfile';
-
+import { TrendingUp } from 'lucide-react';
 import {
   Flag,
   MessageCircleWarning,
@@ -17,6 +12,10 @@ import {
 } from 'lucide-react';
 
 import CoachingBoard from './CoachingBoard';
+import ConfirmModal from './ConfirmModal';
+import UsernameModal from './UsernameModal';
+
+import { useProfile } from '@/hooks/useProfile';
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -175,7 +174,7 @@ export default function HomePage() {
       {pendingProfile && (
         <ConfirmModal
           show={true}
-          profile={pendingProfile!}
+          profile={pendingProfile}
           onConfirm={handleConfirm}
           onCancel={handleCancelConfirm}
         />

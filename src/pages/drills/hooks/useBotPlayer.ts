@@ -1,7 +1,8 @@
 // src/hooks/useBotPlayer.ts
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 import { StockfishEngine } from '@/lib/StockfishEngine';
 import { uciToMove } from '@/lib/uci';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface UseBotPlayerResult {
   /** Whether the engine is currently thinking */

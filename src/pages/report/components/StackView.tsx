@@ -1,5 +1,6 @@
 // src/pages/report/components/StackView.tsx
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+
 import CardView from './CardView';
 import MoveControls from './MoveControls';
 import type { CombinedEntry } from './SummaryTable';
@@ -33,7 +34,7 @@ export default function StackView({
    * independently of number of steps
    */
   function glideTo(target: number) {
-    cancelAnimationFrame(frameRef.current!); // cancel any ongoing
+    cancelAnimationFrame(frameRef.current); // cancel any ongoing
     const start = current;
     const delta = target - start;
     const duration = 1500; // ms, constant total animation time
@@ -73,7 +74,7 @@ export default function StackView({
   }, [selectedIndex, indexMap]); // no need to include `current` here
 
   // cleanup on unmount
-  useEffect(() => () => cancelAnimationFrame(frameRef.current!), []);
+  useEffect(() => () => cancelAnimationFrame(frameRef.current), []);
 
   if (!entries.length) {
     return <div className="text-center text-gray-500">No moves to display</div>;
@@ -81,11 +82,11 @@ export default function StackView({
 
   // simple step handlers
   function handlePrev() {
-    cancelAnimationFrame(frameRef.current!);
+    cancelAnimationFrame(frameRef.current);
     setCurrent((i) => Math.max(0, i - 1));
   }
   function handleNext() {
-    cancelAnimationFrame(frameRef.current!);
+    cancelAnimationFrame(frameRef.current);
     setCurrent((i) => Math.min(entries.length - 1, i + 1));
   }
 

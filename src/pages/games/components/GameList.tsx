@@ -1,6 +1,7 @@
 // src/pages/games/components/GameList.tsx
-import { GameRecord } from '@/types';
 import GameCard from './GameCard';
+
+import { GameRecord } from '@/types';
 
 interface GameListProps {
   games: GameRecord[];

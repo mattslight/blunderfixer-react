@@ -1,7 +1,8 @@
 // src/pages/games/components/GameCard.tsx
-import { GameRecord } from '@/types';
 import { formatDistanceToNow } from 'date-fns';
 import { Calendar, Inspect, Loader, Timer } from 'lucide-react';
+
+import { GameRecord } from '@/types';
 
 interface GameCardProps {
   game: GameRecord;

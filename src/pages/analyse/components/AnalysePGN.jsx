@@ -1,6 +1,5 @@
 // src/pages/analyse/AnalysePGN.jsx
 import { useEffect, useState } from 'react';
-
 import { Chess } from 'chess.js';
 
 import AnalysePosition from './BoardAndEval';

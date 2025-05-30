@@ -1,6 +1,7 @@
+import UserMenu from './UserMenu';
+
 import blunderLogoSvg from '@/assets/blunderfixer.svg';
 import { useProfile } from '@/hooks/useProfile';
-import UserMenu from './UserMenu';
 
 const NOTIFICATIONS = false;
 

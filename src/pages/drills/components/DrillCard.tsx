@@ -1,8 +1,9 @@
-import type { DrillPosition } from '@/types';
-import { formatDistanceToNow, parseISO } from 'date-fns';
-import { Clock, Play, TrendingDown, User } from 'lucide-react';
 import React from 'react';
 import { Chessboard } from 'react-chessboard';
+import { formatDistanceToNow, parseISO } from 'date-fns';
+import { Clock, Play, TrendingDown, User } from 'lucide-react';
+
+import type { DrillPosition } from '@/types';
 
 // Map API phase values to display labels and colors
 const PHASE_DISPLAY: Record<string, string> = {

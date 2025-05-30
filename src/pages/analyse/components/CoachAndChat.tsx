@@ -1,11 +1,13 @@
 // src/pages/analyse/components/CoachAndChat.tsx
-import coachImageSrc from '@/assets/coach.png';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Lightbulb, Send, Zap } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Lightbulb, Send, Zap } from 'lucide-react';
 import remarkGfm from 'remark-gfm';
+
 import { Msg, useCoach } from '../hooks/useCoach';
+
+import coachImageSrc from '@/assets/coach.png';
 
 type Props = {
   fen: string;
@@ -103,7 +105,7 @@ function ChatInput({
 
   /* auto-grow textarea */
   const onInput = () => {
-    const ta = ref.current!;
+    const ta = ref.current;
     ta.style.height = 'auto';
     ta.style.height = `${ta.scrollHeight}px`;
   };

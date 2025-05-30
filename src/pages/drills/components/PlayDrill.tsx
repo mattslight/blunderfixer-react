@@ -1,16 +1,18 @@
 // src/pages/drills/PlayDrill.tsx
+import { useEffect, useRef, useState } from 'react';
+import { Chessboard } from 'react-chessboard';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { RotateCcw } from 'lucide-react';
+
+import useAutoMove from '../hooks/useAutoMove';
+import useBotPlayer from '../hooks/useBotPlayer';
+import BotControls from './BotControls';
+
 import MoveStepper from '@/components/MoveStepper';
 import useAnalysisEngine from '@/hooks/useAnalysisEngine';
 import useGameHistory from '@/hooks/useGameHistory';
 import useMoveInput from '@/hooks/useMoveInput';
 import EvalBar from '@/pages/analyse/components/EvalBar';
-import { RotateCcw } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import { Chessboard } from 'react-chessboard';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import useAutoMove from '../hooks/useAutoMove';
-import useBotPlayer from '../hooks/useBotPlayer';
-import BotControls from './BotControls';
 
 export default function PlayDrill() {
   const navigate = useNavigate();

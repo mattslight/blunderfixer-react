@@ -1,4 +1,12 @@
 // src/pages/games/components/GameSummary.tsx
+import { useMemo, useState } from 'react';
+
+import EvalGraph from './EvalGraph';
+import GameSummaryHeader from './GameSummaryHeader';
+import StackView from './StackView';
+import GameSummaryTable, { CombinedEntry } from './SummaryTable';
+import TimeUsageChart from './TimeUsageChart';
+
 import {
   getErrorSeverity,
   getTimeSeverity,
@@ -6,12 +14,6 @@ import {
   TimeControl,
 } from '@/lib/severity';
 import { AnalysisNode, GameRecord } from '@/types';
-import { useMemo, useState } from 'react';
-import EvalGraph from './EvalGraph';
-import GameSummaryHeader from './GameSummaryHeader';
-import StackView from './StackView';
-import GameSummaryTable, { CombinedEntry } from './SummaryTable';
-import TimeUsageChart from './TimeUsageChart';
 
 interface GameSummaryProps {
   game: GameRecord;

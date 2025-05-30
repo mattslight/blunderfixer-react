@@ -1,15 +1,17 @@
 // src/pages/games/index.tsx
-import { useProfile } from '@/hooks/useProfile';
-import { usePullToRefresh } from '@/hooks/usePullToRefresh';
-import { parseChessComGame } from '@/lib/chessComParser';
-import type { GameRecord } from '@/types';
-import { RefreshCw } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { RefreshCw } from 'lucide-react';
+
 import GameList from './components/GameList';
 import { useGameAnalysis } from './hooks/useGameAnalysis';
 import { useGameData } from './hooks/useGameData';
 import { useRecentGames } from './hooks/useRecentGames';
+
+import { useProfile } from '@/hooks/useProfile';
+import { usePullToRefresh } from '@/hooks/usePullToRefresh';
+import { parseChessComGame } from '@/lib/chessComParser';
+import type { GameRecord } from '@/types';
 
 export default function GamesHistoryPage() {
   const navigate = useNavigate();

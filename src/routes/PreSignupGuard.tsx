@@ -1,7 +1,10 @@
-import { useProfile } from '@/hooks/useProfile';
 import { Navigate } from 'react-router-dom';
 
-export default function PreSignupGuard({ children }) {
+import { useProfile } from '@/hooks/useProfile';
+
+type Props = { children: React.ReactNode };
+
+export default function PreSignupGuard({ children }: Props) {
   const {
     profile: { username },
   } = useProfile();

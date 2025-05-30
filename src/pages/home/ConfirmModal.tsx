@@ -1,7 +1,7 @@
 // src/pages/home/ConfirmModal.tsx
+import { useEffect, useRef } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { Clock, MapPin, X } from 'lucide-react';
-import { useEffect, useRef } from 'react';
 
 interface ConfirmModalProps {
   show: boolean;

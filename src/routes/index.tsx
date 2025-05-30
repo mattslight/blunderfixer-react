@@ -1,5 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 
+import PreSignupGuard from './PreSignupGuard';
+import ProtectedRoute from './ProtectedRoute';
+
 import Help from '@/pages/_placeholders/Help';
 import Insights from '@/pages/_placeholders/Insights';
 import Training from '@/pages/_placeholders/Training';
@@ -11,8 +14,6 @@ import PreSignupHome from '@/pages/home/PreSignupHome';
 import NotFound from '@/pages/NotFound';
 import ReportPage from '@/pages/report';
 import Settings from '@/pages/settings';
-import PreSignupGuard from './PreSignupGuard';
-import ProtectedRoute from './ProtectedRoute';
 
 export default function AppRoutes() {
   return (

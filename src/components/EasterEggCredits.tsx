@@ -5,8 +5,8 @@
   - Triggered by 3 rapid taps on the BlunderFixer sidebar title
   - Fullscreen animated starfield with moving credits via Framer Motion
 */
-import { motion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 
 // Hook: detect rapid taps
 export function useRapidTaps(threshold = 3, timeout = 1000, onActivate) {

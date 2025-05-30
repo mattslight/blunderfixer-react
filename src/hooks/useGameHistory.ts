@@ -1,6 +1,6 @@
 // src/hooks/useGameHistory.ts
-import { Chess, DEFAULT_POSITION, Move } from 'chess.js';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Chess, DEFAULT_POSITION, Move } from 'chess.js';
 
 export interface GameHistory {
   fen: string;
@@ -67,7 +67,7 @@ export default function useGameHistory({
 
     // c) set lastMove based on that replay
     if (startAtIdx > 0 && initialMoves.length > 0) {
-      const full = c.history({ verbose: true }) as Move[];
+      const full = c.history({ verbose: true });
       const last = full[full.length - 1];
       setLastMove({ from: last.from, to: last.to });
     } else {
@@ -91,7 +91,7 @@ export default function useGameHistory({
       setCurrentIdx(safe);
 
       if (safe > 0) {
-        const full = chessRef.current.history({ verbose: true }) as Move[];
+        const full = chessRef.current.history({ verbose: true });
         const last = full[full.length - 1];
         setLastMove({ from: last.from, to: last.to });
       } else {

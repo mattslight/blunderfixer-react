@@ -1,11 +1,12 @@
 // src/pages/settings/index.jsx
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { formatDistanceToNow } from 'date-fns';
+import { Gem, MapPin, Table, Users } from 'lucide-react';
+
 import UsernameInput from '@/components/UsernameInput';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useProfile } from '@/hooks/useProfile';
-import { formatDistanceToNow } from 'date-fns';
-import { Gem, MapPin, Table, Users } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export default function Settings() {
   const { profile, setUsername } = useProfile();

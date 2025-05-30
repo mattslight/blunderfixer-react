@@ -1,5 +1,4 @@
 // src/components/GameSummary/GameSummaryGraph.tsx
-import type { AnalysisNode } from '@/types';
 import {
   Area,
   ComposedChart,
@@ -8,6 +7,8 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+
+import type { AnalysisNode } from '@/types';
 
 interface ChartEntry extends AnalysisNode {
   ply: number;

@@ -2,16 +2,16 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import useAnalysisEngine from '@/hooks/useAnalysisEngine';
-import useGameHistory from '@/hooks/useGameHistory';
-import useMoveInput from '@/hooks/useMoveInput';
+import { AnalysisToolbar, PasteModal } from './components/AnalysisModals';
+import BoardAndEval from './components/BoardAndEval';
+import CoachAndChat from './components/CoachAndChat';
 import useFeatureExtraction from './hooks/useFeatureExtraction';
 import useGameInputParser from './hooks/useGameInputParser';
 import useKeyboardNavigation from './hooks/useKeyboardNavigation';
 
-import { AnalysisToolbar, PasteModal } from './components/AnalysisModals';
-import BoardAndEval from './components/BoardAndEval';
-import CoachAndChat from './components/CoachAndChat';
+import useAnalysisEngine from '@/hooks/useAnalysisEngine';
+import useGameHistory from '@/hooks/useGameHistory';
+import useMoveInput from '@/hooks/useMoveInput';
 
 type AnalyseState = {
   pgn?: string;

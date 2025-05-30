@@ -1,8 +1,10 @@
 // src/pages/drills/components/DrillList.tsx
 
-import type { DrillPosition } from '@/types';
 import { Spinner } from 'flowbite-react';
+
 import DrillCard from './DrillCard';
+
+import type { DrillPosition } from '@/types';
 
 interface Props {
   drills: DrillPosition[];

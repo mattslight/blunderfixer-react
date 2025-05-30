@@ -6,6 +6,7 @@ import {
   ModalHeader,
 } from 'flowbite-react';
 import { Clipboard, Clock, Trash2 } from 'lucide-react';
+
 import GameLoader from './GameLoader';
 
 export function AnalysisToolbar({ onOpenPaste, onOpenGames, onClear }) {

@@ -1,11 +1,6 @@
 // src/pages/report/components/CardView.tsx
-import { BlackPiece, WhitePiece } from '@/components/ChessPieces';
-import {
-  DOT_COLOR,
-  getErrorSeverity,
-  TEXT_SEVERITY_COLOR,
-  TIME_TEXT_COLOR,
-} from '@/lib/severity';
+import { useLayoutEffect, useState } from 'react';
+import { Chessboard } from 'react-chessboard';
 import { Square } from 'chess.js';
 import {
   BarChart,
@@ -14,9 +9,16 @@ import {
   TrendingDown,
   TrendingUp,
 } from 'lucide-react';
-import { useLayoutEffect, useState } from 'react';
-import { Chessboard } from 'react-chessboard';
+
 import type { CombinedEntry } from './SummaryTable';
+
+import { BlackPiece, WhitePiece } from '@/components/ChessPieces';
+import {
+  DOT_COLOR,
+  getErrorSeverity,
+  TEXT_SEVERITY_COLOR,
+  TIME_TEXT_COLOR,
+} from '@/lib/severity';
 
 interface CardViewProps {
   entry: CombinedEntry;

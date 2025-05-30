@@ -1,10 +1,12 @@
 // src/pages/games/components/SummaryTable.tsx
+import { useMemo } from 'react';
+
+import TableView from './TableView';
+
 import { useStickyValue } from '@/hooks/useStickyValue';
 import type { Severity } from '@/lib/severity';
 import { DOT_COLOR, scoreMove } from '@/lib/severity';
 import type { AnalysisNode, GameRecord } from '@/types';
-import { useMemo } from 'react';
-import TableView from './TableView';
 
 export interface CombinedEntry {
   move: GameRecord['moves'][0];

@@ -1,7 +1,7 @@
 // src/hooks/useGameInputParser.ts
 import { Chess } from 'chess.js';
-import usePGNParser from '@/hooks/usePGNParser';
 
+import usePGNParser from '@/hooks/usePGNParser';
 import { InputType } from '@/types';
 
 /**
@@ -33,7 +33,7 @@ export default function useGameInputParser(raw: string | null): ParsedInput {
   switch (type) {
     case 'FEN':
       return {
-        initialFEN: raw!,
+        initialFEN: raw,
         sanHistory: [],
         rawErrors: [],
         inputType: 'FEN',

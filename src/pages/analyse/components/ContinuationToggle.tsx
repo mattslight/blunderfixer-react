@@ -1,6 +1,7 @@
-import type { PVLine } from '@/types';
 import MoveLines from './MoveLines';
 import TopmovesCarousel from './TopmovesCarousel';
+
+import type { PVLine } from '@/types';
 
 interface ContinuationToggleProps {
   lines: PVLine[];

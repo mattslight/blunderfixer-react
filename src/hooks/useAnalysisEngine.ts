@@ -1,8 +1,10 @@
 // src/hooks/useAnalysisEngine.ts
-import { uciToArrow, uciToMove } from '@/lib/uci';
-import { Chess } from 'chess.js';
 import { useEffect, useMemo, useState } from 'react';
+import { Chess } from 'chess.js';
+
 import { useStockfish } from '../pages/analyse/hooks/useStockfish';
+
+import { uciToArrow, uciToMove } from '@/lib/uci';
 
 const DEBUG = false;
 export default function useAnalysisEngine(boardFEN: string) {

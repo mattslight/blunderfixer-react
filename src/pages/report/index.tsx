@@ -1,11 +1,12 @@
 // src/pages/report/index.tsx
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Loader } from 'lucide-react';
+
 import { useProfile } from '@/hooks/useProfile';
 import { useGameAnalysis } from '@/pages/games/hooks/useGameAnalysis';
 import { useGameData } from '@/pages/games/hooks/useGameData';
 import { GameSummary } from '@/pages/report/components/GameSummary';
-import { Loader } from 'lucide-react';
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 
 export default function ReportPage() {
   const { analysisId } = useParams<{ analysisId: string }>();
@@ -39,7 +40,7 @@ export default function ReportPage() {
     );
   }
 
-  const game = gamesMap[analysisId]!;
+  const game = gamesMap[analysisId];
 
   const {
     profile: { username },

@@ -1,6 +1,7 @@
-import { useProfile } from '@/hooks/useProfile';
-import type { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
+import type { ReactNode } from 'react';
+
+import { useProfile } from '@/hooks/useProfile';
 
 export default function ProtectedRoute({ children }: { children: ReactNode }) {
   const {

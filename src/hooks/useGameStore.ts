@@ -1,6 +1,6 @@
 // src/hooks/useGameStore.ts
 
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const STORAGE_KEY = 'bf:games';
 
@@ -50,7 +50,7 @@ export default function useGameStore<T extends { id: string }>(
   // save(patch): merge your partial updates + updatedAt timestamp
   const save = useCallback(
     (patch: Partial<T>) => {
-      const existing = allGames[gameId] || (initialData as T);
+      const existing = allGames[gameId] || initialData;
       const updated: T = {
         ...existing,
         ...patch,

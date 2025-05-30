@@ -1,7 +1,8 @@
 // src/lib/chessComParser.ts
-import { GamePlayer, GameRecord, MoveNode, Player } from '@/types';
 import { Chess, DEFAULT_POSITION } from 'chess.js';
 import crypto from 'crypto';
+
+import { GamePlayer, GameRecord, MoveNode, Player } from '@/types';
 
 const DEBUG = false;
 

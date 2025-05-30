@@ -1,7 +1,8 @@
 // src/hooks/useStockfish.ts
-import { useEffect, useState, useRef, useMemo } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+
 import { StockfishEngine } from '@/lib/StockfishEngine';
-import { parseUciInfo, makeEmptyLines } from '@/lib/uci';
+import { makeEmptyLines, parseUciInfo } from '@/lib/uci';
 import { PVLine } from '@/types';
 
 const DEBUG = false;

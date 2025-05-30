@@ -1,8 +1,9 @@
 // src/components/UserMenu.tsx
-import { useProfile } from '@/hooks/useProfile';
-import { ChevronDown, LogOut, UserPen } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ChevronDown, LogOut, UserPen } from 'lucide-react';
+
+import { useProfile } from '@/hooks/useProfile';
 export default function UserMenu() {
   const { profile, setUsername } = useProfile();
   const [open, setOpen] = useState(false);

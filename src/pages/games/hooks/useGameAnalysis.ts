@@ -1,7 +1,8 @@
 // src/pages/games/hooks/useGameAnalysis.ts
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
 import { analysePGN } from '@/api';
 import { AnalysisNode, GameRecord } from '@/types';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 
 /**
  * Manages analysis for each game, persisting results across reloads.

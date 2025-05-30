@@ -1,7 +1,5 @@
 // src/pages/games/components/TimeUsageChart.tsx
-import { useStickyValue } from '@/hooks/useStickyValue';
 import { useMemo } from 'react';
-
 import {
   Area,
   AreaChart,
@@ -12,6 +10,8 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+
+import { useStickyValue } from '@/hooks/useStickyValue';
 
 type TimePoint = { move: number; heroTime: number; oppTime: number };
 

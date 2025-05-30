@@ -1,45 +1,57 @@
 import js from '@eslint/js';
-import importPlugin from 'eslint-plugin-import';
-import prettierPlugin from 'eslint-plugin-prettier';
+import tsParser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
+import importPlugin from 'eslint-plugin-import';
 import simpleSort from 'eslint-plugin-simple-import-sort';
+import prettierPlugin from 'eslint-plugin-prettier';
 import globals from 'globals';
 
 export default [
   { ignores: ['dist'] },
-  // core + React + Hooks + Prettier
+
+  // Flat presets that really *are* flat
   js.configs.recommended,
-  reactPlugin.configs.recommended,
-  reactHooks.configs.recommended,
-  prettierPlugin.configs.recommended,
-  reactPlugin.configs.flat['jsx-runtime'],
+  reactPlugin.configs.flat?.['recommended'] ?? {},
+  reactPlugin.configs.flat?.['jsx-runtime'] ?? {},
+
   {
-    files: ['**/*.{js,jsx}'],
+    files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      parser: tsParser,
       parserOptions: {
-        ecmaVersion: 'latest',
-        ecmaFeatures: { jsx: true },
+        project: ['./tsconfig.json'],
+        allowJs: true,
+        ecmaVersion: 2020,
         sourceType: 'module',
+        ecmaFeatures: { jsx: true },
       },
+      globals: globals.browser,
     },
     plugins: {
+      '@typescript-eslint': tsPlugin,
       react: reactPlugin,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      'simple-import-sort': simpleSort,
       import: importPlugin,
+      'simple-import-sort': simpleSort,
       prettier: prettierPlugin,
     },
     rules: {
+      /* --- TypeScript preset (flat) --- */
+      ...tsPlugin.configs['recommended-type-checked'].rules,
+
+      /* --- React-hooks (inline) --- */
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+
+      /* --- Prettier (inline) --- */
       'prettier/prettier': 'error',
-      'react/no-unknown-property': ['error', { ignore: [] }],
-      'no-undef': 'error',
-      'react/jsx-no-undef': 'error',
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+
+      /* --- Other overrides --- */
+      'react/prop-types': 'off', // TS handles props
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
@@ -48,21 +60,12 @@ export default [
         'error',
         {
           groups: [
-            ['^react$', '^react-', '^@?\\w'], // react, then, other externals
-            [
-              '^\\.\\.(?!/?$)', // parent imports
-              '^\\.\\./?$', // parent index
-              '^\\./', // relative imports
-              '^.+\\.?(css)$', // styles
-            ],
+            ['^react$', '^react-', '^@?\\w'],
+            ['^\\.\\.(?!/?$)', '^\\.\\./?$', '^\\./', '^.+\\.?(css)$'],
           ],
         },
       ],
     },
-    settings: {
-      react: {
-        version: 'detect',
-      },
-    },
+    settings: { react: { version: 'detect' } },
   },
 ];

@@ -1,6 +1,7 @@
 // src/lib/uci.ts
 
-import { Chess, type Square, type Move } from 'chess.js';
+import { Chess, type Move, type Square } from 'chess.js';
+
 import { PVLine } from '@/types';
 export type Promotion = 'n' | 'b' | 'r' | 'q';
 
