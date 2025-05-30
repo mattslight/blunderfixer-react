@@ -1,16 +1,16 @@
 // src/hooks/useGameHistory.ts
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Chess, DEFAULT_POSITION, Move } from 'chess.js';
+import { Chess, DEFAULT_POSITION } from 'chess.js';
 
 export interface GameHistory {
   fen: string;
   moveHistory: string[];
   currentIdx: number;
   canPlayMove: boolean;
-  setIdx(idx: number): void;
-  makeMove(from: string, to: string, promotion?: string): boolean;
+  setIdx(this: void, idx: number): void;
+  makeMove(this: void, from: string, to: string, promotion?: string): boolean;
   lastMove?: { from: string; to: string };
-  reset(): void;
+  reset(this: void): void;
 }
 
 export interface UseGameHistoryOpts {
@@ -75,7 +75,7 @@ export default function useGameHistory({
     }
   }, [
     initialFEN,
-    initialMoves.join(','), // or JSON.stringify(initialMoves)
+    initialMoves, // or JSON.stringify(initialMoves)
     startAtIdx,
   ]);
 
