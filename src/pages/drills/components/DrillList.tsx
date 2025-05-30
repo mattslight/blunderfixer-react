@@ -22,7 +22,7 @@ export default function DrillList({ drills, loading, onStartDrill }: Props) {
     );
   }
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 sm:space-y-12">
       {drills.map((d) => {
         return <DrillCard key={d.id} drill={d} onStartDrill={onStartDrill} />;
       })}
