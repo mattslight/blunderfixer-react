@@ -13,6 +13,7 @@ export class StockfishEngine {
 
   constructor(private multiPV: number) {
     // make sure the .wasm loader can find its file
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (self as any).Module = {
       locateFile: (f: string) =>
         f.endsWith('.wasm') ? '/stockfish-nnue-16-single.wasm' : f,
@@ -28,9 +29,9 @@ export class StockfishEngine {
     // forward readyok into handshake and all messages into lines$
     this.worker.addEventListener('message', (e) => {
       const msg = e.data as string;
-      DEBUG && console.log('[StockfishEngine] [RAW]', msg);
+      if (DEBUG) console.log('[StockfishEngine] [RAW]', msg);
       if (msg.trim() === 'readyok') {
-        DEBUG && console.log('[StockfishEngine] ⬅ readyok');
+        if (DEBUG) console.log('[StockfishEngine] ⬅ readyok');
         this.resolveReady();
         // re-arm for next isready
         this.readyPromise = new Promise((res) => (this.resolveReady = res));
@@ -45,7 +46,7 @@ export class StockfishEngine {
   }
 
   private send(cmd: string) {
-    DEBUG && console.log('[StockfishEngine] →', cmd);
+    if (DEBUG) console.log('[StockfishEngine] →', cmd);
     this.worker.postMessage(cmd);
   }
 
@@ -53,19 +54,20 @@ export class StockfishEngine {
    * Start a depth-limited analysis (streams info through lines$)
    */
   async analyze(fen: string, depth: number) {
-    DEBUG && console.log('[StockfishEngine] ▶ ANALYZE start', { fen, depth });
+    if (DEBUG)
+      console.log('[StockfishEngine] ▶ ANALYZE start', { fen, depth });
 
     this.send('stop');
     this.send('isready');
-    DEBUG && console.log('[StockfishEngine] → isready sent, waiting…');
+    if (DEBUG) console.log('[StockfishEngine] → isready sent, waiting…');
 
     await this.readyPromise;
-    DEBUG && console.log('[StockfishEngine] ⬅ got readyok');
+    if (DEBUG) console.log('[StockfishEngine] ⬅ got readyok');
 
     this.send('ucinewgame');
     this.send(`position fen ${fen}`);
     this.send(`go depth ${depth}`);
-    DEBUG && console.log('[StockfishEngine] → go sent');
+    if (DEBUG) console.log('[StockfishEngine] → go sent');
   }
 
   /**
@@ -104,7 +106,7 @@ export class StockfishEngine {
    * Cancel any ongoing search
    */
   stop() {
-    DEBUG && console.log('[StockfishEngine] stop');
+    if (DEBUG) console.log('[StockfishEngine] stop');
     this.send('stop');
   }
 
@@ -112,7 +114,7 @@ export class StockfishEngine {
    * Quit the engine (terminate worker)
    */
   quit() {
-    DEBUG && console.log('[StockfishEngine] quit');
+    if (DEBUG) console.log('[StockfishEngine] quit');
     this.send('quit');
   }
 }

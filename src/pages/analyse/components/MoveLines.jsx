@@ -1,4 +1,4 @@
-export default function MoveLines({ lines, currentDepth }) {
+export default function MoveLines({ lines, currentDepth: _currentDepth }) {
   return (
     <div className="rounded bg-gray-800 p-2">
       <div className="space-y-1">

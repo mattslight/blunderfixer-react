@@ -128,7 +128,7 @@ export default function Navbar({ toggleSidebar }) {
                     <span className="font-semibold text-gray-900 dark:text-white">
                       Bonnie Green
                     </span>
-                    : "Hey, what's up? All set for the presentation?"
+                    : {`"Hey, what's up? All set for the presentation?"`}
                   </div>
                   <div className="text-primary-600 dark:text-primary-500 text-xs font-medium">
                     a few moments ago

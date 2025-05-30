@@ -88,7 +88,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
         league: data.league,
         streaming_platforms: data.streaming_platforms,
       });
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message || 'Failed to load profile');
       // keep previous profile.username so input still shows
     } finally {

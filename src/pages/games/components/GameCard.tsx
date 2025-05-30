@@ -15,7 +15,7 @@ interface GameCardProps {
 export default function GameCard({
   game,
   hero,
-  isAnalysed,
+  isAnalysed: _isAnalysed,
   isLoading,
   onAction,
 }: GameCardProps) {

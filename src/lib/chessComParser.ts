@@ -65,7 +65,7 @@ export function parseChessComGame(json: any): GameRecord {
     TimeControl,
     ECO,
     ECOUrl,
-    Link,
+    Link: _Link,
   } = pgnTags;
 
   // 4) Parse time-control + increment
@@ -116,7 +116,7 @@ export function parseChessComGame(json: any): GameRecord {
       } else if (parts.length === 3) {
         secondsRemaining = parts[0] * 3600 + parts[1] * 60 + parts[2];
       }
-      DEBUG &&
+      if (DEBUG)
         console.log(
           `#${idx} SAN=${tok.san.padEnd(6)} rawClock="${tok.rawClock}" → parts=[${parts.join(',')}] → secondsRemaining=${secondsRemaining}`
         );

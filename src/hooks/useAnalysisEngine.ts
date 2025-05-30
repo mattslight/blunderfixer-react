@@ -9,7 +9,7 @@ import { uciToArrow, uciToMove } from '@/lib/uci';
 const DEBUG = false;
 export default function useAnalysisEngine(boardFEN: string) {
   useEffect(() => {
-    DEBUG && console.log('[useAnalysisEngine] called with fen', boardFEN);
+    if (DEBUG) console.log('[useAnalysisEngine] called with fen', boardFEN);
 
     // skip if fen hasn't changed or still analyzing the same one
     // run your Stockfish logic here

@@ -51,7 +51,7 @@ function Diagnostic() {
       </table>
 
       <p className="mt-6">
-        ✅ If you see all this looking nice: you're good to go!
+        ✅ If you see all this looking nice: you&apos;re good to go!
       </p>
     </div>
   );

@@ -36,7 +36,9 @@ export function useGameAnalysis(gamesMap: Record<string, GameRecord>) {
   useEffect(() => {
     try {
       localStorage.setItem('bf:analysis', JSON.stringify(analysisMap));
-    } catch {}
+    } catch {
+      console.error('Failed to save analysisMap to localStorage');
+    }
   }, [analysisMap]);
 
   // run analysis if not cached

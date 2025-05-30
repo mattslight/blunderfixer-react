@@ -31,7 +31,7 @@ export function useStockfish(
     runId.current += 1;
     const myRun = runId.current;
 
-    DEBUG &&
+    if (DEBUG)
       console.log(
         `[useStockfish] ANALYZE #${myRun} → FEN=${fen} depth=${depth}`
       );
@@ -42,7 +42,7 @@ export function useStockfish(
     setD(0);
 
     // start the engine
-    DEBUG && console.log('[useStockfish] FIRE analyze →', fen, depth);
+    if (DEBUG) console.log('[useStockfish] FIRE analyze →', fen, depth);
     engine.analyze(fen, depth);
 
     // subscribe to raw output
@@ -51,11 +51,11 @@ export function useStockfish(
         // drop stale messages
         if (myRun !== runId.current) return;
 
-        DEBUG && console.log('[useStockfish] RAW engine line →', raw);
+        if (DEBUG) console.log('[useStockfish] RAW engine line →', raw);
 
         try {
           const info = parseUciInfo(raw, fen);
-          DEBUG && console.log('[useStockfish] PARSED info →', info);
+          if (DEBUG) console.log('[useStockfish] PARSED info →', info);
           if (!info) return;
 
           // merge into state

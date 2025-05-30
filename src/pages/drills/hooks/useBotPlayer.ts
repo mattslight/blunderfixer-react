@@ -40,7 +40,7 @@ export default function useBotPlayer(
       engineRef.current?.stop();
       setIsThinking(false);
     }
-  }, [fen]);
+  }, [fen, isThinking]);
 
   const playBotMove = useCallback(() => {
     if (isThinking) return;

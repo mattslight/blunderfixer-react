@@ -68,7 +68,6 @@ function LegendDot({
 export default function GameSummaryTable({
   combined,
   onClick,
-  pgn,
   timeControl,
   heroSide,
 }: GameSummaryTableProps) {

@@ -30,7 +30,7 @@ export default function usePGNParser(pgn: string | null): ParsedGame {
         return { initialFEN: startFEN, sanHistory: parsed, rawErrors };
       }
       rawErrors.push('loadPgn produced no moves, falling back');
-    } catch (err: any) {
+    } catch (err) {
       rawErrors.push(`loadPgn error: ${err.message || err}`);
     }
 

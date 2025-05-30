@@ -27,7 +27,7 @@ export default function AnalysePGN({ pgn, onBack }) {
 
     const moveList = chess.history(); // <-- get plain SAN strings
     setMoveList(moveList);
-    DEBUG && console.log(moveList);
+    if (DEBUG) console.log(moveList);
 
     chess.reset();
     const arr = [chess.fen()];
@@ -36,7 +36,7 @@ export default function AnalysePGN({ pgn, onBack }) {
       arr.push(chess.fen());
     });
     setFens(arr);
-    DEBUG && console.log('Parsed FENs:', arr);
+    if (DEBUG) console.log('Parsed FENs:', arr);
     setCurrentIdx(0);
   }, [pgn]);
 

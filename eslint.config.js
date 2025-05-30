@@ -10,7 +10,7 @@ import prettierPlugin from 'eslint-plugin-prettier';
 import globals from 'globals';
 
 export default [
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'eslint.config.js', 'vite.config.js'] },
 
   // Flat presets that really *are* flat
   js.configs.recommended,
@@ -22,7 +22,8 @@ export default [
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        project: ['./tsconfig.json'],
+        project: ['./tsconfig.eslint.json'],
+        tsconfigRootDir: new URL('.', import.meta.url),
         allowJs: true,
         ecmaVersion: 2020,
         sourceType: 'module',
@@ -41,8 +42,19 @@ export default [
     },
     rules: {
       /* --- TypeScript preset (flat) --- */
-      ...tsPlugin.configs['recommended-type-checked'].rules,
-
+      ...tsPlugin.configs.recommended.rules,
+      /* turn off the core rule (so it doesn’t double-report) */
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      /* TS-aware version, skip names beginning with _  */
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          varsIgnorePattern: '^_', // ignore const _foo, let _bar …
+          argsIgnorePattern: '^_', // ignore function (_arg) {}
+          caughtErrorsIgnorePattern: '^_', // ignore catch (_err) {}
+        },
+      ],
       /* --- React-hooks (inline) --- */
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',

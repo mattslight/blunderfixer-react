@@ -1,0 +1,8 @@
+// tsconfig.eslint.json  (add beside tsconfig.json)
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true // let ESLint’s program contain JS/JSX
+  },
+  "include": ["src/**/*"] // cover all code you lint
+}

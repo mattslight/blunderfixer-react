@@ -138,7 +138,7 @@ export default function HomePage() {
             <h3 className="mb-2 text-center text-xl font-bold">
               Start Fixing
               <br />
-              (it's free)
+              (it&apos;s free)
             </h3>
             <p className="text-center text-sm text-green-100">
               Turn blunders into wins{' '}

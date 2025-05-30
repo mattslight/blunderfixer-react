@@ -41,7 +41,7 @@ export function parseUciInfo(raw: string, baseFen: string): PVLine | null {
     const to = uci.slice(2, 4);
     const promotion = uci.length > 4 ? uci[4] : undefined;
 
-    DEBUG &&
+    if (DEBUG)
       console.log('[parseUciInfo] applying UCI→object', {
         uci,
         from,
@@ -53,7 +53,7 @@ export function parseUciInfo(raw: string, baseFen: string): PVLine | null {
     try {
       m = chess.move({ from, to, promotion });
     } catch (err) {
-      DEBUG &&
+      if (DEBUG)
         console.log(
           `[parseUciInfo] invalid UCI "${uci}" at depth=${depth}, rank=${rank}:`,
           err
@@ -62,7 +62,7 @@ export function parseUciInfo(raw: string, baseFen: string): PVLine | null {
     }
 
     if (!m) {
-      DEBUG &&
+      if (DEBUG)
         console.log(
           `[parseUciInfo] illegal UCI "${uci}" at depth=${depth}, rank=${rank}`
         );

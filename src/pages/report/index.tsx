@@ -27,6 +27,10 @@ export default function ReportPage() {
     }
   }, [analysisId, analysedIds, analyse, navigate, setSelectedId]);
 
+  const {
+    profile: { username },
+  } = useProfile();
+
   // guard
   if (!analysisId) return null;
 
@@ -41,10 +45,6 @@ export default function ReportPage() {
   }
 
   const game = gamesMap[analysisId];
-
-  const {
-    profile: { username },
-  } = useProfile();
 
   const heroSide =
     username === game.meta.players.white.player.username ? 'w' : 'b';

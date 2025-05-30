@@ -20,8 +20,7 @@ export default function GamesHistoryPage() {
     profile: { username },
   } = useProfile();
   const { gamesMap, games: savedGames, saveGame } = useGameData();
-  const { selectedId, analysis, loading, analyse, setSelectedId, analysedIds } =
-    useGameAnalysis(gamesMap);
+  const { analyse, analysedIds } = useGameAnalysis(gamesMap);
   const {
     games: rawRecent,
     loading: recentLoading,
