@@ -60,7 +60,7 @@ function DrillCard({
 
   return (
     <div
-      className={`xs:grid-cols-[200px_1fr] grid gap-2 rounded-lg bg-gray-800 shadow`}
+      className={`xs:grid-cols-[240px_1fr] grid gap-2 rounded-lg bg-gray-800 shadow sm:grid-cols-[360px_1fr]`}
     >
       {/* Board */}
       <Chessboard
@@ -78,7 +78,7 @@ function DrillCard({
       >
         {/* Top row */}
         <div>
-          <div className="flex items-center justify-between text-xs text-gray-400">
+          <div className="flex items-center justify-between text-xs text-gray-400 sm:text-sm">
             <time dateTime={played_at}>
               <Clock className="relative bottom-0.25 mr-1 inline h-3 w-3" />
               {formatDistanceToNow(parseISO(played_at), {
