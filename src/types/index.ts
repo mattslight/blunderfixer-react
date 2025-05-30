@@ -131,4 +131,5 @@ export interface DrillPosition {
   opponent_username: string;
   opponent_rating: number;
   played_at: string;
+  phase: 'opening' | 'middle' | 'late' | 'endgame';
 }
