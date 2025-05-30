@@ -1,15 +1,16 @@
 # TODO
 
-[ ] Drills Only show losses
-[ ] Filter drills on backend (win/loss, eval_swing, phase)
 [ ] Save Win / loss stats for the drill
 [ ] Show win/loss stats on drill page
 [ ] Show win/loss stats on drill list
-[ ] Show back button on drills to list
 
 [ ] Load new games and drills when logging in
 [ ] Load games from DB
 [ ] Mark drill as 'don't show me this again'
+
+[x] Drills (exclude wins toggle switch)
+[x] Show back button on drills to list
+[x] Filter drills on backend (win/loss, eval_swing, phase)
 [x] Reset drill to start
 [x] Make drill filters useSticky
 [x] Remove the red / green bar on the drills
