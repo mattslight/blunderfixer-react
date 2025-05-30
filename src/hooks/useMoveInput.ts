@@ -1,6 +1,6 @@
 // src/hooks/useMoveInput.ts
 import { useState } from 'react';
-import { Chess } from 'chess.js';
+import { Chess, Square } from 'chess.js';
 
 const DEBUG = false;
 
@@ -9,13 +9,27 @@ const DEBUG = false;
  * @param {(from: string, to: string, promotion?: string) => boolean} makeMove
  *                                – the new hook’s function
  */
-export default function useMoveInput(boardFEN, makeMove) {
-  const [from, setFrom] = useState(null);
-  const [to, setTo] = useState(null);
+
+export interface MoveInput {
+  from: string | null;
+  to: string | null;
+  showPromotionDialog: boolean;
+  optionSquares: Record<string, { background: string }>;
+  onSquareClick(this: void, square: string): void;
+  onPieceDrop(this: void, from: string, to: string): boolean;
+  onPromotionPieceSelect(this: void, choice: string): boolean;
+}
+
+export default function useMoveInput(
+  boardFEN: string,
+  makeMove: (from: string, to: string, promotion?: string) => boolean
+): MoveInput {
+  const [from, setFrom] = useState<string | null>(null);
+  const [to, setTo] = useState<string | null>(null);
   const [showPromotionDialog, setShowPromotionDialog] = useState(false);
   const [options, setOptions] = useState({});
 
-  function getMoveOptions(square) {
+  function getMoveOptions(square: Square) {
     const chess = new Chess(boardFEN);
     const moves = chess.moves({ square, verbose: true });
     if (!moves.length) {
@@ -35,9 +49,9 @@ export default function useMoveInput(boardFEN, makeMove) {
     return true;
   }
 
-  function onSquareClick(square) {
+  function onSquareClick(square: Square) {
     // Clear any old highlights
-    DEBUG && console.log('[useMoveInput]', 'onSquareClick fired!');
+    if (DEBUG) console.log('[useMoveInput]', 'onSquareClick fired!');
     setOptions({});
 
     // 1) pick up a piece
@@ -78,7 +92,7 @@ export default function useMoveInput(boardFEN, makeMove) {
     setTo(null);
   }
 
-  function onPieceDrop(fromSq, toSq) {
+  function onPieceDrop(fromSq: string, toSq: string) {
     const chess = new Chess(boardFEN);
     const match = chess
       .moves({ verbose: true })
