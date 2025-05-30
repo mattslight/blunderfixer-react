@@ -12,7 +12,7 @@ import { useDrills } from './hooks/useDrills';
 
 import 'react-range-slider-input/dist/style.css';
 
-const PHASE_COLORS: Record<string, string> = {
+const PHASE_COLORS: Record<Phase, string> = {
   all: 'bg-gray-600',
   opening: 'bg-blue-700',
   middle: 'bg-purple-700',
@@ -20,7 +20,8 @@ const PHASE_COLORS: Record<string, string> = {
   endgame: 'bg-rose-700',
 };
 
-const PHASES = ['all', 'opening', 'middle', 'late', 'endgame'];
+const PHASES = ['all', 'opening', 'middle', 'late', 'endgame'] as const;
+type Phase = (typeof PHASES)[number];
 
 export default function DrillsPage() {
   const navigate = useNavigate();
@@ -31,13 +32,14 @@ export default function DrillsPage() {
   usePullToRefresh(refresh);
 
   // phase & search
-  const [phaseFilter, setPhaseFilter] = useStickyValue<
-    'all' | 'opening' | 'middle' | 'late' | 'endgame'
-  >('drillPhaseFilter', 'all');
+  const [phaseFilter, setPhaseFilter] = useStickyValue<Phase>(
+    'drillPhaseFilter',
+    'all'
+  );
   const [search, setSearch] = useState('');
 
   // 1) Define your thresholds (in pawns), and matching labels:
-  const thresholdOptions = [0, 2.5, 3, 5, 10, 100, Infinity] as const;
+  const thresholdOptions = [1, 1.5, 2.25, 3.375, 5, 10, 100, Infinity] as const;
 
   // 2) Start slider at the **last index** so default = All
   const [rangeIdx, setRangeIdx] = useStickyValue<[number, number]>(
