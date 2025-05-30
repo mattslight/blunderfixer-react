@@ -1,10 +1,10 @@
 // src/pages/DrillsPage.tsx
+import { useDebounce } from '@/hooks/useDebounce';
 import { useProfile } from '@/hooks/useProfile';
-import { usePullToRefresh } from '@/hooks/usePullToRefresh';
 import { useStickyValue } from '@/hooks/useStickyValue';
 import { Badge, TextInput } from 'flowbite-react';
 import { RefreshCw } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import { useNavigate } from 'react-router-dom';
 import DrillList from './components/DrillList';
@@ -25,61 +25,53 @@ type Phase = (typeof PHASES)[number];
 
 export default function DrillsPage() {
   const navigate = useNavigate();
+
+  const thresholdOptions = [
+    1,
+    150,
+    225,
+    337,
+    500,
+    1000,
+    10000,
+    Infinity,
+  ] as const;
+
+  // profile
   const {
     profile: { username },
   } = useProfile();
-  const { drills, loading, refresh } = useDrills(username);
-  usePullToRefresh(refresh);
 
-  // phase & search
+  // UI state
   const [phaseFilter, setPhaseFilter] = useStickyValue<Phase>(
-    'drillPhaseFilter',
+    'drillPhase',
     'all'
   );
   const [search, setSearch] = useState('');
+  const debouncedSearch = useDebounce(search, 300);
 
-  // 1) Define your thresholds (in pawns), and matching labels:
-  const thresholdOptions = [1, 1.5, 2.25, 3.375, 5, 10, 100, Infinity] as const;
-
-  // 2) Start slider at the **last index** so default = All
+  // slider->cp
   const [rangeIdx, setRangeIdx] = useStickyValue<[number, number]>(
     'drillRangeIdx',
     [0, thresholdOptions.length - 1]
   );
-
-  // 3) Convert to centi-pawns once
-  const [minIdx, maxIdx] = rangeIdx;
   const [minCutoff, maxCutoff] = [
-    thresholdOptions[minIdx] * 100,
-    thresholdOptions[maxIdx] * 100,
+    thresholdOptions[rangeIdx[0]],
+    thresholdOptions[rangeIdx[1]],
   ];
 
-  // 4) Filter drills
-  const filtered = useMemo(
-    () =>
-      drills.filter((d) => {
-        // Phase filter (unchanged)
-        const phase = d.phase || 'unknown';
-        if (phaseFilter !== 'all' && phase !== phaseFilter) return false;
+  // **server filter object**
+  const filters = {
+    username,
+    minEvalSwing: minCutoff,
+    maxEvalSwing: Number.isFinite(maxCutoff) ? maxCutoff : undefined,
+    phases: phaseFilter === 'all' ? undefined : [phaseFilter],
+    opponent: debouncedSearch || undefined,
+    limit: 20,
+    openingThreshold: 14,
+  } as const;
 
-        // Swing filter: show only drills with  minCutoff ≤ swing ≤ maxCutoff
-        if (
-          Math.abs(d.eval_swing) < minCutoff ||
-          Math.abs(d.eval_swing) > maxCutoff
-        )
-          return false;
-
-        // Search filter (case-insensitive against opponent and game ID)
-        if (search) {
-          const s = search.trim().toLowerCase();
-          const inOpp = d.opponent_username.toLowerCase().includes(s);
-          if (!inOpp) return false;
-        }
-
-        return true;
-      }),
-    [drills, phaseFilter, search, minCutoff, maxCutoff]
-  );
+  const { drills, loading, refresh } = useDrills(filters);
 
   return (
     <div className="p-4 pt-8 2xl:ml-12">
@@ -141,11 +133,11 @@ export default function DrillsPage() {
           </div>
         </div>
         <div className="mt-10 text-sm text-gray-500 sm:text-base">
-          Showing {filtered.length} of {drills.length}
+          {`Showing ${drills.length} result${drills.length === 1 ? '' : 's'}`}
         </div>
         {/* List */}
         <DrillList
-          drills={filtered}
+          drills={drills}
           loading={loading}
           onStartDrill={(fen, orientation) =>
             navigate('/drills/play', {
