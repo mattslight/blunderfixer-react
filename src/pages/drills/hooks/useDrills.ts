@@ -1,21 +1,26 @@
 // src/pages/drills/hooks/useDrills.ts
-
-import { getDrills } from '@/api';
+import { DrillFilters, getDrills } from '@/api/drills';
+import { useMemo } from 'react';
 import useSWR from 'swr';
 
-export function useDrills(username: string) {
-  // only fetch if username is truthy
-  const { data, error, isValidating, mutate } = useSWR(
-    username ? ['drills', username] : null,
-    // fetcher: SWR passes the key array to this fn
-    ([, user]) => getDrills(user)
+export function useDrills(filters: DrillFilters) {
+  const swrKey = useMemo(
+    () =>
+      filters.username
+        ? ['drills', JSON.stringify(filters)] // stable key
+        : null,
+    [filters]
+  );
+
+  const { data, error, isValidating, mutate } = useSWR(swrKey, () =>
+    getDrills(filters)
   );
 
   return {
-    drills: data ?? [], // SWR data
-    loading: !data && !error, // initial load flag
-    refreshing: isValidating, // revalidation flag
-    error, // any fetch error
-    refresh: () => mutate(), // manual reload
+    drills: data ?? [],
+    loading: !data && !error,
+    refreshing: isValidating,
+    error,
+    refresh: () => mutate(),
   };
 }
