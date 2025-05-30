@@ -83,7 +83,7 @@ export default function DrillsPage() {
 
   return (
     <div className="p-4 pt-8 2xl:ml-12">
-      <div className="mx-auto max-w-lg space-y-4">
+      <div className="mx-auto max-w-2xl space-y-4">
         <span className="inline-block py-0.5 text-xs font-semibold tracking-wider text-blue-400 uppercase">
           Drills
         </span>
@@ -95,7 +95,7 @@ export default function DrillsPage() {
               <Badge
                 key={p}
                 onClick={() => setPhaseFilter(p)}
-                className={`cursor-pointer rounded border-1 border-gray-800 px-3 py-2 text-sm capitalize ${
+                className={`cursor-pointer rounded border-1 border-gray-800 px-3 py-2 text-sm capitalize sm:text-base ${
                   phaseFilter === p && PHASE_COLORS[p]
                 }`}
               >
@@ -140,7 +140,7 @@ export default function DrillsPage() {
             <span className="text-xs font-bold text-gray-500">lg</span>
           </div>
         </div>
-        <div className="mt-10 text-sm text-gray-500">
+        <div className="mt-10 text-sm text-gray-500 sm:text-base">
           Showing {filtered.length} of {drills.length}
         </div>
         {/* List */}
