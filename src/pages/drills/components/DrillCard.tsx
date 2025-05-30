@@ -1,6 +1,6 @@
 import type { DrillPosition } from '@/types';
 import { formatDistanceToNow, parseISO } from 'date-fns';
-import { Clock, Play, User } from 'lucide-react';
+import { Clock, Play, TrendingDown, User } from 'lucide-react';
 import React from 'react';
 import { Chessboard } from 'react-chessboard';
 
@@ -16,6 +16,12 @@ const PHASE_COLORS: Record<string, string> = {
   Middle: 'bg-purple-700',
   Late: 'bg-fuchsia-700',
   Endgame: 'bg-rose-700',
+};
+
+const resultColour: Record<'win' | 'loss' | 'draw', string> = {
+  win: 'bg-emerald-500', // green
+  loss: 'bg-rose-400', // red
+  draw: 'bg-gray-400', // neutral
 };
 
 function formatTimeControl(tc: string): string {
@@ -42,6 +48,7 @@ function DrillCard({
     opponent_username,
     opponent_rating,
     phase: apiPhase,
+    eval_swing,
   } = drill;
 
   // Determine board orientation based on ply
@@ -98,6 +105,16 @@ function DrillCard({
                 <p className="line-clamp-1">
                   {opponent_username}&nbsp;({opponent_rating})
                 </p>
+              </span>
+              <span className="inline-flex items-center gap-1 rounded bg-gray-700 px-2 py-0.5 text-xs text-gray-400 capitalize">
+                <TrendingDown className="h-4 w-3" />
+                {eval_swing > 10000 ? 'Mate' : `${eval_swing / 100} pawns`}
+              </span>
+              <span className="inline-flex items-center gap-1 rounded bg-gray-700 px-2 py-0.5 text-xs text-gray-400 capitalize">
+                <span
+                  className={`h-2 w-2 rounded-full ${resultColour[hero_result]}`}
+                />
+                {hero_result}
               </span>
             </div>
           </div>
