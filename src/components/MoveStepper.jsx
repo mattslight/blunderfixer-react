@@ -64,7 +64,9 @@ export default function MoveStepper({
         onClick={() => setCurrentIdx(currentIdx - 1)}
         disabled={currentIdx === 0}
       >
-        <ChevronLeft className="h-5 w-5 text-white/80" />
+        <ChevronLeft
+          className={`h-5 w-5 text-white/80 ${moveList.length < 1 && 'cursor-not-allowed opacity-0'}`}
+        />
       </button>
 
       <div className="scrollbar-hide flex max-w-full space-x-2 overflow-x-auto px-2">
@@ -75,7 +77,9 @@ export default function MoveStepper({
         onClick={() => setCurrentIdx(currentIdx + 1)}
         disabled={currentIdx >= moveList.length}
       >
-        <ChevronRight className="h-5 w-5 text-white/80" />
+        <ChevronRight
+          className={`h-5 w-5 text-white/80 ${moveList.length < 1 && 'cursor-not-allowed opacity-0'}`}
+        />
       </button>
     </div>
   );
