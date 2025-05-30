@@ -6,27 +6,30 @@ import useMoveInput from '@/hooks/useMoveInput';
 import EvalBar from '@/pages/analyse/components/EvalBar';
 import { useEffect, useRef, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import useAutoMove from '../hooks/useAutoMove';
 import useBotPlayer from '../hooks/useBotPlayer';
 import BotControls from './BotControls';
 
 export default function PlayDrill() {
+  const navigate = useNavigate();
   const { state } = useLocation();
+
   if (!state || typeof state.fen !== 'string') {
     return <Navigate to="/drills" replace />;
   }
+
   const { fen: initialFEN, orientation } = state as {
     fen: string;
     orientation: 'white' | 'black';
   };
 
   // 1) Game history
-  const { fen, moveHistory, currentIdx, makeMove, setIdx, lastMove } =
+  const { fen, moveHistory, currentIdx, makeMove, setIdx, lastMove, reset } =
     useGameHistory({
       initialFEN,
       initialMoves: [],
-      allowBranching: false,
+      allowBranching: true,
     });
 
   // 2) User move input
@@ -64,54 +67,69 @@ export default function PlayDrill() {
   return (
     <div className="mx-auto max-w-lg space-y-6 p-4">
       {/* Move navigation */}
-      <div className="w-full">
-        <MoveStepper
-          moveList={moveHistory}
-          currentIdx={currentIdx}
-          setCurrentIdx={setIdx}
-        />
-      </div>
-
-      {/* Board + EvalBar */}
-      <div ref={wrapperRef} className="flex w-full gap-0">
-        <div className="flex-1">
-          {boardWidth > 0 && (
-            <Chessboard
-              position={fen}
-              boardOrientation={orientation}
-              boardWidth={boardWidth - 8}
-              animationDuration={300}
-              onPieceDrop={onPieceDrop}
-              onSquareClick={onSquareClick}
-              showPromotionDialog={showPromotionDialog}
-              promotionToSquare={to}
-              onPromotionPieceSelect={onPromotionPieceSelect}
-              promotionDialogVariant={'modal'}
-              customSquareStyles={{
-                ...optionSquares,
-                ...(lastMove
-                  ? {
-                      [lastMove.from]: {
-                        backgroundColor: 'rgba(255,255,0,0.4)',
-                      },
-                      [lastMove.to]: { backgroundColor: 'rgba(255,255,0,0.4)' },
-                    }
-                  : {}),
-              }}
-              customDarkSquareStyle={{ backgroundColor: '#B1B7C8' }}
-              customLightSquareStyle={{ backgroundColor: '#F5F2E6' }}
-            />
-          )}
+      <button
+        onClick={() => navigate('/drills')}
+        className="text-sm text-blue-500 hover:underline"
+      >
+        ← Back to list
+      </button>
+      <div>
+        {/* Board + EvalBar */}
+        <div ref={wrapperRef} className="flex w-full gap-0">
+          <div className="flex-1">
+            {boardWidth > 0 && (
+              <Chessboard
+                position={fen}
+                boardOrientation={orientation}
+                boardWidth={boardWidth - 8}
+                animationDuration={300}
+                onPieceDrop={onPieceDrop}
+                onSquareClick={onSquareClick}
+                showPromotionDialog={showPromotionDialog}
+                promotionToSquare={to}
+                onPromotionPieceSelect={onPromotionPieceSelect}
+                promotionDialogVariant={'modal'}
+                customSquareStyles={{
+                  ...optionSquares,
+                  ...(lastMove
+                    ? {
+                        [lastMove.from]: {
+                          backgroundColor: 'rgba(255,255,0,0.4)',
+                        },
+                        [lastMove.to]: {
+                          backgroundColor: 'rgba(255,255,0,0.4)',
+                        },
+                      }
+                    : {}),
+                }}
+                customDarkSquareStyle={{ backgroundColor: '#B1B7C8' }}
+                customLightSquareStyle={{ backgroundColor: '#F5F2E6' }}
+              />
+            )}
+          </div>
+          <EvalBar
+            score={evalScore}
+            className="w-4"
+            boardOrientation={orientation}
+          />
         </div>
-        <EvalBar
-          score={evalScore}
-          className="w-4"
-          boardOrientation={orientation}
-        />
+        <div className="w-full">
+          <MoveStepper
+            moveList={moveHistory}
+            currentIdx={currentIdx}
+            setCurrentIdx={setIdx}
+          />
+        </div>
       </div>
 
       {/* Depth control */}
       <BotControls strength={strength} setStrength={setStrength} />
+      <button
+        onClick={() => reset()}
+        className="rounded bg-blue-600 px-3 py-1 text-white hover:bg-blue-700"
+      >
+        Restart
+      </button>
     </div>
   );
 }
