@@ -15,16 +15,12 @@ import 'react-range-slider-input/dist/style.css';
 const PHASE_COLORS: Record<string, string> = {
   all: 'bg-gray-600',
   opening: 'bg-blue-700',
-  middlegame: 'bg-purple-700',
+  middle: 'bg-purple-700',
+  late: 'bg-fuchsia-700',
   endgame: 'bg-rose-700',
 };
 
-const PHASES = [
-  { label: 'all', value: 'all' },
-  { label: 'opening', value: 'opening' },
-  { label: 'middle', value: 'middlegame' },
-  { label: 'endgame', value: 'endgame' },
-] as const;
+const PHASES = ['all', 'opening', 'middle', 'late', 'endgame'];
 
 export default function DrillsPage() {
   const navigate = useNavigate();
@@ -36,7 +32,7 @@ export default function DrillsPage() {
 
   // phase & search
   const [phaseFilter, setPhaseFilter] = useStickyValue<
-    'all' | 'opening' | 'middlegame' | 'endgame'
+    'all' | 'opening' | 'middle' | 'late' | 'endgame'
   >('drillPhaseFilter', 'all');
   const [search, setSearch] = useState('');
 
@@ -61,8 +57,7 @@ export default function DrillsPage() {
     () =>
       drills.filter((d) => {
         // Phase filter (unchanged)
-        const phase =
-          d.ply <= 20 ? 'opening' : d.ply <= 50 ? 'middlegame' : 'endgame';
+        const phase = d.phase || 'unknown';
         if (phaseFilter !== 'all' && phase !== phaseFilter) return false;
 
         // Swing filter: show only drills with  minCutoff ≤ swing ≤ maxCutoff
@@ -94,15 +89,15 @@ export default function DrillsPage() {
         <div className="flex flex-wrap items-center justify-between gap-2">
           {/* Phase badges */}
           <div className="flex flex-wrap items-center gap-2 text-gray-300">
-            {PHASES.map(({ label, value }) => (
+            {PHASES.map((p) => (
               <Badge
-                key={value}
-                onClick={() => setPhaseFilter(value)}
+                key={p}
+                onClick={() => setPhaseFilter(p)}
                 className={`cursor-pointer rounded border-1 border-gray-800 px-3 py-2 text-sm capitalize ${
-                  phaseFilter === value && PHASE_COLORS[value]
+                  phaseFilter === p && PHASE_COLORS[p]
                 }`}
               >
-                {label}
+                {p}
               </Badge>
             ))}
           </div>
