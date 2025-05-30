@@ -1,6 +1,5 @@
 # TODO
 
-[ ] Reset drill to start
 [ ] Save Win / loss stats for the drill
 [ ] Show win/loss stats on drill page
 [ ] Show win/loss stats on drill list
@@ -9,6 +8,7 @@
 [ ] Load new games and drills when logging in
 [ ] Load games from DB
 [ ] Mark drill as 'don't show me this again'
+[x] Reset drill to start
 [x] Make drill filters useSticky
 [x] Remove the red / green bar on the drills
 [x] Make range slider full width on mobile
