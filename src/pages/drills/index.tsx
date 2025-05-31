@@ -175,11 +175,7 @@ export default function DrillsPage() {
         <DrillList
           drills={drills}
           loading={loading}
-          onStartDrill={(fen, orientation) =>
-            navigate('/drills/play', {
-              state: { fen, orientation },
-            })
-          }
+          onStartDrill={(id) => navigate(`/drills/play/${id}`)}
         />
       </div>
     </div>

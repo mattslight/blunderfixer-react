@@ -116,7 +116,7 @@ export interface PVLine {
  * Contains the FEN, evaluation swing, and other metadata
  */
 export interface DrillPosition {
-  id: number;
+  id: string;
   game_id: string;
   username: string;
   fen: string;

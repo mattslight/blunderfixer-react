@@ -2,14 +2,12 @@
 import { useState } from 'react';
 import { Chess, Square } from 'chess.js';
 
-const DEBUG = false;
+const DEBUG = true;
 
 /**
- * @param {string} boardFEN      – current FEN from useGameHistory().fen
- * @param {(from: string, to: string, promotion?: string) => boolean} makeMove
- *                                – the new hook’s function
+ * @param boardFEN      – current FEN string from useGameHistory().fen
+ * @param makeMove      – (from, to, promotion?) => boolean, provided by useGameHistory
  */
-
 export interface MoveInput {
   from: string | null;
   to: string | null;
@@ -24,19 +22,26 @@ export default function useMoveInput(
   boardFEN: string,
   makeMove: (from: string, to: string, promotion?: string) => boolean
 ): MoveInput {
-  const [from, setFrom] = useState<string | null>(null);
-  const [to, setTo] = useState<string | null>(null);
+  const [fromSq, setFromSq] = useState<string | null>(null);
+  const [toSq, setToSq] = useState<string | null>(null);
   const [showPromotionDialog, setShowPromotionDialog] = useState(false);
-  const [options, setOptions] = useState({});
+  const [options, setOptions] = useState<
+    Record<string, { background: string }>
+  >({});
 
-  function getMoveOptions(square: Square) {
+  /** Highlight all legal destination squares (and the origin) for a clicked source. */
+  function getMoveOptions(square: Square): boolean {
     const chess = new Chess(boardFEN);
     const moves = chess.moves({ square, verbose: true });
+
+    if (DEBUG) console.log('[useMoveInput] getMoveOptions for', square, moves);
+
     if (!moves.length) {
       setOptions({});
       return false;
     }
-    const opts = {};
+
+    const opts: Record<string, { background: string }> = {};
     moves.forEach((m) => {
       opts[m.to] = {
         background: chess.get(m.to)
@@ -44,84 +49,130 @@ export default function useMoveInput(
           : 'radial-gradient(circle, rgba(0,0,0,.1) 25%, transparent 25%)',
       };
     });
+    // Always highlight the source square itself:
     opts[square] = { background: 'rgba(255,255,0,0.4)' };
+
     setOptions(opts);
     return true;
   }
 
+  /** Called when a user clicks/taps a square */
   function onSquareClick(square: Square) {
-    // Clear any old highlights
-    if (DEBUG) console.log('[useMoveInput]', 'onSquareClick fired!');
+    if (DEBUG) console.log('[useMoveInput] onSquareClick:', square);
+    // Clear existing highlights:
     setOptions({});
 
-    // 1) pick up a piece
-    if (!from) {
-      if (getMoveOptions(square)) setFrom(square);
-      return;
-    }
-
-    // 2) try to drop it on another square
-    const chess = new Chess(boardFEN);
-    const verbose = chess.moves({ verbose: true });
-    const found = verbose.find((m) => m.from === from && m.to === square);
-
-    // illegal → either restart from this new square or cancel
-    if (!found) {
+    // 1) If no source is selected yet, try to pick this up as a “from”
+    if (!fromSq) {
       if (getMoveOptions(square)) {
-        setFrom(square);
-      } else {
-        setFrom(null);
+        setFromSq(square);
       }
       return;
     }
 
-    // 3) promotion needed?
+    // 2) We already have a “from” selected. See if “from→square” is a legal move:
+    const chess = new Chess(boardFEN);
+    const allVerboseMoves = chess.moves({ verbose: true });
+    const found = allVerboseMoves.find(
+      (m) => m.from === fromSq && m.to === square
+    );
+
+    // Illegal drop: either start a new “from” or clear selection
+    if (!found) {
+      if (getMoveOptions(square)) {
+        setFromSq(square);
+      } else {
+        setFromSq(null);
+      }
+      return;
+    }
+
+    // 3) If this is a pawn promotion, we need to open the dialog:
     if (
       found.piece === 'p' &&
       ((found.color === 'w' && square[1] === '8') ||
         (found.color === 'b' && square[1] === '1'))
     ) {
-      setTo(square);
+      if (DEBUG) console.log('[useMoveInput] Promotion needed at', square);
+      setToSq(square);
       setShowPromotionDialog(true);
       return;
     }
 
-    // 4) normal move → hand off to history
-    makeMove(from, square);
-    setFrom(null);
-    setTo(null);
+    // 4) Otherwise, it’s a normal “from→to” move. Hand it off to useGameHistory:
+    if (DEBUG)
+      console.log(
+        '[useMoveInput] Calling makeMove(sel:',
+        fromSq,
+        '→',
+        square,
+        ')'
+      );
+    const success = makeMove(fromSq, square);
+    if (DEBUG) console.log('[useMoveInput] makeMove returned', success);
+    // Clear selection either way (the board will re-render if makeMove was true)
+    setFromSq(null);
+    setToSq(null);
   }
 
-  function onPieceDrop(fromSq: string, toSq: string) {
+  /** Called when a piece is dragged & dropped (drag source → drop target) */
+  function onPieceDrop(from: string, to: string): boolean {
+    if (DEBUG) console.log('[useMoveInput] onPieceDrop:', from, '→', to);
+
     const chess = new Chess(boardFEN);
     const match = chess
       .moves({ verbose: true })
-      .find((m) => m.from === fromSq && m.to === toSq);
-    if (!match) return false;
-    if (match.promotion) {
-      // open the built-in dialog
-      setFrom(fromSq);
-      setTo(toSq);
-      setShowPromotionDialog(true);
-      return false; // tell the board “we’re handling it”
+      .find((m) => m.from === from && m.to === to);
+
+    if (!match) {
+      if (DEBUG) console.log('[useMoveInput] Illegal drop, no matching move');
+      return false; // Tell react-chessboard “reject the drop”
     }
-    return makeMove(fromSq, toSq, match.promotion);
+
+    // If promotion is required, open the dialog first and return false
+    if (match.promotion) {
+      if (DEBUG)
+        console.log('[useMoveInput] Pawn promotion drop from', from, 'to', to);
+      setFromSq(from);
+      setToSq(to);
+      setShowPromotionDialog(true);
+      return false; // Keep the piece on the source square, let dialog handle the rest
+    }
+
+    // Otherwise, it’s a normal move. Return makeMove(...) result:
+    const success = makeMove(from, to, match.promotion);
+    if (DEBUG)
+      console.log('[useMoveInput] onPieceDrop → makeMove returned', success);
+    return success;
   }
 
+  /** Called when the user chooses “q”, “r”, “b”, or “n” in the built-in promotion dialog */
   function onPromotionPieceSelect(choice: string): boolean {
+    if (DEBUG) console.log('[useMoveInput] onPromotionPieceSelect:', choice);
+    // choice is something like “wQ” or “bR”. Extract the second char as the promotion type:
     const promotion = choice.charAt(1).toLowerCase();
-    if (from && to) {
-      makeMove(from, to, promotion);
+
+    if (fromSq && toSq) {
+      if (DEBUG)
+        console.log(
+          '[useMoveInput] Actually calling makeMove for promotion:',
+          fromSq,
+          '→',
+          toSq,
+          promotion
+        );
+      makeMove(fromSq, toSq, promotion);
     }
-    setFrom(null);
-    setTo(null);
+    // Clear out selection and dialog state
+    setFromSq(null);
+    setToSq(null);
     setShowPromotionDialog(false);
     return true;
   }
 
   return {
-    from,
-    to,
+    from: fromSq,
+    to: toSq,
     showPromotionDialog,
     optionSquares: options,
     onSquareClick,

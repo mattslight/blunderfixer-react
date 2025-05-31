@@ -66,7 +66,7 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      <Route path="/drills/play" element={<PlayDrill />} />
+      <Route path="/drills/play/:id" element={<PlayDrill />} />
       <Route
         path="/help"
         element={

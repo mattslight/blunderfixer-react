@@ -1,12 +1,14 @@
 // src/pages/drills/PlayDrill.tsx
-import { useEffect, useRef, useState } from 'react';
+
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
-import { Location, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { Square } from 'chess.js';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Chess, Square } from 'chess.js';
 import { RotateCcw } from 'lucide-react';
 
 import useAutoMove from '../hooks/useAutoMove';
 import useBotPlayer from '../hooks/useBotPlayer';
+import useDrill from '../hooks/useDrill';
 import BotControls from './BotControls';
 
 import MoveStepper from '@/components/MoveStepper';
@@ -15,26 +17,43 @@ import useGameHistory from '@/hooks/useGameHistory';
 import useMoveInput from '@/hooks/useMoveInput';
 import EvalBar from '@/pages/analyse/components/EvalBar';
 
-type PlayDrillState = {
-  fen: string;
-  orientation: 'white' | 'black';
-};
-
 export default function PlayDrill() {
   const navigate = useNavigate();
-  const { state } = useLocation() as Location<PlayDrillState>;
+  const { id } = useParams<{ id: string }>();
 
-  const { fen: initialFEN, orientation } = state;
+  // 1) Fetch the drill data via SWR
+  const { drill, loading, error } = useDrill(id!);
 
-  // 1) Game history
+  // 2) Fallback “starting” FEN until drill arrives
+  const defaultFEN = new Chess().fen(); // standard initial chess position
+  const [initialFEN, setInitialFEN] = useState<string>(defaultFEN);
+
+  // 3) Derive orientation from the INITIAL FEN (side to move = hero).
+  //    We’ll parse drill.fen once when it arrives.
+  const [orientation, setOrientation] = useState<'white' | 'black'>('white');
+
+  useEffect(() => {
+    if (drill?.fen) {
+      setInitialFEN(drill.fen);
+
+      // Split "rnbqkbnr/... w KQkq - 0 1" → take index 1 ("w" or "b")
+      const parts = drill.fen.split(' ');
+      setOrientation(parts[1] === 'b' ? 'black' : 'white');
+    }
+  }, [drill]);
+
+  // 4) Memoize an empty array so that useGameHistory doesn’t reset repeatedly
+  const initialMoves = useMemo<string[]>(() => [], []);
+
+  // 5) Always call useGameHistory with a valid FEN and stable initialMoves
   const { fen, moveHistory, currentIdx, makeMove, setIdx, lastMove, reset } =
     useGameHistory({
       initialFEN,
-      initialMoves: [],
+      initialMoves,
       allowBranching: true,
     });
 
-  // 2) User move input
+  // 6) Move‐input handlers (on‐click, drag/drop, promotion)
   const {
     optionSquares,
     onSquareClick,
@@ -44,15 +63,15 @@ export default function PlayDrill() {
     to,
   } = useMoveInput(fen, makeMove);
 
-  // 3) Bot & auto-move
+  // 7) Bot & auto‐move
   const [strength, setStrength] = useState(8);
   const { playBotMove } = useBotPlayer(fen, strength, makeMove);
   useAutoMove(moveHistory, playBotMove, 300);
 
-  // 4) Eval engine
+  // 8) Evaluation engine
   const { evalScore } = useAnalysisEngine(fen);
 
-  // 5) Responsive board width
+  // 9) Responsive board width
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [boardWidth, setBoardWidth] = useState(0);
   useEffect(() => {
@@ -66,21 +85,27 @@ export default function PlayDrill() {
     return () => ro.disconnect();
   }, []);
 
-  if (!state || typeof fen !== 'string') {
+  // 10) Loading / error guards
+  if (loading) {
+    return <p className="p-4 text-center">Loading...</p>;
+  }
+  if (error || !drill) {
     return <Navigate to="/drills" replace />;
   }
 
+  // 11) Render the board with a fixed `orientation` (hero’s side to move)
   return (
     <div className="mx-auto max-w-lg space-y-6 p-4">
-      {/* Move navigation */}
+      {/* Back to drills list */}
       <button
-        onClick={() => void navigate('/drills')}
+        onClick={() => navigate('/drills')}
         className="text-sm text-blue-500 hover:underline"
       >
         ← Back to list
       </button>
+
+      {/* Board + EvalBar */}
       <div>
-        {/* Board + EvalBar */}
         <div ref={wrapperRef} className="flex w-full gap-0">
           <div className="flex-1">
             {boardWidth > 0 && (
@@ -128,7 +153,7 @@ export default function PlayDrill() {
         </div>
       </div>
 
-      {/* Depth control */}
+      {/* Bot controls and “Retry” button */}
       <BotControls strength={strength} setStrength={setStrength} />
       <button
         onClick={() => reset()}

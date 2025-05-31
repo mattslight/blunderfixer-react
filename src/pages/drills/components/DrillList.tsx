@@ -9,7 +9,7 @@ import type { DrillPosition } from '@/types';
 interface Props {
   drills: DrillPosition[];
   loading: boolean;
-  onStartDrill: (fen: string, orientation: 'black' | 'white') => void;
+  onStartDrill: (id: string) => void; // pass ID only
 }
 
 export default function DrillList({ drills, loading, onStartDrill }: Props) {
@@ -26,7 +26,13 @@ export default function DrillList({ drills, loading, onStartDrill }: Props) {
   return (
     <div className="space-y-8 sm:space-y-12">
       {drills.map((d) => {
-        return <DrillCard key={d.id} drill={d} onStartDrill={onStartDrill} />;
+        return (
+          <DrillCard
+            key={d.id}
+            drill={d}
+            onStartDrill={() => onStartDrill(d.id)}
+          />
+        );
       })}
     </div>
   );

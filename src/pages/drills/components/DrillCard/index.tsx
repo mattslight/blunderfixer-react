@@ -12,7 +12,7 @@ import { PHASE_COLORS, PHASE_DISPLAY } from '@/constants/phase';
 import type { DrillPosition } from '@/types';
 
 type Props = {
-  drill: DrillPosition & { history: Array<'win' | 'loss'> };
+  drill: DrillPosition;
   onStartDrill: (fen: string, orientation: 'white' | 'black') => void;
 };
 

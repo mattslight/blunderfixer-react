@@ -1,5 +1,5 @@
 // src/pages/analyse/index.tsx
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { AnalysisToolbar, PasteModal } from './components/AnalysisModals';
@@ -12,6 +12,7 @@ import useKeyboardNavigation from './hooks/useKeyboardNavigation';
 import useAnalysisEngine from '@/hooks/useAnalysisEngine';
 import useGameHistory from '@/hooks/useGameHistory';
 import useMoveInput from '@/hooks/useMoveInput';
+import { uciToArrow } from '@/lib/uci'; // import the same helper
 
 type AnalyseState = {
   pgn?: string;
@@ -72,8 +73,7 @@ export default function AnalysePage() {
 
   // 6) Feature extraction & analysis engine
   const { features, error: featuresError } = useFeatureExtraction(fen);
-  const { lines, evalScore, legalMoves, bestMoveArrow } =
-    useAnalysisEngine(fen);
+  const { lines, evalScore, legalMoves, bestMoveUCI } = useAnalysisEngine(fen);
 
   // 7) Keyboard navigation
   useKeyboardNavigation({
@@ -96,6 +96,13 @@ export default function AnalysePage() {
     setPasteError('');
   };
 
+  // —— Memoize ARROW ARRAY based on bestMoveUCI (a stable primitive) ——
+  const memoizedArrows = useMemo(() => {
+    if (!bestMoveUCI) return [];
+    // Derive arrow from the UCI string, only when bestMoveUCI changes
+    return [uciToArrow(bestMoveUCI)];
+  }, [bestMoveUCI]);
+
   // ——— Render —————————————————————————
 
   return (
@@ -114,7 +121,7 @@ export default function AnalysePage() {
             fen={fen}
             evalScore={evalScore}
             lines={lines}
-            arrows={[bestMoveArrow]}
+            arrows={memoizedArrows}
             moveList={moveHistory}
             currentIdx={currentIdx}
             setCurrentIdx={setIdx}

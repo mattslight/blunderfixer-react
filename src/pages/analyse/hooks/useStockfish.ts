@@ -1,4 +1,4 @@
-// src/hooks/useStockfish.ts
+// src/pages/analyse/hooks/useStockfish.ts
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { StockfishEngine } from '@/lib/StockfishEngine';
@@ -12,43 +12,46 @@ export function useStockfish(
   depth = 12,
   multiPV = 3
 ): { lines: PVLine[]; bestMoveUCI?: string; currentDepth: number } {
-  // 1) create one engine per-hook keyed on multiPV
+  // 1) Create one StockfishEngine instance per `multiPV`
   const engine = useMemo(() => new StockfishEngine(multiPV), [multiPV]);
 
-  // 2) local state
+  // 2) Prepare initial state
   const emptyLines = useMemo(() => makeEmptyLines(multiPV), [multiPV]);
   const [lines, setLines] = useState<PVLine[]>(emptyLines);
-  const [bestMoveUCI, setBestUCI] = useState<string>();
+  const [bestMoveUCI, setBestUCI] = useState<string | undefined>(undefined);
   const [currentDepth, setD] = useState(0);
 
-  // 3) a counter to drop stale searches
+  // 3) A counter so we ignore stale subscriptions
   const runId = useRef(0);
 
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Revised useEffect, top→bottom:
   useEffect(() => {
-    if (!fen) return;
+    if (!fen) return; // nothing to do if fen is empty
 
-    // bump generation
+    // bump generation so old subscriptions know they are stale
     runId.current += 1;
     const myRun = runId.current;
 
-    if (DEBUG)
+    if (DEBUG) {
       console.log(
         `[useStockfish] ANALYZE #${myRun} → FEN=${fen} depth=${depth}`
       );
+    }
 
-    // reset UI
+    // Reset UI state when a brand‐new search begins
     setLines(emptyLines);
     setBestUCI(undefined);
     setD(0);
 
-    // start the engine
-    if (DEBUG) console.log('[useStockfish] FIRE analyze →', fen, depth);
+    // Tell Stockfish to start analyzing at `depth`
+    if (DEBUG) console.log('[useStockfish] ▶ FIRE analyze →', fen, depth);
     engine.analyze(fen, depth);
 
-    // subscribe to raw output
+    // Subscribe to the engine's UCI “info” stream
     const sub = engine.lines$.subscribe({
       next(raw) {
-        // drop stale messages
+        // If a newer run has started, drop this message
         if (myRun !== runId.current) return;
 
         if (DEBUG) console.log('[useStockfish] RAW engine line →', raw);
@@ -58,41 +61,57 @@ export function useStockfish(
           if (DEBUG) console.log('[useStockfish] PARSED info →', info);
           if (!info) return;
 
-          // merge into state
+          // ── 1) Merge into `lines` state, only if this depth truly improves:
           setLines((old) => {
-            const next = [...old];
             const idx = info.rank - 1;
-            if (info.depth >= (next[idx]?.depth || 0)) {
-              next[idx] = info;
+            const oldDepth = old[idx]?.depth || 0;
+
+            // If the new info.depth is not strictly greater, do nothing:
+            if (info.depth <= oldDepth) {
+              return old;
             }
+
+            // Otherwise, copy the array and update:
+            const next = [...old];
+            next[idx] = info;
             return next;
           });
 
-          // first PV → bestMove
+          // ── 2) Update best‐move (PV rank=1) only if it truly changed:
           if (info.rank === 1) {
-            // 1) pull the "pv …" chunk out of the raw string
+            // Extract the UCI list from the raw string
             const m = raw.match(/pv\s+((?:[a-h][1-8][a-h][1-8][nbrq]?\s*)+)/i);
             if (m) {
               const uciList = m[1].trim().split(/\s+/);
-              // always overwrite so you get the deepest recommendation
-              setBestUCI(uciList[0]);
+              const candidate = uciList[0];
+
+              setBestUCI((prev) => {
+                // If the new best move is identical to prev, bail out:
+                if (prev === candidate) {
+                  return prev;
+                }
+                return candidate;
+              });
             }
           }
 
-          // track highest depth
-          setD((d) => Math.max(d, info.depth));
+          // ── 3) Track highest depth, but only if it strictly increases:
+          setD((prev) => {
+            return info.depth > prev ? info.depth : prev;
+          });
         } catch (err) {
           console.error('[useStockfish] unexpected stream error:', err);
         }
       },
     });
 
+    // Cleanup: unsubscribe and cancel Stockfish search
     return () => {
-      // cleanup subscription + cancel search
       sub.unsubscribe();
       engine.stop();
     };
   }, [fen, depth, engine, emptyLines]);
+  // ─────────────────────────────────────────────────────────────────────────────
 
   return { lines, bestMoveUCI, currentDepth };
 }

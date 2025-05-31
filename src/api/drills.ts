@@ -45,3 +45,12 @@ export async function getDrills({
   }
   return res.json() as Promise<DrillPosition[]>;
 }
+
+// Fetch single drill by ID
+export async function getDrill(id: number) {
+  const res = await fetch(`${BASE_URL}/drills/${id}`);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch drill ${id}: ${res.status}`);
+  }
+  return res.json() as Promise<DrillPosition>;
+}
