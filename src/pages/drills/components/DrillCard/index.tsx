@@ -39,7 +39,7 @@ export function DrillCard({ drill, onStartDrill }: Props) {
   const phaseColor = PHASE_COLORS[displayPhase] ?? 'bg-gray-700';
 
   return (
-    <div className="xs:grid-cols-[240px_1fr] grid gap-2 rounded-lg bg-gray-800 shadow sm:grid-cols-[360px_1fr]">
+    <div className="xs:grid-cols-[240px_1fr] xs:gap-0 grid rounded-lg bg-gray-800 shadow sm:grid-cols-[360px_1fr]">
       {/* 1) Board */}
       <Chessboard
         position={fen}
@@ -51,8 +51,8 @@ export function DrillCard({ drill, onStartDrill }: Props) {
       />
 
       {/* 2) Details */}
-      <div className="flex flex-col justify-between rounded p-4 tracking-wide">
-        <div>
+      <div className="xs:p-4 flex flex-col justify-between rounded p-6 tracking-wide sm:p-6">
+        <div className="flex flex-col gap-2">
           {/* 2a) Time + Phase Header */}
           <TimePhaseHeader
             playedAt={played_at}
@@ -70,9 +70,9 @@ export function DrillCard({ drill, onStartDrill }: Props) {
           />
         </div>
         {/* 3 Last 5 Tries (HistoryDots) & Drill Button */}
-        <div className="mt-8 flex flex-row justify-between align-bottom">
+        <div className="xs:rounded-bl-none xs:p-4 xs:-m-4 -m-6 mt-8 flex flex-row justify-between rounded-br-xl rounded-bl-xl bg-white/10 p-6 align-bottom sm:-m-6 sm:p-6">
           <div>
-            <div className="mb-1 text-[8pt] font-bold tracking-wide text-gray-500 uppercase">
+            <div className="xs:text-xs mb-1 text-sm font-bold text-green-400 uppercase sm:text-xs">
               Last 5 Tries
             </div>
             <HistoryDots history={history} />

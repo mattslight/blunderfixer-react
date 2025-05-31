@@ -19,7 +19,7 @@ export function TimePhaseHeader({ playedAt, displayPhase, phaseColor }: Props) {
         {formatted}
       </time>
       <span
-        className={`rounded-full px-2.5 py-1 text-xs font-semibold text-gray-300 ${phaseColor}`}
+        className={`rounded px-2 py-0.5 text-xs font-semibold text-gray-300 ${phaseColor}`}
       >
         {displayPhase}
       </span>
