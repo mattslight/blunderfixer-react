@@ -162,10 +162,10 @@ export default function DrillsPage() {
             {`Showing ${drills.length} result${drills.length === 1 ? '' : 's'}`}
           </div>
           <div className="flex flex-wrap items-center gap-2 text-gray-300">
-            <span className="text-sm text-gray-600">Exclude games won</span>
+            <span className="text-sm text-gray-600">Include games won</span>
             <div>
               <ToggleSwitch
-                checked={excludeWins}
+                checked={!excludeWins}
                 onChange={() => setExcludeWins(!excludeWins)}
               />
             </div>
