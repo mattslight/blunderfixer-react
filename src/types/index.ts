@@ -132,4 +132,5 @@ export interface DrillPosition {
   opponent_rating: number;
   played_at: string;
   phase: 'opening' | 'middle' | 'late' | 'endgame';
+  history?: Array<'win' | 'loss'>; // up to 5 entries: 'win' or 'loss', most‐recent first
 }
