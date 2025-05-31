@@ -1,4 +1,5 @@
 // src/pages/analyse/index.tsx
+
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -12,7 +13,7 @@ import useKeyboardNavigation from './hooks/useKeyboardNavigation';
 import useAnalysisEngine from '@/hooks/useAnalysisEngine';
 import useGameHistory from '@/hooks/useGameHistory';
 import useMoveInput from '@/hooks/useMoveInput';
-import { uciToArrow } from '@/lib/uci'; // import the same helper
+import { uciToArrow } from '@/lib/uci';
 
 type AnalyseState = {
   pgn?: string;
@@ -24,35 +25,51 @@ export default function AnalysePage() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Clear any router state on mount
   useEffect(() => {
     if (location.state) {
       navigate('.', { replace: true, state: {} });
     }
   }, [location.state, navigate]);
 
-  // cast only the `state` to our shape
+  // Cast router state to our shape
   const {
     pgn: drilledPgn,
     halfMoveIndex,
     heroSide = 'w',
   } = (location.state as AnalyseState) || {};
 
-  // 1) Pull once from router state, then freeze
+  // 1) Freeze the initial values from router state
   const [initialRawInput] = useState<string | null>(() => drilledPgn ?? null);
   const [initialStartAtIdx] = useState<number>(() =>
     halfMoveIndex !== undefined ? Math.max(0, halfMoveIndex - 1) : 0
   );
   const [initialHeroSide] = useState<'w' | 'b'>(() => heroSide);
 
-  // 2) Raw input (can later be changed by paste or game-loader)
-  const [rawInput, setRawInput] = useState(initialRawInput);
+  // 2) Raw PGN input (may be updated via PasteModal)
+  const [rawInput, setRawInput] = useState<string | null>(initialRawInput);
   const [pasteOpen, setPasteOpen] = useState(false);
   const [pasteError, setPasteError] = useState('');
 
   // 3) Parse PGN → initialFEN & sanHistory
-  const { initialFEN, sanHistory, rawErrors } = useGameInputParser(rawInput);
+  const {
+    initialFEN: parsedFEN,
+    sanHistory: parsedHistory,
+    rawErrors,
+  } = useGameInputParser(rawInput);
 
-  // 4) Game history with explicit startAtIdx
+  // ──────────────────────────────────────────────
+  // ── Memoize before passing to useGameHistory ─────────
+  // Make sure useGameHistory only sees new values when parsedFEN or parsedHistory truly change
+
+  // Memoize the FEN string
+  const initialFEN = useMemo(() => parsedFEN, [parsedFEN]);
+
+  // Memoize the history array; its reference changes only when `parsedFEN` (hence parsedHistory) changes
+  const sanHistory = useMemo(() => parsedHistory, [parsedFEN]);
+  // ──────────────────────────────────────────────
+
+  // 4) Game history: stepping & branching
   const { fen, moveHistory, currentIdx, setIdx, makeMove, lastMove } =
     useGameHistory({
       initialFEN,
@@ -61,7 +78,7 @@ export default function AnalysePage() {
       allowBranching: true,
     });
 
-  // 5) Move input handlers (click/drag/promotion)
+  // 5) Move‐input handlers (click, drag/drop, promotion)
   const {
     to,
     showPromotionDialog,
@@ -69,13 +86,13 @@ export default function AnalysePage() {
     onSquareClick,
     onPieceDrop,
     onPromotionPieceSelect,
-  } = useMoveInput(fen, (f, t, prom) => makeMove(f, t, prom));
+  } = useMoveInput(fen, makeMove);
 
   // 6) Feature extraction & analysis engine
   const { features, error: featuresError } = useFeatureExtraction(fen);
   const { lines, evalScore, legalMoves, bestMoveUCI } = useAnalysisEngine(fen);
 
-  // 7) Keyboard navigation
+  // 7) Keyboard navigation (← / → arrows, etc.)
   useKeyboardNavigation({
     currentIdx,
     maxIdx: moveHistory.length,
@@ -83,12 +100,14 @@ export default function AnalysePage() {
     onNext: () => setIdx(currentIdx + 1),
   });
 
-  // ——— Handlers —————————————————————————
+  // ─── Handlers ───────────────────────────────────────────────────
 
   const handlePasteSubmit = (text: string | null) => {
     setRawInput(text);
     setPasteOpen(false);
-    if (rawErrors.length) setPasteError(rawErrors.join('\n'));
+    if (rawErrors.length) {
+      setPasteError(rawErrors.join('\n'));
+    }
   };
 
   const handleClear = () => {
@@ -96,14 +115,13 @@ export default function AnalysePage() {
     setPasteError('');
   };
 
-  // —— Memoize ARROW ARRAY based on bestMoveUCI (a stable primitive) ——
+  // ─── Memoize arrows from bestMoveUCI ─────────────────────────────
+
   const memoizedArrows = useMemo(() => {
-    if (!bestMoveUCI) return [];
-    // Derive arrow from the UCI string, only when bestMoveUCI changes
-    return [uciToArrow(bestMoveUCI)];
+    return bestMoveUCI ? [uciToArrow(bestMoveUCI)] : [];
   }, [bestMoveUCI]);
 
-  // ——— Render —————————————————————————
+  // ─── Render ─────────────────────────────────────────────────────
 
   return (
     <>
@@ -116,6 +134,7 @@ export default function AnalysePage() {
       {featuresError && <p className="text-red-500">{featuresError}</p>}
 
       <div className="flex flex-col gap-8 lg:flex-row">
+        {/* ─── Left column: board + evaluation ─────────────────────────── */}
         <div className="w-full lg:w-1/2">
           <BoardAndEval
             fen={fen}
@@ -135,6 +154,8 @@ export default function AnalysePage() {
             boardOrientation={initialHeroSide === 'b' ? 'black' : 'white'}
           />
         </div>
+
+        {/* ─── Right column: coach insights, chat, etc. ───────────────── */}
         <div className="w-full lg:w-1/2">
           <CoachAndChat
             fen={fen}
