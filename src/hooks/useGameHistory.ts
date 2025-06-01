@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Chess, DEFAULT_POSITION } from 'chess.js';
 
-const DEBUG = true;
+const DEBUG = false;
 
 export interface GameHistory {
   fen: string;

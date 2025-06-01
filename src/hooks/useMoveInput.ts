@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Chess, Square } from 'chess.js';
 
-const DEBUG = true;
+const DEBUG = false;
 
 /**
  * @param boardFEN      – current FEN string from useGameHistory().fen
