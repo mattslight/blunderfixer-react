@@ -1,4 +1,4 @@
-// src/pages/drills/PlayDrill.tsx
+// src/pages/drills/components/PlayDrill.tsx
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
@@ -13,10 +13,11 @@ import BotControls from './BotControls';
 import MoveStepper from '@/components/MoveStepper';
 import useAnalysisEngine from '@/hooks/useAnalysisEngine';
 import useGameHistory from '@/hooks/useGameHistory';
+import useGameResult from '@/hooks/useGameResult';
 import useMoveInput from '@/hooks/useMoveInput';
 import EvalBar from '@/pages/analyse/components/EvalBar';
 
-const DEBUG = true;
+const DEBUG = false;
 
 export default function PlayDrill() {
   const navigate = useNavigate();
@@ -47,11 +48,13 @@ export default function PlayDrill() {
 
   // 4) Derive “orientation” from the current FEN’s side‐to‐move
   //    (once drill arrives, fen will be drill.fen; before that, fen is defaultFEN)
-  const orientation: 'white' | 'black' = useMemo(() => {
+  const heroColor: 'white' | 'black' = useMemo(() => {
     // FEN format: “<piece-placement> <side-to-move> …”
-    const side = fen.split(' ')[1];
+    const side = drill?.fen.split(' ')[1];
     return side === 'b' ? 'black' : 'white';
-  }, [fen]);
+  }, [drill?.fen]);
+
+  const gameResult = useGameResult(fen, heroColor);
 
   // 5) Move‐input handlers (these hooks expect a valid `fen` string, which we always have)
   const {
@@ -91,12 +94,23 @@ export default function PlayDrill() {
       console.log('— PlayDrill debug —');
       console.log(' drill:', drill);
       console.log(' fen:', fen);
-      console.log(' orientation:', orientation);
+      console.log(' heroColor:', heroColor);
       console.log(' moveHistory:', moveHistory);
       console.log(' currentIdx:', currentIdx);
       console.log(' boardWidth:', boardWidth);
+      console.log(' gameResult:', gameResult);
+      console.log(' evalScore:', evalScore);
     }
-  }, [drill, fen, orientation, moveHistory, currentIdx, boardWidth]);
+  }, [
+    drill,
+    fen,
+    heroColor,
+    moveHistory,
+    currentIdx,
+    boardWidth,
+    gameResult,
+    evalScore,
+  ]);
 
   // 10) Loading / error guards (after all hooks have been called)
   if (loading) {
@@ -123,7 +137,7 @@ export default function PlayDrill() {
           <div className="flex-1">
             <Chessboard
               position={fen}
-              boardOrientation={orientation}
+              boardOrientation={heroColor}
               animationDuration={300}
               onPieceDrop={onPieceDrop}
               onSquareClick={onSquareClick}
@@ -151,7 +165,7 @@ export default function PlayDrill() {
           <EvalBar
             score={evalScore}
             className="w-4"
-            boardOrientation={orientation}
+            boardOrientation={heroColor}
           />
         </div>
 
@@ -174,6 +188,26 @@ export default function PlayDrill() {
         <RotateCcw className="mr-1 h-4 w-4" />
         Retry
       </button>
+      {/* Game result display */}
+      {gameResult && (
+        <div className="mt-4 text-center">
+          <h2 className="text-lg font-semibold">
+            Game Result:{' '}
+            {gameResult === 'win'
+              ? 'You Win!'
+              : gameResult === 'loss'
+                ? 'You Lose!'
+                : 'Draw'}
+          </h2>
+          <p className="text-sm text-gray-500">
+            {gameResult === 'win'
+              ? 'Congratulations!'
+              : gameResult === 'loss'
+                ? 'Better luck next time!'
+                : "It's a draw!"}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
