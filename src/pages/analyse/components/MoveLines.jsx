@@ -1,4 +1,10 @@
+import { useEffect } from 'react';
+
 export default function MoveLines({ lines, currentDepth: _currentDepth }) {
+  useEffect(() => {
+    console.log('mateIn ', lines[0].mateIn);
+  }, [lines]);
+
   return (
     <div className="rounded bg-gray-800 p-2">
       <div className="space-y-1">
@@ -7,20 +13,24 @@ export default function MoveLines({ lines, currentDepth: _currentDepth }) {
           .map((l) => {
             // 1) Mate formatting
             let display;
+            let advantageSide = 'w';
             if (typeof l.mateIn === 'number') {
               const n = Math.abs(l.mateIn);
-              display = `${l.mateIn > 0 ? '+M' : '-M'}${n}`;
+              display = `M${n}`;
+              advantageSide = l.mateIn > 0 ? 'w' : 'b';
             }
             // 2) Otherwise centipawns (already normalized in your hook)
             else if (typeof l.scoreCP === 'number') {
               const sign = l.scoreCP >= 0 ? '+' : '';
+              advantageSide = l.scoreCP >= 0 ? 'w' : 'b';
               display = `${sign}${(l.scoreCP / 100).toFixed(2)}`;
             }
 
             // pick pill colors by sign
-            const sign = display.charAt(0);
             const pillClasses =
-              sign === '+' ? 'bg-white text-black' : 'bg-black text-white';
+              advantageSide === 'w'
+                ? 'bg-white text-black'
+                : 'bg-black text-white';
             return (
               <div
                 key={l.rank}
