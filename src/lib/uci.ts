@@ -1,6 +1,6 @@
 // src/lib/uci.ts
 
-import { Chess, type Move, type Square } from 'chess.js';
+import { Chess, type Move, type PieceSymbol, type Square } from 'chess.js';
 
 import { PVLine } from '@/types';
 export type Promotion = 'n' | 'b' | 'r' | 'q';
@@ -23,16 +23,32 @@ export function parseUciInfo(raw: string, baseFen: string): PVLine | null {
 
   const dm = raw.match(/depth (\d+)/);
   const mm = raw.match(/multipv (\d+)/);
-  const cp = raw.match(/score cp (-?\d+)/);
-  const mt = raw.match(/score mate (-?\d+)/);
+  const cpMatch = raw.match(/score cp (-?\d+)/);
+  const mtMatch = raw.match(/score mate (-?\d+)/);
   const pv = raw.match(/ pv (.+)$/);
   if (!dm || !mm || !pv) return null;
 
-  const depth = +dm[1],
-    rank = +mm[1],
-    uciMoves = pv[1].split(' ');
+  const depth = +dm[1];
+  const rank = +mm[1];
+  const uciMoves = pv[1].split(' ');
 
-  // make one Chess(board) and build SAN until you hit a bad move
+  // Determine side to move from FEN
+  const sideToMove = baseFen.split(' ')[1]; // 'w' or 'b'
+
+  // Parse raw scores and flip if Black to move
+  let scoreCP: number | undefined = undefined;
+  if (cpMatch) {
+    const rawCp = +cpMatch[1];
+    scoreCP = sideToMove === 'w' ? rawCp : -rawCp;
+  }
+
+  let mateIn: number | undefined = undefined;
+  if (mtMatch) {
+    const rawMate = +mtMatch[1];
+    mateIn = sideToMove === 'w' ? rawMate : -rawMate;
+  }
+
+  // Build SAN moves from UCI PV
   const chess = new Chess(baseFen);
   const san: string[] = [];
 
@@ -74,27 +90,41 @@ export function parseUciInfo(raw: string, baseFen: string): PVLine | null {
   return {
     rank,
     depth,
-    scoreCP: cp ? +cp[1] : undefined,
-    mateIn: mt ? +mt[1] : undefined,
+    scoreCP,
+    mateIn,
     moves: san,
   };
 }
 
+/**
+ * Converts a UCI move string (e.g. "e2e4", "e7e8q") into an object
+ * containing { from, to, promotion? }.  If the UCI is invalid, returns
+ * { from: null, to: null, promotion: null }.
+ */
 export function uciToMove(uci: unknown): {
   from: Square | null;
   to: Square | null;
+  promotion: PieceSymbol | null;
 } {
-  // guard: must be a string of at least 4 chars
+  // Must be at least 4 characters: from(2) + to(2).  Promotion adds a 5th char.
   if (typeof uci !== 'string' || uci.length < 4) {
-    return { from: null, to: null };
+    return { from: null, to: null, promotion: null };
   }
 
-  return {
-    from: uci.slice(0, 2) as Square,
-    to: uci.slice(2, 4) as Square,
-  };
-}
+  const from = uci.slice(0, 2) as Square;
+  const to = uci.slice(2, 4) as Square;
 
+  let promotion: PieceSymbol | null = null;
+  if (uci.length === 5) {
+    // UCI promotions are lowercase: 'q', 'r', 'b', or 'n'
+    const p = uci[4].toLowerCase();
+    if (['q', 'r', 'b', 'n'].includes(p)) {
+      promotion = p as PieceSymbol;
+    }
+  }
+
+  return { from, to, promotion };
+}
 /**
  * Convert a UCI string into a single customArrow tuple
  * Returns an Arrow tuple e.g. ["e2", "e4", "green"]
