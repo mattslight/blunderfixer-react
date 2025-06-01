@@ -33,7 +33,7 @@ export function HistoryDots({ history }: HistoryDotsProps) {
           return (
             <div
               key={idx}
-              className="rounded-full border border-gray-600 bg-transparent"
+              className="h-4 w-4 rounded-full border border-gray-600 bg-transparent"
             />
           );
         }
