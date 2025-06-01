@@ -25,24 +25,22 @@ const EvalBar: React.FC<EvalBarProps> = ({
   const pawn = score / 100;
   const pct = pawnToPct(pawn);
 
-  // Always from White's perspective
   const whiteHeight = pct;
   const blackHeight = 100 - pct;
+
+  const whiteBarPosition = boardOrientation === 'white' ? 'bottom-0' : 'top-0';
+  const blackBarPosition = boardOrientation === 'white' ? 'top-0' : 'bottom-0';
 
   return (
     <div className={`relative self-stretch overflow-hidden ${className}`}>
       {/* Black bar */}
       <div
-        className={`absolute inset-x-0 ${
-          boardOrientation === 'white' ? 'top-0' : 'bottom-0'
-        } bg-black transition-[height] duration-1000 ease-in`}
+        className={`absolute inset-x-0 ${blackBarPosition} bg-black transition-[height] duration-1000 ease-in`}
         style={{ height: `${blackHeight}%` }}
       />
       {/* White bar */}
       <div
-        className={`absolute inset-x-0 ${
-          boardOrientation === 'white' ? 'bottom-0' : 'top-0'
-        } bg-white transition-[height] duration-1000 ease-in`}
+        className={`absolute inset-x-0 ${whiteBarPosition} bg-white transition-[height] duration-1000 ease-in`}
         style={{ height: `${whiteHeight}%` }}
       />
     </div>
