@@ -1,5 +1,4 @@
 // src/pages/drills/PlayDrill.tsx
-
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
@@ -17,6 +16,8 @@ import useGameHistory from '@/hooks/useGameHistory';
 import useMoveInput from '@/hooks/useMoveInput';
 import EvalBar from '@/pages/analyse/components/EvalBar';
 
+const DEBUG = true;
+
 export default function PlayDrill() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
@@ -24,36 +25,35 @@ export default function PlayDrill() {
   // 1) Fetch the drill data via SWR
   const { drill, loading, error } = useDrill(id!);
 
-  // 2) Fallback “starting” FEN until drill arrives
-  const defaultFEN = new Chess().fen(); // standard initial chess position
-  const [initialFEN, setInitialFEN] = useState<string>(defaultFEN);
-
-  // 3) Derive orientation from the INITIAL FEN (side to move = hero).
-  //    We’ll parse drill.fen once when it arrives.
-  const [orientation, setOrientation] = useState<'white' | 'black'>('white');
-
-  useEffect(() => {
-    if (drill?.fen) {
-      setInitialFEN(drill.fen);
-
-      // Split "rnbqkbnr/... w KQkq - 0 1" → take index 1 ("w" or "b")
-      const parts = drill.fen.split(' ');
-      setOrientation(parts[1] === 'b' ? 'black' : 'white');
-    }
-  }, [drill]);
-
-  // 4) Memoize an empty array so that useGameHistory doesn’t reset repeatedly
+  // 2) Prepare a default FEN (initial chess position) exactly once
+  const defaultFEN = useMemo(() => new Chess().fen(), []);
+  //    (there are no “pre‐moves” here, so initialMoves = [])
   const initialMoves = useMemo<string[]>(() => [], []);
 
-  // 5) Always call useGameHistory with a valid FEN and stable initialMoves
+  // 3) Call useGameHistory unconditionally.
+  //    ‣ initialFEN: use drill.fen if it exists, otherwise defaultFEN.
+  //    ‣ resetKey: use drill.id if it exists, otherwise undefined.
+  //    This ensures:
+  //      • On mount, resetKey === undefined → hook initializes with defaultFEN.
+  //      • As soon as “drill” arrives, resetKey goes undefined→<id>,
+  //        firing the hook’s effect exactly once to reload initialFEN=drill.fen.
   const { fen, moveHistory, currentIdx, makeMove, setIdx, lastMove, reset } =
     useGameHistory({
-      initialFEN,
+      initialFEN: drill?.fen ?? defaultFEN,
       initialMoves,
       allowBranching: true,
+      resetKey: drill?.id,
     });
 
-  // 6) Move‐input handlers (on‐click, drag/drop, promotion)
+  // 4) Derive “orientation” from the current FEN’s side‐to‐move
+  //    (once drill arrives, fen will be drill.fen; before that, fen is defaultFEN)
+  const orientation: 'white' | 'black' = useMemo(() => {
+    // FEN format: “<piece-placement> <side-to-move> …”
+    const side = fen.split(' ')[1];
+    return side === 'b' ? 'black' : 'white';
+  }, [fen]);
+
+  // 5) Move‐input handlers (these hooks expect a valid `fen` string, which we always have)
   const {
     optionSquares,
     onSquareClick,
@@ -63,15 +63,15 @@ export default function PlayDrill() {
     to,
   } = useMoveInput(fen, makeMove);
 
-  // 7) Bot & auto‐move
+  // 6) Bot & auto‐move (drives an engine move after each human move)
   const [strength, setStrength] = useState(8);
   const { playBotMove } = useBotPlayer(fen, strength, makeMove);
   useAutoMove(moveHistory, playBotMove, 300);
 
-  // 8) Evaluation engine
+  // 7) Evaluation engine (returns a numeric score for “fen”)
   const { evalScore } = useAnalysisEngine(fen);
 
-  // 9) Responsive board width
+  // 8) Responsive board width logic
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [boardWidth, setBoardWidth] = useState(0);
   useEffect(() => {
@@ -85,21 +85,34 @@ export default function PlayDrill() {
     return () => ro.disconnect();
   }, []);
 
-  // 10) Loading / error guards
+  // 9) Debug logging
+  useEffect(() => {
+    if (DEBUG) {
+      console.log('— PlayDrill debug —');
+      console.log(' drill:', drill);
+      console.log(' fen:', fen);
+      console.log(' orientation:', orientation);
+      console.log(' moveHistory:', moveHistory);
+      console.log(' currentIdx:', currentIdx);
+      console.log(' boardWidth:', boardWidth);
+    }
+  }, [drill, fen, orientation, moveHistory, currentIdx, boardWidth]);
+
+  // 10) Loading / error guards (after all hooks have been called)
   if (loading) {
-    return <p className="p-4 text-center">Loading...</p>;
+    return <p className="p-4 text-center">Loading…</p>;
   }
   if (error || !drill) {
     return <Navigate to="/drills" replace />;
   }
 
-  // 11) Render the board with a fixed `orientation` (hero’s side to move)
+  // 11) Render the board + controls
   return (
     <div className="mx-auto max-w-lg space-y-6 p-4">
-      {/* Back to drills list */}
+      {/* Back → drills list */}
       <button
         onClick={() => navigate('/drills')}
-        className="text-sm text-blue-500 hover:underline"
+        className="text-blue-500 hover:underline"
       >
         ← Back to list
       </button>
@@ -108,35 +121,32 @@ export default function PlayDrill() {
       <div>
         <div ref={wrapperRef} className="flex w-full gap-0">
           <div className="flex-1">
-            {boardWidth > 0 && (
-              <Chessboard
-                position={fen}
-                boardOrientation={orientation}
-                boardWidth={boardWidth - 8}
-                animationDuration={300}
-                onPieceDrop={onPieceDrop}
-                onSquareClick={onSquareClick}
-                showPromotionDialog={showPromotionDialog}
-                promotionToSquare={to as Square}
-                onPromotionPieceSelect={onPromotionPieceSelect}
-                promotionDialogVariant={'modal'}
-                customSquareStyles={{
-                  ...optionSquares,
-                  ...(lastMove
-                    ? {
-                        [lastMove.from]: {
-                          backgroundColor: 'rgba(255,255,0,0.4)',
-                        },
-                        [lastMove.to]: {
-                          backgroundColor: 'rgba(255,255,0,0.4)',
-                        },
-                      }
-                    : {}),
-                }}
-                customDarkSquareStyle={{ backgroundColor: '#B1B7C8' }}
-                customLightSquareStyle={{ backgroundColor: '#F5F2E6' }}
-              />
-            )}
+            <Chessboard
+              position={fen}
+              boardOrientation={orientation}
+              animationDuration={300}
+              onPieceDrop={onPieceDrop}
+              onSquareClick={onSquareClick}
+              showPromotionDialog={showPromotionDialog}
+              promotionToSquare={to as Square}
+              onPromotionPieceSelect={onPromotionPieceSelect}
+              promotionDialogVariant={'modal'}
+              customSquareStyles={{
+                ...optionSquares,
+                ...(lastMove
+                  ? {
+                      [lastMove.from]: {
+                        backgroundColor: 'rgba(255,255,0,0.4)',
+                      },
+                      [lastMove.to]: {
+                        backgroundColor: 'rgba(255,255,0,0.4)',
+                      },
+                    }
+                  : {}),
+              }}
+              customDarkSquareStyle={{ backgroundColor: '#B1B7C8' }}
+              customLightSquareStyle={{ backgroundColor: '#F5F2E6' }}
+            />
           </div>
           <EvalBar
             score={evalScore}
@@ -144,6 +154,8 @@ export default function PlayDrill() {
             boardOrientation={orientation}
           />
         </div>
+
+        {/* Move Stepper (scroll through history) */}
         <div className="w-full">
           <MoveStepper
             moveList={moveHistory}
@@ -153,13 +165,13 @@ export default function PlayDrill() {
         </div>
       </div>
 
-      {/* Bot controls and “Retry” button */}
+      {/* Bot controls + “Retry” */}
       <BotControls strength={strength} setStrength={setStrength} />
       <button
         onClick={() => reset()}
-        className="items-center rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+        className="flex items-center rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
       >
-        <RotateCcw className="relative bottom-0.25 mr-1 inline-flex h-4 w-4" />
+        <RotateCcw className="mr-1 h-4 w-4" />
         Retry
       </button>
     </div>

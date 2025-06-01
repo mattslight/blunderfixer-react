@@ -1,5 +1,5 @@
 // src/hooks/useGameHistory.ts
-import { use, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Chess, DEFAULT_POSITION } from 'chess.js';
 
 const DEBUG = true;
@@ -20,6 +20,12 @@ export interface UseGameHistoryOpts {
   initialMoves?: string[];
   startAtIdx?: number;
   allowBranching?: boolean;
+
+  /**
+   * Whenever `resetKey` changes, the hook re­initializes to
+   * `initialFEN` + `initialMoves`.
+   **/
+  resetKey?: any;
 }
 
 export default function useGameHistory({
@@ -27,6 +33,7 @@ export default function useGameHistory({
   initialMoves = [],
   startAtIdx = 0,
   allowBranching = false,
+  resetKey, // ← New prop
 }: UseGameHistoryOpts): GameHistory {
   const chessRef = useRef(new Chess());
 
@@ -34,7 +41,7 @@ export default function useGameHistory({
   const arraysEqual = (a: string[], b: string[]) =>
     a.length === b.length && a.every((v, i) => v === b[i]);
 
-  // 1) seed on mount
+  // ── Step 1: seed on mount OR when resetKey changes ─────────────────────────────
   const initHistory = () => {
     const c = chessRef.current;
     c.reset();
@@ -47,7 +54,7 @@ export default function useGameHistory({
   const [currentIdx, setCurrentIdx] = useState<number>(() => startAtIdx);
   const [lastMove, setLastMove] = useState<{ from: string; to: string }>();
 
-  // ── Keep a callback to replay a given index on demand ─────────────────────────
+  // ── Sync to a given index ──────────────────────────────────────────────────────
   const syncPosition = useCallback(
     (idx: number) => {
       const c = chessRef.current;
@@ -58,41 +65,37 @@ export default function useGameHistory({
     [initialFEN, moveHistory]
   );
 
-  // ── Effect: whenever initialFEN, initialMoves, or startAtIdx changes, replay ─
+  // ── Step 2: only re­initialize when resetKey changes ────────────────────────────
   useEffect(() => {
-    // 1) Update `moveHistory` only if it really differs from `initialMoves`
-    setHistory((prevHistory) => {
-      if (arraysEqual(prevHistory, initialMoves)) {
-        return prevHistory;
-      }
+    // Update moveHistory only if it truly differs
+    setHistory((prev) => {
+      if (arraysEqual(prev, initialMoves)) return prev;
       return initialMoves;
     });
 
-    // 2) Reset & replay up to `startAtIdx`
+    // Reset board to initialFEN + play up to startAtIdx
     const c = chessRef.current;
     c.reset();
     c.load(initialFEN);
     initialMoves.slice(0, startAtIdx).forEach((san) => c.move(san));
 
-    // 3) Update `currentIdx` only if it's not already equal
-    setCurrentIdx((prevIdx) => (prevIdx === startAtIdx ? prevIdx : startAtIdx));
+    // Update currentIdx
+    setCurrentIdx((prev) => (prev === startAtIdx ? prev : startAtIdx));
 
-    // 4) Compute `lastMove` based on the position reached at `startAtIdx`
+    // Compute lastMove for the new position at startAtIdx
     if (startAtIdx > 0 && initialMoves.length > 0) {
-      const verboseHistory = c.history({ verbose: true });
-      const last = verboseHistory[verboseHistory.length - 1];
-      setLastMove((prev) => {
-        // Only update if truly different
-        if (prev?.from === last.from && prev?.to === last.to) {
-          return prev;
-        }
-        return { from: last.from, to: last.to };
-      });
+      const verbose = c.history({ verbose: true });
+      const last = verbose[verbose.length - 1];
+      setLastMove((prev) =>
+        prev?.from === last.from && prev?.to === last.to
+          ? prev
+          : { from: last.from, to: last.to }
+      );
     } else {
-      // If at index 0, clear `lastMove` if it's not already undefined
       setLastMove((prev) => (prev ? undefined : prev));
     }
-  }, [initialFEN, initialMoves, startAtIdx]);
+    // ── Depend only on resetKey, NOT on initialFEN or initialMoves ──
+  }, [resetKey]);
 
   // ── Can we play a new move? ───────────────────────────────────────────────────
   const atTip = currentIdx === moveHistory.length;
@@ -102,22 +105,17 @@ export default function useGameHistory({
   const setIdx = useCallback(
     (idx: number) => {
       const safe = Math.max(0, Math.min(idx, moveHistory.length));
-
-      // Update the board position up to `safe`
       syncPosition(safe);
-      // Update index only if it differs
       setCurrentIdx((prev) => (prev === safe ? prev : safe));
 
-      // Update lastMove for the new index
       if (safe > 0) {
         const full = chessRef.current.history({ verbose: true });
         const last = full[full.length - 1];
-        setLastMove((prev) => {
-          if (prev?.from === last.from && prev?.to === last.to) {
-            return prev;
-          }
-          return { from: last.from, to: last.to };
-        });
+        setLastMove((prev) =>
+          prev?.from === last.from && prev?.to === last.to
+            ? prev
+            : { from: last.from, to: last.to }
+        );
       } else {
         setLastMove((prev) => (prev ? undefined : prev));
       }
@@ -131,19 +129,16 @@ export default function useGameHistory({
       if (!canPlayMove) return false;
       const c = chessRef.current;
 
-      // If branching is allowed and we're not at the tip, truncate history
       if (allowBranching && currentIdx < moveHistory.length) {
         setHistory((prev) => prev.slice(0, currentIdx));
       }
 
       const mv = c.move({ from, to, promotion: promotion?.toLowerCase() });
       if (!mv) {
-        // Illegal move: restore to current index
         syncPosition(currentIdx);
         return false;
       }
 
-      // Append the new SAN to history and advance index
       setHistory((prev) => [...prev.slice(0, currentIdx), mv.san]);
       setCurrentIdx((prev) => prev + 1);
       setLastMove({ from: mv.from, to: mv.to });
