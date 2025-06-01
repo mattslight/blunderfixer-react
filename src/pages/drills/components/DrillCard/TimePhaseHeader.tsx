@@ -13,7 +13,7 @@ export function TimePhaseHeader({ playedAt, displayPhase, phaseColor }: Props) {
     addSuffix: true,
   }).replace(/^about\s*/, '');
   return (
-    <div className="flex items-center justify-between text-xs text-gray-400 sm:text-sm">
+    <div className="flex items-center justify-between text-xs text-gray-500">
       <time dateTime={playedAt}>
         <Clock className="relative bottom-0.25 mr-1 inline h-3 w-3" />
         {formatted}

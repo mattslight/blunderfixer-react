@@ -70,7 +70,7 @@ export function DrillCard({ drill, onStartDrill }: Props) {
           />
         </div>
         {/* 3 Last 5 Tries (HistoryDots) & Drill Button */}
-        <div className="xs:rounded-bl-none xs:p-4 xs:-m-4 -m-6 mt-8 flex flex-row justify-between rounded-br-xl rounded-bl-xl bg-white/10 p-6 align-bottom sm:-m-6 sm:p-6">
+        <div className="xs:rounded-bl-none xs:p-4 xs:-m-4 -m-6 mt-8 flex flex-row justify-between rounded-br-xl rounded-bl-xl bg-white/5 p-6 align-bottom sm:-m-6 sm:p-6">
           <div>
             <div className="xs:text-xs mb-1 text-sm font-bold text-green-400 uppercase sm:text-xs">
               Last 5 Tries
