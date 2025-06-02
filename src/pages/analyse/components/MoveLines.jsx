@@ -1,10 +1,4 @@
-import { useEffect } from 'react';
-
 export default function MoveLines({ lines, currentDepth: _currentDepth }) {
-  useEffect(() => {
-    console.log('mateIn ', lines[0].mateIn);
-  }, [lines]);
-
   return (
     <div className="rounded bg-gray-800 p-2">
       <div className="space-y-1">
