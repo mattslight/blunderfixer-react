@@ -83,13 +83,13 @@ export default function PlayDrill() {
   //    • maxMoves = 0 if phase=endgame; else drill.maxMoves or 3
   //    • lossThreshold = drill.lossThreshold or 100 (centipawns)
   const initialEval = drill?.initial_eval ?? null;
-  const maxMoves = drill?.phase === 'endgame' ? 0 : (REQUIRED_MOVES ?? 5);
-  const lossThreshold = LOSS_THRESHOLD ?? 100;
+  const maxMoves = drill?.phase === 'endgame' ? 0 : REQUIRED_MOVES;
+  const lossThreshold = LOSS_THRESHOLD;
 
   // 10) Drill‐result hook
   const {
     result: drillResult, // 'pass' | 'fail' | null
-    expectedResult, // 'win' | 'draw' | null
+    expectedResult, // 'win' | 'draw' | 'hold' | null
   } = useDrillResult({
     initialEval,
     currentEval: evalScore,
@@ -143,32 +143,31 @@ export default function PlayDrill() {
 
   // 15) Render
   return (
-    <div className="mx-auto max-w-lg space-y-6 p-4">
+    <div className="mx-auto max-w-md space-y-6 p-4">
       {/* ← Back to drills list */}
       <button
         onClick={() => navigate('/drills')}
-        className="text-blue-500 hover:underline"
+        className="text-sm text-blue-400 hover:underline"
       >
         ← Back to list
       </button>
 
-      {/* Drill Goal Banner */}
+      {/* Drill Goal Banner (only show before result) */}
       {expectedResult && !drillResult && (
-        <div className="items-center rounded border border-indigo-500 bg-indigo-950 px-4 py-2 text-center">
-          <Crosshair className="relative bottom-0.25 mr-1 inline-flex size-4 text-indigo-400" />
-          <strong className="mr-2">Goal</strong>{' '}
-          {expectedResult === 'win'
-            ? 'Convert the Win'
-            : expectedResult === 'hold'
-              ? 'Defend like Gurkesh!'
-              : 'Hold the Draw'}
+        <div className="flex items-center justify-center rounded-md border border-indigo-600 bg-indigo-800/30 px-4 py-2 text-center text-indigo-200">
+          <Crosshair className="mr-1 h-4 w-4 text-indigo-400" />
+          <span className="text-sm font-medium">
+            {expectedResult === 'win' && 'Goal: Convert the Win'}
+            {expectedResult === 'hold' && 'Goal: Defend like Gurkesh!'}
+            {expectedResult === 'draw' && 'Goal: Hold the Draw'}
+          </span>
         </div>
       )}
 
       {/* Drill Result Banner */}
       {drillResult && (
         <div
-          className={`rounded px-4 py-2 text-center ${
+          className={`rounded-md px-4 py-2 text-center text-sm font-medium ${
             drillResult === 'pass'
               ? 'border border-green-500 bg-green-900 text-green-100'
               : 'border border-red-500 bg-red-900 text-red-100'
@@ -180,11 +179,14 @@ export default function PlayDrill() {
         </div>
       )}
 
-      {/* Board + EvalBar */}
-      <div>
-        <div /*ref={wrapperRef}*/ className="flex w-full gap-0">
+      {/* ---------- Board + EvalBar ---------- */}
+      <div className="flex flex-col items-center">
+        <div className="flex w-full items-center gap-2">
           <div className="flex-1">
             <Chessboard
+              customBoardStyle={{
+                borderRadius: '0.5rem',
+              }}
               position={fen}
               boardOrientation={heroColor}
               animationDuration={300}
@@ -213,7 +215,7 @@ export default function PlayDrill() {
           </div>
           <EvalBar
             score={evalScore ?? drill?.initial_eval}
-            className="w-4"
+            className="w-2 rounded"
             boardOrientation={heroColor}
           />
         </div>
@@ -228,15 +230,18 @@ export default function PlayDrill() {
         </div>
       </div>
 
-      {/* Bot controls + Retry button */}
-      <BotControls strength={strength} setStrength={setStrength} />
-      <button
-        onClick={() => setResetKey((prev) => prev + 1)}
-        className="flex items-center rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-      >
-        <RotateCcw className="mr-1 h-4 w-4" />
-        Retry
-      </button>
+      {/* ---------- Footer: Bot Controls + Retry ---------- */}
+      <div className="flex w-full items-center justify-between space-x-4">
+        <BotControls strength={strength} setStrength={setStrength} />
+
+        <button
+          onClick={() => setResetKey((prev) => prev + 1)}
+          className="flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        >
+          <RotateCcw className="mr-1 h-4 w-4" />
+          Retry
+        </button>
+      </div>
     </div>
   );
 }
