@@ -19,7 +19,7 @@ export default function BotControls({
           onChange={(e) => setStrength(Number(e.target.value))}
           className="mx-2 h-2"
         />
-        3600+
+        3200+
       </label>
     </div>
   );
