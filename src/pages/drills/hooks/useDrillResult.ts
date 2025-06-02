@@ -4,7 +4,7 @@ export type DrillResult = 'pass' | 'fail' | null;
 export type GameResult = 'win' | 'loss' | 'draw' | null;
 export type ExpectedResult = 'win' | 'draw' | 'hold' | null;
 
-const DEBUG = false;
+const DEBUG = true;
 
 interface UseDrillResultParams {
   initialEval: number | null;
@@ -69,17 +69,13 @@ export function useDrillResult({
         ? initialEval - currentEval
         : currentEval - initialEval;
 
-    if (evalDelta >= lossThreshold) {
-      setResult('fail');
-      return;
-    }
-
     if (maxMoves > 0 && moveCount >= maxMoves) {
       setResult('pass');
       return;
-    }
-
-    if (maxMoves === 0 && gameOver && gameResult) {
+    } else if (evalDelta >= lossThreshold) {
+      setResult('fail');
+      return;
+    } else if (maxMoves === 0 && gameOver && gameResult) {
       if (expectedResult === 'win' && gameResult === 'win') {
         setResult('pass');
       } else if (expectedResult === 'draw' && gameResult === 'draw') {
@@ -87,6 +83,8 @@ export function useDrillResult({
       } else {
         setResult('fail');
       }
+    } else {
+      setResult(null);
     }
   }, [
     moveHistory,

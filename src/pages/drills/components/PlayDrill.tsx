@@ -159,8 +159,8 @@ export default function PlayDrill() {
         <div
           className={`rounded px-4 py-2 text-center ${
             drillResult === 'pass'
-              ? 'border border-green-500 bg-green-100 text-green-800'
-              : 'border border-red-500 bg-red-100 text-red-800'
+              ? 'border border-green-500 bg-green-900 text-green-100'
+              : 'border border-red-500 bg-red-900 text-red-100'
           }`}
         >
           {drillResult === 'pass'

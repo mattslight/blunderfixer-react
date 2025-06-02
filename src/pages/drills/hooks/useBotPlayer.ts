@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { StockfishEngine } from '@/lib/StockfishEngine';
 import { uciToMove } from '@/lib/uci';
 
+const DEBUG = false;
 interface UseBotPlayerResult {
   /** Whether the engine is currently thinking */
   isThinking: boolean;
@@ -59,7 +60,7 @@ export default function useBotPlayer(
         makeMove(from, to, promotion);
       })
       .catch((e) => {
-        console.error('[useBotPlayer] bestMove error:', e);
+        if (DEBUG) console.error('[useBotPlayer] bestMove error:', e);
         setError(e as Error);
       })
       .finally(() => setIsThinking(false));
