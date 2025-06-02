@@ -121,6 +121,7 @@ export interface DrillPosition {
   username: string;
   fen: string;
   ply: number;
+  initial_eval: number;
   eval_swing: number;
   created_at: string;
   hero_result: 'win' | 'loss' | 'draw';
