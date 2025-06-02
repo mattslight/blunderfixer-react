@@ -1,47 +1,49 @@
 // src/lib/StockfishEngine.ts
 import { Subject, Subscription } from 'rxjs';
 
-const DEBUG = false;
+const DEBUG = true;
 
 export class StockfishEngine {
   private worker: Worker;
   public lines$ = new Subject<string>();
 
-  // UCI ready handshake
+  /** Tracks the latest request; any earlier run should bail out */
+  private latestRequestId = 0;
+
+  /** UCI “readyok” handshake; re-armed each time we send isready */
   private resolveReady!: () => void;
   private readyPromise: Promise<void>;
 
   constructor(private multiPV: number) {
-    // make sure the .wasm loader can find its file
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (self as any).Module = {
       locateFile: (f: string) =>
-        f.endsWith('.wasm') ? '/stockfish-nnue-16-single.wasm' : f,
+        f.endsWith('.wasm')
+          ? '/engines/stockfish-17-lite/stockfish-17-lite-single.wasm'
+          : f,
     };
 
-    this.worker = new Worker('/stockfish-nnue-16-single.js', {
-      type: 'module',
-    });
+    this.worker = new Worker(
+      '/engines/stockfish-17-lite/stockfish-17-lite-single.js',
+      { type: 'module' }
+    );
 
-    // build initial readyPromise
     this.readyPromise = new Promise((res) => (this.resolveReady = res));
 
-    // forward readyok into handshake and all messages into lines$
     this.worker.addEventListener('message', (e) => {
       const msg = e.data as string;
       if (DEBUG) console.log('[StockfishEngine] [RAW]', msg);
       if (msg.trim() === 'readyok') {
         if (DEBUG) console.log('[StockfishEngine] ⬅ readyok');
         this.resolveReady();
-        // re-arm for next isready
         this.readyPromise = new Promise((res) => (this.resolveReady = res));
       }
       this.lines$.next(msg);
     });
 
-    // UCI handshake: init + set multipv + ensure ready
+    // Initial UCI handshake
     this.send('uci');
     this.send(`setoption name MultiPV value ${this.multiPV}`);
+    this.send(`setoption name Hash value 4`); // keep hash low to avoid OOM
     this.send('isready');
   }
 
@@ -50,65 +52,70 @@ export class StockfishEngine {
     this.worker.postMessage(cmd);
   }
 
-  /**
-   * Start a depth-limited analysis (streams info through lines$)
-   */
-  async analyze(fen: string, depth: number) {
-    if (DEBUG)
-      console.log('[StockfishEngine] ▶ ANALYZE start', { fen, depth });
-
-    // 1) Kill any prior search and wait for engine idle
-    this.send('stop');
+  /** Wait until engine replies “readyok” to our last isready */
+  private async waitReady() {
     this.send('isready');
-    if (DEBUG)
-      console.log('[StockfishEngine] → isready sent (stop phase), waiting…');
     await this.readyPromise;
-    if (DEBUG) console.log('[StockfishEngine] ⬅ got readyok (stop phase)');
-
-    // 2) Initialize new game and set position
-    this.send('ucinewgame');
-    this.send(`position fen ${fen}`);
-    if (DEBUG) console.log('[StockfishEngine] → position fen sent');
-
-    // 3) Wait again so engine is truly on new FEN
-    this.send('isready');
-    if (DEBUG)
-      console.log(
-        '[StockfishEngine] → isready sent (position phase), waiting…'
-      );
-    await this.readyPromise;
-    if (DEBUG) console.log('[StockfishEngine] ⬅ got readyok (position phase)');
-
-    // 4) Finally begin search
-    this.send(`go depth ${depth}`);
-    if (DEBUG) console.log('[StockfishEngine] ➡ go depth sent');
   }
 
   /**
-   * Compute the best move for the given position and depth.
-   * Returns a Promise resolving to the UCI string of the best move.
+   * Drop-stale: every call gets a new requestId. As soon as a newer call arrives,
+   * any pending work in the old one bails out at the next check.
    */
-  async bestMove(fen: string, depth: number): Promise<string> {
-    // stop any existing search and wait ready
-    this.send('stop');
-    this.send('isready');
-    await this.readyPromise;
+  async analyze(fen: string, depth: number) {
+    const myId = ++this.latestRequestId;
 
-    // set up new game and position
+    // First, interrupt any existing search if it’s running
+    // Sending “go” by itself will implicitly stop the previous search.
+    // We do NOT fire “stop” + “isready” here, because that can trigger races in Lite builds.
+    // Instead, immediately send new position/go and let the engine drop old work.
+
+    // 1) New “ucinewgame” & “position”
     this.send('ucinewgame');
     this.send(`position fen ${fen}`);
+
+    // 2) Wait for engine to acknowledge the new position
+    await this.waitReady();
+    if (myId !== this.latestRequestId) return;
+
+    // 3) Now send “go depth”
     this.send(`go depth ${depth}`);
+    if (DEBUG) console.log('[StockfishEngine] ➡ go depth', depth);
+    // Once we’ve started this search, the only bail-out point is before “go” above.
+  }
+
+  /**
+   * Returns the bestmove string once Stockfish emits “bestmove …”.
+   * Relies on the same requestId pattern so that if a newer run began,
+   * we never resolve with an outdated bestmove.
+   */
+  async bestMove(fen: string, depth: number): Promise<string> {
+    const myId = ++this.latestRequestId;
+
+    // Immediately send “ucinewgame” + “position” + “go depth”
+    this.send('ucinewgame');
+    this.send(`position fen ${fen}`);
+    await this.waitReady();
+    if (myId !== this.latestRequestId) throw new Error('stale request');
+
+    this.send(`go depth ${depth}`);
+    if (DEBUG) console.log('[StockfishEngine] ➡ go depth', depth);
 
     return new Promise<string>((resolve, reject) => {
       let sub: Subscription;
       sub = this.lines$.subscribe((msg) => {
+        if (myId !== this.latestRequestId) {
+          sub.unsubscribe();
+          reject(new Error('stale bestmove'));
+          return;
+        }
         if (msg.startsWith('bestmove')) {
           const parts = msg.split(' ');
           const best = parts[1];
           if (best) {
             resolve(best);
           } else {
-            reject(new Error('StockfishEngine.bestMove: no bestmove token'));
+            reject(new Error('no bestmove token'));
           }
           sub.unsubscribe();
         }
