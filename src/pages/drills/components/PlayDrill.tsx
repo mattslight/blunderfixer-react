@@ -32,6 +32,12 @@ export default function PlayDrill() {
   // 1) Fetch the drill data
   const { drill, loading, error } = useDrill(id!);
 
+  useEffect(() => {
+    if (drill?.fen) {
+      setResetKey((prev) => prev + 1);
+    }
+  }, [drill?.fen]);
+
   // 2) Default FEN until drill.fen shows up
   const defaultFEN = useMemo(() => new Chess().fen(), []);
   const initialMoves = useMemo<string[]>(() => [], []);
@@ -39,10 +45,10 @@ export default function PlayDrill() {
   // 3) Game history (initialFEN switches to drill.fen as soon as it's loaded)
   const { fen, moveHistory, currentIdx, makeMove, setIdx, lastMove } =
     useGameHistory({
-      initialFEN: drill?.fen ?? defaultFEN,
+      initialFEN: drill?.fen,
       initialMoves,
       allowBranching: true,
-      resetKey: resetKey || drill?.id,
+      resetKey,
     });
 
   // 4) Hero’s color (from drill.fen’s side-to-move)
@@ -70,7 +76,7 @@ export default function PlayDrill() {
   useAutoMove(moveHistory, playBotMove, 300);
 
   // 8) Engine evaluation (numerical, in centipawns)
-  const { evalScore } = useAnalysisEngine(fen);
+  const { evalScore } = useAnalysisEngine(fen, !!drill?.initial_eval, 1, 18);
 
   // 9) Decide defaults for this drill:
   //    • initialEval must come from drill.initialEval (or null until loaded)
@@ -100,7 +106,10 @@ export default function PlayDrill() {
   useEffect(() => {
     if (DEBUG) {
       console.log('— PlayDrill debug —');
+      console.log(' drill fen:', drill?.fen);
       console.log(' fen:', fen);
+      console.log(' initialEval:', initialEval);
+      console.log(' currentEval:', evalScore);
       console.log(' heroColor:', heroColor);
       console.log(' moveHistory:', moveHistory);
       console.log(' currentIdx:', currentIdx);
@@ -120,6 +129,8 @@ export default function PlayDrill() {
     expectedResult,
     maxMoves,
     lossThreshold,
+    initialEval,
+    evalScore,
   ]);
 
   // 13) Loading / error guards
