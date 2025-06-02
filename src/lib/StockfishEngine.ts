@@ -1,7 +1,7 @@
 // src/lib/StockfishEngine.ts
 import { Subject, Subscription } from 'rxjs';
 
-const DEBUG = false;
+const DEBUG = true;
 
 export class StockfishEngine {
   private worker: Worker;
@@ -57,17 +57,31 @@ export class StockfishEngine {
     if (DEBUG)
       console.log('[StockfishEngine] ▶ ANALYZE start', { fen, depth });
 
+    // 1) Kill any prior search and wait for engine idle
     this.send('stop');
     this.send('isready');
-    if (DEBUG) console.log('[StockfishEngine] → isready sent, waiting…');
-
+    if (DEBUG)
+      console.log('[StockfishEngine] → isready sent (stop phase), waiting…');
     await this.readyPromise;
-    if (DEBUG) console.log('[StockfishEngine] ⬅ got readyok');
+    if (DEBUG) console.log('[StockfishEngine] ⬅ got readyok (stop phase)');
 
+    // 2) Initialize new game and set position
     this.send('ucinewgame');
     this.send(`position fen ${fen}`);
+    if (DEBUG) console.log('[StockfishEngine] → position fen sent');
+
+    // 3) Wait again so engine is truly on new FEN
+    this.send('isready');
+    if (DEBUG)
+      console.log(
+        '[StockfishEngine] → isready sent (position phase), waiting…'
+      );
+    await this.readyPromise;
+    if (DEBUG) console.log('[StockfishEngine] ⬅ got readyok (position phase)');
+
+    // 4) Finally begin search
     this.send(`go depth ${depth}`);
-    if (DEBUG) console.log('[StockfishEngine] → go sent');
+    if (DEBUG) console.log('[StockfishEngine] ➡ go depth sent');
   }
 
   /**

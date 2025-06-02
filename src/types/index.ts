@@ -106,8 +106,8 @@ export interface GameAnalysis {
 export interface PVLine {
   rank: number; // multipv index (1 = best line)
   depth: number; // search depth
-  scoreCP?: number; // centipawn score of this line’s root
-  mateIn?: number; // mate-in-N if applicable
+  scoreCP?: number; // centipawn score of this line’s root - white +ve, black -ve
+  mateIn?: number; // mate-in-N if applicable - white +ve, black -ve
   moves: string[]; // SAN moves in this PV
 }
 

@@ -42,13 +42,19 @@ export default function useAnalysisEngine(
     currentDepth,
   } = useStockfish(boardFEN, TARGET_DEPTH, MULTI_PV, enabled);
 
-  // 2) evalScore only updates once we reach TARGET_DEPTH on rank=1
+  // 2) evalScore updates once we reach TARGET_DEPTH on rank=1.
+  //    If scoreCP is available, use it directly. If mateIn is reported (checkmate found),
+  //    convert to ±10000: +10000 if White is winning, -10000 if Black is winning.
   const [evalScore, setEvalScore] = useState(0);
   useEffect(() => {
     if (!enabled) return;
     const bestLine = rawLines[0];
-    if (bestLine && typeof bestLine.scoreCP === 'number') {
+    if (!bestLine) return;
+
+    if (typeof bestLine.scoreCP === 'number') {
       setEvalScore(bestLine.scoreCP);
+    } else if (typeof bestLine.mateIn === 'number') {
+      setEvalScore(10000 * Math.sign(bestLine.mateIn));
     }
   }, [rawLines, currentDepth, enabled]);
 
