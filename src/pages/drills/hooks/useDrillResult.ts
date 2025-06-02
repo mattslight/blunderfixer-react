@@ -4,7 +4,7 @@ export type DrillResult = 'pass' | 'fail' | null;
 export type GameResult = 'win' | 'loss' | 'draw' | null;
 export type ExpectedResult = 'win' | 'draw' | 'hold' | null;
 
-const DEBUG = true;
+const DEBUG = false;
 
 interface UseDrillResultParams {
   initialEval: number | null;
@@ -70,21 +70,32 @@ export function useDrillResult({
         : currentEval - initialEval;
 
     if (maxMoves > 0 && moveCount >= maxMoves) {
+      if (DEBUG) console.log('Max moves reached:', moveCount, '>=', maxMoves);
       setResult('pass');
       return;
-    } else if (evalDelta >= lossThreshold) {
+    } else if (evalDelta >= lossThreshold && moveCount > 1) {
+      if (DEBUG)
+        console.log('Loss threshold exceeded:', evalDelta, '>=', lossThreshold);
       setResult('fail');
       return;
     } else if (maxMoves === 0 && gameOver && gameResult) {
+      if (DEBUG) console.log('Game over with result:', gameResult);
       if (expectedResult === 'win' && gameResult === 'win') {
+        if (DEBUG) console.log('Drill passed: win');
         setResult('pass');
+        return;
       } else if (expectedResult === 'draw' && gameResult === 'draw') {
+        if (DEBUG) console.log('Drill passed: draw');
         setResult('pass');
+        return;
       } else {
+        if (DEBUG) console.log('Drill failed: unexpected result');
         setResult('fail');
+        return;
       }
     } else {
       setResult(null);
+      return;
     }
   }, [
     moveHistory,
