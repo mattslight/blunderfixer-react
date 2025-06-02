@@ -28,19 +28,18 @@ interface UseAnalysisResult {
   currentDepth: number;
 }
 
-const TARGET_DEPTH = 18;
-const MULTI_PV = 5;
-
 export default function useAnalysisEngine(
   boardFEN: string,
-  enabled = true
+  enabled = true,
+  multiPV = 5,
+  targetDepth = 18
 ): UseAnalysisResult {
   // 1) Pull raw PV lines and bestMoveUCI from Stockfish
   const {
     lines: rawLines,
     bestMoveUCI,
     currentDepth,
-  } = useStockfish(boardFEN, TARGET_DEPTH, MULTI_PV, enabled);
+  } = useStockfish(boardFEN, targetDepth, multiPV, enabled);
 
   // 2) evalScore updates once we reach TARGET_DEPTH on rank=1.
   //    If scoreCP is available, use it directly. If mateIn is reported (checkmate found),
