@@ -162,15 +162,7 @@ export default function PlayDrill() {
   // 14) Render
   return (
     <div className="mx-auto max-w-md space-y-4">
-      {/* ← Back to drills list */}
-      <button
-        onClick={() => navigate('/drills')}
-        className="text-sm text-blue-400 hover:underline"
-      >
-        ← Back to list
-      </button>
-
-      <div className="flex flex-row items-center justify-start space-x-2">
+      <div className="mt-10 flex flex-row items-center justify-start space-x-2">
         <div className="text-xs font-bold text-green-400 uppercase">
           Last 5 Tries
         </div>
