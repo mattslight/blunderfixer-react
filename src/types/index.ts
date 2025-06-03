@@ -133,5 +133,13 @@ export interface DrillPosition {
   opponent_rating: number;
   played_at: string;
   phase: 'opening' | 'middle' | 'late' | 'endgame';
-  history?: Array<'win' | 'loss'>; // up to 5 entries: 'win' or 'loss', most‐recent first
+  history: DrillHistory[];
 }
+
+export type DrillHistory = {
+  id: number;
+  drill_position_id: number;
+  result: 'pass' | 'fail';
+  reason?: string | null;
+  timestamp: string; // ISO date string
+};
