@@ -112,7 +112,7 @@ export default function DrillsPage() {
               <Badge
                 key={p}
                 onClick={() => setPhaseFilter(p)}
-                className={`cursor-pointer rounded border-1 border-gray-800 px-3 py-2 text-sm capitalize sm:text-base ${
+                className={`cursor-pointer rounded border-1 border-gray-800 px-3 py-2 text-sm capitalize ${
                   phaseFilter === p && PHASE_COLORS[p]
                 }`}
               >
