@@ -161,7 +161,7 @@ export default function PlayDrill() {
 
   // 14) Render
   return (
-    <div className="mx-auto max-w-md space-y-6 p-4">
+    <div className="mx-auto max-w-md space-y-4">
       {/* ← Back to drills list */}
       <button
         onClick={() => navigate('/drills')}
@@ -169,13 +169,6 @@ export default function PlayDrill() {
       >
         ← Back to list
       </button>
-
-      <div className="flex flex-row items-center justify-start space-x-2">
-        <div className="text-xs font-bold text-green-400 uppercase">
-          Last 5 Tries
-        </div>
-        <HistoryDots history={drill.history ?? []} />
-      </div>
 
       <TimePhaseHeader
         playedAt={drill.played_at}
@@ -199,33 +192,42 @@ export default function PlayDrill() {
         hideGameResult={true}
       />
 
-      {/* Drill Goal Banner (only show before result) */}
-      {expectedResult && !drillResult && (
-        <div className="flex items-center justify-center rounded-md border border-indigo-600 bg-indigo-800/30 px-4 py-2 text-center text-indigo-200">
-          <Crosshair className="mr-1 h-4 w-4 text-indigo-400" />
-          <span className="text-sm">
-            <span className="mr-1 font-bold">Goal</span>
-            {expectedResult === 'win' && 'Convert the Win'}
-            {expectedResult === 'hold' && 'Defend like Gurkesh!'}
-            {expectedResult === 'draw' && 'Hold the Draw'}
-          </span>
-        </div>
-      )}
+      <div className="mt-10">
+        {/* Drill Goal Banner (only show before result) */}
+        {expectedResult && !drillResult && (
+          <div className="flex items-center justify-center rounded-md border border-indigo-600 bg-indigo-800/30 px-4 py-2 text-center text-indigo-200">
+            <Crosshair className="mr-1 h-4 w-4 text-indigo-400" />
+            <span className="text-sm">
+              <span className="mr-1 font-bold">Goal</span>
+              {expectedResult === 'win' && 'Convert the Win'}
+              {expectedResult === 'hold' && 'Defend like Gurkesh!'}
+              {expectedResult === 'draw' && 'Hold the Draw'}
+            </span>
+          </div>
+        )}
 
-      {/* Drill Result Banner */}
-      {drillResult && (
-        <div
-          className={`rounded-md px-4 py-2 text-center text-sm font-medium ${
-            drillResult === 'pass'
-              ? 'border border-green-500 bg-green-900 text-green-100'
-              : 'border border-red-500 bg-red-900 text-red-100'
-          }`}
-        >
-          {drillResult === 'pass'
-            ? `✅ ${reason ?? 'You met the goal!'}`
-            : `❌ ${reason ?? 'Better luck next time.'}`}
+        {/* Drill Result Banner */}
+        {drillResult && (
+          <div
+            className={`rounded-md px-4 py-2 text-center text-sm font-medium ${
+              drillResult === 'pass'
+                ? 'border border-green-500 bg-green-900 text-green-100'
+                : 'border border-red-500 bg-red-900 text-red-100'
+            }`}
+          >
+            {drillResult === 'pass'
+              ? `✅ ${reason ?? 'You met the goal!'}`
+              : `❌ ${reason ?? 'Better luck next time.'}`}
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-row items-center justify-start space-x-2">
+        <div className="text-xs font-bold text-green-500 uppercase">
+          Last 5 Tries
         </div>
-      )}
+        <HistoryDots history={drill.history ?? []} />
+      </div>
 
       {/* ---------- Board + EvalBar ---------- */}
       <div className="flex flex-col items-center">
