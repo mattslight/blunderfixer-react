@@ -15,7 +15,7 @@ interface UseDrillResultParams {
   gameOver?: boolean;
   gameResult?: GameResult;
   resetKey: string | number;
-  moveHistory: string[];
+  moveCount: number;
 }
 
 export function useDrillResult({
@@ -27,7 +27,7 @@ export function useDrillResult({
   lossThreshold,
   gameOver,
   gameResult,
-  moveHistory,
+  moveCount,
 }: UseDrillResultParams) {
   const [result, setResult] = useState<DrillResult>(null);
   const [reason, setReason] = useState<string | null>(null);
@@ -52,7 +52,6 @@ export function useDrillResult({
   useEffect(() => {
     if (initialEval == null) return;
 
-    const moveCount = moveHistory.length;
     const evalDelta =
       heroSide === 'white'
         ? initialEval - currentEval
@@ -61,34 +60,36 @@ export function useDrillResult({
     let newResult: DrillResult = null;
     let newReason: string | null = null;
 
-    if (maxMoves > 0 && moveCount >= maxMoves) {
-      newResult = 'pass';
-      newReason = 'Solid play — good job!';
-    } else if (evalDelta >= 2000) {
-      newResult = 'fail';
-      newReason = 'Oops — you hung mate';
-    } else if (evalDelta >= 300) {
-      newResult = 'fail';
-      newReason = 'You blundered a piece';
-    } else if (evalDelta >= lossThreshold && moveCount > 1) {
-      newResult = 'fail';
-      newReason = 'You let the advantage slip';
-    } else if (maxMoves === 0 && gameOver && gameResult) {
-      if (expectedResult === 'win' && gameResult === 'win') {
+    if (moveCount > 0) {
+      if (maxMoves > 0 && moveCount >= maxMoves) {
         newResult = 'pass';
-        newReason = 'You converted the win — great job!';
-      } else if (expectedResult === 'draw' && gameResult === 'draw') {
-        newResult = 'pass';
-        newReason = 'You held the draw 😅';
-      } else if (expectedResult === 'win' && gameResult === 'loss') {
+        newReason = 'Solid play — good job!';
+      } else if (evalDelta >= 2000) {
         newResult = 'fail';
-        newReason = 'You lost a winning game 😖';
-      } else if (expectedResult === 'win' && gameResult === 'draw') {
+        newReason = 'Oops — you hung mate';
+      } else if (evalDelta >= 300) {
         newResult = 'fail';
-        newReason = 'You let the win slip to a draw';
-      } else if (expectedResult === 'hold' && gameResult === 'draw') {
-        newResult = 'pass';
-        newReason = 'Good save — you held the draw 🙌🏻';
+        newReason = 'You blundered a piece';
+      } else if (evalDelta >= lossThreshold && moveCount > 1) {
+        newResult = 'fail';
+        newReason = 'You let the advantage slip';
+      } else if (maxMoves === 0 && gameOver && gameResult) {
+        if (expectedResult === 'win' && gameResult === 'win') {
+          newResult = 'pass';
+          newReason = 'You converted the win — great job!';
+        } else if (expectedResult === 'draw' && gameResult === 'draw') {
+          newResult = 'pass';
+          newReason = 'You held the draw 😅';
+        } else if (expectedResult === 'win' && gameResult === 'loss') {
+          newResult = 'fail';
+          newReason = 'You lost a winning game 😖';
+        } else if (expectedResult === 'win' && gameResult === 'draw') {
+          newResult = 'fail';
+          newReason = 'You let the win slip to a draw';
+        } else if (expectedResult === 'hold' && gameResult === 'draw') {
+          newResult = 'pass';
+          newReason = 'Good save — you held the draw 🙌🏻';
+        }
       }
     }
 
@@ -114,7 +115,6 @@ export function useDrillResult({
       console.log('reason:', newReason);
     }
   }, [
-    moveHistory,
     currentEval,
     gameOver,
     gameResult,
@@ -124,6 +124,7 @@ export function useDrillResult({
     heroSide,
     expectedResult,
     resetKey,
+    moveCount,
   ]);
 
   return { result, expectedResult, reason };
