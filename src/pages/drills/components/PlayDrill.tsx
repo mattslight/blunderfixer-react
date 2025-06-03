@@ -170,6 +170,13 @@ export default function PlayDrill() {
         ← Back to list
       </button>
 
+      <div className="flex flex-row items-center justify-start space-x-2">
+        <div className="text-xs font-bold text-green-400 uppercase">
+          Last 5 Tries
+        </div>
+        <HistoryDots history={drill.history ?? []} />
+      </div>
+
       <TimePhaseHeader
         playedAt={drill.played_at}
         displayPhase={displayPhase}
@@ -220,13 +227,6 @@ export default function PlayDrill() {
               : `❌ ${reason ?? 'Better luck next time.'}`}
           </div>
         )}
-      </div>
-
-      <div className="flex flex-row items-center justify-start space-x-2">
-        <div className="text-xs font-bold text-green-500 uppercase">
-          Last 5 Tries
-        </div>
-        <HistoryDots history={drill.history ?? []} />
       </div>
 
       {/* ---------- Board + EvalBar ---------- */}
