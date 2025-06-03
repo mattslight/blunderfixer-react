@@ -7,11 +7,15 @@ import { Crosshair, RotateCcw } from 'lucide-react';
 
 import useAutoMove from '../hooks/useAutoMove';
 import useBotPlayer from '../hooks/useBotPlayer';
-import useDrill from '../hooks/useDrill';
 import { useDrillResult } from '../hooks/useDrillResult';
 import BotControls from './BotControls';
+import { GameInfoBadges } from './DrillCard/GameInfoBadges';
+import { HistoryDots } from './DrillCard/HistoryDots';
+import { TimePhaseHeader } from './DrillCard/TimePhaseHeader';
+import useDrill from './hooks/useDrill';
 
 import MoveStepper from '@/components/MoveStepper';
+import { PHASE_COLORS, PHASE_DISPLAY } from '@/constants/phase';
 import useAnalysisEngine from '@/hooks/useAnalysisEngine';
 import useGameHistory from '@/hooks/useGameHistory';
 import useGameResult from '@/hooks/useGameResult';
@@ -32,6 +36,7 @@ export default function PlayDrill() {
   // 1) Fetch the drill data
   const { drill, loading, error } = useDrill(id!);
 
+  // Whenever a new drill arrives, bump resetKey to re‐initialize
   useEffect(() => {
     if (drill?.fen) {
       setResetKey((prev) => prev + 1);
@@ -51,13 +56,13 @@ export default function PlayDrill() {
       resetKey,
     });
 
-  // 4) Hero’s color (from drill.fen’s side-to-move)
+  // 4) Hero’s color (from drill.fen’s side‐to‐move)
   const heroColor: 'white' | 'black' = useMemo(() => {
     const side = (drill?.fen ?? defaultFEN).split(' ')[1];
     return side === 'b' ? 'black' : 'white';
   }, [drill?.fen, defaultFEN]);
 
-  // 5) GameResult (if we ever need it for full-game drills)
+  // 5) GameResult (for full‐game drills)
   const gameResult = useGameResult(fen, heroColor);
 
   // 6) Move‐input handlers
@@ -79,9 +84,9 @@ export default function PlayDrill() {
   const { evalScore } = useAnalysisEngine(fen, !!drill?.initial_eval, 1, 18);
 
   // 9) Decide defaults for this drill:
-  //    • initialEval must come from drill.initialEval (or null until loaded)
-  //    • maxMoves = 0 if phase=endgame; else drill.maxMoves or 3
-  //    • lossThreshold = drill.lossThreshold or 100 (centipawns)
+  //    • initialEval from drill.initial_eval (or null until loaded)
+  //    • maxMoves = 0 if phase=endgame; else REQUIRED_MOVES
+  //    • lossThreshold = LOSS_THRESHOLD
   const initialEval = drill?.initial_eval ?? null;
   const maxMoves = drill?.phase === 'endgame' ? 0 : REQUIRED_MOVES;
   const lossThreshold = LOSS_THRESHOLD;
@@ -90,6 +95,7 @@ export default function PlayDrill() {
   const {
     result: drillResult, // 'pass' | 'fail' | null
     expectedResult, // 'win' | 'draw' | 'hold' | null
+    reason, // contextual reason string
   } = useDrillResult({
     initialEval,
     currentEval: evalScore,
@@ -102,11 +108,21 @@ export default function PlayDrill() {
     moveHistory,
   });
 
-  ////12) Debug logging
+  // 11) Derive displayPhase & phaseColor for header
+  const displayPhase = useMemo(() => {
+    if (!drill?.phase) return 'Unknown';
+    return PHASE_DISPLAY[drill.phase] ?? 'Unknown';
+  }, [drill?.phase]);
+
+  const phaseColor = useMemo(() => {
+    return PHASE_COLORS[displayPhase] ?? 'bg-gray-700';
+  }, [displayPhase]);
+
+  // 12) Debug logging
   useEffect(() => {
     if (DEBUG) {
       console.log('— PlayDrill debug —');
-      console.log(' drill fen:', drill?.fen);
+      console.log(' drill:', drill);
       console.log(' fen:', fen);
       console.log(' initialEval:', initialEval);
       console.log(' currentEval:', evalScore);
@@ -116,6 +132,7 @@ export default function PlayDrill() {
       console.log(' gameResult:', gameResult);
       console.log(' drillResult:', drillResult);
       console.log(' expectedResult:', expectedResult);
+      console.log(' reason:', reason);
       console.log(' maxMoves:', maxMoves, 'lossThreshold:', lossThreshold);
     }
   }, [
@@ -127,6 +144,7 @@ export default function PlayDrill() {
     gameResult,
     drillResult,
     expectedResult,
+    reason,
     maxMoves,
     lossThreshold,
     initialEval,
@@ -141,7 +159,7 @@ export default function PlayDrill() {
     return <Navigate to="/drills" replace />;
   }
 
-  // 15) Render
+  // 14) Render
   return (
     <div className="mx-auto max-w-md space-y-6 p-4">
       {/* ← Back to drills list */}
@@ -151,6 +169,35 @@ export default function PlayDrill() {
       >
         ← Back to list
       </button>
+
+      <div className="flex flex-row items-center justify-start space-x-2">
+        <div className="text-xs font-bold text-green-400 uppercase">
+          Last 5 Tries
+        </div>
+        <HistoryDots history={drill.history ?? []} />
+      </div>
+
+      <TimePhaseHeader
+        playedAt={drill.played_at}
+        displayPhase={displayPhase}
+        phaseColor={phaseColor}
+      />
+      {/*
+        Game Info Badges (from DrillCard)
+        ---------------------------------
+        Shows time class, time control, opponent, eval swing, and result.
+      */}
+      <GameInfoBadges
+        timeClass={drill.time_class}
+        timeControl={drill.time_control}
+        opponent={{
+          username: drill.opponent_username,
+          rating: drill.opponent_rating,
+        }}
+        evalSwing={drill.eval_swing}
+        heroResult={drill.hero_result}
+        hideGameResult={true}
+      />
 
       {/* Drill Goal Banner (only show before result) */}
       {expectedResult && !drillResult && (
@@ -175,8 +222,8 @@ export default function PlayDrill() {
           }`}
         >
           {drillResult === 'pass'
-            ? '✅ You met the goal!'
-            : '❌ You failed—try again.'}
+            ? `✅ ${reason ?? 'You met the goal!'}`
+            : `❌ ${reason ?? 'Better luck next time.'}`}
         </div>
       )}
 
@@ -185,9 +232,7 @@ export default function PlayDrill() {
         <div className="flex w-full items-center gap-2">
           <div className="flex-1">
             <Chessboard
-              customBoardStyle={{
-                borderRadius: '0.5rem',
-              }}
+              customBoardStyle={{ borderRadius: '0.5rem' }}
               position={fen}
               boardOrientation={heroColor}
               animationDuration={300}
@@ -204,18 +249,21 @@ export default function PlayDrill() {
                       [lastMove.from]: {
                         backgroundColor: 'rgba(255,255,0,0.4)',
                       },
-                      [lastMove.to]: {
-                        backgroundColor: 'rgba(255,255,0,0.4)',
-                      },
+                      [lastMove.to]: { backgroundColor: 'rgba(255,255,0,0.4)' },
                     }
                   : {}),
+              }}
+              customNotationStyle={{
+                fontSize: '0.7rem',
+                color: 'oklch(65% 0.03 264)',
+                fontWeight: 700,
               }}
               customDarkSquareStyle={{ backgroundColor: '#B1B7C8' }}
               customLightSquareStyle={{ backgroundColor: '#F5F2E6' }}
             />
           </div>
           <EvalBar
-            score={evalScore ?? drill?.initial_eval}
+            score={evalScore ?? drill.initial_eval}
             className="w-2 rounded"
             boardOrientation={heroColor}
           />
@@ -231,7 +279,7 @@ export default function PlayDrill() {
         </div>
       </div>
 
-      {/* ---------- Footer: Bot Controls + Retry ---------- */}
+      {/* ---------- Footer: HistoryDots + BotControls + Retry ---------- */}
       <div className="flex w-full items-center justify-between space-x-4">
         <BotControls strength={strength} setStrength={setStrength} />
 
