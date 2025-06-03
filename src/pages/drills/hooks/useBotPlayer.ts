@@ -16,15 +16,21 @@ interface UseBotPlayerResult {
   cancel: () => void;
 }
 
+interface UseBotPlayerParams {
+  fen: string;
+  strength?: number;
+  makeMove: (from: string, to: string, promotion?: string) => boolean;
+}
+
 /**
  * Hook that picks and plays a bot move via Stockfish.
  * Uses engine.bestMove() and handles depth as 'strength'.
  */
-export default function useBotPlayer(
-  fen: string,
-  strength: number,
-  makeMove: (from: string, to: string, promotion?: string) => boolean
-): UseBotPlayerResult {
+export default function useBotPlayer({
+  fen,
+  strength = 20,
+  makeMove,
+}: UseBotPlayerParams): UseBotPlayerResult {
   const engineRef = useRef<StockfishEngine | null>(null);
   const [isThinking, setIsThinking] = useState(false);
   const [error, setError] = useState<Error | null>(null);
