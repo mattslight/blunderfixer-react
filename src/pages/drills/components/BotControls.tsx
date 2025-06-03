@@ -7,9 +7,9 @@ export default function BotControls({
   setStrength: (n: number) => void;
 }) {
   return (
-    <div className="flex items-center space-x-3 rounded-lg bg-gray-800 p-4">
+    <div className="flex items-center">
       <label className="flex items-center space-x-2 text-sm">
-        <span className="font-bold">Bot&nbsp;Strength</span>
+        <span className="font-bold text-gray-500">Bot&nbsp;Strength</span>
         1400
         <input
           type="range"
