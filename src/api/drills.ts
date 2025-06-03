@@ -14,6 +14,12 @@ export interface DrillFilters {
   opponent?: string; // substring, case-insensitive
 }
 
+export interface DrillHistoryPayload {
+  result: 'pass' | 'fail';
+  reason?: string; // optional reason for failure
+  // (timestamp is optional; backend will default to now)
+}
+
 export async function getDrills({
   username,
   limit = 20,
@@ -53,4 +59,24 @@ export async function getDrill(id: number) {
     throw new Error(`Failed to fetch drill ${id}: ${res.status}`);
   }
   return res.json() as Promise<DrillPosition>;
+}
+
+export async function postDrillHistory(
+  drillId: string | number,
+  payload: DrillHistoryPayload
+) {
+  const numericId = Number(drillId);
+  if (isNaN(numericId)) {
+    throw new Error(`Invalid drillId: ${drillId}`);
+  }
+
+  const res = await fetch(`${BASE_URL}/drills/${numericId}/history`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to post history: ${res.status}`);
+  }
+  return res.json();
 }
