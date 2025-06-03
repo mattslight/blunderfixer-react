@@ -9,6 +9,7 @@ type Props = {
   opponent: { username: string; rating: number };
   evalSwing: number;
   heroResult: 'win' | 'loss' | 'draw';
+  hideGameResult?: boolean;
 };
 
 export function GameInfoBadges({
@@ -17,6 +18,7 @@ export function GameInfoBadges({
   opponent,
   evalSwing,
   heroResult,
+  hideGameResult = false,
 }: Props) {
   return (
     <div className="mt-4 flex items-center gap-2 text-sm">
@@ -37,18 +39,20 @@ export function GameInfoBadges({
           <TrendingDown className="h-4 w-3" />
           {evalSwing > 10000 ? 'Mate' : `${evalSwing / 100} pawns`}
         </span>
-        <span className="inline-flex items-center gap-1 rounded bg-gray-700 px-2 py-0.5 text-xs text-gray-400 capitalize">
-          <span
-            className={`h-2 w-2 rounded-full ${
-              heroResult === 'win'
-                ? 'bg-green-500'
-                : heroResult === 'loss'
-                  ? 'bg-red-500'
-                  : 'bg-gray-500'
-            }`}
-          />
-          {heroResult}
-        </span>
+        {!hideGameResult && (
+          <span className="inline-flex items-center gap-1 rounded bg-gray-700 px-2 py-0.5 text-xs text-gray-400 capitalize">
+            <span
+              className={`h-2 w-2 rounded-full ${
+                heroResult === 'win'
+                  ? 'bg-green-500'
+                  : heroResult === 'loss'
+                    ? 'bg-red-500'
+                    : 'bg-gray-500'
+              }`}
+            />
+            {heroResult}
+          </span>
+        )}
       </div>
     </div>
   );
