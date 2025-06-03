@@ -91,7 +91,7 @@ export default function Navbar({ toggleSidebar }) {
             </button>
           )}
           {/* Dropdown menu */}
-          <div
+          {/* <div
             className="z-50 my-4 hidden max-w-sm list-none divide-y divide-gray-100 overflow-hidden rounded rounded-xl bg-white text-base shadow-lg dark:divide-gray-600 dark:bg-gray-700"
             id="notification-dropdown"
           >
@@ -315,7 +315,7 @@ export default function Navbar({ toggleSidebar }) {
                 View all
               </div>
             </a>
-          </div>
+          </div> */}
           {username && <UserMenu />}
         </div>
       </div>
