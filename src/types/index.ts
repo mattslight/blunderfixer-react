@@ -82,7 +82,7 @@ export interface AnalysisNode {
   deltaCP: number; // evalCP - previous evalCP
   bestMoveUCI?: string; // UCI best move at this position
   pvLines?: PVLine[]; // top-N principal variation lines
-  depth: number; // stockfish depth for anlysis (int)
+  depth: number; // stockfish depth for analysis (int)
   mateIn?: number; // if applicable, mate-in-N
   playedMove?: string; // UCI move string (e.g. e2e4)
   san?: string; // SAN move string (e.g. e4)
