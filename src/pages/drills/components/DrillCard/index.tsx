@@ -54,7 +54,7 @@ export function DrillCard({ drill, onStartDrill }: Props) {
       />
 
       {/* 2) Details */}
-      <div className="xs:p-4 flex flex-col justify-between rounded p-6 tracking-wide sm:p-6">
+      <div className="flex flex-col justify-between rounded px-4 py-6 tracking-wide">
         <div className="flex flex-col gap-2">
           {/* 2a) Time + Phase Header */}
           <TimePhaseHeader
@@ -73,7 +73,7 @@ export function DrillCard({ drill, onStartDrill }: Props) {
           />
         </div>
         {/* 3 Last 5 Tries (HistoryDots) & Drill Button */}
-        <div className="xs:rounded-bl-none xs:p-4 xs:-m-4 -m-6 mt-8 flex flex-row justify-between rounded-br-xl rounded-bl-xl bg-white/5 p-6 align-bottom sm:-m-6 sm:p-6">
+        <div className="xs:rounded-bl-none -mx-4 -my-6 mt-6 flex flex-row justify-between rounded-br-xl rounded-bl-xl bg-white/5 px-4 py-6 align-bottom">
           <div>
             <div className="xs:text-xs mb-2 text-sm font-bold text-green-400 uppercase sm:text-xs">
               Last 5 Tries
