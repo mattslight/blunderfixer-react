@@ -141,7 +141,7 @@ export default function DrillsPage() {
 
           {/* Discrete slider: left = hardest, right = All */}
           <div className="flex items-baseline space-x-2 py-2">
-            <span className="text-sm font-medium text-gray-300">
+            <span className="mr-4 text-sm font-medium text-gray-300">
               Blunder Size
             </span>
             <span className="text-xs font-bold text-gray-500">xs</span>
