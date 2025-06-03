@@ -1,7 +1,7 @@
 // src/lib/StockfishEngine.ts
 import { Subject, Subscription } from 'rxjs';
 
-const DEBUG = true;
+const DEBUG = false;
 
 export class StockfishEngine {
   private worker: Worker;
