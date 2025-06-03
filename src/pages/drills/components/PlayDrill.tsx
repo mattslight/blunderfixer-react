@@ -50,6 +50,8 @@ export default function PlayDrill() {
     resetKey,
   });
 
+  const moveCount = moveHistory.length;
+
   // 4) Hero’s color (from drill.fen’s side‐to‐move)
   const heroColor: 'white' | 'black' = useMemo(() => {
     const side = (drill?.fen ?? defaultFEN).split(' ')[1];
@@ -98,7 +100,7 @@ export default function PlayDrill() {
     gameOver: Boolean(gameResult),
     gameResult,
     resetKey,
-    moveHistory,
+    moveCount,
   });
 
   // 11) Derive displayPhase & phaseColor for header
