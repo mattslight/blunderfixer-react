@@ -28,7 +28,7 @@ export function DrillCard({ drill, onStartDrill }: Props) {
     opponent_rating,
     phase: apiPhase,
     eval_swing,
-    history = ['loss', 'win'],
+    history,
   } = drill;
 
   // Determine board orientation
