@@ -10,7 +10,16 @@ import prettierPlugin from 'eslint-plugin-prettier';
 import globals from 'globals';
 
 export default [
-  { ignores: ['dist', 'eslint.config.js', 'vite.config.js'] },
+  {
+    ignores: [
+      'dist',
+      'eslint.config.js',
+      'vite.config.js',
+      'public/engines/**',
+      'tailwind.config.js',
+      'tailwindcss-version-shim.js',
+    ],
+  },
 
   // Flat presets that really *are* flat
   js.configs.recommended,
