@@ -22,9 +22,9 @@ export interface UseGameHistoryOpts {
   allowBranching?: boolean;
 
   /**
-   * Whenever `resetKey` changes, the hook re-initialises to
-   * `initialFEN` + `initialMoves`.
-   **/
+   * Bump this key to force a full reset. The effect also re-initialises when
+   * `initialFEN` or `initialMoves` change, so memoise them if needed.
+   */
   resetKey?: string | number;
 }
 
@@ -66,8 +66,7 @@ export default function useGameHistory({
     },
     [initialFEN, moveHistory]
   );
-
-  // ── Step 2: only re-initialise when resetKey changes ────────────────────────────
+  // ── Step 2: re-initialise when resetKey or initial props change ────────────────────────────
   useEffect(() => {
     // Update moveHistory only if it truly differs
     setHistory((prev) => {
@@ -99,7 +98,8 @@ export default function useGameHistory({
     } else {
       setLastMove((prev) => (prev ? undefined : prev));
     }
-    // ── Depend only on resetKey, NOT on initialFEN or initialMoves ──
+    // ── Depend on resetKey, initialFEN, initialMoves & startAtIdx ──
+    //     Include FEN and moves so the effect reruns when these change
   }, [resetKey, initialFEN, initialMoves, startAtIdx]);
 
   // ── Can we play a new move? ───────────────────────────────────────────────────
