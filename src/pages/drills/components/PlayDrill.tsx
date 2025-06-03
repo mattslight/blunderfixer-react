@@ -3,15 +3,16 @@ import { useEffect, useMemo, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
 import { Navigate, useParams } from 'react-router-dom';
 import { Chess, Square } from 'chess.js';
-import { Crosshair, RotateCcw } from 'lucide-react';
+import { Clipboard, Crosshair, RotateCcw } from 'lucide-react';
 
+import EvalBar from '../../analyse/components/EvalBar';
 import useAutoMove from '../hooks/useAutoMove';
 import useBotPlayer from '../hooks/useBotPlayer';
-import { useDrillResult } from '../hooks/useDrillResult';
 import { GameInfoBadges } from './DrillCard/GameInfoBadges';
 import { HistoryDots } from './DrillCard/HistoryDots';
 import { TimePhaseHeader } from './DrillCard/TimePhaseHeader';
 import useDrill from './hooks/useDrill';
+import { useDrillResult } from './hooks/useDrillResult';
 import { useSaveDrillHistory } from './hooks/useSaveDrillHistory';
 
 import { PHASE_COLORS, PHASE_DISPLAY } from '@/constants/phase';
@@ -22,8 +23,7 @@ import useMoveInput from '@/hooks/useMoveInput';
 
 const DEBUG = false;
 
-const REQUIRED_MOVES = 5; // default for early/midgame drills
-const LOSS_THRESHOLD = 100; // default loss threshold in centipawns
+const REQUIRED_MOVES = 6; // default for early/midgame/late drills
 
 export default function PlayDrill() {
   const { id } = useParams<{ id: string }>();
@@ -80,12 +80,9 @@ export default function PlayDrill() {
   const { evalScore } = useAnalysisEngine(fen, !!drill?.initial_eval, 1, 18);
 
   // 9) Decide defaults for this drill:
-  //    • initialEval from drill.initial_eval (or null until loaded)
-  //    • maxMoves = 0 if phase=endgame; else REQUIRED_MOVES
-  //    • lossThreshold = LOSS_THRESHOLD
   const initialEval = drill?.initial_eval ?? null;
   const maxMoves = drill?.phase === 'endgame' ? 0 : REQUIRED_MOVES;
-  const lossThreshold = LOSS_THRESHOLD;
+  const lossThreshold = Math.max(drill?.initial_eval / 2, 100); // default to half the initial eval or 100 CP
 
   // 10) Drill‐result hook
   const {
@@ -172,6 +169,11 @@ export default function PlayDrill() {
             />
           </div>
           <div className="flex w-full items-center">
+            <EvalBar
+              score={evalScore}
+              className="w-2"
+              boardOrientation={heroColor}
+            />
             <div className="flex-1">
               <Chessboard
                 position={fen}
@@ -218,11 +220,23 @@ export default function PlayDrill() {
         </div>
       </div>
       <div className="xs:px-0 mx-auto mt-5 max-w-md space-y-4 px-4">
-        <div className="flex flex-row items-center justify-start space-x-2">
-          <div className="text-xs font-bold text-green-400 uppercase">
-            Last 5 Tries
+        <div className="flex flex-row items-center justify-between">
+          <div className="flex flex-row items-center space-x-2">
+            <div className="text-xs font-bold text-green-400 uppercase">
+              Last 5 Tries
+            </div>
+            <HistoryDots history={drill.history ?? []} />
           </div>
-          <HistoryDots history={drill.history ?? []} />
+          <div
+            className="flex flex-row items-center space-x-2"
+            onClick={() => {
+              navigator.clipboard.writeText(drill.fen);
+              alert('FEN copied to clipboard!');
+            }}
+          >
+            <span className="text-xs text-gray-500">Copy FEN</span>
+            <Clipboard className="h-4 w-4 text-gray-500" />
+          </div>
         </div>
 
         <TimePhaseHeader
