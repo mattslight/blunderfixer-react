@@ -30,8 +30,8 @@ export function useDrillResult({
   moveHistory,
 }: UseDrillResultParams) {
   const [result, setResult] = useState<DrillResult>(null);
+  const [reason, setReason] = useState<string | null>(null);
 
-  // Determine expectedResult (null if initialEval missing)
   const expectedResult: ExpectedResult = (() => {
     if (initialEval == null) return null;
     if (heroSide === 'white') {
@@ -46,10 +46,60 @@ export function useDrillResult({
 
   useEffect(() => {
     setResult(null);
+    setReason(null);
   }, [resetKey]);
 
   useEffect(() => {
-    const moveCount = moveHistory.length; // 👈 Use moveHistory as the source of truth
+    if (initialEval == null) return;
+
+    const moveCount = moveHistory.length;
+    const evalDelta =
+      heroSide === 'white'
+        ? initialEval - currentEval
+        : currentEval - initialEval;
+
+    let newResult: DrillResult = null;
+    let newReason: string | null = null;
+
+    if (maxMoves > 0 && moveCount >= maxMoves) {
+      newResult = 'pass';
+      newReason = 'Solid play — good job!';
+    } else if (evalDelta >= 2000) {
+      newResult = 'fail';
+      newReason = 'Oops — you hung mate';
+    } else if (evalDelta >= 300) {
+      newResult = 'fail';
+      newReason = 'You blundered a piece';
+    } else if (evalDelta >= lossThreshold && moveCount > 1) {
+      newResult = 'fail';
+      newReason = 'You let the advantage slip';
+    } else if (maxMoves === 0 && gameOver && gameResult) {
+      if (expectedResult === 'win' && gameResult === 'win') {
+        newResult = 'pass';
+        newReason = 'You converted the win — great job!';
+      } else if (expectedResult === 'draw' && gameResult === 'draw') {
+        newResult = 'pass';
+        newReason = 'You held the draw 😅';
+      } else if (expectedResult === 'win' && gameResult === 'loss') {
+        newResult = 'fail';
+        newReason = 'You lost a winning game 😖';
+      } else if (expectedResult === 'win' && gameResult === 'draw') {
+        newResult = 'fail';
+        newReason = 'You let the win slip to a draw';
+      } else if (expectedResult === 'hold' && gameResult === 'draw') {
+        newResult = 'pass';
+        newReason = 'Good save — you held the draw 🙌🏻';
+      }
+    }
+
+    if (newResult !== null) {
+      setResult(newResult);
+      setReason(newReason);
+    } else {
+      // Clear results when no condition is met
+      setResult(null);
+      setReason(null);
+    }
 
     if (DEBUG) {
       console.log('— useDrillResult debug —');
@@ -57,45 +107,11 @@ export function useDrillResult({
       console.log('maxMoves:', maxMoves);
       console.log('initialEval:', initialEval);
       console.log('currentEval:', currentEval);
+      console.log('evalDelta:', evalDelta);
       console.log('gameOver:', gameOver);
       console.log('gameResult:', gameResult);
-      console.log('result:', result);
-    }
-
-    if (initialEval == null) return;
-
-    const evalDelta =
-      heroSide === 'white'
-        ? initialEval - currentEval
-        : currentEval - initialEval;
-
-    if (maxMoves > 0 && moveCount >= maxMoves) {
-      if (DEBUG) console.log('Max moves reached:', moveCount, '>=', maxMoves);
-      setResult('pass');
-      return;
-    } else if (evalDelta >= lossThreshold && moveCount > 1) {
-      if (DEBUG)
-        console.log('Loss threshold exceeded:', evalDelta, '>=', lossThreshold);
-      setResult('fail');
-      return;
-    } else if (maxMoves === 0 && gameOver && gameResult) {
-      if (DEBUG) console.log('Game over with result:', gameResult);
-      if (expectedResult === 'win' && gameResult === 'win') {
-        if (DEBUG) console.log('Drill passed: win');
-        setResult('pass');
-        return;
-      } else if (expectedResult === 'draw' && gameResult === 'draw') {
-        if (DEBUG) console.log('Drill passed: draw');
-        setResult('pass');
-        return;
-      } else {
-        if (DEBUG) console.log('Drill failed: unexpected result');
-        setResult('fail');
-        return;
-      }
-    } else {
-      setResult(null);
-      return;
+      console.log('result:', newResult);
+      console.log('reason:', newReason);
     }
   }, [
     moveHistory,
@@ -107,12 +123,8 @@ export function useDrillResult({
     maxMoves,
     heroSide,
     expectedResult,
-    result,
     resetKey,
   ]);
 
-  return {
-    result,
-    expectedResult,
-  };
+  return { result, expectedResult, reason };
 }
