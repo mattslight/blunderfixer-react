@@ -13,13 +13,11 @@ import { HistoryDots } from './DrillCard/HistoryDots';
 import { TimePhaseHeader } from './DrillCard/TimePhaseHeader';
 import useDrill from './hooks/useDrill';
 
-import MoveStepper from '@/components/MoveStepper';
 import { PHASE_COLORS, PHASE_DISPLAY } from '@/constants/phase';
 import useAnalysisEngine from '@/hooks/useAnalysisEngine';
 import useGameHistory from '@/hooks/useGameHistory';
 import useGameResult from '@/hooks/useGameResult';
 import useMoveInput from '@/hooks/useMoveInput';
-import EvalBar from '@/pages/analyse/components/EvalBar';
 
 const DEBUG = false;
 
@@ -45,13 +43,12 @@ export default function PlayDrill() {
   const initialMoves = useMemo<string[]>(() => [], []);
 
   // 3) Game history (initialFEN switches to drill.fen as soon as it's loaded)
-  const { fen, moveHistory, currentIdx, makeMove, setIdx, lastMove } =
-    useGameHistory({
-      initialFEN: drill?.fen,
-      initialMoves,
-      allowBranching: true,
-      resetKey,
-    });
+  const { fen, moveHistory, currentIdx, makeMove, lastMove } = useGameHistory({
+    initialFEN: drill?.fen,
+    initialMoves,
+    allowBranching: true,
+    resetKey,
+  });
 
   // 4) Hero’s color (from drill.fen’s side‐to‐move)
   const heroColor: 'white' | 'black' = useMemo(() => {
@@ -161,7 +158,7 @@ export default function PlayDrill() {
       <div className="mx-auto max-w-md space-y-4">
         {/* ---------- Board + EvalBar ---------- */}
         <div className="flex flex-col items-center">
-          <div className="mt-5 mb-2">
+          <div className="my-4">
             <DrillBanner
               expectedResult={expectedResult}
               drillResult={drillResult}
@@ -173,6 +170,7 @@ export default function PlayDrill() {
             <div className="flex-1">
               <Chessboard
                 position={fen}
+                customBoardStyle={{ borderRadius: '0.25rem' }}
                 boardOrientation={heroColor}
                 animationDuration={300}
                 onPieceDrop={onPieceDrop}
