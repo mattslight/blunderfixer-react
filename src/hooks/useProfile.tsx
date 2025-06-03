@@ -96,13 +96,9 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const setUsername = useCallback(
-    (username: string) => {
-      setProfile((p) => ({ ...p, username }));
-      if (username) fetchProfile(username);
-    },
-    [fetchProfile]
-  );
+  const setUsername = useCallback((username: string) => {
+    setProfile((p) => ({ ...p, username }));
+  }, []);
 
   // on mount or when profile.username changes
   useEffect(() => {
