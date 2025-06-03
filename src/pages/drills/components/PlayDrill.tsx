@@ -277,6 +277,9 @@ function DrillBanner({ expectedResult, drillResult, reason, setResetKey }) {
               ? 'border border-green-500 bg-green-900 text-green-100'
               : 'border border-red-500 bg-red-900 text-red-100'
           }`}
+          onClick={() => {
+            if (drillResult === 'fail') setResetKey((prev) => prev + 1);
+          }}
         >
           {drillResult === 'pass'
             ? `✅ ${reason ?? 'You met the goal!'}`
