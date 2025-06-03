@@ -49,6 +49,7 @@ export default function useAnalysisEngine(
     if (!enabled) return;
     const bestLine = rawLines[0];
     if (!bestLine) return;
+    if (bestLine.depth < 12) return; // Not deep enough yet
 
     if (typeof bestLine.scoreCP === 'number') {
       setEvalScore(bestLine.scoreCP);
