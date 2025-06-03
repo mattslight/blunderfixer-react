@@ -161,129 +161,134 @@ export default function PlayDrill() {
 
   // 14) Render
   return (
-    <div className="mx-auto max-w-md space-y-4">
-      <div className="mt-10 flex flex-row items-center justify-start space-x-2">
-        <div className="text-xs font-bold text-green-400 uppercase">
-          Last 5 Tries
+    <>
+      <div className="mx-auto max-w-md space-y-4">
+        <div className="mt-10 flex flex-row items-center justify-start space-x-2">
+          <div className="text-xs font-bold text-green-400 uppercase">
+            Last 5 Tries
+          </div>
+          <HistoryDots history={drill.history ?? []} />
         </div>
-        <HistoryDots history={drill.history ?? []} />
-      </div>
 
-      <TimePhaseHeader
-        playedAt={drill.played_at}
-        displayPhase={displayPhase}
-        phaseColor={phaseColor}
-      />
-      {/*
+        <TimePhaseHeader
+          playedAt={drill.played_at}
+          displayPhase={displayPhase}
+          phaseColor={phaseColor}
+        />
+        {/*
         Game Info Badges (from DrillCard)
         ---------------------------------
         Shows time class, time control, opponent, eval swing, and result.
       */}
-      <GameInfoBadges
-        timeClass={drill.time_class}
-        timeControl={drill.time_control}
-        opponent={{
-          username: drill.opponent_username,
-          rating: drill.opponent_rating,
-        }}
-        evalSwing={drill.eval_swing}
-        heroResult={drill.hero_result}
-        hideGameResult={true}
-      />
+        <GameInfoBadges
+          timeClass={drill.time_class}
+          timeControl={drill.time_control}
+          opponent={{
+            username: drill.opponent_username,
+            rating: drill.opponent_rating,
+          }}
+          evalSwing={drill.eval_swing}
+          heroResult={drill.hero_result}
+          hideGameResult={true}
+        />
 
-      <div className="mt-10">
-        {/* Drill Goal Banner (only show before result) */}
-        {expectedResult && !drillResult && (
-          <div className="flex items-center justify-center rounded-md border border-indigo-600 bg-indigo-800/30 px-4 py-2 text-center text-indigo-200">
-            <Crosshair className="mr-1 h-4 w-4 text-indigo-400" />
-            <span className="text-sm">
-              <span className="mr-1 font-bold">Goal</span>
-              {expectedResult === 'win' && 'Convert the Win'}
-              {expectedResult === 'hold' && 'Defend like Gurkesh!'}
-              {expectedResult === 'draw' && 'Hold the Draw'}
-            </span>
-          </div>
-        )}
+        <div className="mt-10">
+          {/* Drill Goal Banner (only show before result) */}
+          {expectedResult && !drillResult && (
+            <div className="flex items-center justify-center border border-indigo-600 bg-indigo-800/30 px-4 py-2 text-center text-indigo-200">
+              <Crosshair className="mr-1 h-4 w-4 text-indigo-400" />
+              <span className="text-sm">
+                <span className="mr-1 font-bold">Goal</span>
+                {expectedResult === 'win' && 'Convert the Win'}
+                {expectedResult === 'hold' && 'Defend like Gurkesh!'}
+                {expectedResult === 'draw' && 'Hold the Draw'}
+              </span>
+            </div>
+          )}
 
-        {/* Drill Result Banner */}
-        {drillResult && (
-          <div
-            className={`rounded-md px-4 py-2 text-center text-sm font-medium ${
-              drillResult === 'pass'
-                ? 'border border-green-500 bg-green-900 text-green-100'
-                : 'border border-red-500 bg-red-900 text-red-100'
-            }`}
-          >
-            {drillResult === 'pass'
-              ? `✅ ${reason ?? 'You met the goal!'}`
-              : `❌ ${reason ?? 'Better luck next time.'}`}
-          </div>
-        )}
+          {/* Drill Result Banner */}
+          {drillResult && (
+            <div
+              className={`rounded-md px-4 py-2 text-center text-sm font-medium ${
+                drillResult === 'pass'
+                  ? 'border border-green-500 bg-green-900 text-green-100'
+                  : 'border border-red-500 bg-red-900 text-red-100'
+              }`}
+            >
+              {drillResult === 'pass'
+                ? `✅ ${reason ?? 'You met the goal!'}`
+                : `❌ ${reason ?? 'Better luck next time.'}`}
+            </div>
+          )}
+        </div>
       </div>
-
-      {/* ---------- Board + EvalBar ---------- */}
-      <div className="flex flex-col items-center">
-        <div className="flex w-full items-center">
-          <div className="flex-1">
-            <Chessboard
-              position={fen}
+      <div className="mx-auto max-w-md space-y-4">
+        {/* ---------- Board + EvalBar ---------- */}
+        <div className="flex flex-col items-center">
+          <div className="flex w-full items-center">
+            <EvalBar
+              score={evalScore ?? drill.initial_eval}
+              className="w-2"
               boardOrientation={heroColor}
-              animationDuration={300}
-              onPieceDrop={onPieceDrop}
-              onSquareClick={onSquareClick}
-              showPromotionDialog={showPromotionDialog}
-              promotionToSquare={to as Square}
-              onPromotionPieceSelect={onPromotionPieceSelect}
-              promotionDialogVariant={'modal'}
-              customSquareStyles={{
-                ...optionSquares,
-                ...(lastMove
-                  ? {
-                      [lastMove.from]: {
-                        backgroundColor: 'rgba(255,255,0,0.4)',
-                      },
-                      [lastMove.to]: { backgroundColor: 'rgba(255,255,0,0.4)' },
-                    }
-                  : {}),
-              }}
-              customNotationStyle={{
-                fontSize: '0.7rem',
-                color: 'oklch(65% 0.03 264)',
-                fontWeight: 700,
-              }}
-              customDarkSquareStyle={{ backgroundColor: '#B1B7C8' }}
-              customLightSquareStyle={{ backgroundColor: '#F5F2E6' }}
+            />
+            <div className="flex-1">
+              <Chessboard
+                position={fen}
+                boardOrientation={heroColor}
+                animationDuration={300}
+                onPieceDrop={onPieceDrop}
+                onSquareClick={onSquareClick}
+                showPromotionDialog={showPromotionDialog}
+                promotionToSquare={to as Square}
+                onPromotionPieceSelect={onPromotionPieceSelect}
+                promotionDialogVariant={'modal'}
+                customSquareStyles={{
+                  ...optionSquares,
+                  ...(lastMove
+                    ? {
+                        [lastMove.from]: {
+                          backgroundColor: 'rgba(255,255,0,0.4)',
+                        },
+                        [lastMove.to]: {
+                          backgroundColor: 'rgba(255,255,0,0.4)',
+                        },
+                      }
+                    : {}),
+                }}
+                customNotationStyle={{
+                  fontSize: '0.7rem',
+                  color: 'oklch(65% 0.03 264)',
+                  fontWeight: 700,
+                }}
+                customDarkSquareStyle={{ backgroundColor: '#B1B7C8' }}
+                customLightSquareStyle={{ backgroundColor: '#F5F2E6' }}
+              />
+            </div>
+          </div>
+
+          {/* Move Stepper (to scroll through history) */}
+          <div className="w-full">
+            <MoveStepper
+              moveList={moveHistory}
+              currentIdx={currentIdx}
+              setCurrentIdx={setIdx}
             />
           </div>
-          <EvalBar
-            score={evalScore ?? drill.initial_eval}
-            className="w-2"
-            boardOrientation={heroColor}
-          />
         </div>
 
-        {/* Move Stepper (to scroll through history) */}
-        <div className="w-full">
-          <MoveStepper
-            moveList={moveHistory}
-            currentIdx={currentIdx}
-            setCurrentIdx={setIdx}
-          />
+        {/* ---------- Footer: HistoryDots + BotControls + Retry ---------- */}
+        <div className="flex w-full items-center justify-between space-x-4">
+          <BotControls strength={strength} setStrength={setStrength} />
+
+          <button
+            onClick={() => setResetKey((prev) => prev + 1)}
+            className="flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          >
+            <RotateCcw className="mr-1 h-4 w-4" />
+            Retry
+          </button>
         </div>
       </div>
-
-      {/* ---------- Footer: HistoryDots + BotControls + Retry ---------- */}
-      <div className="flex w-full items-center justify-between space-x-4">
-        <BotControls strength={strength} setStrength={setStrength} />
-
-        <button
-          onClick={() => setResetKey((prev) => prev + 1)}
-          className="flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-        >
-          <RotateCcw className="mr-1 h-4 w-4" />
-          Retry
-        </button>
-      </div>
-    </div>
+    </>
   );
 }
