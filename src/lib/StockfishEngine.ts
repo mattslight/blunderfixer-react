@@ -1,7 +1,7 @@
 // src/lib/StockfishEngine.ts
 import { Subject, Subscription } from 'rxjs';
 
-const DEBUG = false;
+const DEBUG = true;
 
 /**
  * A lightweight wrapper around a Stockfish WebAssembly worker.
