@@ -170,11 +170,6 @@ export default function PlayDrill() {
             />
           </div>
           <div className="flex w-full items-center">
-            <EvalBar
-              score={evalScore ?? drill.initial_eval}
-              className="w-2"
-              boardOrientation={heroColor}
-            />
             <div className="flex-1">
               <Chessboard
                 position={fen}
