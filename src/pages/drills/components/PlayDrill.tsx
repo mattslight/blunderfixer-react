@@ -161,12 +161,14 @@ export default function PlayDrill() {
       <div className="mx-auto max-w-md space-y-4">
         {/* ---------- Board + EvalBar ---------- */}
         <div className="flex flex-col items-center">
-          <DrillBanner
-            expectedResult={expectedResult}
-            drillResult={drillResult}
-            reason={reason}
-            setResetKey={setResetKey}
-          />
+          <div className="mt-5 mb-2">
+            <DrillBanner
+              expectedResult={expectedResult}
+              drillResult={drillResult}
+              reason={reason}
+              setResetKey={setResetKey}
+            />
+          </div>
           <div className="flex w-full items-center">
             <EvalBar
               score={evalScore ?? drill.initial_eval}
@@ -207,18 +209,17 @@ export default function PlayDrill() {
               />
             </div>
           </div>
-
-          {/* Move Stepper (to scroll through history) */}
+          {/* Move Stepper (to scroll through history)
           <div className="w-full">
             <MoveStepper
               moveList={moveHistory}
               currentIdx={currentIdx}
               setCurrentIdx={setIdx}
             />
-          </div>
+          </div> */}
         </div>
       </div>
-      <div className="xs:px-0 mx-auto max-w-md space-y-4 px-4">
+      <div className="xs:px-0 mx-auto mt-5 max-w-md space-y-4 px-4">
         <div className="flex flex-row items-center justify-start space-x-2">
           <div className="text-xs font-bold text-green-400 uppercase">
             Last 5 Tries
@@ -254,13 +255,13 @@ export default function PlayDrill() {
 
 function DrillBanner({ expectedResult, drillResult, reason, setResetKey }) {
   return (
-    <div>
+    <div className="flex w-full flex-col items-center space-y-2">
       {/* Drill Goal Banner (only show before result) */}
       {expectedResult && !drillResult && (
-        <div className="flex items-center justify-center border border-indigo-600 bg-indigo-800/30 px-4 py-2 text-center text-indigo-200">
+        <div className="flex w-full items-center justify-center rounded border border-indigo-500 bg-indigo-900 px-4 py-2 text-center text-indigo-200">
           <Crosshair className="mr-1 h-4 w-4 text-indigo-400" />
           <span className="text-sm">
-            <span className="mr-1 font-bold">Goal</span>
+            <span className="mr-1 font-bold text-white/80">Goal</span>
             {expectedResult === 'win' && 'Convert the Win'}
             {expectedResult === 'hold' && 'Defend like Gurkesh!'}
             {expectedResult === 'draw' && 'Hold the Draw'}
