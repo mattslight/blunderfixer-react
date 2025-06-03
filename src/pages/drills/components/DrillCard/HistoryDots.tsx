@@ -2,6 +2,7 @@ import { formatDistanceToNow, parseISO } from 'date-fns';
 import { Tooltip } from 'flowbite-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check, X } from 'lucide-react';
+import type { ReactElement } from 'react';
 
 type HistoryEntry = {
   result: 'pass' | 'fail';
@@ -31,7 +32,7 @@ export function HistoryDots({ history }: HistoryDotsProps) {
           const key = entry ? entry.timestamp : `empty-${idx}`;
 
           // 4) Pre‐compute tooltip content / dot‐styles
-          let dotContent: JSX.Element;
+          let dotContent: ReactElement;
           if (!entry) {
             dotContent = (
               <div className="h-4 w-4 rounded-full border border-gray-600 bg-transparent" />
