@@ -12,6 +12,7 @@ import { GameInfoBadges } from './DrillCard/GameInfoBadges';
 import { HistoryDots } from './DrillCard/HistoryDots';
 import { TimePhaseHeader } from './DrillCard/TimePhaseHeader';
 import useDrill from './hooks/useDrill';
+import { useSaveDrillHistory } from './hooks/useSaveDrillHistory';
 
 import { PHASE_COLORS, PHASE_DISPLAY } from '@/constants/phase';
 import useAnalysisEngine from '@/hooks/useAnalysisEngine';
@@ -102,6 +103,8 @@ export default function PlayDrill() {
     resetKey,
     moveCount,
   });
+
+  useSaveDrillHistory(drill?.id, drillResult, reason);
 
   // 11) Derive displayPhase & phaseColor for header
   const displayPhase = useMemo(() => {
