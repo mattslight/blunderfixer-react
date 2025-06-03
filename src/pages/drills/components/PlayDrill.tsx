@@ -1,14 +1,13 @@
 // src/pages/drills/components/PlayDrill.tsx
 import { useEffect, useMemo, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { Chess, Square } from 'chess.js';
 import { Crosshair, RotateCcw } from 'lucide-react';
 
 import useAutoMove from '../hooks/useAutoMove';
 import useBotPlayer from '../hooks/useBotPlayer';
 import { useDrillResult } from '../hooks/useDrillResult';
-import BotControls from './BotControls';
 import { GameInfoBadges } from './DrillCard/GameInfoBadges';
 import { HistoryDots } from './DrillCard/HistoryDots';
 import { TimePhaseHeader } from './DrillCard/TimePhaseHeader';
@@ -20,7 +19,6 @@ import useAnalysisEngine from '@/hooks/useAnalysisEngine';
 import useGameHistory from '@/hooks/useGameHistory';
 import useGameResult from '@/hooks/useGameResult';
 import useMoveInput from '@/hooks/useMoveInput';
-import { useStickyValue } from '@/hooks/useStickyValue';
 import EvalBar from '@/pages/analyse/components/EvalBar';
 
 const DEBUG = false;
@@ -29,7 +27,6 @@ const REQUIRED_MOVES = 5; // default for early/midgame drills
 const LOSS_THRESHOLD = 100; // default loss threshold in centipawns
 
 export default function PlayDrill() {
-  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [resetKey, setResetKey] = useState(0);
 
@@ -76,8 +73,7 @@ export default function PlayDrill() {
   } = useMoveInput(fen, makeMove);
 
   // 7) Bot‐move logic
-  const [strength, setStrength] = useStickyValue('drillBotStrength', 8);
-  const { playBotMove } = useBotPlayer(fen, strength, makeMove);
+  const { playBotMove } = useBotPlayer({ fen, makeMove });
   useAutoMove(moveHistory, playBotMove, 300);
 
   // 8) Engine evaluation (numerical, in centipawns)
@@ -163,68 +159,14 @@ export default function PlayDrill() {
   return (
     <>
       <div className="mx-auto max-w-md space-y-4">
-        <div className="mt-10 flex flex-row items-center justify-start space-x-2">
-          <div className="text-xs font-bold text-green-400 uppercase">
-            Last 5 Tries
-          </div>
-          <HistoryDots history={drill.history ?? []} />
-        </div>
-
-        <TimePhaseHeader
-          playedAt={drill.played_at}
-          displayPhase={displayPhase}
-          phaseColor={phaseColor}
-        />
-        {/*
-        Game Info Badges (from DrillCard)
-        ---------------------------------
-        Shows time class, time control, opponent, eval swing, and result.
-      */}
-        <GameInfoBadges
-          timeClass={drill.time_class}
-          timeControl={drill.time_control}
-          opponent={{
-            username: drill.opponent_username,
-            rating: drill.opponent_rating,
-          }}
-          evalSwing={drill.eval_swing}
-          heroResult={drill.hero_result}
-          hideGameResult={true}
-        />
-
-        <div className="mt-10">
-          {/* Drill Goal Banner (only show before result) */}
-          {expectedResult && !drillResult && (
-            <div className="flex items-center justify-center border border-indigo-600 bg-indigo-800/30 px-4 py-2 text-center text-indigo-200">
-              <Crosshair className="mr-1 h-4 w-4 text-indigo-400" />
-              <span className="text-sm">
-                <span className="mr-1 font-bold">Goal</span>
-                {expectedResult === 'win' && 'Convert the Win'}
-                {expectedResult === 'hold' && 'Defend like Gurkesh!'}
-                {expectedResult === 'draw' && 'Hold the Draw'}
-              </span>
-            </div>
-          )}
-
-          {/* Drill Result Banner */}
-          {drillResult && (
-            <div
-              className={`rounded-md px-4 py-2 text-center text-sm font-medium ${
-                drillResult === 'pass'
-                  ? 'border border-green-500 bg-green-900 text-green-100'
-                  : 'border border-red-500 bg-red-900 text-red-100'
-              }`}
-            >
-              {drillResult === 'pass'
-                ? `✅ ${reason ?? 'You met the goal!'}`
-                : `❌ ${reason ?? 'Better luck next time.'}`}
-            </div>
-          )}
-        </div>
-      </div>
-      <div className="mx-auto max-w-md space-y-4">
         {/* ---------- Board + EvalBar ---------- */}
         <div className="flex flex-col items-center">
+          <DrillBanner
+            expectedResult={expectedResult}
+            drillResult={drillResult}
+            reason={reason}
+            setResetKey={setResetKey}
+          />
           <div className="flex w-full items-center">
             <EvalBar
               score={evalScore ?? drill.initial_eval}
@@ -275,20 +217,80 @@ export default function PlayDrill() {
             />
           </div>
         </div>
-
-        {/* ---------- Footer: HistoryDots + BotControls + Retry ---------- */}
-        <div className="flex w-full items-center justify-between space-x-4">
-          <BotControls strength={strength} setStrength={setStrength} />
-
-          <button
-            onClick={() => setResetKey((prev) => prev + 1)}
-            className="flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          >
-            <RotateCcw className="mr-1 h-4 w-4" />
-            Retry
-          </button>
+      </div>
+      <div className="xs:px-0 mx-auto max-w-md space-y-4 px-4">
+        <div className="flex flex-row items-center justify-start space-x-2">
+          <div className="text-xs font-bold text-green-400 uppercase">
+            Last 5 Tries
+          </div>
+          <HistoryDots history={drill.history ?? []} />
         </div>
+
+        <TimePhaseHeader
+          playedAt={drill.played_at}
+          displayPhase={displayPhase}
+          phaseColor={phaseColor}
+        />
+        {/*
+        Game Info Badges (from DrillCard)
+        ---------------------------------
+        Shows time class, time control, opponent, eval swing, and result.
+      */}
+        <GameInfoBadges
+          timeClass={drill.time_class}
+          timeControl={drill.time_control}
+          opponent={{
+            username: drill.opponent_username,
+            rating: drill.opponent_rating,
+          }}
+          evalSwing={drill.eval_swing}
+          heroResult={drill.hero_result}
+          hideGameResult={true}
+        />
       </div>
     </>
+  );
+}
+
+function DrillBanner({ expectedResult, drillResult, reason, setResetKey }) {
+  return (
+    <div>
+      {/* Drill Goal Banner (only show before result) */}
+      {expectedResult && !drillResult && (
+        <div className="flex items-center justify-center border border-indigo-600 bg-indigo-800/30 px-4 py-2 text-center text-indigo-200">
+          <Crosshair className="mr-1 h-4 w-4 text-indigo-400" />
+          <span className="text-sm">
+            <span className="mr-1 font-bold">Goal</span>
+            {expectedResult === 'win' && 'Convert the Win'}
+            {expectedResult === 'hold' && 'Defend like Gurkesh!'}
+            {expectedResult === 'draw' && 'Hold the Draw'}
+          </span>
+        </div>
+      )}
+
+      {/* Drill Result Banner */}
+      {drillResult && (
+        <div
+          className={`rounded-md px-4 py-2 text-center text-sm font-medium ${
+            drillResult === 'pass'
+              ? 'border border-green-500 bg-green-900 text-green-100'
+              : 'border border-red-500 bg-red-900 text-red-100'
+          }`}
+        >
+          {drillResult === 'pass'
+            ? `✅ ${reason ?? 'You met the goal!'}`
+            : `❌ ${reason ?? 'Better luck next time.'}`}
+          {drillResult === 'fail' && (
+            <button
+              onClick={() => setResetKey((prev) => prev + 1)}
+              className="ml-2 inline-flex items-center rounded-md bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            >
+              <RotateCcw className="mr-1 h-3 w-3" />
+              Retry
+            </button>
+          )}
+        </div>
+      )}
+    </div>
   );
 }
