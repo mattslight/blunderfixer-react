@@ -1,4 +1,6 @@
+// src/hooks/useSaveDrillHistory.ts
 import { useEffect, useRef } from 'react';
+import { mutate } from 'swr';
 
 import { postDrillHistory } from '@/api/drills';
 
@@ -11,21 +13,25 @@ export function useSaveDrillHistory(
 
   useEffect(() => {
     if (
-      drillId != null && // not null/undefined
+      drillId != null &&
       !hasPosted.current &&
       (result === 'pass' || result === 'fail')
     ) {
       hasPosted.current = true;
-      postDrillHistory(drillId, { result, reason: reason || undefined }).catch(
-        (err) => {
+
+      postDrillHistory(drillId, { result, reason: reason || undefined })
+        .then(() => {
+          // Re-fetch `/drills/{drillId}` after history is saved
+          mutate(`/drills/${drillId}`);
+        })
+        .catch((err) => {
           console.error('Could not save drill history:', err);
-          hasPosted.current = false; // Allow retry on error
-        }
-      );
+          hasPosted.current = false; // allow retry on error
+        });
     }
 
     return () => {
-      hasPosted.current = false; // Reset for next drill session
+      hasPosted.current = false; // reset for next session
     };
   }, [drillId, result, reason]);
 }
