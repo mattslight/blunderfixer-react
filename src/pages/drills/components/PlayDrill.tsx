@@ -156,10 +156,11 @@ export default function PlayDrill() {
       {expectedResult && !drillResult && (
         <div className="flex items-center justify-center rounded-md border border-indigo-600 bg-indigo-800/30 px-4 py-2 text-center text-indigo-200">
           <Crosshair className="mr-1 h-4 w-4 text-indigo-400" />
-          <span className="text-sm font-medium">
-            {expectedResult === 'win' && 'Goal: Convert the Win'}
-            {expectedResult === 'hold' && 'Goal: Defend like Gurkesh!'}
-            {expectedResult === 'draw' && 'Goal: Hold the Draw'}
+          <span className="text-sm">
+            <span className="mr-1 font-bold">Goal</span>
+            {expectedResult === 'win' && 'Convert the Win'}
+            {expectedResult === 'hold' && 'Defend like Gurkesh!'}
+            {expectedResult === 'draw' && 'Hold the Draw'}
           </span>
         </div>
       )}
