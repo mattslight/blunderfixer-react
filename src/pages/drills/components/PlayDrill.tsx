@@ -223,10 +223,9 @@ export default function PlayDrill() {
 
       {/* ---------- Board + EvalBar ---------- */}
       <div className="flex flex-col items-center">
-        <div className="flex w-full items-center gap-2">
+        <div className="flex w-full items-center">
           <div className="flex-1">
             <Chessboard
-              customBoardStyle={{ borderRadius: '0.5rem' }}
               position={fen}
               boardOrientation={heroColor}
               animationDuration={300}
@@ -258,7 +257,7 @@ export default function PlayDrill() {
           </div>
           <EvalBar
             score={evalScore ?? drill.initial_eval}
-            className="w-2 rounded"
+            className="w-2"
             boardOrientation={heroColor}
           />
         </div>
