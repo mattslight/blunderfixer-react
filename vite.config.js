@@ -14,6 +14,19 @@ export default defineConfig({
   server: {
     host: true, // same as '0.0.0.0'
     port: 5173,
+    headers: {
+      'Cross-Origin-Embedder-Policy': 'require-corp',
+      'Cross-Origin-Opener-Policy': 'same-origin',
+    },
+    configureServer(server) {
+      // this middleware runs for every request (HTML, JS, WASM, etc.)
+      server.middlewares.use((req, res, next) => {
+        console.log('Vite middleware:', req.url);
+        res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+        res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+        next();
+      });
+    },
   },
   resolve: {
     alias: {
