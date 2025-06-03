@@ -60,7 +60,7 @@ export default function useBotPlayer({
       engineRef.current?.stop();
       setIsThinking(false);
     }
-  }, [fen, isThinking]);
+  }, [fen]);
 
   // 3) playBotMove only runs if engine is fully “ready”
   const playBotMove = useCallback(() => {
