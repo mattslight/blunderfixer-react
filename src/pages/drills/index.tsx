@@ -8,12 +8,12 @@ import { RefreshCw, SlidersHorizontal } from 'lucide-react';
 
 import DrillList from './components/DrillList';
 import FilterModal from './components/FilterModal';
+import { useDrills } from './hooks/useDrills';
 import {
   buildDrillFilters,
   PhaseFilter,
   THRESHOLD_OPTIONS,
-} from './filterUtils';
-import { useDrills } from './hooks/useDrills';
+} from './utils/filters';
 import 'react-range-slider-input/dist/style.css';
 
 import { useDebounce } from '@/hooks/useDebounce';

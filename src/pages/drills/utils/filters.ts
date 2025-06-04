@@ -1,4 +1,4 @@
-// src/pages/drills/filterUtils.ts
+// src/pages/drills/utils/filters.ts
 export const THRESHOLD_OPTIONS = [
   1,
   150,

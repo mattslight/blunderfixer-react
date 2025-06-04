@@ -6,9 +6,9 @@ import { Chess, Square } from 'chess.js';
 import { Archive, Clipboard, ClipboardCheck } from 'lucide-react';
 
 import EvalBar from '../../analyse/components/EvalBar';
-import { buildDrillFilters, readStickyFilters } from '../filterUtils';
 import useAutoMove from '../hooks/useAutoMove';
 import useBotPlayer from '../hooks/useBotPlayer';
+import { buildDrillFilters, readStickyFilters } from '../utils/filters';
 import ArchiveConfirmModal from './ArchiveConfirmModal';
 import DrillBanner from './DrillBanner';
 import { GameInfoBadges } from './DrillCard/GameInfoBadges';
