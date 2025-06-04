@@ -1,7 +1,6 @@
 # TODO
 
-[ ] Exclude completed drills
-[ ] When detecting drills somehow group similar positions
+[ ] When detecting drills somehow group similar positions - WIP
 
 [ ] Load new games and drills when logging in
 [ ] Load games from DB
@@ -11,14 +10,15 @@
 
 [ ] Ask coach for hint on drill
 
-[ ] When fetching drills, adjust API to hide 'mastered' drills (drills where the most recent 5 history is 5 passed in a row) or drills that I mark manually with "don't show me again" (archived/hidden flag in DB)
-
 [ ] Move a drill to analysis mode (if I fail dig into why I failed, better understanding)
 
 [ ] Homepage of my stats, recent games, recommended drills
 
-[ ] Play variable moves (not always best move) when useBotPlayer in drills is used so that it's not about memorising the same sequence of moves
+[x] Play variable moves (not always best move) when useBotPlayer in drills is used so that it's not about memorising the same sequence of moves
 
+[x] When fetching drills, adjust API to hide 'mastered' drills (drills where the most recent 5 history is 5 passed in a row) or drills that I mark manually with "don't show me again" (archived/hidden flag in DB)
+
+[x] Exclude completed drills
 [x] Save Win / loss stats for the drill
 [x] Show win/loss stats on drill page
 [x] Show win/loss stats on drill list
