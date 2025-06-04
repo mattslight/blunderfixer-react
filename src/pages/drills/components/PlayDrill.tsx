@@ -201,16 +201,15 @@ export default function PlayDrill() {
       <div className="mx-auto max-w-md space-y-4">
         {/* ---------- Board + EvalBar ---------- */}
         <div className="flex flex-col items-center">
-          <div className="my-4">
-            <DrillBanner
-              expectedResult={expectedResult}
-              drillResult={drillResult}
-              reason={reason}
-              setResetKey={setResetKey}
-              onNext={handleNextDrill}
-            />
-          </div>
-          <div className="flex w-full items-center">
+          <DrillBanner
+            expectedResult={expectedResult}
+            drillResult={drillResult}
+            reason={reason}
+            setResetKey={setResetKey}
+            onNext={handleNextDrill}
+            initialEval={initialEval}
+          />
+          <div className="mt-4 flex w-full items-center">
             <EvalBar
               score={evalScore}
               className="w-2"
@@ -269,7 +268,13 @@ export default function PlayDrill() {
             </div>
             <HistoryDots history={drill.history ?? []} />
           </div>
-          <CopyFenToClipboard fen={fen} />
+          <button
+            onClick={() => setShowConfirm(true)}
+            className="flex items-center text-xs text-gray-500 hover:text-red-400"
+          >
+            <Archive className="mr-1 h-4 w-4" />
+            Archive drill
+          </button>
         </div>
 
         <TimePhaseHeader
@@ -293,13 +298,10 @@ export default function PlayDrill() {
           heroResult={drill.hero_result}
           hideGameResult={true}
         />
-        <button
-          onClick={() => setShowConfirm(true)}
-          className="mt-8 flex items-center text-xs text-gray-400 hover:text-red-400"
-        >
-          <Archive className="mr-1 h-4 w-4" />
-          Hide this drill
-        </button>
+        <div className="mt-10 flex items-center justify-start">
+          <CopyFenToClipboard fen={fen} />
+        </div>
+
         <ArchiveConfirmModal
           show={showConfirm}
           onCancel={() => setShowConfirm(false)}
