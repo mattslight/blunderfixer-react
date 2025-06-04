@@ -1,6 +1,9 @@
 // src/pages/drills/components/PlayDrill.tsx
 import { useEffect, useMemo, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
+import ArchiveConfirmModal from './ArchiveConfirmModal';
+  const [showConfirm, setShowConfirm] = useState(false);
+      setShowConfirm(false);
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Chess, Square } from 'chess.js';
 import { Clipboard, ClipboardCheck, Crosshair, RotateCcw } from 'lucide-react';
@@ -264,9 +267,14 @@ export default function PlayDrill() {
           hideGameResult={true}
         />
         <button
-          onClick={handleArchive}
+          onClick={() => setShowConfirm(true)}
           className="mt-4 text-xs text-gray-400 underline hover:text-white"
         >
+        <ArchiveConfirmModal
+          show={showConfirm}
+          onCancel={() => setShowConfirm(false)}
+          onConfirm={handleArchive}
+        />
           Don&apos;t show this drill again
         </button>
       </div>
