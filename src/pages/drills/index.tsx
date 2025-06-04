@@ -68,6 +68,14 @@ export default function DrillsPage() {
     'drillExcludeWins',
     true
   );
+  const [includeArchived, setIncludeArchived] = useStickyValue<boolean>(
+    'drillIncludeArchived',
+    false
+  );
+  const [includeMastered, setIncludeMastered] = useStickyValue<boolean>(
+    'drillIncludeMastered',
+    false
+  );
 
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 300);
@@ -83,6 +91,11 @@ export default function DrillsPage() {
   ];
 
   // **server filter object**
+  const includeFilters = [
+    includeArchived && ('archived' as const),
+    includeMastered && ('mastered' as const),
+  ].filter(Boolean) as Array<'archived' | 'mastered'>;
+
   const filters = {
     username,
     minEvalSwing: minCutoff,
@@ -92,6 +105,7 @@ export default function DrillsPage() {
       ? (['loss', 'draw'] as Array<'loss' | 'draw'>)
       : undefined,
     opponent: debouncedSearch || undefined,
+    include: includeFilters.length ? includeFilters : undefined,
     limit: 20,
     openingThreshold: 14,
   } as const;
@@ -161,12 +175,26 @@ export default function DrillsPage() {
           <div className="text-sm text-gray-600 sm:text-base">
             {`Showing ${drills.length} result${drills.length === 1 ? '' : 's'}`}
           </div>
-          <div className="flex flex-wrap items-center gap-2 text-gray-300">
-            <span className="text-sm text-gray-600">Include games won</span>
-            <div>
+          <div className="flex flex-wrap items-center gap-4 text-gray-300">
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">Include games won</span>
               <ToggleSwitch
                 checked={!excludeWins}
                 onChange={() => setExcludeWins(!excludeWins)}
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">Include archived</span>
+              <ToggleSwitch
+                checked={includeArchived}
+                onChange={() => setIncludeArchived(!includeArchived)}
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">Include mastered</span>
+              <ToggleSwitch
+                checked={includeMastered}
+                onChange={() => setIncludeMastered(!includeMastered)}
               />
             </div>
           </div>
