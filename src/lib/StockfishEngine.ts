@@ -189,5 +189,6 @@ export class StockfishEngine {
   public quit() {
     if (DEBUG) console.log('[StockfishEngine] quit');
     this.send('quit');
+    this.worker.terminate();
   }
 }

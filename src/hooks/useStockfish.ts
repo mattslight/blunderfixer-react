@@ -72,6 +72,10 @@ export function useStockfish(
 
     return () => {
       didCancel = true;
+      // When the engine instance is replaced or the component unmounts,
+      // ensure any ongoing search is halted and the worker is terminated.
+      engine.stop();
+      engine.quit();
     };
   }, [engine]);
 
