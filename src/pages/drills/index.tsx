@@ -8,7 +8,6 @@ import { RefreshCw, SlidersHorizontal } from 'lucide-react';
 
 import DrillList from './components/DrillList';
 import FilterModal from './components/FilterModal';
-import { updateDrill } from '@/api/drills';
 import { useDrills } from './hooks/useDrills';
 import 'react-range-slider-input/dist/style.css';
 
@@ -113,16 +112,7 @@ export default function DrillsPage() {
     openingThreshold: 14,
   } as const;
 
-  const { drills, loading, refresh } = useDrills(filters);
-
-  const handleArchive = async (id: number) => {
-    try {
-      await updateDrill(id, { archived: true });
-      refresh();
-    } catch (err) {
-      console.error('Could not archive drill:', err);
-    }
-  };
+  const { drills, loading } = useDrills(filters);
 
   return (
     <div className="p-4 pt-8 2xl:ml-12">
@@ -211,7 +201,6 @@ export default function DrillsPage() {
           drills={drills}
           loading={loading}
           onStartDrill={(id) => navigate(`/drills/play/${id}`)}
-          onArchiveDrill={handleArchive}
         />
       </div>
     </div>

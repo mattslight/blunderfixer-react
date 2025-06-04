@@ -1,7 +1,7 @@
 // src/pages/drills/components/PlayDrill.tsx
 import { useEffect, useMemo, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams, useNavigate } from 'react-router-dom';
 import { Chess, Square } from 'chess.js';
 import { Clipboard, ClipboardCheck, Crosshair, RotateCcw } from 'lucide-react';
 
@@ -20,6 +20,7 @@ import useAnalysisEngine from '@/hooks/useAnalysisEngine';
 import useGameHistory from '@/hooks/useGameHistory';
 import useGameResult from '@/hooks/useGameResult';
 import useMoveInput from '@/hooks/useMoveInput';
+import { updateDrill } from '@/api/drills';
 
 const DEBUG = false;
 
@@ -27,10 +28,21 @@ const REQUIRED_MOVES = 6; // default for early/midgame/late drills
 
 export default function PlayDrill() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [resetKey, setResetKey] = useState(0);
 
   // 1) Fetch the drill data
   const { drill, loading, error } = useDrill(id!);
+
+  const handleArchive = async () => {
+    if (!drill) return;
+    try {
+      await updateDrill(drill.id, { archived: true });
+      navigate('/drills');
+    } catch (err) {
+      console.error('Could not archive drill:', err);
+    }
+  };
 
   // Whenever a new drill arrives, bump resetKey to re‐initialize
   useEffect(() => {
@@ -251,6 +263,12 @@ export default function PlayDrill() {
           heroResult={drill.hero_result}
           hideGameResult={true}
         />
+        <button
+          onClick={handleArchive}
+          className="mt-4 text-xs text-gray-400 underline hover:text-white"
+        >
+          Don't show this drill again
+        </button>
       </div>
     </>
   );

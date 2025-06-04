@@ -2,7 +2,7 @@
 // -------------------------
 import React from 'react';
 import { Chessboard } from 'react-chessboard';
-import { Play, XCircle } from 'lucide-react';
+import { Play } from 'lucide-react';
 
 import { GameInfoBadges } from './GameInfoBadges';
 import { HistoryDots } from './HistoryDots';
@@ -14,10 +14,9 @@ import type { DrillPosition } from '@/types';
 type Props = {
   drill: DrillPosition;
   onStartDrill: (id: number) => void;
-  onArchiveDrill: (id: number) => void;
 };
 
-export function DrillCard({ drill, onStartDrill, onArchiveDrill }: Props) {
+export function DrillCard({ drill, onStartDrill }: Props) {
   const {
     fen,
     ply,
@@ -82,16 +81,6 @@ export function DrillCard({ drill, onStartDrill, onArchiveDrill }: Props) {
             <HistoryDots history={history} />
           </div>
           <div className="flex items-end gap-2">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onArchiveDrill(drill.id);
-              }}
-              className="inline-flex items-center gap-1 rounded bg-gray-700 px-2 py-1 text-xs text-gray-200 hover:bg-gray-600"
-            >
-              <XCircle size={14} />
-              Hide
-            </button>
             <button
               onClick={() => onStartDrill(drill.id)}
               className="inline-flex items-center gap-1 rounded bg-green-600 px-5 py-2 text-sm font-semibold text-white hover:bg-green-700"

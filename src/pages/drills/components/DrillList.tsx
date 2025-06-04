@@ -10,15 +10,9 @@ interface Props {
   drills: DrillPosition[];
   loading: boolean;
   onStartDrill: (id: number) => void;
-  onArchiveDrill: (id: number) => void;
 }
 
-export default function DrillList({
-  drills,
-  loading,
-  onStartDrill,
-  onArchiveDrill,
-}: Props) {
+export default function DrillList({ drills, loading, onStartDrill }: Props) {
   if (loading) {
     return <Spinner size="lg" className="mx-auto mt-16" />;
   }
@@ -33,12 +27,7 @@ export default function DrillList({
     <div className="space-y-8 sm:space-y-12">
       {drills.map((d) => {
         return (
-          <DrillCard
-            key={d.id}
-            drill={d}
-            onStartDrill={() => onStartDrill(d.id)}
-            onArchiveDrill={() => onArchiveDrill(d.id)}
-          />
+          <DrillCard key={d.id} drill={d} onStartDrill={() => onStartDrill(d.id)} />
         );
       })}
     </div>
