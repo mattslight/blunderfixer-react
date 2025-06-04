@@ -14,7 +14,7 @@ import { TimePhaseHeader } from './DrillCard/TimePhaseHeader';
 import useDrill from './hooks/useDrill';
 import { useDrillResult } from './hooks/useDrillResult';
 import { useSaveDrillHistory } from './hooks/useSaveDrillHistory';
-import DrillResultModal from './DrillResultModal';
+import DrillResultToast from './DrillResultToast';
 import { getDrills } from '@/api/drills';
 import { useProfile } from '@/hooks/useProfile';
 
@@ -305,9 +305,8 @@ export default function PlayDrill() {
           hideGameResult={true}
         />
       </div>
-      <DrillResultModal
-        show={!!drillResult}
-        drillResult={drillResult}
+      <DrillResultToast
+        result={drillResult}
         reason={reason}
         onRetry={() => setResetKey((prev) => prev + 1)}
         onNext={handleNextDrill}
