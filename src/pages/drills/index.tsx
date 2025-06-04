@@ -112,7 +112,7 @@ export default function DrillsPage() {
     openingThreshold: 14,
   } as const;
 
-  const { drills, loading } = useDrills(filters);
+  const { drills, loading, refresh } = useDrills(filters);
 
   return (
     <div className="p-4 pt-8 2xl:ml-12">

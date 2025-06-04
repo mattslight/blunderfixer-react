@@ -1,7 +1,7 @@
 // src/pages/drills/components/PlayDrill.tsx
 import { useEffect, useMemo, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
-import { Navigate, useParams, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Chess, Square } from 'chess.js';
 import { Clipboard, ClipboardCheck, Crosshair, RotateCcw } from 'lucide-react';
 
@@ -15,12 +15,12 @@ import useDrill from './hooks/useDrill';
 import { useDrillResult } from './hooks/useDrillResult';
 import { useSaveDrillHistory } from './hooks/useSaveDrillHistory';
 
+import { updateDrill } from '@/api/drills';
 import { PHASE_COLORS, PHASE_DISPLAY } from '@/constants/phase';
 import useAnalysisEngine from '@/hooks/useAnalysisEngine';
 import useGameHistory from '@/hooks/useGameHistory';
 import useGameResult from '@/hooks/useGameResult';
 import useMoveInput from '@/hooks/useMoveInput';
-import { updateDrill } from '@/api/drills';
 
 const DEBUG = false;
 
@@ -267,7 +267,7 @@ export default function PlayDrill() {
           onClick={handleArchive}
           className="mt-4 text-xs text-gray-400 underline hover:text-white"
         >
-          Don't show this drill again
+          Don&apos;t show this drill again
         </button>
       </div>
     </>
