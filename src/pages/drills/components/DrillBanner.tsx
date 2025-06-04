@@ -58,9 +58,8 @@ export default function DrillBanner({
         'Punish their mistake',
         'Finish strong',
         'Spot the tactic',
-        'Convert your edge',
+        'Convert your advantage',
         'Don’t miss the knockout',
-        'Seal the deal',
       ]),
     []
   );
@@ -73,19 +72,19 @@ export default function DrillBanner({
         'Don’t let it slip',
         'Squeeze slowly',
         'Keep control',
-        'Preserve your advantage',
+        'Maintain your advantage',
         'Stay patient, stay ahead',
       ]),
     []
   );
 
   return (
-    <div className="mt-8 flex w-full flex-col items-center space-y-2 px-4 sm:p-0">
+    <div className="flex w-full flex-col items-center space-y-2 px-4 sm:p-0">
       {/* Drill Goal Banner (only show before result) */}
       {expectedResult && !drillResult && (
         <div className="flex w-full items-center justify-between rounded border border-indigo-500 bg-indigo-900 px-4 py-2 text-center text-indigo-200">
           <div>
-            <Crosshair className="relative bottom-0.25 mr-1 inline-flex h-4 w-4 text-indigo-400" />
+            <Crosshair className="relative bottom-0.25 mr-2 inline-flex h-4 w-4 text-indigo-400" />
             <span className="text-sm">
               <span className="mr-1 font-bold text-white/80">
                 {expectedResult === 'win' &&
