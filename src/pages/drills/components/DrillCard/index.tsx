@@ -13,14 +13,14 @@ import type { DrillPosition } from '@/types';
 
 type Props = {
   drill: DrillPosition;
-  onStartDrill: (id: number) => void;
+  onStartDrill: (id: number | string) => void;
 };
 
 export function DrillCard({ drill, onStartDrill }: Props) {
   const {
     fen,
     ply,
-    played_at,
+    game_played_at,
     time_class,
     time_control,
     hero_result,
@@ -58,7 +58,7 @@ export function DrillCard({ drill, onStartDrill }: Props) {
         <div className="flex flex-col gap-2">
           {/* 2a) Time + Phase Header */}
           <TimePhaseHeader
-            playedAt={played_at}
+            playedAt={game_played_at}
             displayPhase={displayPhase}
             phaseColor={phaseColor}
           />
