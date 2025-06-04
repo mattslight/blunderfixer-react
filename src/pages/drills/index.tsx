@@ -174,14 +174,15 @@ export default function DrillsPage() {
           </div>
         </div>
         <div className="mt-10 flex items-center justify-between">
-          <div className="text-sm text-gray-600 sm:text-base">
+          <div className="text-sm text-gray-400 sm:text-base">
             {`Showing ${drills.length} result${drills.length === 1 ? '' : 's'}`}
           </div>
           <button
             onClick={() => setShowFilters(true)}
-            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white"
+            className="flex items-center gap-2 text-sm text-gray-400 hover:text-white"
           >
-            <SlidersHorizontal className="h-4 w-4" /> Filters
+            <SlidersHorizontal className="h-4 w-4" />
+            Filters
           </button>
         </div>
         <FilterModal

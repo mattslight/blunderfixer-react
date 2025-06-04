@@ -48,7 +48,7 @@ export default function UserMenu() {
       </button>
 
       {open && (
-        <div className="ring-opacity-5 absolute right-0 mt-2 w-56 origin-top-right rounded-xl border border-gray-800 bg-black/90 shadow-lg ring-1 ring-black backdrop-blur-lg">
+        <div className="absolute right-0 mt-2 w-56 origin-top-right rounded-xl border border-gray-800 bg-black/90 shadow-lg backdrop-blur-lg">
           <div className="px-4 py-3 text-center">
             <div className="flex items-center justify-center">
               {profile.avatar ? (

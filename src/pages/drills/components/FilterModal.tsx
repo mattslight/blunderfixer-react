@@ -30,21 +30,25 @@ export default function FilterModal({
       <h2 className="mb-4 text-lg font-semibold text-white">Filters</h2>
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-300">Include games won</span>
+          <span className="text-sm text-gray-300">
+            Include drills from games won
+          </span>
           <ToggleSwitch
             checked={!excludeWins}
             onChange={() => setExcludeWins(!excludeWins)}
           />
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-300">Include archived</span>
+          <span className="text-sm text-gray-300">Include archived drills</span>
           <ToggleSwitch
             checked={includeArchived}
             onChange={() => setIncludeArchived(!includeArchived)}
           />
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-300">Include mastered</span>
+          <span className="text-sm text-gray-300">
+            Include drills with 5 wins in a row
+          </span>
           <ToggleSwitch
             checked={includeMastered}
             onChange={() => setIncludeMastered(!includeMastered)}
