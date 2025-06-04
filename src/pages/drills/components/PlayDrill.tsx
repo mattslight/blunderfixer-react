@@ -1,13 +1,20 @@
 // src/pages/drills/components/PlayDrill.tsx
 import { useEffect, useMemo, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Chess, Square } from 'chess.js';
-import { Clipboard, ClipboardCheck, Crosshair, RotateCcw } from 'lucide-react';
+import {
+  Archive,
+  Clipboard,
+  ClipboardCheck,
+  Crosshair,
+  RotateCcw,
+} from 'lucide-react';
 
 import EvalBar from '../../analyse/components/EvalBar';
 import useAutoMove from '../hooks/useAutoMove';
 import useBotPlayer from '../hooks/useBotPlayer';
+import ArchiveConfirmModal from './ArchiveConfirmModal';
 import { GameInfoBadges } from './DrillCard/GameInfoBadges';
 import { HistoryDots } from './DrillCard/HistoryDots';
 import { TimePhaseHeader } from './DrillCard/TimePhaseHeader';
@@ -15,6 +22,7 @@ import useDrill from './hooks/useDrill';
 import { useDrillResult } from './hooks/useDrillResult';
 import { useSaveDrillHistory } from './hooks/useSaveDrillHistory';
 
+import { updateDrill } from '@/api/drills';
 import { PHASE_COLORS, PHASE_DISPLAY } from '@/constants/phase';
 import useAnalysisEngine from '@/hooks/useAnalysisEngine';
 import useGameHistory from '@/hooks/useGameHistory';
@@ -27,10 +35,22 @@ const REQUIRED_MOVES = 6; // default for early/midgame/late drills
 
 export default function PlayDrill() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [resetKey, setResetKey] = useState(0);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   // 1) Fetch the drill data
   const { drill, loading, error } = useDrill(id!);
+
+  const handleArchive = async () => {
+    if (!drill) return;
+    try {
+      await updateDrill(drill.id, { archived: true });
+      navigate('/drills');
+    } catch (err) {
+      console.error('Could not archive drill:', err);
+    }
+  };
 
   // Whenever a new drill arrives, bump resetKey to re‐initialize
   useEffect(() => {
@@ -250,6 +270,18 @@ export default function PlayDrill() {
           evalSwing={drill.eval_swing}
           heroResult={drill.hero_result}
           hideGameResult={true}
+        />
+        <button
+          onClick={() => setShowConfirm(true)}
+          className="mt-8 flex items-center text-xs text-gray-400 hover:text-red-400"
+        >
+          <Archive className="mr-1 h-4 w-4" />
+          Hide this drill
+        </button>
+        <ArchiveConfirmModal
+          show={showConfirm}
+          onCancel={() => setShowConfirm(false)}
+          onConfirm={handleArchive}
         />
       </div>
     </>
