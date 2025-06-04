@@ -4,9 +4,10 @@ import { useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import { useNavigate } from 'react-router-dom';
 import { Badge, TextInput } from 'flowbite-react';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, SlidersHorizontal } from 'lucide-react';
 
 import DrillList from './components/DrillList';
+import FilterModal from './components/FilterModal';
 import { useDrills } from './hooks/useDrills';
 import 'react-range-slider-input/dist/style.css';
 
@@ -78,6 +79,7 @@ export default function DrillsPage() {
   );
 
   const [search, setSearch] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
   const debouncedSearch = useDebounce(search, 300);
 
   // slider->cp
@@ -175,30 +177,24 @@ export default function DrillsPage() {
           <div className="text-sm text-gray-600 sm:text-base">
             {`Showing ${drills.length} result${drills.length === 1 ? '' : 's'}`}
           </div>
-          <div className="flex flex-wrap items-center gap-4 text-gray-300">
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Include games won</span>
-              <ToggleSwitch
-                checked={!excludeWins}
-                onChange={() => setExcludeWins(!excludeWins)}
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Include archived</span>
-              <ToggleSwitch
-                checked={includeArchived}
-                onChange={() => setIncludeArchived(!includeArchived)}
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Include mastered</span>
-              <ToggleSwitch
-                checked={includeMastered}
-                onChange={() => setIncludeMastered(!includeMastered)}
-              />
-            </div>
-          </div>
+          <button
+            onClick={() => setShowFilters(true)}
+            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white"
+          >
+            <SlidersHorizontal className="h-4 w-4" /> Filters
+          </button>
         </div>
+        <FilterModal
+          show={showFilters}
+          onClose={() => setShowFilters(false)}
+          excludeWins={excludeWins}
+          setExcludeWins={setExcludeWins}
+          includeArchived={includeArchived}
+          setIncludeArchived={setIncludeArchived}
+          includeMastered={includeMastered}
+          setIncludeMastered={setIncludeMastered}
+          ToggleSwitch={ToggleSwitch}
+        />
         {/* List */}
         <DrillList
           drills={drills}
