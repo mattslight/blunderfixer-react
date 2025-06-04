@@ -201,9 +201,5 @@ export class StockfishEngine {
   public quit() {
     if (DEBUG) console.log('[StockfishEngine] quit');
     this.send('quit');
-    this.worker.terminate();
-    this.lines$.complete(); // complete the Subject to avoid memory leaks
-    if (DEBUG)
-      console.log('[StockfishEngine] worker terminated and cleaned up');
   }
 }
