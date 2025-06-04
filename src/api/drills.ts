@@ -12,6 +12,7 @@ export interface DrillFilters {
   phases?: ('opening' | 'middle' | 'late' | 'endgame')[];
   heroResults?: ('win' | 'loss' | 'draw')[];
   opponent?: string; // substring, case-insensitive
+  include?: ('archived' | 'mastered')[];
 }
 
 export interface DrillHistoryPayload {
@@ -29,6 +30,7 @@ export async function getDrills({
   phases = [],
   heroResults = [],
   opponent = '',
+  include = [],
 }: DrillFilters) {
   const params = new URLSearchParams({
     username,
@@ -44,6 +46,8 @@ export async function getDrills({
   heroResults.forEach((r) => params.append('hero_results', r));
 
   if (opponent.trim()) params.append('opponent', opponent.trim());
+
+  include.forEach((inc) => params.append('include', inc));
 
   const res = await fetch(`${BASE_URL}/drills?${params.toString()}`);
   if (!res.ok) {

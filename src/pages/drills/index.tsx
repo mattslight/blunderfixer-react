@@ -4,9 +4,10 @@ import { useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import { useNavigate } from 'react-router-dom';
 import { Badge, TextInput } from 'flowbite-react';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, SlidersHorizontal } from 'lucide-react';
 
 import DrillList from './components/DrillList';
+import FilterModal from './components/FilterModal';
 import { useDrills } from './hooks/useDrills';
 import 'react-range-slider-input/dist/style.css';
 
@@ -68,8 +69,17 @@ export default function DrillsPage() {
     'drillExcludeWins',
     true
   );
+  const [includeArchived, setIncludeArchived] = useStickyValue<boolean>(
+    'drillIncludeArchived',
+    false
+  );
+  const [includeMastered, setIncludeMastered] = useStickyValue<boolean>(
+    'drillIncludeMastered',
+    false
+  );
 
   const [search, setSearch] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
   const debouncedSearch = useDebounce(search, 300);
 
   // slider->cp
@@ -83,6 +93,11 @@ export default function DrillsPage() {
   ];
 
   // **server filter object**
+  const includeFilters = [
+    includeArchived && ('archived' as const),
+    includeMastered && ('mastered' as const),
+  ].filter(Boolean) as Array<'archived' | 'mastered'>;
+
   const filters = {
     username,
     minEvalSwing: minCutoff,
@@ -92,6 +107,7 @@ export default function DrillsPage() {
       ? (['loss', 'draw'] as Array<'loss' | 'draw'>)
       : undefined,
     opponent: debouncedSearch || undefined,
+    include: includeFilters.length ? includeFilters : undefined,
     limit: 20,
     openingThreshold: 14,
   } as const;
@@ -158,19 +174,28 @@ export default function DrillsPage() {
           </div>
         </div>
         <div className="mt-10 flex items-center justify-between">
-          <div className="text-sm text-gray-600 sm:text-base">
+          <div className="text-sm text-gray-400 sm:text-base">
             {`Showing ${drills.length} result${drills.length === 1 ? '' : 's'}`}
           </div>
-          <div className="flex flex-wrap items-center gap-2 text-gray-300">
-            <span className="text-sm text-gray-600">Include games won</span>
-            <div>
-              <ToggleSwitch
-                checked={!excludeWins}
-                onChange={() => setExcludeWins(!excludeWins)}
-              />
-            </div>
-          </div>
+          <button
+            onClick={() => setShowFilters(true)}
+            className="flex items-center gap-2 text-sm text-gray-400 hover:text-white"
+          >
+            <SlidersHorizontal className="h-4 w-4" />
+            Filters
+          </button>
         </div>
+        <FilterModal
+          show={showFilters}
+          onClose={() => setShowFilters(false)}
+          excludeWins={excludeWins}
+          setExcludeWins={setExcludeWins}
+          includeArchived={includeArchived}
+          setIncludeArchived={setIncludeArchived}
+          includeMastered={includeMastered}
+          setIncludeMastered={setIncludeMastered}
+          ToggleSwitch={ToggleSwitch}
+        />
         {/* List */}
         <DrillList
           drills={drills}
