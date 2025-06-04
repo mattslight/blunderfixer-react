@@ -8,6 +8,11 @@ import { RefreshCw, SlidersHorizontal } from 'lucide-react';
 
 import DrillList from './components/DrillList';
 import FilterModal from './components/FilterModal';
+import {
+  buildDrillFilters,
+  PhaseFilter,
+  THRESHOLD_OPTIONS,
+} from './filterUtils';
 import { useDrills } from './hooks/useDrills';
 import 'react-range-slider-input/dist/style.css';
 
@@ -16,7 +21,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { useStickyValue } from '@/hooks/useStickyValue';
 
 const PHASES = ['all', 'opening', 'middle', 'late', 'endgame'] as const;
-type Phase = (typeof PHASES)[number];
+type Phase = PhaseFilter;
 
 const PHASE_COLORS: Record<Phase, string> = {
   all: 'bg-gray-600',
@@ -43,17 +48,6 @@ function ToggleSwitch({ checked, onChange }) {
 
 export default function DrillsPage() {
   const navigate = useNavigate();
-
-  const thresholdOptions = [
-    1,
-    150,
-    225,
-    337,
-    500,
-    1000,
-    10000,
-    Infinity,
-  ] as const;
 
   // profile
   const {
@@ -85,32 +79,23 @@ export default function DrillsPage() {
   // slider->cp
   const [rangeIdx, setRangeIdx] = useStickyValue<[number, number]>(
     'drillRangeIdx',
-    [0, thresholdOptions.length - 1]
+    [0, THRESHOLD_OPTIONS.length - 1]
   );
-  const [minCutoff, maxCutoff] = [
-    thresholdOptions[rangeIdx[0]],
-    thresholdOptions[rangeIdx[1]],
-  ];
 
   // **server filter object**
-  const includeFilters = [
-    includeArchived && ('archived' as const),
-    includeMastered && ('mastered' as const),
-  ].filter(Boolean) as Array<'archived' | 'mastered'>;
-
-  const filters = {
-    username,
-    minEvalSwing: minCutoff,
-    maxEvalSwing: Number.isFinite(maxCutoff) ? maxCutoff : undefined,
-    phases: phaseFilter === 'all' ? undefined : [phaseFilter],
-    heroResults: excludeWins
-      ? (['loss', 'draw'] as Array<'loss' | 'draw'>)
-      : undefined,
-    opponent: debouncedSearch || undefined,
-    include: includeFilters.length ? includeFilters : undefined,
-    limit: 20,
-    openingThreshold: 14,
+  const sticky = {
+    phaseFilter,
+    excludeWins,
+    includeArchived,
+    includeMastered,
+    rangeIdx,
   } as const;
+
+  const filters = buildDrillFilters(
+    username,
+    sticky,
+    debouncedSearch || undefined
+  );
 
   const { drills, loading, refresh } = useDrills(filters);
 
@@ -164,7 +149,7 @@ export default function DrillsPage() {
             <div className="w-50">
               <RangeSlider
                 min={0}
-                max={thresholdOptions.length - 1}
+                max={THRESHOLD_OPTIONS.length - 1}
                 step={1}
                 value={rangeIdx}
                 onInput={(vals) => setRangeIdx(vals as [number, number])}

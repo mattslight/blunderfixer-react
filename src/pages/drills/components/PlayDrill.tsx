@@ -1,20 +1,16 @@
 // src/pages/drills/components/PlayDrill.tsx
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Chess, Square } from 'chess.js';
-import {
-  Archive,
-  Clipboard,
-  ClipboardCheck,
-  Crosshair,
-  RotateCcw,
-} from 'lucide-react';
+import { Archive, Clipboard, ClipboardCheck } from 'lucide-react';
 
 import EvalBar from '../../analyse/components/EvalBar';
+import { buildDrillFilters, readStickyFilters } from '../filterUtils';
 import useAutoMove from '../hooks/useAutoMove';
 import useBotPlayer from '../hooks/useBotPlayer';
 import ArchiveConfirmModal from './ArchiveConfirmModal';
+import DrillBanner from './DrillBanner';
 import { GameInfoBadges } from './DrillCard/GameInfoBadges';
 import { HistoryDots } from './DrillCard/HistoryDots';
 import { TimePhaseHeader } from './DrillCard/TimePhaseHeader';
@@ -134,55 +130,8 @@ export default function PlayDrill() {
       return;
     }
 
-    const thresholdOptions = [
-      1,
-      150,
-      225,
-      337,
-      500,
-      1000,
-      10000,
-      Infinity,
-    ] as const;
-    const getSticky = <T,>(key: string, def: T): T => {
-      try {
-        const raw = localStorage.getItem(`bf:params:${key}`);
-        return raw ? (JSON.parse(raw) as T) : def;
-      } catch {
-        return def;
-      }
-    };
-
-    const phaseFilter = getSticky<
-      'all' | 'opening' | 'middle' | 'late' | 'endgame'
-    >('drillPhaseFilter', 'all');
-    const excludeWins = getSticky<boolean>('drillExcludeWins', true);
-    const includeArchived = getSticky<boolean>('drillIncludeArchived', false);
-    const includeMastered = getSticky<boolean>('drillIncludeMastered', false);
-    const rangeIdx = getSticky<[number, number]>('drillRangeIdx', [
-      0,
-      thresholdOptions.length - 1,
-    ]);
-
-    const includeFilters = [
-      includeArchived && ('archived' as const),
-      includeMastered && ('mastered' as const),
-    ].filter(Boolean) as Array<'archived' | 'mastered'>;
-
-    const filters = {
-      username,
-      minEvalSwing: thresholdOptions[rangeIdx[0]],
-      maxEvalSwing: Number.isFinite(thresholdOptions[rangeIdx[1]])
-        ? thresholdOptions[rangeIdx[1]]
-        : undefined,
-      phases: phaseFilter === 'all' ? undefined : [phaseFilter],
-      heroResults: excludeWins
-        ? (['loss', 'draw'] as Array<'loss' | 'draw'>)
-        : undefined,
-      include: includeFilters.length ? includeFilters : undefined,
-      limit: 20,
-      openingThreshold: 14,
-    } as const;
+    const sticky = readStickyFilters();
+    const filters = buildDrillFilters(username, sticky);
 
     try {
       const drills = await getDrills(filters);
@@ -358,69 +307,6 @@ export default function PlayDrill() {
         />
       </div>
     </>
-  );
-}
-
-function DrillBanner({
-  expectedResult,
-  drillResult,
-  reason,
-  setResetKey,
-  onNext,
-}: {
-  expectedResult: 'win' | 'draw' | 'hold' | null;
-  drillResult: 'pass' | 'fail' | null;
-  reason: string | null;
-  setResetKey: React.Dispatch<React.SetStateAction<number>>;
-  onNext: () => void;
-}) {
-  return (
-    <div className="flex w-full flex-col items-center space-y-2">
-      {/* Drill Goal Banner (only show before result) */}
-      {expectedResult && !drillResult && (
-        <div className="flex w-full items-center justify-center rounded border border-indigo-500 bg-indigo-900 px-4 py-2 text-center text-indigo-200">
-          <Crosshair className="mr-1 h-4 w-4 text-indigo-400" />
-          <span className="text-sm">
-            <span className="mr-1 font-bold text-white/80">Goal</span>
-            {expectedResult === 'win' && 'Convert the Win'}
-            {expectedResult === 'hold' && 'Defend like Gurkesh!'}
-            {expectedResult === 'draw' && 'Hold the Draw'}
-          </span>
-        </div>
-      )}
-
-      {/* Drill Result Banner */}
-      {drillResult && (
-        <div
-          className={`flex items-center justify-center space-x-2 rounded-md px-4 py-2 text-center text-sm font-medium ${
-            drillResult === 'pass'
-              ? 'border border-green-500 bg-green-900 text-green-100'
-              : 'border border-red-500 bg-red-900 text-red-100'
-          }`}
-        >
-          <span>
-            {drillResult === 'pass'
-              ? `✅ ${reason ?? 'You met the goal!'}`
-              : `❌ ${reason ?? 'Better luck next time.'}`}
-          </span>
-          {drillResult === 'fail' && (
-            <button
-              onClick={() => setResetKey((prev) => prev + 1)}
-              className="inline-flex items-center rounded-md bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            >
-              <RotateCcw className="mr-1 h-3 w-3" />
-              Retry
-            </button>
-          )}
-          <button
-            onClick={onNext}
-            className="inline-flex items-center rounded-md bg-blue-600 px-2 py-1 text-xs font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          >
-            Next
-          </button>
-        </div>
-      )}
-    </div>
   );
 }
 
