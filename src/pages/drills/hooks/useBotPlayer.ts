@@ -6,7 +6,7 @@ import { StockfishEngine } from '@/lib/StockfishEngine';
 import { uciToMove } from '@/lib/uci';
 
 const DEBUG = false;
-const MULTI_PV = 3; // how many lines to request from Stockfish
+const MULTI_PV = 2; // how many lines to request from Stockfish
 const DELTA_CP = 20; // max centipawn difference to consider moves equal
 
 interface UseBotPlayerResult {
@@ -24,7 +24,7 @@ interface UseBotPlayerParams {
 
 export default function useBotPlayer({
   fen,
-  strength = 20,
+  strength = 14,
   makeMove,
 }: UseBotPlayerParams): UseBotPlayerResult {
   // We store the engine in a ref so it persists between renders
