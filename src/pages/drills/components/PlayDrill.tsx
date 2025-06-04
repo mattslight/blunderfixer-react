@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
 import { Navigate, useParams } from 'react-router-dom';
 import { Chess, Square } from 'chess.js';
-import { Clipboard, Crosshair, RotateCcw } from 'lucide-react';
+import { Clipboard, ClipboardCheck, Crosshair, RotateCcw } from 'lucide-react';
 
 import EvalBar from '../../analyse/components/EvalBar';
 import useAutoMove from '../hooks/useAutoMove';
@@ -227,16 +227,7 @@ export default function PlayDrill() {
             </div>
             <HistoryDots history={drill.history ?? []} />
           </div>
-          <div
-            className="flex flex-row items-center space-x-2"
-            onClick={() => {
-              navigator.clipboard.writeText(drill.fen);
-              alert('FEN copied to clipboard!');
-            }}
-          >
-            <span className="text-xs text-gray-500">Copy FEN</span>
-            <Clipboard className="h-4 w-4 text-gray-500" />
-          </div>
+          <CopyFenToClipboard fen={fen} />
         </div>
 
         <TimePhaseHeader
@@ -308,5 +299,41 @@ function DrillBanner({ expectedResult, drillResult, reason, setResetKey }) {
         </div>
       )}
     </div>
+  );
+}
+
+function CopyFenToClipboard({ fen }) {
+  const [isFenCopied, setIsFenCopied] = useState(false);
+
+  const handleCopy = () => {
+    if (!fen) return; // guard
+    navigator.clipboard.writeText(fen).catch(() => {
+      // fallback or error message
+    });
+    setIsFenCopied(true);
+    setTimeout(() => setIsFenCopied(false), 3000);
+  };
+
+  return (
+    <button
+      type="button"
+      className="group flex items-center space-x-2 rounded border border-gray-800 bg-gray-950 px-2 py-1 text-xs text-gray-400 transition-colors duration-150 hover:bg-green-500 hover:text-gray-900"
+      onClick={handleCopy}
+      aria-label={isFenCopied ? 'FEN copied' : 'Copy position FEN'}
+    >
+      <span aria-hidden="true">
+        {isFenCopied ? (
+          <ClipboardCheck className="h-4 w-4 text-green-600 transition-opacity duration-200 group-hover:text-black" />
+        ) : (
+          <Clipboard className="h-4 w-4 text-gray-400 transition-opacity duration-200 group-hover:text-black" />
+        )}
+      </span>
+      <span className="select-none">
+        {isFenCopied ? 'Copied!' : 'Copy FEN'}
+      </span>
+      <div role="status" aria-live="polite" className="sr-only">
+        {isFenCopied && 'Position FEN copied to clipboard'}
+      </div>
+    </button>
   );
 }
