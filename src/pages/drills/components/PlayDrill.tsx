@@ -5,7 +5,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Chess, Square } from 'chess.js';
 import { Archive, Clipboard, ClipboardCheck } from 'lucide-react';
 
-import EvalBar from '../../analyse/components/EvalBar';
+// import EvalBar from '../../analyse/components/EvalBar';
 import useAutoMove from '../hooks/useAutoMove';
 import useBotPlayer from '../hooks/useBotPlayer';
 import { buildDrillFilters, readStickyFilters } from '../utils/filters';
@@ -125,17 +125,21 @@ export default function PlayDrill() {
   useSaveDrillHistory(drill?.id, drillResult, reason);
 
   const handleNextDrill = async () => {
-    if (!username) {
+    if (!username || !drill?.id) {
       navigate('/drills');
       return;
     }
 
-    const sticky = readStickyFilters();
-    const filters = buildDrillFilters(username, sticky);
-
     try {
+      // ✅ mark current drill as seen (skip)
+      await updateDrill(drill.id, { mark_played: true });
+
+      // Fetch next drill
+      const sticky = readStickyFilters();
+      const filters = buildDrillFilters(username, sticky);
       const drills = await getDrills(filters);
-      const next = drills.find((d) => d.id !== drill?.id);
+
+      const next = drills.find((d) => d.id !== drill.id);
       if (next) navigate(`/drills/play/${next.id}`);
       else navigate('/drills');
     } catch (err) {
@@ -210,11 +214,11 @@ export default function PlayDrill() {
             initialEval={initialEval}
           />
           <div className="mt-4 flex w-full items-center">
-            <EvalBar
+            {/* <EvalBar
               score={evalScore}
               className="w-2"
               boardOrientation={heroColor}
-            />
+            /> */}
             <div className="flex-1">
               <Chessboard
                 position={fen}
@@ -278,7 +282,7 @@ export default function PlayDrill() {
         </div>
 
         <TimePhaseHeader
-          playedAt={drill.played_at}
+          playedAt={drill.game_played_at}
           displayPhase={displayPhase}
           phaseColor={phaseColor}
         />
