@@ -1,12 +1,14 @@
 # TODO
 
+[ ] QA: Check order of drills
+[ ] BUG: Issue with status rapidly change and recording multiple histories
+[ ] Ability to see recently drilled (need api to reverse order by desc last_drilled_at)
+[ ] Back to drill list
+
 [ ] When detecting drills somehow group similar positions - WIP
 
 [ ] Load new games and drills when logging in
 [ ] Load games from DB
-[ ] Mark drill as 'don't show me this again'
-
-[ ] Once drill is completed, next drill
 
 [ ] Ask coach for hint on drill
 
@@ -14,8 +16,9 @@
 
 [ ] Homepage of my stats, recent games, recommended drills
 
+[x] Mark drill as 'don't show me this again'
+[x] Once drill is completed, next drill
 [x] Play variable moves (not always best move) when useBotPlayer in drills is used so that it's not about memorising the same sequence of moves
-
 [x] When fetching drills, adjust API to hide 'mastered' drills (drills where the most recent 5 history is 5 passed in a row) or drills that I mark manually with "don't show me again" (archived/hidden flag in DB)
 
 [x] Exclude completed drills
