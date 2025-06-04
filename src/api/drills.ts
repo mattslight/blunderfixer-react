@@ -69,12 +69,7 @@ export async function postDrillHistory(
   drillId: string | number,
   payload: DrillHistoryPayload
 ) {
-  const numericId = Number(drillId);
-  if (isNaN(numericId)) {
-    throw new Error(`Invalid drillId: ${drillId}`);
-  }
-
-  const res = await fetch(`${BASE_URL}/drills/${numericId}/history`, {
+  const res = await fetch(`${BASE_URL}/drills/${drillId}/history`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -87,6 +82,7 @@ export async function postDrillHistory(
 
 export interface DrillUpdatePayload {
   archived?: boolean;
+  mark_played?: boolean;
 }
 
 export async function updateDrill(
