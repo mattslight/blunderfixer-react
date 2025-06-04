@@ -7,11 +7,18 @@ const DEBUG = true;
  * A lightweight wrapper around a Stockfish WebAssembly worker.
  *
  * Usage:
- *   1) const engine = new StockfishEngine(1);
+ *   1) const engine = new StockfishEngine(1); // uses default paths
  *   2) await engine.init();                  // <— wait for UCI handshake
  *   3) const best = await engine.bestMove(fen, depth);
  *   4) engine.stop(); // if you need to cancel mid‐search
  *   5) engine.quit(); // when you’re done forever
+ *
+ * Optional configuration lets you specify custom worker/wasm paths and Hash size:
+ *   new StockfishEngine(1, {
+ *     workerScriptPath: '/path/engine.js',
+ *     wasmPath: '/path/engine.wasm',
+ *     hash: 16,
+ *   });
  */
 export class StockfishEngine {
   private worker: Worker;
@@ -24,20 +31,25 @@ export class StockfishEngine {
   private resolveReady!: () => void;
   private readyPromise: Promise<void>;
 
-  constructor(private multiPV: number) {
+  constructor(
+    private multiPV: number,
+    {
+      workerScriptPath = '/engines/stockfish-17-lite/stockfish-17-lite.js',
+      wasmPath = '/engines/stockfish-17-lite/stockfish-17-lite.wasm',
+      hash = 4,
+    }: {
+      workerScriptPath?: string;
+      wasmPath?: string;
+      hash?: number;
+    } = {}
+  ) {
     // Configure locateFile so that the .wasm is found under /engines/…
     (self as any).Module = {
-      locateFile: (f: string) =>
-        f.endsWith('.wasm')
-          ? '/engines/stockfish-17-lite/stockfish-17-lite.wasm'
-          : f,
+      locateFile: (f: string) => (f.endsWith('.wasm') ? wasmPath : f),
     };
 
     // Spawn the Stockfish worker (the “lite” build in this case)
-    this.worker = new Worker(
-      '/engines/stockfish-17-lite/stockfish-17-lite.js',
-      { type: 'module' }
-    );
+    this.worker = new Worker(workerScriptPath, { type: 'module' });
 
     // Create our initial “readyPromise” and its resolver
     this.readyPromise = new Promise((res) => (this.resolveReady = res));
@@ -66,7 +78,7 @@ export class StockfishEngine {
     //  3) “isready” → Stockfish will eventually reply “readyok”
     this.send('uci');
     this.send(`setoption name MultiPV value ${this.multiPV}`);
-    this.send(`setoption name Hash value 4`); // small hash to avoid OOM in‐browser
+    this.send(`setoption name Hash value ${hash}`); // small hash to avoid OOM in-browser
     this.send('isready');
   }
 
