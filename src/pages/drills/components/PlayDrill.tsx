@@ -1,16 +1,20 @@
 // src/pages/drills/components/PlayDrill.tsx
 import { useEffect, useMemo, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
-import ArchiveConfirmModal from './ArchiveConfirmModal';
-  const [showConfirm, setShowConfirm] = useState(false);
-      setShowConfirm(false);
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Chess, Square } from 'chess.js';
-import { Clipboard, ClipboardCheck, Crosshair, RotateCcw } from 'lucide-react';
+import {
+  Archive,
+  Clipboard,
+  ClipboardCheck,
+  Crosshair,
+  RotateCcw,
+} from 'lucide-react';
 
 import EvalBar from '../../analyse/components/EvalBar';
 import useAutoMove from '../hooks/useAutoMove';
 import useBotPlayer from '../hooks/useBotPlayer';
+import ArchiveConfirmModal from './ArchiveConfirmModal';
 import { GameInfoBadges } from './DrillCard/GameInfoBadges';
 import { HistoryDots } from './DrillCard/HistoryDots';
 import { TimePhaseHeader } from './DrillCard/TimePhaseHeader';
@@ -33,6 +37,7 @@ export default function PlayDrill() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [resetKey, setResetKey] = useState(0);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   // 1) Fetch the drill data
   const { drill, loading, error } = useDrill(id!);
@@ -268,15 +273,16 @@ export default function PlayDrill() {
         />
         <button
           onClick={() => setShowConfirm(true)}
-          className="mt-4 text-xs text-gray-400 underline hover:text-white"
+          className="mt-8 flex items-center text-xs text-gray-400 hover:text-red-400"
         >
+          <Archive className="mr-1 h-4 w-4" />
+          Hide this drill
+        </button>
         <ArchiveConfirmModal
           show={showConfirm}
           onCancel={() => setShowConfirm(false)}
           onConfirm={handleArchive}
         />
-          Don&apos;t show this drill again
-        </button>
       </div>
     </>
   );
