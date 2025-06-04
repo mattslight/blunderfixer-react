@@ -1,12 +1,27 @@
 # TODO
 
-[ ] Save Win / loss stats for the drill
-[ ] Show win/loss stats on drill page
-[ ] Show win/loss stats on drill list
+[ ] Exclude completed drills
+[ ] When detecting drills somehow group similar positions
 
 [ ] Load new games and drills when logging in
 [ ] Load games from DB
 [ ] Mark drill as 'don't show me this again'
+
+[ ] Once drill is completed, next drill
+
+[ ] Ask coach for hint on drill
+
+[ ] When fetching drills, adjust API to hide 'mastered' drills (drills where the most recent 5 history is 5 passed in a row) or drills that I mark manually with "don't show me again" (archived/hidden flag in DB)
+
+[ ] Move a drill to analysis mode (if I fail dig into why I failed, better understanding)
+
+[ ] Homepage of my stats, recent games, recommended drills
+
+[ ] Play variable moves (not always best move) when useBotPlayer in drills is used so that it's not about memorising the same sequence of moves
+
+[x] Save Win / loss stats for the drill
+[x] Show win/loss stats on drill page
+[x] Show win/loss stats on drill list
 
 [x] Drills (exclude wins toggle switch)
 [x] Show back button on drills to list
@@ -73,9 +88,9 @@
 
 - [x] **Drill Queue Navigation:**  
        As a user, I want a drill queue where I step through each critical position on a chessboard.
-- [ ] **Immediate Feedback:**  
+- [x] **Immediate Feedback:**  
        As a user, I want to submit my move and immediately see engine feedback.
-- [ ] **Drill Status Management:**  
+- [x] **Drill Status Management:**  
        As a user, I want to mark drills as “mastered” or “retry later” to drive spaced repetition.
 
 ---
