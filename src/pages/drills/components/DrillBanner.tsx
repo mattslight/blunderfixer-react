@@ -1,5 +1,5 @@
 // src/pages/drills/components/DrillBanner.tsx
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Crosshair, RotateCcw, SkipForward, StepForward } from 'lucide-react';
 
 interface Props {
@@ -11,6 +11,10 @@ interface Props {
   initialEval?: number;
 }
 
+function getRandomMessage(messages: string[]) {
+  return messages[Math.floor(Math.random() * messages.length)];
+}
+
 export default function DrillBanner({
   expectedResult,
   drillResult,
@@ -19,31 +23,84 @@ export default function DrillBanner({
   onNext,
   initialEval,
 }: Props) {
+  const drawMessage = useMemo(
+    () =>
+      getRandomMessage([
+        'Stay solid',
+        'Maintain equity',
+        'Play for balance',
+        'Hold the line',
+        'Stay sharp and patient',
+        "Don't give an inch",
+      ]),
+    []
+  );
+
+  const holdMessage = useMemo(
+    () =>
+      getRandomMessage([
+        'Defend like Gurkesh!',
+        'Make it hard to win',
+        'Dig in and fight back',
+        'Test their technique',
+        'Stay resilient',
+        'Don’t collapse',
+        'Force them to earn it',
+        'Hold fast under fire',
+      ]),
+    []
+  );
+
+  const convertMessage = useMemo(
+    () =>
+      getRandomMessage([
+        'Find the win',
+        'Punish their mistake',
+        'Finish strong',
+        'Spot the tactic',
+        'Convert your edge',
+        'Don’t miss the knockout',
+        'Seal the deal',
+      ]),
+    []
+  );
+
+  const maintainMessage = useMemo(
+    () =>
+      getRandomMessage([
+        'Keep the edge',
+        'Play precise',
+        'Don’t let it slip',
+        'Squeeze slowly',
+        'Keep control',
+        'Preserve your advantage',
+        'Stay patient, stay ahead',
+      ]),
+    []
+  );
+
   return (
     <div className="mt-8 flex w-full flex-col items-center space-y-2 px-4 sm:p-0">
       {/* Drill Goal Banner (only show before result) */}
       {expectedResult && !drillResult && (
         <div className="flex w-full items-center justify-between rounded border border-indigo-500 bg-indigo-900 px-4 py-2 text-center text-indigo-200">
           <div>
-            <Crosshair className="mr-1 inline-flex h-4 w-4 text-indigo-400" />
+            <Crosshair className="relative bottom-0.25 mr-1 inline-flex h-4 w-4 text-indigo-400" />
             <span className="text-sm">
-              <span className="mr-1 font-bold text-white/80">Goal</span>
-              {expectedResult === 'win' &&
-                initialEval >= 200 &&
-                'Convert the Win'}
-              {expectedResult === 'win' &&
-                initialEval < 200 &&
-                'Keep the Advantage'}
-
-              {expectedResult === 'hold' && 'Defend like Gurkesh!'}
-              {expectedResult === 'draw' && 'Hold the Draw'}
+              <span className="mr-1 font-bold text-white/80">
+                {expectedResult === 'win' &&
+                  initialEval !== undefined &&
+                  (initialEval >= 200 ? convertMessage : maintainMessage)}
+                {expectedResult === 'hold' && holdMessage}
+                {expectedResult === 'draw' && drawMessage}
+              </span>
             </span>
           </div>
           <button
             onClick={onNext}
             className="inline-flex items-center self-end rounded-md bg-gray-600 px-2 py-1 text-xs font-medium text-white hover:bg-gray-700"
           >
-            Skip Drill <SkipForward className="ml-1 inline-flex h-3 w-3" />
+            Skip <SkipForward className="ml-1 inline-flex h-3 w-3" />
           </button>
         </div>
       )}
@@ -59,24 +116,27 @@ export default function DrillBanner({
         >
           <span>
             {drillResult === 'pass'
-              ? `✅ ${reason ?? 'You met the goal!'}`
+              ? `✅ ${reason ?? 'Great job!'}`
               : `❌ ${reason ?? 'Better luck next time.'}`}
           </span>
-          {drillResult === 'fail' && (
+          <span className="space-x-2">
+            {drillResult === 'fail' && (
+              <button
+                onClick={() => setResetKey((prev) => prev + 1)}
+                className="inline-flex items-center rounded-md bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-blue-700"
+              >
+                <RotateCcw className="mr-1 hidden h-3 w-3" />
+                Retry
+              </button>
+            )}
             <button
-              onClick={() => setResetKey((prev) => prev + 1)}
-              className="inline-flex items-center rounded-md bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-blue-700"
+              onClick={onNext}
+              className="inline-flex items-center self-end rounded-md bg-blue-600 px-2 py-1 text-xs font-medium text-white hover:bg-blue-700"
             >
-              <RotateCcw className="mr-1 h-3 w-3" />
-              Retry
+              Next{' '}
+              <StepForward className="xs:inline-flex ml-1 hidden h-3 w-3" />
             </button>
-          )}
-          <button
-            onClick={onNext}
-            className="inline-flex items-center self-end rounded-md bg-blue-600 px-2 py-1 text-xs font-medium text-white hover:bg-blue-700"
-          >
-            Next Drill <StepForward className="ml-1 inline-flex h-3 w-3" />
-          </button>
+          </span>
         </div>
       )}
     </div>
