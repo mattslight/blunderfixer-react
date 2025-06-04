@@ -131,7 +131,7 @@ export interface DrillPosition {
   hero_rating: number;
   opponent_username: string;
   opponent_rating: number;
-  played_at: string;
+  game_played_at: string;
   phase: 'opening' | 'middle' | 'late' | 'endgame';
   archived: boolean;
   history: DrillHistory[];
