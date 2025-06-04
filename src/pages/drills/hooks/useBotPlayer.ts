@@ -1,10 +1,13 @@
 // src/hooks/useBotPlayer.ts
 import { useCallback, useEffect, useRef, useState } from 'react';
+import type { Subscription } from 'rxjs';
 
 import { StockfishEngine } from '@/lib/StockfishEngine';
 import { uciToMove } from '@/lib/uci';
 
 const DEBUG = false;
+const MULTI_PV = 3; // how many lines to request from Stockfish
+const DELTA_CP = 20; // max centipawn difference to consider moves equal
 
 interface UseBotPlayerResult {
   isThinking: boolean;
@@ -26,13 +29,14 @@ export default function useBotPlayer({
 }: UseBotPlayerParams): UseBotPlayerResult {
   // We store the engine in a ref so it persists between renders
   const engineRef = useRef<StockfishEngine | null>(null);
+  const subRef = useRef<Subscription | null>(null);
   const [isThinking, setIsThinking] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [ready, setReady] = useState(false);
 
   // 1) Initialize engine exactly once
   useEffect(() => {
-    const engine = new StockfishEngine(1);
+    const engine = new StockfishEngine(MULTI_PV);
     engineRef.current = engine;
 
     // Wait for the initial “readyok” handshake before marking ready = true
@@ -51,6 +55,8 @@ export default function useBotPlayer({
     return () => {
       engine.stop();
       engine.quit();
+      subRef.current?.unsubscribe();
+      subRef.current = null;
     };
   }, []); // empty dependency array = only once
 
@@ -58,6 +64,8 @@ export default function useBotPlayer({
   useEffect(() => {
     if (isThinking) {
       engineRef.current?.stop();
+      subRef.current?.unsubscribe();
+      subRef.current = null;
       setIsThinking(false);
     }
   }, [fen]);
@@ -82,26 +90,75 @@ export default function useBotPlayer({
     setError(null);
     setIsThinking(true);
 
-    engine
-      .bestMove(fen, strength)
-      .then((bestUci) => {
-        if (DEBUG) console.log('[useBotPlayer] bestUci =', bestUci);
-        const { from, to } = uciToMove(bestUci);
-        // If promotion, the UCI string is 5 chars: e.g. “e7e8q”
-        const promo = bestUci.length === 5 ? bestUci[4] : undefined;
+    const infoMap = new Map<number, { uci: string; cp?: number }>();
+
+    subRef.current = engine.lines$.subscribe((msg) => {
+      if (msg.startsWith('bestmove')) {
+        const parts = msg.split(' ');
+        const bestUci = parts[1];
+
+        let chosen = bestUci;
+        const best = infoMap.get(1);
+        const bestScore = best?.cp;
+
+        if (bestScore !== undefined) {
+          const goodMoves = Array.from(infoMap.values())
+            .filter(
+              (m) =>
+                m.cp !== undefined && Math.abs(bestScore - m.cp) <= DELTA_CP
+            )
+            .map((m) => m.uci);
+          if (goodMoves.length > 1) {
+            chosen =
+              goodMoves[Math.floor(Math.random() * goodMoves.length)] ??
+              bestUci;
+          } else if (goodMoves.length === 1) {
+            chosen = goodMoves[0];
+          }
+        }
+
+        if (DEBUG) console.log('[useBotPlayer] chosen move =', chosen);
+        const { from, to } = uciToMove(chosen);
+        const promo = chosen.length === 5 ? chosen[4] : undefined;
         makeMove(from!, to!, promo);
-      })
-      .catch((e) => {
-        if (DEBUG) console.error('[useBotPlayer] bestMove error:', e);
-        setError(e as Error);
-      })
-      .finally(() => {
+
+        subRef.current?.unsubscribe();
+        subRef.current = null;
         setIsThinking(false);
-      });
+      } else if (msg.startsWith('info ')) {
+        const depthMatch = msg.match(/depth (\d+)/);
+        if (!depthMatch) return;
+
+        const multiMatch = msg.match(/multipv (\d+)/);
+        if (!multiMatch) return;
+        const rank = +multiMatch[1];
+
+        const cpMatch = msg.match(/score cp (-?\d+)/);
+        const score = cpMatch ? +cpMatch[1] : undefined;
+
+        const pvMatch = msg.match(
+          /pv\s+((?:[a-h][1-8][a-h][1-8][nbrq]?\s*)+)/i
+        );
+        if (!pvMatch) return;
+        const firstUci = pvMatch[1].trim().split(/\s+/)[0];
+
+        infoMap.set(rank, { uci: firstUci, cp: score });
+      }
+    });
+
+    engine.analyze(fen, strength).catch((e) => {
+      if (DEBUG) console.error('[useBotPlayer] analyze error:', e);
+      setError(e as Error);
+      subRef.current?.unsubscribe();
+      subRef.current = null;
+      setIsThinking(false);
+    });
   }, [fen, strength, makeMove, isThinking, ready]);
 
   const cancel = useCallback(() => {
     engineRef.current?.stop();
+    subRef.current?.unsubscribe();
+    subRef.current = null;
     setIsThinking(false);
   }, []);
 
