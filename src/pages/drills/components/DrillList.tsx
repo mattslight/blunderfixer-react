@@ -9,10 +9,16 @@ import type { DrillPosition } from '@/types';
 interface Props {
   drills: DrillPosition[];
   loading: boolean;
-  onStartDrill: (id: string) => void; // pass ID only
+  onStartDrill: (id: number) => void;
+  onArchiveDrill: (id: number) => void;
 }
 
-export default function DrillList({ drills, loading, onStartDrill }: Props) {
+export default function DrillList({
+  drills,
+  loading,
+  onStartDrill,
+  onArchiveDrill,
+}: Props) {
   if (loading) {
     return <Spinner size="lg" className="mx-auto mt-16" />;
   }
@@ -31,6 +37,7 @@ export default function DrillList({ drills, loading, onStartDrill }: Props) {
             key={d.id}
             drill={d}
             onStartDrill={() => onStartDrill(d.id)}
+            onArchiveDrill={() => onArchiveDrill(d.id)}
           />
         );
       })}

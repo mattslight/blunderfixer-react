@@ -84,3 +84,29 @@ export async function postDrillHistory(
   }
   return res.json();
 }
+
+export interface DrillUpdatePayload {
+  archived?: boolean;
+}
+
+export async function updateDrill(
+  drillId: string | number,
+  payload: DrillUpdatePayload
+) {
+  const numericId = Number(drillId);
+  if (isNaN(numericId)) {
+    throw new Error(`Invalid drillId: ${drillId}`);
+  }
+
+  const res = await fetch(`${BASE_URL}/drills/${numericId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to update drill ${drillId}: ${res.status}`);
+  }
+
+  return res.json() as Promise<DrillPosition>;
+}

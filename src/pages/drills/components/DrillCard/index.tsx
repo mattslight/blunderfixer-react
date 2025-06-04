@@ -2,7 +2,7 @@
 // -------------------------
 import React from 'react';
 import { Chessboard } from 'react-chessboard';
-import { Play } from 'lucide-react';
+import { Play, XCircle } from 'lucide-react';
 
 import { GameInfoBadges } from './GameInfoBadges';
 import { HistoryDots } from './HistoryDots';
@@ -13,10 +13,11 @@ import type { DrillPosition } from '@/types';
 
 type Props = {
   drill: DrillPosition;
-  onStartDrill: (fen: string, orientation: 'white' | 'black') => void;
+  onStartDrill: (id: number) => void;
+  onArchiveDrill: (id: number) => void;
 };
 
-export function DrillCard({ drill, onStartDrill }: Props) {
+export function DrillCard({ drill, onStartDrill, onArchiveDrill }: Props) {
   const {
     fen,
     ply,
@@ -41,7 +42,7 @@ export function DrillCard({ drill, onStartDrill }: Props) {
   return (
     <div
       className="xs:grid-cols-[240px_1fr] xs:gap-0 grid rounded-lg bg-gray-800 shadow sm:grid-cols-[360px_1fr]"
-      onClick={() => onStartDrill(fen, orientation)}
+      onClick={() => onStartDrill(drill.id)}
     >
       {/* 1) Board */}
       <Chessboard
@@ -80,13 +81,25 @@ export function DrillCard({ drill, onStartDrill }: Props) {
             </div>
             <HistoryDots history={history} />
           </div>
-          <button
-            onClick={() => onStartDrill(fen, orientation)}
-            className="inline-flex items-center gap-1 self-end rounded bg-green-600 px-5 py-2 text-sm font-semibold text-white hover:bg-green-700"
-          >
-            <Play size={14} />
-            Drill
-          </button>
+          <div className="flex items-end gap-2">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onArchiveDrill(drill.id);
+              }}
+              className="inline-flex items-center gap-1 rounded bg-gray-700 px-2 py-1 text-xs text-gray-200 hover:bg-gray-600"
+            >
+              <XCircle size={14} />
+              Hide
+            </button>
+            <button
+              onClick={() => onStartDrill(drill.id)}
+              className="inline-flex items-center gap-1 rounded bg-green-600 px-5 py-2 text-sm font-semibold text-white hover:bg-green-700"
+            >
+              <Play size={14} />
+              Drill
+            </button>
+          </div>
         </div>
       </div>
     </div>
