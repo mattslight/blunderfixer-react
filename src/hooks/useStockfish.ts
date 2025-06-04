@@ -170,8 +170,9 @@ export function useStockfish(
     return () => {
       canceled = true;
       if (sub) sub.unsubscribe();
-      // Tell Stockfish to stop the current search
+      // Tell Stockfish to stop the current search and then quit (terminate the worker).
       engine.stop();
+      engine.quit();
     };
   }, [fen, depth, engine, emptyLines, enabled, isInitialized]);
 
