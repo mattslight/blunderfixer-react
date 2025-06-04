@@ -197,7 +197,7 @@ export class StockfishEngine {
     this.send('stop');
   }
 
-  /** PUBLIC: Quit & terminate the worker. */
+  /** PUBLIC: Quit the worker. */
   public quit() {
     if (DEBUG) console.log('[StockfishEngine] quit');
     this.send('quit');
