@@ -134,6 +134,9 @@ export interface DrillPosition {
   game_played_at: string;
   phase: 'opening' | 'middle' | 'late' | 'endgame';
   archived: boolean;
+  has_one_winning_move: boolean;
+  winning_moves: string[];
+  losing_move: string;
   history: DrillHistory[];
 }
 
