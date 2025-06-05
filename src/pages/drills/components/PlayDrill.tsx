@@ -98,7 +98,12 @@ export default function PlayDrill() {
   useAutoMove(moveHistory, playBotMove, 300);
 
   // 8) Engine evaluation (numerical, in centipawns)
-  const { evalScore } = useAnalysisEngine(fen, !!drill?.initial_eval, 1, 18);
+  const { evalScore, currentDepth } = useAnalysisEngine(
+    fen,
+    !!drill?.initial_eval,
+    1,
+    18
+  );
 
   // 9) Decide defaults for this drill:
   const initialEval = drill?.initial_eval ?? null;
@@ -113,6 +118,7 @@ export default function PlayDrill() {
   } = useDrillResult({
     initialEval,
     currentEval: evalScore,
+    currentDepth,
     heroSide: heroColor,
     maxMoves,
     lossThreshold,
@@ -122,7 +128,7 @@ export default function PlayDrill() {
     moveCount,
   });
 
-  useSaveDrillHistory(drill?.id, drillResult, reason);
+  useSaveDrillHistory(drill?.id, drillResult, reason, currentDepth);
 
   const handleNextDrill = async () => {
     if (!username || !drill?.id) {
@@ -269,6 +275,18 @@ export default function PlayDrill() {
               setCurrentIdx={setIdx}
             />
           </div> */}
+
+          {DEBUG && (
+            <div className="mt-2 w-full rounded bg-gray-800 p-2 text-xs text-gray-200">
+              <div>initialEval: {initialEval}</div>
+              <div>currentEval: {evalScore}</div>
+              <div>depth: {currentDepth}</div>
+              <div>moveCount: {moveCount}</div>
+              <div>maxMoves: {maxMoves}</div>
+              <div>result: {drillResult}</div>
+              <div>reason: {reason}</div>
+            </div>
+          )}
         </div>
       </div>
       <div className="xs:px-0 mx-auto mt-5 max-w-md space-y-4 px-4">
