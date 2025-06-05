@@ -1,6 +1,6 @@
 // src/pages/DrillsPage.tsx
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import { useNavigate } from 'react-router-dom';
 import { Badge, TextInput } from 'flowbite-react';
@@ -102,9 +102,7 @@ export default function DrillsPage() {
   return (
     <div className="p-4 pt-8 2xl:ml-12">
       <div className="mx-auto max-w-2xl space-y-4">
-        <span className="inline-block py-0.5 text-xs font-semibold tracking-wider text-blue-400 uppercase">
-          Drills
-        </span>
+        <TabGroup />
         {/* Controls */}
         <div className="flex flex-wrap items-center justify-between gap-2">
           {/* Phase badges */}
@@ -188,6 +186,48 @@ export default function DrillsPage() {
           onStartDrill={(id) => navigate(`/drills/play/${id}`)}
         />
       </div>
+    </div>
+  );
+}
+const TABS = ['New Drills', 'History', 'Mastered', 'Archived'];
+
+export function TabGroup() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0 });
+
+  useEffect(() => {
+    const current = tabRefs.current[activeIndex];
+    if (current) {
+      setUnderlineStyle({
+        left: current.offsetLeft,
+        width: current.offsetWidth,
+      });
+    }
+  }, [activeIndex]);
+
+  return (
+    <div className="relative mb-12 border-b border-gray-700 text-sm text-gray-400">
+      <div className="flex space-x-8">
+        {TABS.map((label, idx) => (
+          <button
+            key={label}
+            ref={(el) => {
+              tabRefs.current[idx] = el;
+            }}
+            onClick={() => setActiveIndex(idx)}
+            className={`pb-3 tracking-wide transition-colors ${
+              activeIndex === idx ? 'text-white' : 'hover:text-gray-300'
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      <span
+        className="absolute bottom-0 block h-0.5 bg-blue-500 transition-all duration-300"
+        style={underlineStyle}
+      />
     </div>
   );
 }
