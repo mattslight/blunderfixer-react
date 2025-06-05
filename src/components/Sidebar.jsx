@@ -78,6 +78,25 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
         </svg>
       ),
     },
+    {
+      to: '/drills/recent',
+      label: 'Recent',
+      Icon: ({ className }) => (
+        <svg
+          aria-hidden="true"
+          className={className}
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-13a1 1 0 112 0v4.586l2.293 2.293a1 1 0 01-1.414 1.414L9 10.414V5z"
+            clipRule="evenodd"
+          />
+        </svg>
+      ),
+    },
     // {
     //   to: '/profile',
     //   label: 'Profile',

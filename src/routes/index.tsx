@@ -9,6 +9,7 @@ import Training from '@/pages/_placeholders/Training';
 import AnalyseGame from '@/pages/analyse';
 import Drills from '@/pages/drills';
 import PlayDrill from '@/pages/drills/components/PlayDrill';
+import RecentDrillsPage from '@/pages/drills/RecentDrillsPage';
 import GameHistory from '@/pages/games';
 import PreSignupHome from '@/pages/home/PreSignupHome';
 import NotFound from '@/pages/NotFound';
@@ -63,6 +64,14 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <Drills />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/drills/recent"
+        element={
+          <ProtectedRoute>
+            <RecentDrillsPage />
           </ProtectedRoute>
         }
       />
