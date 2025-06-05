@@ -9,7 +9,7 @@ import type { DrillPosition } from '@/types';
 interface Props {
   drills: DrillPosition[];
   loading: boolean;
-  onStartDrill: (id: number) => void;
+  onStartDrill: (id: number | string) => void;
 }
 
 export default function DrillList({ drills, loading, onStartDrill }: Props) {

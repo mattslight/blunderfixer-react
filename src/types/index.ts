@@ -133,6 +133,8 @@ export interface DrillPosition {
   opponent_rating: number;
   game_played_at: string;
   phase: 'opening' | 'middle' | 'late' | 'endgame';
+  mastered: boolean;
+  last_drilled_at?: string | null;
   archived: boolean;
   has_one_winning_move: boolean;
   winning_moves: string[];
