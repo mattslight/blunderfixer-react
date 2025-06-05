@@ -1,52 +1,39 @@
 import { Chessboard } from 'react-chessboard';
 import { Play } from 'lucide-react';
 
+import { GameInfoBadges } from './DrillCard/GameInfoBadges';
 import { HistoryDots } from './DrillCard/HistoryDots';
-import { TimePhaseHeader } from './DrillCard/TimePhaseHeader';
 
-import { PHASE_COLORS, PHASE_DISPLAY } from '@/constants/phase';
-import type { DrillPosition } from '@/types';
-
-interface Props {
-  drill: DrillPosition;
-  onPlay: (id: number | string) => void;
-}
-
-export default function RecentDrillRow({ drill, onPlay }: Props) {
-  const {
-    fen,
-    ply,
-    game_played_at,
-    phase: apiPhase,
-    hero_result,
-    result_reason,
-    mastered,
-    history,
-  } = drill;
-
-  const orientation = ply % 2 === 1 ? 'black' : 'white';
-  const displayPhase = PHASE_DISPLAY[apiPhase] ?? 'Unknown';
-  const phaseColor = PHASE_COLORS[displayPhase] ?? 'bg-gray-700';
-
-  const resultLabel =
-    hero_result === 'win' ? 'Win' : hero_result === 'loss' ? 'Loss' : 'Draw';
-  const resultColor =
-    hero_result === 'win'
-      ? 'bg-green-500'
-      : hero_result === 'loss'
-        ? 'bg-red-600'
-        : 'bg-gray-600';
-
-  const reason = result_reason
-    ?.replace(/_/g, ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase());
-
-  return (
-    <li className="grid grid-cols-[120px_1fr_auto] items-center gap-3 rounded-lg bg-gray-800 p-3 text-white">
-      {/* Board */}
-      <div>
+      <div className="shrink-0">
         <Chessboard
-          position={fen}
+          position={drill.fen}
+          boardOrientation={orientation}
+          arePiecesDraggable={false}
+          boardWidth={120}
+          customBoardStyle={{ borderRadius: '0.5rem' }}
+          customDarkSquareStyle={{ backgroundColor: '#B1B7C8' }}
+          customLightSquareStyle={{ backgroundColor: '#F5F2E6' }}
+        />
+      </div>
+      <div className="flex flex-1 flex-col gap-1 overflow-hidden">
+        <div className="flex items-baseline justify-between">
+          <span className={`text-sm font-semibold ${resultColor}`}>
+            {resultLabel}
+          {dateStr && (
+            <time className="text-xs text-gray-400" dateTime={absolute}>
+              {dateStr}
+            </time>
+        <GameInfoBadges
+          timeClass={drill.time_class}
+          timeControl={drill.time_control}
+          opponent={{
+            username: drill.opponent_username,
+            rating: drill.opponent_rating,
+          }}
+          evalSwing={drill.eval_swing}
+          heroResult={drill.hero_result}
+        />
+        <HistoryDots history={drill.history} />
           boardOrientation={orientation}
           arePiecesDraggable={false}
           boardWidth={120}
