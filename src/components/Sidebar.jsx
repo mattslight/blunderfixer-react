@@ -1,8 +1,9 @@
 // src/components/Sidebar.jsx
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Drawer } from 'flowbite-react';
 import { motion } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
 
 import EasterEggCredits, { useRapidTaps } from './EasterEggCredits';
 
@@ -10,6 +11,17 @@ import blunderLogoSvg from '@/assets/blunderfixer.svg';
 import { useProfile } from '@/hooks/useProfile';
 
 export default function Sidebar({ isSidebarOpen, closeSidebar }) {
+  const location = useLocation();
+  const [drillsOpen, setDrillsOpen] = useState(
+    location.pathname.startsWith('/drills')
+  );
+
+  useEffect(() => {
+    if (location.pathname.startsWith('/drills')) {
+      setDrillsOpen(true);
+    }
+  }, [location.pathname]);
+
   const mainNav = [
     {
       to: '/insights',
@@ -59,44 +71,6 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
         </svg>
       ),
     },
-    {
-      to: '/drills',
-      label: 'Drills',
-      Icon: ({ className }) => (
-        <svg
-          aria-hidden="true"
-          className={className}
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fillRule="evenodd"
-            d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z"
-            clipRule="evenodd"
-          ></path>
-        </svg>
-      ),
-    },
-    {
-      to: '/drills/recent',
-      label: 'Recent',
-      Icon: ({ className }) => (
-        <svg
-          aria-hidden="true"
-          className={className}
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fillRule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-13a1 1 0 112 0v4.586l2.293 2.293a1 1 0 01-1.414 1.414L9 10.414V5z"
-            clipRule="evenodd"
-          />
-        </svg>
-      ),
-    },
     // {
     //   to: '/profile',
     //   label: 'Profile',
@@ -113,6 +87,26 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
     //   ),
     // },
   ];
+
+  const drillsNav = {
+    to: '/drills',
+    label: 'Drills',
+    Icon: ({ className }) => (
+      <svg
+        aria-hidden="true"
+        className={className}
+        fill="currentColor"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fillRule="evenodd"
+          d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z"
+          clipRule="evenodd"
+        ></path>
+      </svg>
+    ),
+  };
 
   const bottomNav = [
     {
@@ -188,6 +182,13 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
               <LinkItem to={to} label={label} Icon={Icon} />
             </li>
           ))}
+          <li>
+            <DropdownItem
+              nav={drillsNav}
+              open={drillsOpen}
+              toggle={() => setDrillsOpen((o) => !o)}
+            />
+          </li>
         </ul>
 
         <ul className="mt-5 space-y-2 border-t border-gray-200 pt-5 dark:border-gray-700">
@@ -243,6 +244,67 @@ function LinkItem({ to, label, Icon }) {
           >
             <Icon className="h-6 w-6 flex-shrink-0 text-gray-400 transition-colors" />
             <span className="ml-3">{label}</span>
+          </motion.div>
+        );
+      }}
+    </NavLink>
+  );
+}
+
+function DropdownItem({ nav, open, toggle }) {
+  const { label, Icon } = nav;
+  const base =
+    'group flex w-full items-center rounded-lg p-2 text-base font-medium transition-colors';
+  const active =
+    'bg-gray-200 text-blue-600 bg-gray-700 dark:text-white bg-green-900';
+  const idle =
+    'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700';
+
+  return (
+    <div>
+      <button
+        onClick={toggle}
+        className={`${base} ${open ? active : idle}`}
+        type="button"
+      >
+        <Icon className="h-6 w-6 flex-shrink-0 text-gray-400 transition-colors" />
+        <span className="ml-3 flex-1 text-left">{label}</span>
+        <ChevronDown
+          className={`h-4 w-4 transition-transform ${open ? 'rotate-180' : ''}`}
+        />
+      </button>
+      {open && (
+        <ul className="mt-1 space-y-1 pl-8">
+          <li>
+            <SubLinkItem to="/drills" label="All" />
+          </li>
+          <li>
+            <SubLinkItem to="/drills/recent" label="Recent" />
+          </li>
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function SubLinkItem({ to, label }) {
+  return (
+    <NavLink to={to} end>
+      {({ isActive }) => {
+        const base =
+          'block rounded-lg p-2 text-sm font-medium transition-colors';
+        const active =
+          'bg-gray-200 text-blue-600 bg-gray-700 dark:text-white bg-green-900';
+        const idle =
+          'text-gray-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700';
+
+        return (
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={`${base} ${isActive ? active : idle}`}
+          >
+            {label}
           </motion.div>
         );
       }}

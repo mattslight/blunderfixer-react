@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { RefreshCw } from 'lucide-react';
 
-import DrillList from './components/DrillList';
+import RecentDrillList from './components/RecentDrillList';
 import { useRecentDrills } from './hooks/useRecentDrills';
 
 import { useProfile } from '@/hooks/useProfile';
@@ -35,10 +35,10 @@ export default function RecentDrillsPage() {
           </button>
         </div>
         {error && <p className="text-red-500">{String(error)}</p>}
-        <DrillList
+        <RecentDrillList
           drills={drills}
           loading={loading}
-          onStartDrill={(id) => navigate(`/drills/play/${id}`)}
+          onPlay={(id) => navigate(`/drills/play/${id}`)}
         />
       </div>
     </div>
