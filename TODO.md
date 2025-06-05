@@ -1,21 +1,22 @@
 # TODO
 
+[ ] Ability to see recently drilled (need api to reverse order by desc last_drilled_at.)
+
+[ ] When marking drills in worker mark if only one move and mark drill as find the only winning move
+
 [ ] QA: Check order of drills
-[ ] BUG: Issue with status rapidly change and recording multiple histories
-[ ] Ability to see recently drilled (need api to reverse order by desc last_drilled_at)
-[ ] Back to drill list
 
 [ ] When detecting drills somehow group similar positions - WIP
 
-[ ] Load new games and drills when logging in
-[ ] Load games from DB
-
 [ ] Ask coach for hint on drill
-
 [ ] Move a drill to analysis mode (if I fail dig into why I failed, better understanding)
 
+[ ] Sync/load new games and drills when logging in
+[ ] Load games from DB
 [ ] Homepage of my stats, recent games, recommended drills
 
+[x] BUG: Issue with Drill result status rapidly changing and recording multiple histories (add debug element that shows initial eval, current eval and other criteria for calcuating drill result. Also if the last move I play is a blunder but I meet maxMoves threshold, it should not count as a pass!)
+[x] Back to drill list
 [x] Mark drill as 'don't show me this again'
 [x] Once drill is completed, next drill
 [x] Play variable moves (not always best move) when useBotPlayer in drills is used so that it's not about memorising the same sequence of moves
