@@ -1,102 +1,94 @@
 import { Chessboard } from 'react-chessboard';
-import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { Play } from 'lucide-react';
 
+import { HistoryDots } from './DrillCard/HistoryDots';
+import { TimePhaseHeader } from './DrillCard/TimePhaseHeader';
+
+import { PHASE_COLORS, PHASE_DISPLAY } from '@/constants/phase';
 import type { DrillPosition } from '@/types';
 
 interface Props {
   drill: DrillPosition;
-  onPlay: (id: number) => void;
+  onPlay: (id: number | string) => void;
 }
 
 export default function RecentDrillRow({ drill, onPlay }: Props) {
-  const orientation = drill.ply % 2 === 1 ? 'black' : 'white';
+  const {
+    fen,
+    ply,
+    game_played_at,
+    phase: apiPhase,
+    hero_result,
+    result_reason,
+    mastered,
+    history,
+  } = drill;
 
-  const last = [...drill.history].sort(
-    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-  )[0];
+  const orientation = ply % 2 === 1 ? 'black' : 'white';
+  const displayPhase = PHASE_DISPLAY[apiPhase] ?? 'Unknown';
+  const phaseColor = PHASE_COLORS[displayPhase] ?? 'bg-gray-700';
 
-  const resultLabel = last
-    ? last.result === 'pass'
-      ? 'Passed'
-      : 'Failed'
-    : '-';
-  const resultColor = last
-    ? last.result === 'pass'
-      ? 'text-green-400'
-      : 'text-red-500'
-    : 'text-gray-400';
-
-  const heroColor =
-    drill.hero_result === 'win'
+  const resultLabel =
+    hero_result === 'win' ? 'Win' : hero_result === 'loss' ? 'Loss' : 'Draw';
+  const resultColor =
+    hero_result === 'win'
       ? 'bg-green-500'
-      : drill.hero_result === 'loss'
+      : hero_result === 'loss'
         ? 'bg-red-600'
         : 'bg-gray-600';
-  const heroLabel =
-    drill.hero_result === 'win'
-      ? 'Win'
-      : drill.hero_result === 'loss'
-        ? 'Loss'
-        : 'Draw';
 
-  const reason = drill.result_reason
+  const reason = result_reason
     ?.replace(/_/g, ' ')
     .replace(/\b\w/g, (c) => c.toUpperCase());
 
-  const drilledDate = drill.last_drilled_at
-    ? parseISO(drill.last_drilled_at)
-    : null;
-  const dateStr = drilledDate
-    ? formatDistanceToNow(drilledDate, { addSuffix: true }).replace(
-        /^about\s*/,
-        ''
-      )
-    : '';
-  const absolute = drilledDate ? format(drilledDate, 'yyyy-MM-dd HH:mm') : '';
-
   return (
-    <li className="flex items-center gap-3 rounded-lg bg-gray-800 p-3">
-      <Chessboard
-        position={drill.fen}
-        boardOrientation={orientation}
-        arePiecesDraggable={false}
-        boardWidth={120}
-        customBoardStyle={{ borderRadius: '0.5rem' }}
-        customDarkSquareStyle={{ backgroundColor: '#B1B7C8' }}
-        customLightSquareStyle={{ backgroundColor: '#F5F2E6' }}
-      />
-      <div className="flex flex-1 flex-col space-y-0.5 overflow-hidden">
-        <div className="flex justify-between text-sm">
-          <span className="truncate font-semibold">
-            vs {drill.opponent_username} ({drill.opponent_rating})
+    <li className="grid grid-cols-[120px_1fr_auto] items-center gap-3 rounded-lg bg-gray-800 p-3 text-white">
+      {/* Board */}
+      <div>
+        <Chessboard
+          position={fen}
+          boardOrientation={orientation}
+          arePiecesDraggable={false}
+          boardWidth={120}
+          customBoardStyle={{ borderRadius: '0.5rem' }}
+          customDarkSquareStyle={{ backgroundColor: '#B1B7C8' }}
+          customLightSquareStyle={{ backgroundColor: '#F5F2E6' }}
+        />
+      </div>
+
+      {/* Info */}
+      <div className="flex flex-col justify-between space-y-1 overflow-hidden text-sm">
+        <TimePhaseHeader
+          playedAt={game_played_at}
+          displayPhase={displayPhase}
+          phaseColor={phaseColor}
+        />
+
+        <div className="flex items-center gap-2 text-xs">
+          <span className={`rounded px-2 py-0.5 text-white ${resultColor}`}>
+            {resultLabel}
           </span>
-          <span className={resultColor}>{resultLabel}</span>
-        </div>
-        <div className="flex justify-between text-xs text-gray-400">
-          <span className="flex items-center gap-1">
-            <span className={`rounded px-1 py-0.5 text-white ${heroColor}`}>
-              {heroLabel}
+          {reason && <span className="truncate text-gray-300">{reason}</span>}
+          {mastered && (
+            <span className="text-xs font-semibold text-green-400 uppercase">
+              Mastered
             </span>
-            {reason && <span>{reason}</span>}
-          </span>
-          {drill.mastered && (
-            <span className="font-semibold text-green-500">Mastered</span>
           )}
         </div>
-        {dateStr && (
-          <time className="text-xs" dateTime={absolute}>
-            {dateStr}
-          </time>
-        )}
+
+        <HistoryDots history={history} />
       </div>
-      <button
-        onClick={() => onPlay(drill.id)}
-        className="ml-2 inline-flex items-center gap-1 rounded bg-green-600 px-2 py-1 text-sm text-white hover:bg-green-700"
-      >
-        <Play size={14} />
-        Drill
-      </button>
+
+      {/* Action */}
+      <div className="flex h-full items-end">
+        <button
+          onClick={() => onPlay(drill.id)}
+          className="inline-flex items-center gap-1 rounded bg-green-600 px-3 py-1 text-sm font-semibold text-white hover:bg-green-700"
+        >
+          <Play size={14} />
+          Drill
+        </button>
+      </div>
     </li>
   );
 }
