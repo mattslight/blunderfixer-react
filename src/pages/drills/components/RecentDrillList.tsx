@@ -18,7 +18,7 @@ export default function RecentDrillList({ drills, loading, onPlay }: Props) {
     return <p className="mt-16 text-center text-gray-500">No recent drills.</p>;
   }
   return (
-    <ul className="space-y-2">
+    <ul className="space-y-6">
       {drills.map((d) => (
         <RecentDrillRow key={d.id} drill={d} onPlay={onPlay} />
       ))}
