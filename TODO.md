@@ -1,11 +1,6 @@
 # TODO
 
-[ ] Ability to see recently drilled (need api to reverse order by desc last_drilled_at.)
-
-[ ] When marking drills in worker mark if only one move and mark drill as find the only winning move
-
-[ ] QA: Check order of drills
-
+[ ] IN PROGRESS – Ability to see recently drilled (need api to reverse order by desc last_drilled_at.)
 [ ] When detecting drills somehow group similar positions - WIP
 
 [ ] Ask coach for hint on drill
@@ -14,7 +9,9 @@
 [ ] Sync/load new games and drills when logging in
 [ ] Load games from DB
 [ ] Homepage of my stats, recent games, recommended drills
+[ ] QA: Check order of drills
 
+[x] When marking drills in worker mark if only one move and mark drill as find the only winning move
 [x] BUG: Issue with Drill result status rapidly changing and recording multiple histories (add debug element that shows initial eval, current eval and other criteria for calcuating drill result. Also if the last move I play is a blunder but I meet maxMoves threshold, it should not count as a pass!)
 [x] Back to drill list
 [x] Mark drill as 'don't show me this again'
