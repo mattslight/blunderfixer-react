@@ -1,5 +1,5 @@
 import { Chessboard } from 'react-chessboard';
-import { formatDistanceToNow, parseISO } from 'date-fns';
+import { format, formatDistanceToNow, parseISO } from 'date-fns';
 import { Play } from 'lucide-react';
 
 import type { DrillPosition } from '@/types';
@@ -27,11 +27,33 @@ export default function RecentDrillRow({ drill, onPlay }: Props) {
       : 'text-red-500'
     : 'text-gray-400';
 
-  const dateStr = drill.last_drilled_at
-    ? formatDistanceToNow(parseISO(drill.last_drilled_at), {
-        addSuffix: true,
-      }).replace(/^about\s*/, '')
+  const heroColor =
+    drill.hero_result === 'win'
+      ? 'bg-green-500'
+      : drill.hero_result === 'loss'
+        ? 'bg-red-600'
+        : 'bg-gray-600';
+  const heroLabel =
+    drill.hero_result === 'win'
+      ? 'Win'
+      : drill.hero_result === 'loss'
+        ? 'Loss'
+        : 'Draw';
+
+  const reason = drill.result_reason
+    ?.replace(/_/g, ' ')
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+
+  const drilledDate = drill.last_drilled_at
+    ? parseISO(drill.last_drilled_at)
+    : null;
+  const dateStr = drilledDate
+    ? formatDistanceToNow(drilledDate, { addSuffix: true }).replace(
+        /^about\s*/,
+        ''
+      )
     : '';
+  const absolute = drilledDate ? format(drilledDate, 'yyyy-MM-dd HH:mm') : '';
 
   return (
     <li className="flex items-center gap-3 rounded-lg bg-gray-800 p-3">
@@ -51,10 +73,22 @@ export default function RecentDrillRow({ drill, onPlay }: Props) {
           </span>
           <span className={resultColor}>{resultLabel}</span>
         </div>
-        {drill.mastered && (
-          <span className="text-xs font-semibold text-green-500">Mastered</span>
+        <div className="flex justify-between text-xs text-gray-400">
+          <span className="flex items-center gap-1">
+            <span className={`rounded px-1 py-0.5 text-white ${heroColor}`}>
+              {heroLabel}
+            </span>
+            {reason && <span>{reason}</span>}
+          </span>
+          {drill.mastered && (
+            <span className="font-semibold text-green-500">Mastered</span>
+          )}
+        </div>
+        {dateStr && (
+          <time className="text-xs" dateTime={absolute}>
+            {dateStr}
+          </time>
         )}
-        {dateStr && <span className="text-xs text-gray-400">{dateStr}</span>}
       </div>
       <button
         onClick={() => onPlay(drill.id)}

@@ -1,9 +1,9 @@
 // src/components/Sidebar.jsx
-import { useEffect, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { Drawer } from 'flowbite-react';
 import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { Clock } from 'lucide-react';
 
 import EasterEggCredits, { useRapidTaps } from './EasterEggCredits';
 
@@ -11,17 +11,6 @@ import blunderLogoSvg from '@/assets/blunderfixer.svg';
 import { useProfile } from '@/hooks/useProfile';
 
 export default function Sidebar({ isSidebarOpen, closeSidebar }) {
-  const location = useLocation();
-  const [drillsOpen, setDrillsOpen] = useState(
-    location.pathname.startsWith('/drills')
-  );
-
-  useEffect(() => {
-    if (location.pathname.startsWith('/drills')) {
-      setDrillsOpen(true);
-    }
-  }, [location.pathname]);
-
   const mainNav = [
     {
       to: '/insights',
@@ -108,6 +97,12 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
     ),
   };
 
+  const recentDrillsNav = {
+    to: '/drills/recent',
+    label: 'Recent Drills',
+    Icon: Clock,
+  };
+
   const bottomNav = [
     {
       to: '/help',
@@ -183,10 +178,17 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
             </li>
           ))}
           <li>
-            <DropdownItem
-              nav={drillsNav}
-              open={drillsOpen}
-              toggle={() => setDrillsOpen((o) => !o)}
+            <LinkItem
+              to={drillsNav.to}
+              label={drillsNav.label}
+              Icon={drillsNav.Icon}
+            />
+          </li>
+          <li>
+            <LinkItem
+              to={recentDrillsNav.to}
+              label={recentDrillsNav.label}
+              Icon={recentDrillsNav.Icon}
             />
           </li>
         </ul>
@@ -244,67 +246,6 @@ function LinkItem({ to, label, Icon }) {
           >
             <Icon className="h-6 w-6 flex-shrink-0 text-gray-400 transition-colors" />
             <span className="ml-3">{label}</span>
-          </motion.div>
-        );
-      }}
-    </NavLink>
-  );
-}
-
-function DropdownItem({ nav, open, toggle }) {
-  const { label, Icon } = nav;
-  const base =
-    'group flex w-full items-center rounded-lg p-2 text-base font-medium transition-colors';
-  const active =
-    'bg-gray-200 text-blue-600 bg-gray-700 dark:text-white bg-green-900';
-  const idle =
-    'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700';
-
-  return (
-    <div>
-      <button
-        onClick={toggle}
-        className={`${base} ${open ? active : idle}`}
-        type="button"
-      >
-        <Icon className="h-6 w-6 flex-shrink-0 text-gray-400 transition-colors" />
-        <span className="ml-3 flex-1 text-left">{label}</span>
-        <ChevronDown
-          className={`h-4 w-4 transition-transform ${open ? 'rotate-180' : ''}`}
-        />
-      </button>
-      {open && (
-        <ul className="mt-1 space-y-1 pl-8">
-          <li>
-            <SubLinkItem to="/drills" label="All" />
-          </li>
-          <li>
-            <SubLinkItem to="/drills/recent" label="Recent" />
-          </li>
-        </ul>
-      )}
-    </div>
-  );
-}
-
-function SubLinkItem({ to, label }) {
-  return (
-    <NavLink to={to} end>
-      {({ isActive }) => {
-        const base =
-          'block rounded-lg p-2 text-sm font-medium transition-colors';
-        const active =
-          'bg-gray-200 text-blue-600 bg-gray-700 dark:text-white bg-green-900';
-        const idle =
-          'text-gray-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700';
-
-        return (
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className={`${base} ${isActive ? active : idle}`}
-          >
-            {label}
           </motion.div>
         );
       }}
