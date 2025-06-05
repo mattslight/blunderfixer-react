@@ -30,7 +30,7 @@ export default function DrillBanner({
         'Maintain equity',
         'Play for balance',
         'Hold the line',
-        'Stay sharp and patient',
+        'Stay sharp and be patient',
         "Don't give an inch",
       ]),
     []
