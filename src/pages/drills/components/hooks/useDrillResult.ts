@@ -37,11 +37,11 @@ export function useDrillResult({
   const expectedResult: ExpectedResult = (() => {
     if (initialEval == null) return null;
     if (heroSide === 'white') {
-      if (initialEval >= 50) return 'win';
-      if (initialEval <= -50) return 'hold';
+      if (initialEval >= 100) return 'win';
+      if (initialEval <= -100) return 'hold';
     } else {
-      if (initialEval <= -50) return 'win';
-      if (initialEval >= 50) return 'hold';
+      if (initialEval <= -100) return 'win';
+      if (initialEval >= 100) return 'hold';
     }
     return 'draw';
   })();
@@ -77,7 +77,14 @@ export function useDrillResult({
         newReason = 'You blundered a piece';
       } else if (evalDelta >= lossThreshold && moveCount > 1) {
         newResult = 'fail';
-        newReason = 'You let the advantage slip';
+        // give a more specific reason based on expectedResult
+        if (expectedResult === 'win') {
+          newReason = 'You lost a winning position 😭';
+        } else if (expectedResult === 'draw') {
+          newReason = 'You let the draw slip 🤨';
+        } else if (expectedResult === 'hold') {
+          newReason = 'Defensive chances missed 😓';
+        }
       } else if (maxMoves === 0 && gameOver && gameResult) {
         if (expectedResult === 'win' && gameResult === 'win') {
           newResult = 'pass';
