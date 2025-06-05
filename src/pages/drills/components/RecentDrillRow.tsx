@@ -28,11 +28,11 @@ export default function RecentDrillRow({ drill, onPlay }: Props) {
   ) : (
     <i>Skipped</i>
   );
-  const resultColor = last
-    ? last.result === 'pass'
-      ? 'text-green-400'
-      : 'text-red-500'
-    : 'text-gray-400';
+  // const resultColor = last
+  //   ? last.result === 'pass'
+  //     ? 'text-green-400'
+  //     : 'text-red-500'
+  //   : 'text-gray-400';
 
   const drilledDate = drill.last_drilled_at
     ? parseISO(drill.last_drilled_at)
