@@ -9,6 +9,7 @@ const DEBUG = false;
 interface UseDrillResultParams {
   initialEval: number | null;
   currentEval: number;
+  currentDepth: number;
   heroSide: 'white' | 'black';
   maxMoves: number;
   lossThreshold: number;
@@ -22,6 +23,7 @@ export function useDrillResult({
   resetKey,
   initialEval,
   currentEval,
+  currentDepth,
   heroSide,
   maxMoves,
   lossThreshold,
@@ -49,8 +51,14 @@ export function useDrillResult({
     setReason(null);
   }, [resetKey]);
 
+  //const MIN_DEPTH = 12;
+
   useEffect(() => {
-    if (initialEval == null) return;
+    // if (initialEval == null || currentDepth < MIN_DEPTH) {
+    //   setResult(null);
+    //   setReason(null);
+    //   return;
+    // }
 
     const evalDelta =
       heroSide === 'white'
@@ -61,10 +69,7 @@ export function useDrillResult({
     let newReason: string | null = null;
 
     if (moveCount > 0) {
-      if (maxMoves > 0 && moveCount >= maxMoves) {
-        newResult = 'pass';
-        newReason = 'Solid play — good job!';
-      } else if (evalDelta >= 2000) {
+      if (evalDelta >= 2000) {
         newResult = 'fail';
         newReason = 'Oops — you hung mate';
       } else if (evalDelta >= 300) {
@@ -90,6 +95,9 @@ export function useDrillResult({
           newResult = 'pass';
           newReason = 'Good save — you held the draw 🙌🏻';
         }
+      } else if (maxMoves > 0 && moveCount >= maxMoves) {
+        newResult = 'pass';
+        newReason = 'Solid play — good job!';
       }
     }
 
@@ -108,6 +116,7 @@ export function useDrillResult({
       console.log('maxMoves:', maxMoves);
       console.log('initialEval:', initialEval);
       console.log('currentEval:', currentEval);
+      console.log('currentDepth:', currentDepth);
       console.log('evalDelta:', evalDelta);
       console.log('gameOver:', gameOver);
       console.log('gameResult:', gameResult);
@@ -125,6 +134,7 @@ export function useDrillResult({
     expectedResult,
     resetKey,
     moveCount,
+    currentDepth,
   ]);
 
   return { result, expectedResult, reason };
