@@ -51,14 +51,14 @@ export function useDrillResult({
     setReason(null);
   }, [resetKey]);
 
-  const MIN_DEPTH = 12;
+  //const MIN_DEPTH = 12;
 
   useEffect(() => {
-    if (initialEval == null || currentDepth < MIN_DEPTH) {
-      setResult(null);
-      setReason(null);
-      return;
-    }
+    // if (initialEval == null || currentDepth < MIN_DEPTH) {
+    //   setResult(null);
+    //   setReason(null);
+    //   return;
+    // }
 
     const evalDelta =
       heroSide === 'white'
