@@ -9,7 +9,7 @@ export default function BotControls({
   return (
     <div className="flex items-center">
       <label className="flex items-center space-x-2 text-sm">
-        <span className="font-bold text-gray-500">Bot&nbsp;Strength</span>
+        <span className="font-bold text-stone-500">Bot&nbsp;Strength</span>
         1400
         <input
           type="range"

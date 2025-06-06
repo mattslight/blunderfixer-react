@@ -16,24 +16,24 @@ export default function ListToggle({
         aria-label="Stack view"
         onClick={() => onChange('stack')}
         className={`rounded p-2 ${
-          viewMode === 'stack' ? 'bg-gray-700' : 'hover:bg-gray-700'
+          viewMode === 'stack' ? 'bg-stone-700' : 'hover:bg-stone-700'
         }`}
       >
         <Layers2
           size={20}
-          className={viewMode === 'stack' ? 'text-gray-400' : 'text-gray-500'}
+          className={viewMode === 'stack' ? 'text-stone-400' : 'text-stone-500'}
         />
       </button>
       <button
         aria-label="Table view"
         onClick={() => onChange('table')}
         className={`rounded p-2 ${
-          viewMode === 'table' ? 'bg-gray-700' : 'hover:bg-gray-700'
+          viewMode === 'table' ? 'bg-stone-700' : 'hover:bg-stone-700'
         }`}
       >
         <AlignJustify
           size={20}
-          className={viewMode === 'table' ? 'text-gray-400' : 'text-gray-500'}
+          className={viewMode === 'table' ? 'text-stone-400' : 'text-stone-500'}
         />
       </button>
     </div>

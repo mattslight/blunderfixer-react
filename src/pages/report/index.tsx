@@ -39,7 +39,7 @@ export default function ReportPage() {
     return (
       <div className="flex flex-col items-center justify-center p-8">
         <Loader className="h-8 w-8 animate-spin text-green-400" />
-        <p className="mt-4 text-lg text-gray-300">Running analysis…</p>
+        <p className="mt-4 text-lg text-stone-300">Running analysis…</p>
       </div>
     );
   }

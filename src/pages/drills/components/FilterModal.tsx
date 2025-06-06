@@ -30,7 +30,7 @@ export default function FilterModal({
       <h2 className="mb-4 text-lg font-semibold text-white">Filters</h2>
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-300">
+          <span className="text-sm text-stone-300">
             Show drills from games won
           </span>
           <ToggleSwitch
@@ -39,14 +39,14 @@ export default function FilterModal({
           />
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-300">Show archived drills</span>
+          <span className="text-sm text-stone-300">Show archived drills</span>
           <ToggleSwitch
             checked={includeArchived}
             onChange={() => setIncludeArchived(!includeArchived)}
           />
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-300">
+          <span className="text-sm text-stone-300">
             Show drills with 5 wins in a row
           </span>
           <ToggleSwitch

@@ -34,7 +34,7 @@ export default function NextDrillCarousel({ drills, onStart }: Props) {
   }, []);
 
   if (!drills.length) {
-    return <p className="mt-4 text-center text-gray-500">No drills queued.</p>;
+    return <p className="mt-4 text-center text-stone-500">No drills queued.</p>;
   }
 
   return (
@@ -54,7 +54,7 @@ export default function NextDrillCarousel({ drills, onStart }: Props) {
           <div
             key={idx}
             className={`h-2 w-2 rounded-full ${
-              idx === activeIndex ? 'bg-white' : 'bg-gray-600'
+              idx === activeIndex ? 'bg-white' : 'bg-stone-600'
             }`}
           />
         ))}

@@ -51,7 +51,7 @@ export default function Settings() {
       </div>
       <div className="mt-10 w-full max-w-2xl rounded-2xl border border-stone-700 bg-black/80 p-6 shadow-lg">
         <h1 className="mb-2 text-3xl font-bold text-white">Settings</h1>
-        <p className="mb-6 text-lg text-gray-400">
+        <p className="mb-6 text-lg text-stone-400">
           Manage your Chess.com connection and profile
         </p>
 
@@ -113,14 +113,14 @@ export default function Settings() {
         </div>
 
         {/* � join/last?online metadata � */}
-        <div className="mb-6 space-y-1 text-xs text-gray-500">
+        <div className="mb-6 space-y-1 text-xs text-stone-500">
           {profile.joined && (
             <div>
               Joined {new Date(profile.joined * 1000).toLocaleDateString()}
             </div>
           )}
           {profile.last_online && (
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-stone-500">
               Last online{' '}
               {formatDistanceToNow(new Date(profile.last_online * 1000), {
                 addSuffix: true,
@@ -131,7 +131,7 @@ export default function Settings() {
 
         <label
           htmlFor="username"
-          className="mb-1 block text-sm font-medium text-gray-200"
+          className="mb-1 block text-sm font-medium text-stone-200"
         >
           Chess.com Username
         </label>
@@ -140,7 +140,7 @@ export default function Settings() {
           username={localUsername}
           onUsernameChange={setLocalUsername}
         />
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1 text-xs text-stone-500">
           Enter a new handle to refresh your profile data.
         </p>
       </div>

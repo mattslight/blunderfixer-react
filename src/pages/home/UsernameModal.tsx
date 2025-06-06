@@ -47,13 +47,13 @@ export default function UsernameModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-2 backdrop-blur-md">
       <div
         ref={modalRef}
-        className="relative w-full max-w-md rounded-xl border border-gray-700 bg-black/80 p-6 shadow-xl"
+        className="relative w-full max-w-md rounded-xl border border-stone-700 bg-black/80 p-6 shadow-xl"
       >
         {/* Close */}
         <button
           onClick={onClose}
           aria-label="Close"
-          className="absolute top-4 right-4 text-gray-400 hover:text-white"
+          className="absolute top-4 right-4 text-stone-400 hover:text-white"
         >
           <X size={20} />
         </button>
@@ -67,12 +67,12 @@ export default function UsernameModal({
           />{' '}
           username
         </h2>
-        <p className="mb-6 text-center text-sm text-gray-400">
+        <p className="mb-6 text-center text-sm text-stone-400">
           We’ll pull in your recent games for instant analysis.
         </p>
 
         {/* Benefits */}
-        <div className="mx-auto mb-6 max-w-xs text-left text-xs text-gray-300">
+        <div className="mx-auto mb-6 max-w-xs text-left text-xs text-stone-300">
           <ul className="ml-10 space-y-1">
             <li className="flex items-start">
               <span className="mr-2">🔁</span>
@@ -103,7 +103,7 @@ export default function UsernameModal({
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             disabled={isLoading}
-            className="mb-5 w-full rounded-full border-2 border-gray-600 bg-black/90 px-4 py-2 text-white placeholder-gray-500 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none disabled:opacity-50"
+            className="mb-5 w-full rounded-full border-2 border-stone-600 bg-black/90 px-4 py-2 text-white placeholder-stone-500 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none disabled:opacity-50"
           />
           {error && (
             <p className="mb-4 text-center text-sm text-red-400">{error}</p>
@@ -114,7 +114,7 @@ export default function UsernameModal({
             <button
               onClick={onClose}
               disabled={isLoading}
-              className="px-3 py-1 text-sm text-gray-300 hover:text-white focus:outline-none disabled:opacity-50"
+              className="px-3 py-1 text-sm text-stone-300 hover:text-white focus:outline-none disabled:opacity-50"
               type="button"
             >
               Cancel
@@ -122,7 +122,7 @@ export default function UsernameModal({
             <button
               type="submit"
               disabled={!username.trim() || isLoading}
-              className="flex items-center space-x-2 rounded-full bg-green-500 px-5 py-2 text-sm font-semibold text-white hover:bg-green-600 focus:outline-none disabled:bg-gray-500 disabled:opacity-50"
+              className="flex items-center space-x-2 rounded-full bg-green-500 px-5 py-2 text-sm font-semibold text-white hover:bg-green-600 focus:outline-none disabled:bg-stone-500 disabled:opacity-50"
             >
               {isLoading ? (
                 <Loader className="h-5 w-5 animate-spin" />

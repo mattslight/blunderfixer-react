@@ -9,7 +9,8 @@ export function useMasteredDrills(
 ) {
   const { limit = 20, includeArchived = false } = opts;
   const swrKey = useMemo(
-    () => (username ? ['masteredDrills', username, limit, includeArchived] : null),
+    () =>
+      username ? ['masteredDrills', username, limit, includeArchived] : null,
     [username, limit, includeArchived]
   );
 

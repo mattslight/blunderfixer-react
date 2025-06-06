@@ -35,7 +35,7 @@ export function HistoryDots({ history }: HistoryDotsProps) {
           let dotContent: ReactElement;
           if (!entry) {
             dotContent = (
-              <div className="h-4 w-4 rounded-full border border-gray-600 bg-transparent" />
+              <div className="h-4 w-4 rounded-full border border-stone-600 bg-transparent" />
             );
           } else {
             const formattedDistance = formatDistanceToNow(
@@ -54,7 +54,7 @@ export function HistoryDots({ history }: HistoryDotsProps) {
             if (entry.result === 'pass') {
               dotContent = (
                 <Tooltip content={tooltipContent} key={key}>
-                  <div className="flex h-4 w-4 items-center justify-center rounded-full bg-gray-300 text-gray-800">
+                  <div className="flex h-4 w-4 items-center justify-center rounded-full bg-stone-300 text-stone-800">
                     <Check className="h-2.5 w-2.5" strokeWidth={3} />
                   </div>
                 </Tooltip>
@@ -62,7 +62,7 @@ export function HistoryDots({ history }: HistoryDotsProps) {
             } else {
               dotContent = (
                 <Tooltip content={tooltipContent} key={key}>
-                  <div className="flex h-4 w-4 items-center justify-center rounded-full border border-gray-300 text-gray-300">
+                  <div className="flex h-4 w-4 items-center justify-center rounded-full border border-stone-300 text-stone-300">
                     <X className="h-2.5 w-2.5" strokeWidth={3} />
                   </div>
                 </Tooltip>

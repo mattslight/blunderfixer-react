@@ -36,7 +36,7 @@ export default function EvalGraph({
 
   return (
     <div>
-      <h3 className="mb-8 block text-center text-xs font-semibold tracking-wider text-gray-600 uppercase">
+      <h3 className="mb-8 block text-center text-xs font-semibold tracking-wider text-stone-600 uppercase">
         Eval
       </h3>
       <div className="-ml-14 h-30">
@@ -72,7 +72,7 @@ export default function EvalGraph({
                 const { raw, mateIn } = pt.payload;
 
                 return (
-                  <div className="rounded bg-gray-800 p-2 text-white">
+                  <div className="rounded bg-stone-800 p-2 text-white">
                     <div>{`Move ${label}`}</div>
                     {mateIn !== undefined && Math.abs(mateIn) > 0 ? (
                       <div>{`Mate in ${Math.abs(mateIn)}`}</div>

@@ -84,7 +84,7 @@ export default function GamesHistoryPage() {
             <button
               onClick={() => reload()}
               disabled={isValidating || recentLoading || !username}
-              className="inline-flex items-center rounded bg-gray-800 px-3 py-1 text-sm text-gray-300 hover:bg-gray-700 disabled:opacity-50"
+              className="inline-flex items-center rounded bg-stone-800 px-3 py-1 text-sm text-stone-300 hover:bg-stone-700 disabled:opacity-50"
             >
               <RefreshCw
                 className={`mr-2 ${isValidating && `animate-spin`}`}

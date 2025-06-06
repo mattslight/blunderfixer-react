@@ -60,7 +60,7 @@ export default function GameLoader({ onSelect }) {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Chess.com username"
-          className="flex-1 rounded border p-2 dark:bg-gray-700 dark:text-white"
+          className="flex-1 rounded border p-2 dark:bg-stone-700 dark:text-white"
         />
         <button
           onClick={loadGames}
@@ -99,21 +99,21 @@ export default function GameLoader({ onSelect }) {
             borderClass = 'border-l-4 border-red-500';
           } else {
             resultLabel = 'Draw';
-            resultClass = 'bg-gray-600 text-white';
-            borderClass = 'border-l-4 border-gray-500';
+            resultClass = 'bg-stone-600 text-white';
+            borderClass = 'border-l-4 border-stone-500';
           }
 
           // reason pills
           let reasonLabel, reasonClass;
           if (resultLabel === 'Won') {
             reasonLabel = capitalize(g[oppSide].result || '');
-            reasonClass = 'text-gray-400 bg-grey-800';
+            reasonClass = 'text-stone-400 bg-grey-800';
           } else if (resultLabel === 'Lost') {
             reasonLabel = capitalize(g[heroSide].result || '');
-            reasonClass = 'text-gray-400 bg-grey-800';
+            reasonClass = 'text-stone-400 bg-grey-800';
           } else {
             reasonLabel = 'Draw';
-            reasonClass = 'bg-gray-200 text-gray-800';
+            reasonClass = 'bg-stone-200 text-stone-800';
           }
 
           // time control
@@ -128,25 +128,25 @@ export default function GameLoader({ onSelect }) {
           return (
             <li
               key={g.uuid}
-              className={`mb-6 flex flex-col rounded-lg bg-gray-800 p-6 transition-shadow hover:shadow-lg ${borderClass}`}
+              className={`mb-6 flex flex-col rounded-lg bg-stone-800 p-6 transition-shadow hover:shadow-lg ${borderClass}`}
             >
               {/* Players */}
               <div className="mb-2">
                 <h3 className="text-lg font-semibold text-white">
                   {g.white.username}{' '}
-                  <span className="text-sm text-gray-400">
+                  <span className="text-sm text-stone-400">
                     ({g.white.rating})
                   </span>
-                  <span className="mx-2 text-gray-500">vs</span>
+                  <span className="mx-2 text-stone-500">vs</span>
                   {g.black.username}{' '}
-                  <span className="text-sm text-gray-400">
+                  <span className="text-sm text-stone-400">
                     ({g.black.rating})
                   </span>
                 </h3>
               </div>
 
               {/* Metadata */}
-              <div className="mb-4 grid grid-cols-2 gap-4 text-sm text-gray-400">
+              <div className="mb-4 grid grid-cols-2 gap-4 text-sm text-stone-400">
                 <div className="flex items-center space-x-1">
                   <Calendar size={16} />
                   <time dateTime={new Date(g.end_time * 1000).toISOString()}>
@@ -179,7 +179,7 @@ export default function GameLoader({ onSelect }) {
               </div>
               {/* Opening */}
               {ecoCode && ecoUrl && (
-                <div className="mb-4 text-sm text-gray-300">
+                <div className="mb-4 text-sm text-stone-300">
                   {openingName}{' '}
                   <a
                     href={ecoUrl}

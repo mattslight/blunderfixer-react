@@ -66,7 +66,7 @@ export default function TopmovesCarousel({ lines, onSlideChange }) {
 
           return (
             <SwiperSlide key={i}>
-              <div className="flex flex-col items-center justify-center rounded-lg bg-white p-4 shadow dark:bg-gray-800">
+              <div className="flex flex-col items-center justify-center rounded-lg bg-white p-4 shadow dark:bg-stone-800">
                 <span
                   className={`mb-2 rounded-full px-3 py-1 text-sm font-bold ${
                     i === 0
@@ -78,7 +78,7 @@ export default function TopmovesCarousel({ lines, onSlideChange }) {
                 </span>
                 <p className="mb-1 text-lg font-semibold">Move: {san}</p>
                 <p className="mb-2 text-sm">Eval: {evalText}</p>
-                <p className="text-center text-xs text-gray-700 dark:text-gray-300">
+                <p className="text-center text-xs text-stone-700 dark:text-stone-300">
                   {preview}
                   {line.moves.length > 7 ? ' …' : ''}
                 </p>
@@ -92,7 +92,7 @@ export default function TopmovesCarousel({ lines, onSlideChange }) {
         <>
           <div
             ref={prevRef}
-            className="absolute top-1/2 left-2 z-10 -translate-y-1/2 cursor-pointer rounded-full bg-white/70 p-1 shadow dark:bg-gray-700/70"
+            className="absolute top-1/2 left-2 z-10 -translate-y-1/2 cursor-pointer rounded-full bg-white/70 p-1 shadow dark:bg-stone-700/70"
           >
             {/* left arrow SVG */}
             <svg
@@ -110,7 +110,7 @@ export default function TopmovesCarousel({ lines, onSlideChange }) {
           </div>
           <div
             ref={nextRef}
-            className="absolute top-1/2 right-2 z-10 -translate-y-1/2 cursor-pointer rounded-full bg-white/70 p-1 shadow dark:bg-gray-700/70"
+            className="absolute top-1/2 right-2 z-10 -translate-y-1/2 cursor-pointer rounded-full bg-white/70 p-1 shadow dark:bg-stone-700/70"
           >
             {/* right arrow SVG */}
             <svg

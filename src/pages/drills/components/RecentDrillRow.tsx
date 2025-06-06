@@ -33,7 +33,7 @@ export default function RecentDrillRow({ drill, onPlay }: Props) {
   //   ? last.result === 'pass'
   //     ? 'text-green-400'
   //     : 'text-red-500'
-  //   : 'text-gray-400';
+  //   : 'text-stone-400';
 
   const drilledDate = drill.last_drilled_at
     ? parseISO(drill.last_drilled_at)
@@ -52,7 +52,7 @@ export default function RecentDrillRow({ drill, onPlay }: Props) {
 
   return (
     <li
-      className="flex items-center gap-2 rounded-lg bg-gray-800"
+      className="flex items-center gap-2 rounded-lg bg-stone-800"
       onClick={() => onPlay(drill.id)}
     >
       <div className="shrink-0">
@@ -75,7 +75,7 @@ export default function RecentDrillRow({ drill, onPlay }: Props) {
             {resultLabel} – <i>{drill.history.at(-1)?.reason}</i>
           </span>
           {dateStr && (
-            <time className="text-xs text-gray-400" dateTime={absolute}>
+            <time className="text-xs text-stone-400" dateTime={absolute}>
               {dateStr}
             </time>
           )}
@@ -92,7 +92,7 @@ export default function RecentDrillRow({ drill, onPlay }: Props) {
           hideGameResult={!isDesktop}
           hideOpponentRating={!isDesktop}
         />
-        <div className="mt-2 text-xs font-bold text-gray-400 uppercase sm:text-xs">
+        <div className="mt-2 text-xs font-bold text-stone-400 uppercase sm:text-xs">
           Last 5 Tries
         </div>
         <div className="flex items-center justify-between">

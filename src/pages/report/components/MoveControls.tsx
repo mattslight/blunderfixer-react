@@ -28,36 +28,36 @@ export default function MoveControls({
         onClick={onPrevKeymove}
         disabled={disablePrevKeymove}
         aria-label="Jump to previous key move"
-        className="rounded bg-gray-700 p-2 hover:bg-gray-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className="rounded bg-stone-700 p-2 hover:bg-stone-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       >
-        <Rewind size={26} strokeWidth={1} className="text-gray-300" />
+        <Rewind size={26} strokeWidth={1} className="text-stone-300" />
       </button>
 
       <button
         onClick={onPrev}
         disabled={disablePrev}
         aria-label="Step back one move"
-        className="rounded bg-gray-700 p-2 hover:bg-gray-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className="rounded bg-stone-700 p-2 hover:bg-stone-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       >
-        <ChevronLeft size={26} strokeWidth={1} className="text-gray-300" />
+        <ChevronLeft size={26} strokeWidth={1} className="text-stone-300" />
       </button>
 
       <button
         onClick={onNext}
         disabled={disableNext}
         aria-label="Step forward one move"
-        className="rounded bg-gray-700 p-2 hover:bg-gray-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className="rounded bg-stone-700 p-2 hover:bg-stone-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       >
-        <ChevronRight size={26} strokeWidth={1} className="text-gray-300" />
+        <ChevronRight size={26} strokeWidth={1} className="text-stone-300" />
       </button>
 
       <button
         onClick={onNextKeymove}
         disabled={disableNextKeymove}
         aria-label="Jump to next key move"
-        className="rounded bg-gray-700 p-2 hover:bg-gray-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className="rounded bg-stone-700 p-2 hover:bg-stone-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       >
-        <FastForward size={26} strokeWidth={1} className="text-gray-300" />
+        <FastForward size={26} strokeWidth={1} className="text-stone-300" />
       </button>
     </div>
   );

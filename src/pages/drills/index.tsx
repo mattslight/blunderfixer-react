@@ -3,15 +3,15 @@
 import { useMemo, useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import { useNavigate } from 'react-router-dom';
-import { Badge, TextInput } from 'flowbite-react';
+import { Badge } from 'flowbite-react';
 import { RefreshCw, SlidersHorizontal } from 'lucide-react';
 
 import DrillList from './components/DrillList';
 import FilterModal from './components/FilterModal';
 import RecentDrillList from './components/RecentDrillList';
 import { useDrills } from './hooks/useDrills';
-import { useRecentDrills } from './hooks/useRecentDrills';
 import { useMasteredDrills } from './hooks/useMasteredDrills';
+import { useRecentDrills } from './hooks/useRecentDrills';
 import {
   buildDrillFilters,
   PhaseFilter,
@@ -28,7 +28,7 @@ const PHASES = ['all', 'opening', 'middle', 'late', 'endgame'] as const;
 type Phase = PhaseFilter;
 
 const PHASE_COLORS: Record<Phase, string> = {
-  all: 'bg-gray-600',
+  all: 'bg-stone-600',
   opening: 'bg-blue-700',
   middle: 'bg-purple-700',
   late: 'bg-fuchsia-700',
@@ -44,7 +44,7 @@ function ToggleSwitch({ checked, onChange }) {
         checked={checked}
         onChange={onChange}
       />
-      <div className="h-3 w-7 rounded-full bg-gray-300 transition-colors duration-200 peer-checked:bg-blue-500 dark:bg-gray-600" />
+      <div className="h-3 w-7 rounded-full bg-stone-300 transition-colors duration-200 peer-checked:bg-blue-500 dark:bg-stone-600" />
       <div className="absolute left-0.5 h-3.5 w-3.5 rounded-full bg-white transition-transform duration-200 ease-in-out peer-checked:translate-x-3" />
     </label>
   );
@@ -116,12 +116,12 @@ export default function DrillsPage() {
         {/* Controls */}
         <div className="flex flex-wrap items-center justify-between gap-2">
           {/* Phase badges */}
-          <div className="flex flex-wrap items-center gap-2 text-gray-300">
+          <div className="flex flex-wrap items-center gap-2 text-stone-300">
             {PHASES.map((p) => (
               <Badge
                 key={p}
                 onClick={() => setPhaseFilter(p)}
-                className={`cursor-pointer rounded border-1 border-gray-800 px-2.5 py-2 text-xs capitalize ${
+                className={`cursor-pointer rounded border-1 border-stone-800 px-2.5 py-2 text-xs capitalize ${
                   phaseFilter === p && PHASE_COLORS[p]
                 }`}
               >
@@ -133,7 +133,7 @@ export default function DrillsPage() {
           <button
             onClick={refresh}
             disabled={loading}
-            className="xs:inline-flex hidden items-center rounded-full bg-gray-800 px-3 py-1 text-xs text-gray-300 hover:bg-gray-700 disabled:opacity-50"
+            className="xs:inline-flex hidden items-center rounded-full bg-stone-800 px-3 py-1 text-xs text-stone-300 hover:bg-stone-700 disabled:opacity-50"
           >
             <RefreshCw className="h-4 w-4" />
             <span className="xs:block ml-2 hidden">Refresh</span>
@@ -141,19 +141,20 @@ export default function DrillsPage() {
         </div>
         <div className="mt-2 flex flex-wrap items-center justify-between gap-4">
           {/* Search */}
-          <TextInput
+          <input
+            type="text"
             placeholder="Search opponent"
             value={search}
             onChange={(e) => setSearch(e.currentTarget.value)}
-            className="min-w-40 flex-1"
+            className="min-w-40 flex-1 rounded-md border border-stone-600 bg-stone-800 text-stone-100 placeholder-stone-400 focus:border-stone-400 focus:ring-stone-400"
           />
 
           {/* Discrete slider: left = hardest, right = All */}
           <div className="flex items-baseline space-x-2 py-2">
-            <span className="mr-4 text-sm font-medium text-gray-300">
+            <span className="mr-4 text-sm font-medium text-stone-300">
               Blunder Size
             </span>
-            <span className="text-xs font-bold text-gray-500">xs</span>
+            <span className="text-xs font-bold text-stone-500">xs</span>
             <div className="w-50">
               <RangeSlider
                 min={0}
@@ -163,16 +164,16 @@ export default function DrillsPage() {
                 onInput={(vals) => setRangeIdx(vals as [number, number])}
               />
             </div>
-            <span className="text-xs font-bold text-gray-500">lg</span>
+            <span className="text-xs font-bold text-stone-500">lg</span>
           </div>
         </div>
         <div className="mt-10 mb-4 flex items-center justify-between">
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-stone-500">
             {`Showing ${drills.length} result${drills.length === 1 ? '' : 's'}`}
           </div>
           <button
             onClick={() => setShowFilters(true)}
-            className="flex items-center gap-2 text-sm text-gray-400 hover:text-white"
+            className="flex items-center gap-2 text-sm text-stone-400 hover:text-white"
           >
             <SlidersHorizontal className="h-4 w-4" />
             Filters

@@ -28,7 +28,7 @@ export default function GameList({
   });
 
   if (!filtered.length) {
-    return <p className="text-center text-gray-400">No games found.</p>;
+    return <p className="text-center text-stone-400">No games found.</p>;
   }
 
   return (

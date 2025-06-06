@@ -97,7 +97,7 @@ export default function DrillBanner({
           </div>
           <button
             onClick={onNext}
-            className="inline-flex items-center self-end rounded-md bg-gray-600 px-2 py-1 text-xs font-medium text-gray-400 hover:bg-gray-700"
+            className="inline-flex items-center self-end rounded-md bg-stone-600 px-2 py-1 text-xs font-medium text-stone-400 hover:bg-stone-700"
           >
             Skip Drill
             <SkipForward className="ml-1 inline-flex h-3 w-3" />

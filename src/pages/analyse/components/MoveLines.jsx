@@ -1,6 +1,6 @@
 export default function MoveLines({ lines, currentDepth: _currentDepth }) {
   return (
-    <div className="rounded bg-gray-800 p-2">
+    <div className="rounded bg-stone-800 p-2">
       <div className="space-y-1">
         {lines
           .filter((l) => l.moves.length > 0)
@@ -28,15 +28,15 @@ export default function MoveLines({ lines, currentDepth: _currentDepth }) {
             return (
               <div
                 key={l.rank}
-                className="no-scrollbar flex overflow-x-auto text-sm whitespace-nowrap text-gray-200"
+                className="no-scrollbar flex overflow-x-auto text-sm whitespace-nowrap text-stone-200"
               >
-                <span className="min-w-[2rem] shrink-0 font-semibold text-gray-500">
+                <span className="min-w-[2rem] shrink-0 font-semibold text-stone-500">
                   #{l.rank}
                 </span>
-                <span className="flex-1 truncate text-gray-400">
+                <span className="flex-1 truncate text-stone-400">
                   {l.moves.join(' → ')}
                 </span>
-                <span className="ml-2 shrink-0 text-gray-400">
+                <span className="ml-2 shrink-0 text-stone-400">
                   <b className={`${pillClasses} rounded px-1`}>{display}</b>
                 </span>
               </div>

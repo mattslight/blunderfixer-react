@@ -129,7 +129,7 @@ export default function BoardAndEval({
 
       {/* 4) Engine continuation lines */}
       <div className="w-full max-w-lg">
-        <div className="flex flex-row items-center justify-between text-sm text-gray-400">
+        <div className="flex flex-row items-center justify-between text-sm text-stone-400">
           <div>
             <ToggleSwitch
               checked={moveListViewMode === 'advanced'}
@@ -141,7 +141,7 @@ export default function BoardAndEval({
               label="Full lines"
             />
           </div>
-          <div className="text-xs text-gray-500">
+          <div className="text-xs text-stone-500">
             (<i>depth {currentDepth}</i>)
           </div>
         </div>

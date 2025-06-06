@@ -28,7 +28,7 @@ export default function Tabs({
 
   return (
     <div
-      className={`relative border-b border-gray-700 text-sm text-gray-400 ${className}`.trim()}
+      className={`relative border-b border-stone-700 text-sm text-stone-400 ${className}`.trim()}
     >
       <div className="flex space-x-8">
         {labels.map((label, idx) => (
@@ -39,7 +39,7 @@ export default function Tabs({
             }}
             onClick={() => onChange(idx)}
             className={`pb-3 tracking-wide transition-colors ${
-              activeIndex === idx ? 'text-white' : 'hover:text-gray-300'
+              activeIndex === idx ? 'text-white' : 'hover:text-stone-300'
             }`}
           >
             {label}

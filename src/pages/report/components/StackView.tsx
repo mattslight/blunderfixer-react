@@ -77,7 +77,9 @@ export default function StackView({
   useEffect(() => () => cancelAnimationFrame(frameRef.current), []);
 
   if (!entries.length) {
-    return <div className="text-center text-gray-500">No moves to display</div>;
+    return (
+      <div className="text-center text-stone-500">No moves to display</div>
+    );
   }
 
   // simple step handlers

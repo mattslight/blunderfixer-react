@@ -59,7 +59,7 @@ export default function Navbar({ toggleSidebar }) {
               href="/"
               className="mr-4 flex items-center justify-between rounded p-1 backdrop-blur"
             >
-              <span className="self-center text-lg font-black whitespace-nowrap dark:text-gray-200">
+              <span className="self-center text-lg font-black whitespace-nowrap dark:text-stone-200">
                 <img
                   src={blunderLogoSvg}
                   className="mr-2 mb-0.5 ml-2 inline-flex h-8 w-8"
@@ -75,7 +75,7 @@ export default function Navbar({ toggleSidebar }) {
             <button
               type="button"
               data-dropdown-toggle="notification-dropdown"
-              className="mr-1 rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:ring-4 focus:ring-gray-300 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-600"
+              className="mr-1 rounded-lg p-2 text-stone-500 hover:bg-stone-100 hover:text-stone-900 focus:ring-4 focus:ring-stone-300 dark:text-stone-400 dark:hover:bg-stone-700 dark:hover:text-white dark:focus:ring-stone-600"
             >
               <span className="sr-only">View notifications</span>
               {/* Bell icon */}
@@ -92,16 +92,16 @@ export default function Navbar({ toggleSidebar }) {
           )}
           {/* Dropdown menu */}
           {/* <div
-            className="z-50 my-4 hidden max-w-sm list-none divide-y divide-gray-100 overflow-hidden rounded rounded-xl bg-white text-base shadow-lg dark:divide-gray-600 dark:bg-gray-700"
+            className="z-50 my-4 hidden max-w-sm list-none divide-y divide-stone-100 overflow-hidden rounded rounded-xl bg-white text-base shadow-lg dark:divide-stone-600 dark:bg-stone-700"
             id="notification-dropdown"
           >
-            <div className="block bg-gray-50 px-4 py-2 text-center text-base font-medium text-gray-700 dark:bg-gray-600 dark:text-gray-300">
+            <div className="block bg-stone-50 px-4 py-2 text-center text-base font-medium text-stone-700 dark:bg-stone-600 dark:text-stone-300">
               Notifications
             </div>
             <div>
               <a
                 href="#"
-                className="flex border-b px-4 py-3 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
+                className="flex border-b px-4 py-3 hover:bg-stone-100 dark:border-stone-600 dark:hover:bg-stone-600"
               >
                 <div className="flex-shrink-0">
                   <img
@@ -109,7 +109,7 @@ export default function Navbar({ toggleSidebar }) {
                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png"
                     alt="Bonnie Green avatar"
                   />
-                  <div className="bg-primary-700 absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white dark:border-gray-700">
+                  <div className="bg-primary-700 absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white dark:border-stone-700">
                     <svg
                       aria-hidden="true"
                       className="h-3 w-3 text-white"
@@ -123,9 +123,9 @@ export default function Navbar({ toggleSidebar }) {
                   </div>
                 </div>
                 <div className="w-full pl-3">
-                  <div className="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
+                  <div className="mb-1.5 text-sm font-normal text-stone-500 dark:text-stone-400">
                     New message from
-                    <span className="font-semibold text-gray-900 dark:text-white">
+                    <span className="font-semibold text-stone-900 dark:text-white">
                       Bonnie Green
                     </span>
                     : {`"Hey, what's up? All set for the presentation?"`}
@@ -137,7 +137,7 @@ export default function Navbar({ toggleSidebar }) {
               </a>
               <a
                 href="#"
-                className="flex border-b px-4 py-3 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
+                className="flex border-b px-4 py-3 hover:bg-stone-100 dark:border-stone-600 dark:hover:bg-stone-600"
               >
                 <div className="flex-shrink-0">
                   <img
@@ -145,7 +145,7 @@ export default function Navbar({ toggleSidebar }) {
                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
                     alt="Jese Leos avatar"
                   />
-                  <div className="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-gray-900 dark:border-gray-700">
+                  <div className="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-stone-900 dark:border-stone-700">
                     <svg
                       aria-hidden="true"
                       className="h-3 w-3 text-white"
@@ -158,12 +158,12 @@ export default function Navbar({ toggleSidebar }) {
                   </div>
                 </div>
                 <div className="w-full pl-3">
-                  <div className="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
-                    <span className="font-semibold text-gray-900 dark:text-white">
+                  <div className="mb-1.5 text-sm font-normal text-stone-500 dark:text-stone-400">
+                    <span className="font-semibold text-stone-900 dark:text-white">
                       Jese leos
                     </span>
                     and
-                    <span className="font-medium text-gray-900 dark:text-white">
+                    <span className="font-medium text-stone-900 dark:text-white">
                       5 others
                     </span>
                     started following you.
@@ -175,7 +175,7 @@ export default function Navbar({ toggleSidebar }) {
               </a>
               <a
                 href="#"
-                className="flex border-b px-4 py-3 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
+                className="flex border-b px-4 py-3 hover:bg-stone-100 dark:border-stone-600 dark:hover:bg-stone-600"
               >
                 <div className="flex-shrink-0">
                   <img
@@ -183,7 +183,7 @@ export default function Navbar({ toggleSidebar }) {
                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png"
                     alt="Joseph McFall avatar"
                   />
-                  <div className="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-red-600 dark:border-gray-700">
+                  <div className="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-red-600 dark:border-stone-700">
                     <svg
                       aria-hidden="true"
                       className="h-3 w-3 text-white"
@@ -200,12 +200,12 @@ export default function Navbar({ toggleSidebar }) {
                   </div>
                 </div>
                 <div className="w-full pl-3">
-                  <div className="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
-                    <span className="font-semibold text-gray-900 dark:text-white">
+                  <div className="mb-1.5 text-sm font-normal text-stone-500 dark:text-stone-400">
+                    <span className="font-semibold text-stone-900 dark:text-white">
                       Joseph Mcfall
                     </span>
                     and
-                    <span className="font-medium text-gray-900 dark:text-white">
+                    <span className="font-medium text-stone-900 dark:text-white">
                       141 others
                     </span>
                     love your story. See it and view more stories.
@@ -217,7 +217,7 @@ export default function Navbar({ toggleSidebar }) {
               </a>
               <a
                 href="#"
-                className="flex border-b px-4 py-3 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-600"
+                className="flex border-b px-4 py-3 hover:bg-stone-100 dark:border-stone-600 dark:hover:bg-stone-600"
               >
                 <div className="flex-shrink-0">
                   <img
@@ -225,7 +225,7 @@ export default function Navbar({ toggleSidebar }) {
                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/roberta-casas.png"
                     alt="Roberta Casas image"
                   />
-                  <div className="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-green-400 dark:border-gray-700">
+                  <div className="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-green-400 dark:border-stone-700">
                     <svg
                       aria-hidden="true"
                       className="h-3 w-3 text-white"
@@ -242,8 +242,8 @@ export default function Navbar({ toggleSidebar }) {
                   </div>
                 </div>
                 <div className="w-full pl-3">
-                  <div className="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
-                    <span className="font-semibold text-gray-900 dark:text-white">
+                  <div className="mb-1.5 text-sm font-normal text-stone-500 dark:text-stone-400">
+                    <span className="font-semibold text-stone-900 dark:text-white">
                       Leslie Livingston
                     </span>
                     mentioned you in a comment:
@@ -259,7 +259,7 @@ export default function Navbar({ toggleSidebar }) {
               </a>
               <a
                 href="#"
-                className="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600"
+                className="flex px-4 py-3 hover:bg-stone-100 dark:hover:bg-stone-600"
               >
                 <div className="flex-shrink-0">
                   <img
@@ -267,7 +267,7 @@ export default function Navbar({ toggleSidebar }) {
                     src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/robert-brown.png"
                     alt="Robert image"
                   />
-                  <div className="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-purple-500 dark:border-gray-700">
+                  <div className="absolute -mt-5 ml-6 flex h-5 w-5 items-center justify-center rounded-full border border-white bg-purple-500 dark:border-stone-700">
                     <svg
                       aria-hidden="true"
                       className="h-3 w-3 text-white"
@@ -280,8 +280,8 @@ export default function Navbar({ toggleSidebar }) {
                   </div>
                 </div>
                 <div className="w-full pl-3">
-                  <div className="mb-1.5 text-sm font-normal text-gray-500 dark:text-gray-400">
-                    <span className="font-semibold text-gray-900 dark:text-white">
+                  <div className="mb-1.5 text-sm font-normal text-stone-500 dark:text-stone-400">
+                    <span className="font-semibold text-stone-900 dark:text-white">
                       Robert Brown
                     </span>
                     posted a new video: Glassmorphism - learn how to implement
@@ -295,12 +295,12 @@ export default function Navbar({ toggleSidebar }) {
             </div>
             <a
               href="#"
-              className="text-md block bg-gray-50 py-2 text-center font-medium text-gray-900 hover:bg-gray-100 dark:bg-gray-600 dark:text-white dark:hover:underline"
+              className="text-md block bg-stone-50 py-2 text-center font-medium text-stone-900 hover:bg-stone-100 dark:bg-stone-600 dark:text-white dark:hover:underline"
             >
               <div className="inline-flex items-center">
                 <svg
                   aria-hidden="true"
-                  className="mr-2 h-4 w-4 text-gray-500 dark:text-gray-400"
+                  className="mr-2 h-4 w-4 text-stone-500 dark:text-stone-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"

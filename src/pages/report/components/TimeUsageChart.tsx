@@ -96,22 +96,22 @@ export default function TimeUsageChart({
     <>
       {/* mode toggle */}
       <div className="flex flex-col items-center">
-        <h3 className="mb-2 block text-center text-xs font-semibold tracking-wider text-gray-600 uppercase">
+        <h3 className="mb-2 block text-center text-xs font-semibold tracking-wider text-stone-600 uppercase">
           Time
         </h3>
         {/* mode toggle segmented control */}
         <div
           role="group"
           aria-label="Time Chart Mode"
-          className="mx-auto inline-flex overflow-hidden rounded-lg border border-gray-700"
+          className="mx-auto inline-flex overflow-hidden rounded-lg border border-stone-700"
         >
           <button
             onClick={() => setMode('burndown')}
             className={`block flex-1 cursor-pointer px-4 py-1.5 text-center text-xs font-semibold tracking-wider transition-colors focus:outline-none ${
               mode === 'burndown'
-                ? 'bg-gray-800 text-gray-400'
-                : 'bg-transparent text-gray-500'
-            } border-r border-gray-700`}
+                ? 'bg-stone-800 text-stone-400'
+                : 'bg-transparent text-stone-500'
+            } border-r border-stone-700`}
           >
             burndown
           </button>
@@ -119,8 +119,8 @@ export default function TimeUsageChart({
             onClick={() => setMode('per-move')}
             className={`block flex-1 cursor-pointer px-4 py-1.5 text-center text-xs font-semibold tracking-wider transition-colors focus:outline-none ${
               mode === 'per-move'
-                ? 'bg-gray-800 text-gray-400'
-                : 'bg-transparent text-gray-500'
+                ? 'bg-stone-800 text-stone-400'
+                : 'bg-transparent text-stone-500'
             }`}
           >
             per-move
@@ -168,7 +168,7 @@ export default function TimeUsageChart({
 
                   return (
                     <div
-                      className="rounded bg-gray-800 p-2 text-white"
+                      className="rounded bg-stone-800 p-2 text-white"
                       style={{ pointerEvents: 'none' }}
                     >
                       <div className="font-semibold">{`Ply ${ply}`}</div>
@@ -257,7 +257,7 @@ export default function TimeUsageChart({
       </div>
 
       {/* legend */}
-      <div className="-mt-8 mb-16 flex justify-center text-xs font-semibold text-gray-500">
+      <div className="-mt-8 mb-16 flex justify-center text-xs font-semibold text-stone-500">
         <span className="mr-2 flex items-center">
           <span
             className={`mr-1 h-2 w-2 rounded-full ${GRAPH_COLOURS.hero.twClass}`}

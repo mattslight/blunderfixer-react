@@ -30,7 +30,7 @@ export const DOT_COLOR: Record<Severity, string> = {
   inaccuracy: 'bg-yellow-500',
   timeImpulsive: 'bg-cyan-500',
   timeOveruse: 'bg-purple-600',
-  none: 'bg-gray-800',
+  none: 'bg-stone-800',
 };
 export const TIME_TEXT_COLOR: Record<
   'timeImpulsive' | 'timeOveruse' | 'none',
@@ -38,7 +38,7 @@ export const TIME_TEXT_COLOR: Record<
 > = {
   timeImpulsive: 'text-cyan-400',
   timeOveruse: 'text-purple-400',
-  none: 'text-gray-300',
+  none: 'text-stone-300',
 };
 export const TEXT_SEVERITY_COLOR: Record<
   'blunder' | 'mistake' | 'inaccuracy' | 'none',
@@ -47,7 +47,7 @@ export const TEXT_SEVERITY_COLOR: Record<
   blunder: 'text-red-500',
   mistake: 'text-orange-500',
   inaccuracy: 'text-yellow-400',
-  none: 'text-gray-600',
+  none: 'text-stone-600',
 };
 
 /**
@@ -157,11 +157,11 @@ export function getTimeRemainingClass(
   secondsRemaining: number,
   timeControl: number
 ): string {
-  if (!timeControl) return 'text-gray-600';
+  if (!timeControl) return 'text-stone-600';
 
   const pct = secondsRemaining / timeControl;
 
   if (pct < 0.05) return 'text-red-700';
   if (pct < 0.1) return 'text-yellow-500';
-  else return 'text-gray-600';
+  else return 'text-stone-600';
 }
