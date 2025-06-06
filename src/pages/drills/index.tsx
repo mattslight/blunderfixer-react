@@ -164,7 +164,7 @@ export default function DrillsPage() {
           </div>
         </div>
         <div className="mt-10 mb-4 flex items-center justify-between">
-          <div className="text-sm text-gray-500 sm:text-base">
+          <div className="text-sm text-gray-500">
             {`Showing ${drills.length} result${drills.length === 1 ? '' : 's'}`}
           </div>
           <button
