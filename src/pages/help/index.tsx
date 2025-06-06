@@ -40,9 +40,9 @@ function FAQItem({
         className="flex w-full items-center justify-between text-left"
         onClick={() => setOpen(!open)}
       >
-        <span className="flex items-start gap-2 text-sm font-semibold text-white">
+        <span className="flex items-start gap-2 text-base font-semibold text-white">
           <span className="pt-[2px]">
-            <Icon className="h-4 w-4 shrink-0 text-green-400" />
+            <Icon className="h-5 w-5 shrink-0 text-green-400" />
           </span>
           <span className="leading-[1.3]">{question}</span>
         </span>
