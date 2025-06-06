@@ -9,5 +9,5 @@ export default function PreSignupGuard({ children }: Props) {
   const {
     profile: { username },
   } = useProfile();
-  return username ? <Navigate to="/games" replace /> : children;
+  return username ? <Navigate to="/insights" replace /> : children;
 }

@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import {
   Bar,
@@ -19,7 +21,7 @@ import {
   YAxis,
 } from 'recharts';
 
-import NextDrillStack from './components/NextDrillStack';
+import NextDrillCarousel from './components/NextDrillCarousel';
 
 import { useProfile } from '@/hooks/useProfile';
 import { parseChessComGame } from '@/lib/chessComParser';
@@ -59,11 +61,13 @@ function WinRateDial({
   );
 }
 
-export default function InsightsPage() {
+export default function HomeScreen() {
   const navigate = useNavigate();
   const {
     profile: { username },
   } = useProfile();
+  const [showCharts, setShowCharts] = useState(false);
+  const [showGames, setShowGames] = useState(false);
 
   const { drills, loading: loadingDrills } = useRecentDrills(username, {
     limit: 3,
@@ -77,6 +81,40 @@ export default function InsightsPage() {
 
   const games = Array.isArray(rawGames) ? rawGames.map(parseChessComGame) : [];
   const recentGameId = games[0]?.id;
+
+  const showEmpty =
+    !games.length && !drills.length && !loadingDrills && !loadingGames;
+
+  if (showEmpty) {
+    return (
+      <div className="p-4 pt-8 2xl:ml-12">
+        <div className="mx-auto mt-20 max-w-md space-y-6 text-center">
+          <h1 className="text-2xl font-bold text-gray-100">
+            Welcome{username ? `, ${username}` : ''}!
+          </h1>
+          <p className="text-gray-400">
+            Get started by importing a game or taking a quick drill.
+          </p>
+          <div className="space-y-4">
+            <button
+              onClick={() => navigate('/games')}
+              className="w-full rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+            >
+              Import Your First Game
+            </button>
+            <p className="text-xs text-gray-400">Pull from Chess.com or upload PGN</p>
+            <button
+              onClick={() => navigate('/drills')}
+              className="w-full rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+            >
+              Take Your First Drill
+            </button>
+            <p className="text-xs text-gray-400">Practice a sample blunder in 60s</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const acplData = [
     { phase: 'Opening', acpl: 32 },
@@ -135,29 +173,47 @@ export default function InsightsPage() {
           <div className="rounded bg-gray-800 p-4 text-center">
             <p className="text-2xl font-semibold text-blue-400">123</p>
             <p className="text-sm text-gray-300">Blunders Fixed</p>
+            <p className="mt-1 text-xs text-gray-400">Mistakes you corrected</p>
           </div>
           <div className="rounded bg-gray-800 p-4 text-center">
             <p className="text-2xl font-semibold text-green-400">64%</p>
             <p className="text-sm text-gray-300">Tactic Accuracy</p>
+            <p className="mt-1 text-xs text-gray-400">Top-engine moves chosen</p>
           </div>
           <div className="rounded bg-gray-800 p-4 text-center">
             <p className="text-2xl font-semibold text-purple-400">75%</p>
             <p className="text-sm text-gray-300">Winning Openings</p>
+            <p className="mt-1 text-xs text-gray-400">Wins from your openings</p>
           </div>
           <div className="rounded bg-gray-800 p-4 text-center">
             <p className="text-2xl font-semibold text-fuchsia-400">48%</p>
             <p className="text-sm text-gray-300">Endgame Wins</p>
+            <p className="mt-1 text-xs text-gray-400">Games converted late</p>
           </div>
-          <div className="flex items-center justify-center rounded bg-gray-800 p-4">
+          <div className="flex flex-col items-center justify-center rounded bg-gray-800 p-4">
             <WinRateDial rate={58} color="#fbbf24" label="White Win %" />
+            <p className="mt-1 text-xs text-gray-400">Wins as White</p>
           </div>
-          <div className="flex items-center justify-center rounded bg-gray-800 p-4">
+          <div className="flex flex-col items-center justify-center rounded bg-gray-800 p-4">
             <WinRateDial rate={42} color="#818cf8" label="Black Win %" />
+            <p className="mt-1 text-xs text-gray-400">Wins as Black</p>
           </div>
         </section>
 
         {/* Charts */}
-        <section className="grid gap-8 md:grid-cols-2">
+        <div className="mb-2 flex justify-end">
+          <button
+            className="flex items-center text-sm text-blue-400 hover:underline"
+            onClick={() => setShowCharts((v) => !v)}
+          >
+            {showCharts ? 'Hide Charts' : 'More Charts'}
+            <ChevronDown
+              className={`ml-1 h-4 w-4 transition-transform ${showCharts ? 'rotate-180' : ''}`}
+            />
+          </button>
+        </div>
+        {showCharts && (
+          <section className="grid gap-8 md:grid-cols-2">
           <div>
             <h2 className="mb-4 text-xl font-semibold text-gray-100">
               Strength by Opening
@@ -243,6 +299,7 @@ export default function InsightsPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* Next Drills */}
         <section>
@@ -258,7 +315,7 @@ export default function InsightsPage() {
           {loadingDrills ? (
             <p className="mt-4 text-center text-gray-500">Loading…</p>
           ) : (
-            <NextDrillStack
+            <NextDrillCarousel
               drills={drills}
               onStart={(id) => navigate(`/drills/play/${id}`)}
             />
@@ -266,37 +323,50 @@ export default function InsightsPage() {
         </section>
 
         {/* Recent Games */}
-        <section>
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-gray-100">
-              Recent Games
-            </h2>
-            <button
-              className="text-sm text-blue-500 hover:underline"
-              onClick={() => navigate('/games')}
-            >
-              View all
-            </button>
-          </div>
-          {recentGameId && (
-            <div className="mb-4">
-              <button
-                onClick={() => navigate(`/report/${recentGameId}`)}
-                className="rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
-              >
-                Analyse Latest Game
-              </button>
-            </div>
-          )}
-          <GameList
-            games={games}
-            hero={username}
-            isAnalysed={() => false}
-            isLoading={() => loadingGames}
-            onAction={(g) => navigate(`/report/${g.id}`)}
-          />
-        </section>
+        <div className="mb-2 flex justify-between">
+          <button
+            className="flex items-center text-sm text-blue-400 hover:underline"
+            onClick={() => setShowGames((v) => !v)}
+          >
+            Recent Games
+            <ChevronDown
+              className={`ml-1 h-4 w-4 transition-transform ${showGames ? 'rotate-180' : ''}`}
+            />
+          </button>
+          <span className="text-xs text-gray-400">{games.length}</span>
+        </div>
+        {showGames && (
+          <section>
+            {recentGameId && (
+              <div className="mb-4">
+                <button
+                  onClick={() => navigate(`/report/${recentGameId}`)}
+                  className="rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+                >
+                  Analyse Latest Game
+                </button>
+              </div>
+            )}
+            <GameList
+              games={games}
+              hero={username}
+              isAnalysed={() => false}
+              isLoading={() => loadingGames}
+              onAction={(g) => navigate(`/report/${g.id}`)}
+            />
+          </section>
+        )}
       </div>
+    </div>
+    <div className="pointer-events-none fixed inset-x-0 bottom-4 flex justify-center">
+      <button
+        onClick={() =>
+          navigate(nextDrillId ? `/drills/play/${nextDrillId}` : '/drills')
+        }
+        className="pointer-events-auto rounded bg-green-600 px-5 py-3 text-sm font-semibold text-white shadow-lg hover:bg-green-700"
+      >
+        Start Next Drill
+      </button>
     </div>
   );
 }
