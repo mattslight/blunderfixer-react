@@ -1,6 +1,6 @@
 // src/pages/DrillsPage.tsx
 
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import { useNavigate } from 'react-router-dom';
 import { Badge, TextInput } from 'flowbite-react';
@@ -8,7 +8,9 @@ import { RefreshCw, SlidersHorizontal } from 'lucide-react';
 
 import DrillList from './components/DrillList';
 import FilterModal from './components/FilterModal';
+import RecentDrillList from './components/RecentDrillList';
 import { useDrills } from './hooks/useDrills';
+import { useRecentDrills } from './hooks/useRecentDrills';
 import {
   buildDrillFilters,
   PhaseFilter,
@@ -16,6 +18,7 @@ import {
 } from './utils/filters';
 import 'react-range-slider-input/dist/style.css';
 
+import Tabs from '@/components/Tabs';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useProfile } from '@/hooks/useProfile';
 import { useStickyValue } from '@/hooks/useStickyValue';
@@ -49,10 +52,15 @@ function ToggleSwitch({ checked, onChange }) {
 export default function DrillsPage() {
   const navigate = useNavigate();
 
+  const [tabIndex, setTabIndex] = useState(0);
+
   // profile
   const {
     profile: { username },
   } = useProfile();
+
+  const { drills: recentDrills, loading: recentLoading } =
+    useRecentDrills(username);
 
   // UI state
   const [phaseFilter, setPhaseFilter] = useStickyValue<Phase>(
@@ -102,132 +110,107 @@ export default function DrillsPage() {
   return (
     <div className="p-4 pt-8 2xl:ml-12">
       <div className="mx-auto max-w-2xl space-y-4">
-        <TabGroup />
-        {/* Controls */}
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          {/* Phase badges */}
-          <div className="flex flex-wrap items-center gap-2 text-gray-300">
-            {PHASES.map((p) => (
-              <Badge
-                key={p}
-                onClick={() => setPhaseFilter(p)}
-                className={`cursor-pointer rounded border-1 border-gray-800 px-2.5 py-2 text-xs capitalize ${
-                  phaseFilter === p && PHASE_COLORS[p]
-                }`}
+        <Tabs
+          labels={TABS}
+          activeIndex={tabIndex}
+          onChange={setTabIndex}
+          className="mb-12"
+        />
+        {tabIndex === 0 && (
+          <>
+            {/* Controls */}
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              {/* Phase badges */}
+              <div className="flex flex-wrap items-center gap-2 text-gray-300">
+                {PHASES.map((p) => (
+                  <Badge
+                    key={p}
+                    onClick={() => setPhaseFilter(p)}
+                    className={`cursor-pointer rounded border-1 border-gray-800 px-2.5 py-2 text-xs capitalize ${
+                      phaseFilter === p && PHASE_COLORS[p]
+                    }`}
+                  >
+                    {p}
+                  </Badge>
+                ))}
+              </div>
+              {/* Refresh */}
+              <button
+                onClick={refresh}
+                disabled={loading}
+                className="xs:inline-flex hidden items-center rounded-full bg-gray-800 px-3 py-1 text-xs text-gray-300 hover:bg-gray-700 disabled:opacity-50"
               >
-                {p}
-              </Badge>
-            ))}
-          </div>
-          {/* Refresh */}
-          <button
-            onClick={refresh}
-            disabled={loading}
-            className="xs:inline-flex hidden items-center rounded-full bg-gray-800 px-3 py-1 text-xs text-gray-300 hover:bg-gray-700 disabled:opacity-50"
-          >
-            <RefreshCw className="h-4 w-4" />
-            <span className="xs:block ml-2 hidden">Refresh</span>
-          </button>
-        </div>
-        <div className="mt-2 flex flex-wrap items-center justify-between gap-4">
-          {/* Search */}
-          <TextInput
-            placeholder="Search opponent"
-            value={search}
-            onChange={(e) => setSearch(e.currentTarget.value)}
-            className="min-w-40 flex-1"
-          />
-
-          {/* Discrete slider: left = hardest, right = All */}
-          <div className="flex items-baseline space-x-2 py-2">
-            <span className="mr-4 text-sm font-medium text-gray-300">
-              Blunder Size
-            </span>
-            <span className="text-xs font-bold text-gray-500">xs</span>
-            <div className="w-50">
-              <RangeSlider
-                min={0}
-                max={THRESHOLD_OPTIONS.length - 1}
-                step={1}
-                value={rangeIdx}
-                onInput={(vals) => setRangeIdx(vals as [number, number])}
-              />
+                <RefreshCw className="h-4 w-4" />
+                <span className="xs:block ml-2 hidden">Refresh</span>
+              </button>
             </div>
-            <span className="text-xs font-bold text-gray-500">lg</span>
-          </div>
-        </div>
-        <div className="mt-10 flex items-center justify-between">
-          <div className="text-sm text-gray-400 sm:text-base">
-            {`Showing ${drills.length} result${drills.length === 1 ? '' : 's'}`}
-          </div>
-          <button
-            onClick={() => setShowFilters(true)}
-            className="flex items-center gap-2 text-sm text-gray-400 hover:text-white"
-          >
-            <SlidersHorizontal className="h-4 w-4" />
-            Filters
-          </button>
-        </div>
-        <FilterModal
-          show={showFilters}
-          onClose={() => setShowFilters(false)}
-          excludeWins={excludeWins}
-          setExcludeWins={setExcludeWins}
-          includeArchived={includeArchived}
-          setIncludeArchived={setIncludeArchived}
-          includeMastered={includeMastered}
-          setIncludeMastered={setIncludeMastered}
-          ToggleSwitch={ToggleSwitch}
-        />
-        {/* List */}
-        <DrillList
-          drills={drills}
-          loading={loading}
-          onStartDrill={(id) => navigate(`/drills/play/${id}`)}
-        />
+            <div className="mt-2 flex flex-wrap items-center justify-between gap-4">
+              {/* Search */}
+              <TextInput
+                placeholder="Search opponent"
+                value={search}
+                onChange={(e) => setSearch(e.currentTarget.value)}
+                className="min-w-40 flex-1"
+              />
+
+              {/* Discrete slider: left = hardest, right = All */}
+              <div className="flex items-baseline space-x-2 py-2">
+                <span className="mr-4 text-sm font-medium text-gray-300">
+                  Blunder Size
+                </span>
+                <span className="text-xs font-bold text-gray-500">xs</span>
+                <div className="w-50">
+                  <RangeSlider
+                    min={0}
+                    max={THRESHOLD_OPTIONS.length - 1}
+                    step={1}
+                    value={rangeIdx}
+                    onInput={(vals) => setRangeIdx(vals as [number, number])}
+                  />
+                </div>
+                <span className="text-xs font-bold text-gray-500">lg</span>
+              </div>
+            </div>
+            <div className="mt-10 flex items-center justify-between">
+              <div className="text-sm text-gray-400 sm:text-base">
+                {`Showing ${drills.length} result${drills.length === 1 ? '' : 's'}`}
+              </div>
+              <button
+                onClick={() => setShowFilters(true)}
+                className="flex items-center gap-2 text-sm text-gray-400 hover:text-white"
+              >
+                <SlidersHorizontal className="h-4 w-4" />
+                Filters
+              </button>
+            </div>
+            <FilterModal
+              show={showFilters}
+              onClose={() => setShowFilters(false)}
+              excludeWins={excludeWins}
+              setExcludeWins={setExcludeWins}
+              includeArchived={includeArchived}
+              setIncludeArchived={setIncludeArchived}
+              includeMastered={includeMastered}
+              setIncludeMastered={setIncludeMastered}
+              ToggleSwitch={ToggleSwitch}
+            />
+            {/* List */}
+            <DrillList
+              drills={drills}
+              loading={loading}
+              onStartDrill={(id) => navigate(`/drills/play/${id}`)}
+            />
+          </>
+        )}
+        {tabIndex === 1 && (
+          <RecentDrillList
+            drills={recentDrills}
+            loading={recentLoading}
+            onPlay={(id) => navigate(`/drills/play/${id}`)}
+          />
+        )}
       </div>
     </div>
   );
 }
-const TABS = ['New Drills', 'History', 'Mastered', 'Archived'];
-
-export function TabGroup() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0 });
-
-  useEffect(() => {
-    const current = tabRefs.current[activeIndex];
-    if (current) {
-      setUnderlineStyle({
-        left: current.offsetLeft,
-        width: current.offsetWidth,
-      });
-    }
-  }, [activeIndex]);
-
-  return (
-    <div className="relative mb-12 border-b border-gray-700 text-sm text-gray-400">
-      <div className="flex space-x-8">
-        {TABS.map((label, idx) => (
-          <button
-            key={label}
-            ref={(el) => {
-              tabRefs.current[idx] = el;
-            }}
-            onClick={() => setActiveIndex(idx)}
-            className={`pb-3 tracking-wide transition-colors ${
-              activeIndex === idx ? 'text-white' : 'hover:text-gray-300'
-            }`}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-      <span
-        className="absolute bottom-0 block h-0.5 bg-blue-500 transition-all duration-300"
-        style={underlineStyle}
-      />
-    </div>
-  );
-}
+const TABS = ['New Drills', 'History'];

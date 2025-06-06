@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Drawer } from 'flowbite-react';
 import { motion } from 'framer-motion';
-import { Clock } from 'lucide-react';
 
 import EasterEggCredits, { useRapidTaps } from './EasterEggCredits';
 
@@ -97,12 +96,6 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
     ),
   };
 
-  const recentDrillsNav = {
-    to: '/drills/recent',
-    label: 'Recent Drills',
-    Icon: Clock,
-  };
-
   const bottomNav = [
     {
       to: '/help',
@@ -182,13 +175,6 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
               to={drillsNav.to}
               label={drillsNav.label}
               Icon={drillsNav.Icon}
-            />
-          </li>
-          <li>
-            <LinkItem
-              to={recentDrillsNav.to}
-              label={recentDrillsNav.label}
-              Icon={recentDrillsNav.Icon}
             />
           </li>
         </ul>
