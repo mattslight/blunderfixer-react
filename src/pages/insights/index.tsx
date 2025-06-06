@@ -19,9 +19,10 @@ import {
   YAxis,
 } from 'recharts';
 
+import NextDrillStack from './components/NextDrillStack';
+
 import { useProfile } from '@/hooks/useProfile';
 import { parseChessComGame } from '@/lib/chessComParser';
-import RecentDrillList from '@/pages/drills/components/RecentDrillList';
 import { useRecentDrills } from '@/pages/drills/hooks/useRecentDrills';
 import GameList from '@/pages/games/components/GameList';
 import { useRecentGames } from '@/pages/games/hooks/useRecentGames';
@@ -72,7 +73,10 @@ export default function InsightsPage() {
     3
   );
 
+  const nextDrillId = drills[0]?.id;
+
   const games = Array.isArray(rawGames) ? rawGames.map(parseChessComGame) : [];
+  const recentGameId = games[0]?.id;
 
   const acplData = [
     { phase: 'Opening', acpl: 32 },
@@ -112,6 +116,18 @@ export default function InsightsPage() {
           <p className="text-sm text-gray-400">
             Here&#39;s your latest progress.
           </p>
+          <div className="mt-4">
+            <button
+              onClick={() =>
+                navigate(
+                  nextDrillId ? `/drills/play/${nextDrillId}` : '/drills'
+                )
+              }
+              className="rounded bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700"
+            >
+              Start Next Drill
+            </button>
+          </div>
         </header>
 
         {/* Stats */}
@@ -239,11 +255,14 @@ export default function InsightsPage() {
               View all
             </button>
           </div>
-          <RecentDrillList
-            drills={drills}
-            loading={loadingDrills}
-            onPlay={(id) => navigate(`/drills/play/${id}`)}
-          />
+          {loadingDrills ? (
+            <p className="mt-4 text-center text-gray-500">Loading…</p>
+          ) : (
+            <NextDrillStack
+              drills={drills}
+              onStart={(id) => navigate(`/drills/play/${id}`)}
+            />
+          )}
         </section>
 
         {/* Recent Games */}
@@ -259,6 +278,16 @@ export default function InsightsPage() {
               View all
             </button>
           </div>
+          {recentGameId && (
+            <div className="mb-4">
+              <button
+                onClick={() => navigate(`/report/${recentGameId}`)}
+                className="rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+              >
+                Analyse Latest Game
+              </button>
+            </div>
+          )}
           <GameList
             games={games}
             hero={username}
