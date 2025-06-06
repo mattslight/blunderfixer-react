@@ -1,16 +1,5 @@
 # TODO
 
-- recent drills remove from sidebar and find a better way to display Drill History
-
-[x] Ability to see recently drilled
-
-[x] check codex/propose-ux-for-recent-drills-feature to make sure only recent drills are shown (check api)
-[x] tidy up formatting of RecentDrillRow
-
-[ ] QA: Check order of drills
-[ ] BUG: Issue with status rapidly change and recording multiple histories
-[ ] Back to drill list
-
 [ ] When detecting drills somehow group similar positions - WIP
 
 [ ] Load new games and drills when logging in
@@ -22,6 +11,14 @@
 
 [ ] Homepage of my stats, recent games, recommended drills
 
+[ ] QA: Check order of drills
+
+[x] BUG: Issue with status rapidly change and recording multiple histories
+[x] Back to drill list
+[x] recent drills remove from sidebar and find a better way to display Drill History
+[x] Ability to see recently drilled
+[x] check codex/propose-ux-for-recent-drills-feature to make sure only recent drills are shown (check api)
+[x] tidy up formatting of RecentDrillRow
 [x] Mark drill as 'don't show me this again'
 [x] Once drill is completed, next drill
 [x] Play variable moves (not always best move) when useBotPlayer in drills is used so that it's not about memorising the same sequence of moves
