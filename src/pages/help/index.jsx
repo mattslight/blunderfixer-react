@@ -4,6 +4,9 @@ import {
   Brain,
   CheckCircle,
   ChevronDown,
+  Clock,
+  Timer,
+  TrendingUp,
   CloudOff,
   HelpCircle,
   Info,
@@ -103,6 +106,25 @@ export default function HelpPage() {
       >
         After each drill attempt we record whether you passed or failed. Green
         ticks show successful tries and grey crosses show misses. The dots fill
+      <FAQItem question="What does the burndown chart show?" icon={Timer}>
+        In the report you can toggle the Time graph to <em>burndown</em> mode.
+        It tracks how much clock time you and your opponent had left after each
+        move so you can spot spikes where you spent or saved a lot of time.
+      </FAQItem>
+
+      <FAQItem question="What does Eval Change mean?" icon={TrendingUp}>
+        Eval Change is the engine&apos;s score difference before and after the
+        move. A positive number with an up arrow means the position improved for
+        you, while a negative number shows it got worse.
+      </FAQItem>
+
+      <FAQItem question="What are the two time control issues?" icon={Clock}>
+        BlunderFixer flags <strong>Impulsive</strong> moves when you play far
+        too quickly and <strong>Overuse</strong> when you spend much more time
+        than the clock budget. They appear as cyan or purple dots in the move
+        list.
+      </FAQItem>
+
         up from left to right so you can quickly track recent progress.
       </FAQItem>
 
