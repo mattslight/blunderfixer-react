@@ -79,7 +79,7 @@ export default function DrillBanner({
   );
 
   return (
-    <div className="flex w-full flex-col items-center space-y-2 px-4 sm:p-0">
+    <div className="xs:p-0 flex w-full flex-col items-center space-y-2 px-4">
       {/* Drill Goal Banner (only show before result) */}
       {expectedResult && !drillResult && (
         <div className="flex w-full items-center justify-between rounded border border-indigo-500 bg-indigo-900 px-4 py-2 text-center text-indigo-200">
@@ -97,9 +97,10 @@ export default function DrillBanner({
           </div>
           <button
             onClick={onNext}
-            className="inline-flex items-center self-end rounded-md bg-gray-600 px-2 py-1 text-xs font-medium text-white hover:bg-gray-700"
+            className="inline-flex items-center self-end rounded-md bg-gray-600 px-2 py-1 text-xs font-medium text-gray-400 hover:bg-gray-700"
           >
-            Skip <SkipForward className="ml-1 inline-flex h-3 w-3" />
+            Skip Drill
+            <SkipForward className="ml-1 inline-flex h-3 w-3" />
           </button>
         </div>
       )}
@@ -132,7 +133,7 @@ export default function DrillBanner({
               onClick={onNext}
               className="inline-flex items-center self-end rounded-md bg-blue-600 px-2 py-1 text-xs font-medium text-white hover:bg-blue-700"
             >
-              Next{' '}
+              Skip{' '}
               <StepForward className="xs:inline-flex ml-1 hidden h-3 w-3" />
             </button>
           </span>
