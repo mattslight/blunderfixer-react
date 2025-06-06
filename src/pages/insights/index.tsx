@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronDown, Target } from 'lucide-react';
+import { ChevronDown, Play, Target } from 'lucide-react';
 import {
   Bar,
   BarChart,
@@ -118,7 +118,7 @@ export default function HomeScreen() {
 
   return (
     <>
-      <div className="p-4 pt-8 2xl:ml-12">
+      <div className="p-4 pt-16 2xl:ml-12">
         <div className="mx-auto max-w-3xl space-y-10">
           <header>
             <h1 className="text-4xl font-bold text-gray-100">
@@ -134,7 +134,8 @@ export default function HomeScreen() {
                 }
                 className="rounded bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700"
               >
-                Start Next Drill
+                Start Next Drill{' '}
+                <Play className="relative bottom-0.25 ml-1 inline h-4 w-4" />
               </button>
             </div>
           </header>
@@ -284,10 +285,11 @@ export default function HomeScreen() {
           )}
 
           {/* Next Drills */}
-          <section>
+          <section className="mt-14">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-stone-100">
-                <Target className="inline-flex" /> Next Drills
+              <h2 className="text-2xl font-semibold text-stone-100">
+                <Target className="relative bottom-0.25 mr-1 inline-flex" />{' '}
+                Next Drills
               </h2>
               <button
                 className="text-sm text-blue-500 hover:underline"
@@ -308,7 +310,7 @@ export default function HomeScreen() {
 
           {/* Recent Games */}
           <div className="mb-2 flex justify-between">
-            <h2 className="text-xl font-semibold text-stone-100">
+            <h2 className="text-2xl font-semibold text-stone-100">
               Recent Games
             </h2>
             <button
