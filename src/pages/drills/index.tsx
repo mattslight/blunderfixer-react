@@ -11,6 +11,7 @@ import FilterModal from './components/FilterModal';
 import RecentDrillList from './components/RecentDrillList';
 import { useDrills } from './hooks/useDrills';
 import { useRecentDrills } from './hooks/useRecentDrills';
+import { useMasteredDrills } from './hooks/useMasteredDrills';
 import {
   buildDrillFilters,
   PhaseFilter,
@@ -61,6 +62,8 @@ export default function DrillsPage() {
 
   const { drills: recentDrills, loading: recentLoading } =
     useRecentDrills(username);
+  const { drills: masteredDrills, loading: masteredLoading } =
+    useMasteredDrills(username);
 
   // UI state
   const [phaseFilter, setPhaseFilter] = useStickyValue<Phase>(
@@ -225,6 +228,17 @@ export default function DrillsPage() {
     [recentDrills, recentLoading]
   );
 
+  const masteredPanel = useMemo(
+    () => (
+      <RecentDrillList
+        drills={masteredDrills}
+        loading={masteredLoading}
+        onPlay={(id) => navigate(`/drills/play/${id}`)}
+      />
+    ),
+    [masteredDrills, masteredLoading]
+  );
+
   return (
     <div className="p-4 pt-8 2xl:ml-12">
       <div className="mx-auto max-w-2xl space-y-4">
@@ -236,8 +250,9 @@ export default function DrillsPage() {
         />
         <div className={tabIndex === 0 ? '' : 'hidden'}>{newDrillsPanel}</div>
         <div className={tabIndex === 1 ? '' : 'hidden'}>{historyPanel}</div>
+        <div className={tabIndex === 2 ? '' : 'hidden'}>{masteredPanel}</div>
       </div>
     </div>
   );
 }
-const TABS = ['New Drills', 'History'];
+const TABS = ['New Drills', 'History', 'Mastered'];

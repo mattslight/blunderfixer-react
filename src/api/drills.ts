@@ -77,6 +77,27 @@ export async function getRecentDrills({
   return res.json() as Promise<DrillPosition[]>;
 }
 
+export interface MasteredDrillOpts {
+  username: string;
+  limit?: number;
+  includeArchived?: boolean;
+}
+
+export async function getMasteredDrills({
+  username,
+  limit = 20,
+  includeArchived = false,
+}: MasteredDrillOpts) {
+  const params = new URLSearchParams({ username, limit: String(limit) });
+  if (includeArchived) params.append('include_archived', 'true');
+
+  const res = await fetch(`${BASE_URL}/drills/mastered?${params.toString()}`);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch mastered drills: ${res.status}`);
+  }
+  return res.json() as Promise<DrillPosition[]>;
+}
+
 // Fetch single drill by ID
 export async function getDrill(id: number) {
   const res = await fetch(`${BASE_URL}/drills/${id}`);
