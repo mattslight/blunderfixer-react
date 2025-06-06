@@ -52,7 +52,7 @@ function ToggleSwitch({ checked, onChange }) {
 export default function DrillsPage() {
   const navigate = useNavigate();
 
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useStickyValue('drillTabIndex', 0);
 
   // profile
   const {
