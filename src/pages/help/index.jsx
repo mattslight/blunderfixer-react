@@ -41,7 +41,7 @@ function FAQItem({
 
 export default function HelpPage() {
   return (
-    <div className="prose dark:prose-invert mx-auto max-w-3xl space-y-6 px-4 py-10">
+    <div className="prose dark:prose-invert mx-auto max-w-3xl space-y-8 px-6 py-12 md:py-16">
       <h1>Help &amp; FAQ</h1>
       <p>
         BlunderFixer helps you understand your chess mistakes and turn them into
@@ -108,6 +108,33 @@ export default function HelpPage() {
         Each drill expects you to either win, draw or hold a worse position. The
         banner at the top of a drill tells you the goal so you know what to aim
         for.
+      </FAQItem>
+
+      <FAQItem question="What is a mastered drill?" icon={CheckCircle}>
+        When you pass a drill five times in a row we mark it as{' '}
+        <strong>Mastered</strong>
+        and move it to your archive so you can focus on new mistakes. You can
+        still review mastered drills from the filter menu.
+      </FAQItem>
+
+      <FAQItem question="Can I see my archived drills?" icon={Info}>
+        Yes. On the Drills page open <em>Filters</em> and enable{' '}
+        <q>Show archived drills</q>
+        to browse positions you&apos;ve mastered or manually archived.
+      </FAQItem>
+
+      <FAQItem question="Can I see drills I've recently completed?" icon={Info}>
+        Absolutely! Tap <strong>Recent Drills</strong> from the Drills page to
+        revisit your latest attempts and retry any you want to reinforce.
+      </FAQItem>
+
+      <FAQItem
+        question="I want to understand why my move was wrong"
+        icon={HelpCircle}
+      >
+        A deeper analysis mode with coach explanations is in the works. Soon
+        you&apos;ll be able to analyse any move and chat with the coach about
+        alternative ideas.
       </FAQItem>
 
       <FAQItem question="Need more help?" icon={Info}>
