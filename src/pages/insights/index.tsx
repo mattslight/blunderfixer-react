@@ -285,7 +285,7 @@ export default function HomeScreen() {
           )}
 
           {/* Next Drills */}
-          <section className="mt-14">
+          <section className="mt-18">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-2xl font-semibold text-stone-100">
                 <Target className="relative bottom-0.25 mr-1 inline-flex" />{' '}
@@ -309,7 +309,7 @@ export default function HomeScreen() {
           </section>
 
           {/* Recent Games */}
-          <div className="mb-2 flex justify-between">
+          <div className="mt-18 mb-2 flex justify-between">
             <h2 className="text-2xl font-semibold text-stone-100">
               Recent Games
             </h2>

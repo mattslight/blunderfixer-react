@@ -74,7 +74,7 @@ export default function GamesHistoryPage() {
   };
 
   return (
-    <div className="p-4 pt-8 2xl:ml-12">
+    <div className="p-4 pt-16 2xl:ml-12">
       <div className="mx-auto max-w-lg space-y-4">
         <div className="flex items-baseline justify-between">
           <h2 className="text-2xl font-semibold text-stone-100">
