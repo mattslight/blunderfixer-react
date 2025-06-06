@@ -1,7 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import {
-  Bar,
-  BarChart,
+  Line,
+  LineChart,
+  PolarAngleAxis,
+  PolarGrid,
+  PolarRadiusAxis,
+  Radar,
+  RadarChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -31,18 +36,17 @@ export default function InsightsPage() {
 
   const games = Array.isArray(rawGames) ? rawGames.map(parseChessComGame) : [];
 
-  const phaseData = [
-    { phase: 'Opening', value: 68 },
-    { phase: 'Middle', value: 55 },
-    { phase: 'Late', value: 62 },
-    { phase: 'Endgame', value: 40 },
+  const acplData = [
+    { phase: 'Opening', acpl: 32 },
+    { phase: 'Middle', acpl: 47 },
+    { phase: 'Endgame', acpl: 28 },
   ];
 
   const ecoData = [
-    { eco: 'B20', value: 70 },
-    { eco: 'C50', value: 60 },
-    { eco: 'D30', value: 65 },
-    { eco: 'E60', value: 55 },
+    { eco: 'B20', score: 70 },
+    { eco: 'C50', score: 60 },
+    { eco: 'D30', score: 65 },
+    { eco: 'E60', score: 55 },
   ];
 
   return (
@@ -74,6 +78,52 @@ export default function InsightsPage() {
           <div className="rounded bg-gray-800 p-4 text-center">
             <p className="text-2xl font-semibold text-fuchsia-400">48%</p>
             <p className="text-sm text-gray-300">Endgame Wins</p>
+          </div>
+        </section>
+
+        {/* Charts */}
+        <section className="grid gap-8 md:grid-cols-2">
+          <div>
+            <h2 className="mb-4 text-xl font-semibold text-gray-100">
+              Strength by Opening
+            </h2>
+            <div className="h-60 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart data={ecoData}>
+                  <PolarGrid stroke="#444" />
+                  <PolarAngleAxis dataKey="eco" stroke="#888" />
+                  <PolarRadiusAxis stroke="#888" />
+                  <Radar
+                    dataKey="score"
+                    stroke="#60a5fa"
+                    fill="#60a5fa"
+                    fillOpacity={0.6}
+                  />
+                  <Tooltip />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="mb-4 text-xl font-semibold text-gray-100">
+              Average CP Loss by Phase
+            </h2>
+            <div className="h-60 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={acplData} margin={{ left: -20, right: 20 }}>
+                  <XAxis dataKey="phase" stroke="#888" />
+                  <YAxis stroke="#888" />
+                  <Tooltip />
+                  <Line
+                    type="monotone"
+                    dataKey="acpl"
+                    stroke="#a78bfa"
+                    strokeWidth={2}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </section>
 
@@ -115,40 +165,6 @@ export default function InsightsPage() {
             isLoading={() => loadingGames}
             onAction={(g) => navigate(`/report/${g.id}`)}
           />
-        </section>
-
-        {/* Strength by Opening */}
-        <section>
-          <h2 className="mb-4 text-xl font-semibold text-gray-100">
-            Strength by Opening
-          </h2>
-          <div className="h-48 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={ecoData} margin={{ left: -20, right: 20 }}>
-                <XAxis dataKey="eco" stroke="#888" />
-                <YAxis stroke="#888" />
-                <Tooltip />
-                <Bar dataKey="value" fill="#60a5fa" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </section>
-
-        {/* Strength by Game Phase */}
-        <section>
-          <h2 className="mb-4 text-xl font-semibold text-gray-100">
-            Strength by Game Phase
-          </h2>
-          <div className="h-48 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={phaseData} margin={{ left: -20, right: 20 }}>
-                <XAxis dataKey="phase" stroke="#888" />
-                <YAxis stroke="#888" />
-                <Tooltip />
-                <Bar dataKey="value" fill="#a78bfa" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
         </section>
       </div>
     </div>
