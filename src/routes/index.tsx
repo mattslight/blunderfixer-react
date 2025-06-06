@@ -3,7 +3,6 @@ import { Route, Routes } from 'react-router-dom';
 import PreSignupGuard from './PreSignupGuard';
 import ProtectedRoute from './ProtectedRoute';
 
-import Help from '@/pages/_placeholders/Help';
 import Insights from '@/pages/_placeholders/Insights';
 import Training from '@/pages/_placeholders/Training';
 import AnalyseGame from '@/pages/analyse';
@@ -11,6 +10,7 @@ import Drills from '@/pages/drills';
 import PlayDrill from '@/pages/drills/components/PlayDrill';
 import RecentDrillsPage from '@/pages/drills/RecentDrillsPage';
 import GameHistory from '@/pages/games';
+import Help from '@/pages/help';
 import PreSignupHome from '@/pages/home/PreSignupHome';
 import NotFound from '@/pages/NotFound';
 import ReportPage from '@/pages/report';

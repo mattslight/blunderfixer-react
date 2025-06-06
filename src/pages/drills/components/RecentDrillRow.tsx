@@ -58,9 +58,9 @@ export default function RecentDrillRow({ drill, onPlay }: Props) {
           customLightSquareStyle={{ backgroundColor: '#F5F2E6' }}
         />
       </div>
-      <div className="verflow-hidden flex flex-1 flex-col p-4">
+      <div className="flex flex-1 flex-col overflow-hidden p-4">
         <div className="flex items-baseline justify-between">
-          <span className={`text-sm text-gray-200`}>
+          <span className={`text-sm ${resultColor}`}>
             <div className="xs:text-xs mt-2 text-sm font-bold text-green-400 uppercase sm:text-xs">
               Last Attempt
             </div>
