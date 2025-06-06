@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import { useNavigate } from 'react-router-dom';
-import { Badge, TextInput } from 'flowbite-react';
+import { Badge } from 'flowbite-react';
 import { RefreshCw, SlidersHorizontal } from 'lucide-react';
 
 import DrillList from './components/DrillList';
@@ -141,11 +141,12 @@ export default function DrillsPage() {
         </div>
         <div className="mt-2 flex flex-wrap items-center justify-between gap-4">
           {/* Search */}
-          <TextInput
+          <input
+            type="text"
             placeholder="Search opponent"
             value={search}
             onChange={(e) => setSearch(e.currentTarget.value)}
-            className="min-w-40 flex-1"
+            className="min-w-40 flex-1 rounded-md border border-stone-600 bg-stone-800 text-stone-100 placeholder-stone-400 focus:border-stone-400 focus:ring-stone-400"
           />
 
           {/* Discrete slider: left = hardest, right = All */}
