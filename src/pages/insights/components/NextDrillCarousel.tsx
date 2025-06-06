@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
+
 import DrillCard from '@/pages/drills/components/DrillCard';
 import type { DrillPosition } from '@/types';
 
@@ -8,17 +9,12 @@ interface Props {
 }
 
 export default function NextDrillCarousel({ drills, onStart }: Props) {
-  const [index, setIndex] = useState(1);
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    function handleScroll() {
-      const width = el.offsetWidth;
-      const i = Math.round(el.scrollLeft / width) + 1;
-      setIndex(i);
-    }
+    function handleScroll() {}
     el.addEventListener('scroll', handleScroll);
     return () => el.removeEventListener('scroll', handleScroll);
   }, []);
@@ -33,13 +29,10 @@ export default function NextDrillCarousel({ drills, onStart }: Props) {
         className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4"
       >
         {drills.map((d) => (
-          <div key={d.id} className="snap-center shrink-0 first:pl-4 last:pr-4">
+          <div key={d.id} className="shrink-0 snap-center first:pl-4 last:pr-4">
             <DrillCard drill={d} onStartDrill={() => onStart(d.id)} />
           </div>
         ))}
-      </div>
-      <div className="absolute right-4 top-0 text-xs text-gray-400">
-        {index}/{drills.length}
       </div>
     </div>
   );
