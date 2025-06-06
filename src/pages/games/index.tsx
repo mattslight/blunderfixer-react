@@ -77,9 +77,9 @@ export default function GamesHistoryPage() {
     <div className="p-4 pt-8 2xl:ml-12">
       <div className="mx-auto max-w-lg space-y-4">
         <div className="flex items-baseline justify-between">
-          <span className="inline-blockpy-0.5 text-xs font-semibold tracking-wider text-green-500 uppercase">
+          <h2 className="text-2xl font-semibold text-stone-100">
             Recent Games
-          </span>
+          </h2>
           <div>
             <button
               onClick={() => reload()}
