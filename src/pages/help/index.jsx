@@ -30,9 +30,11 @@ function FAQItem({
         className="flex w-full items-center justify-between text-left"
         onClick={() => setOpen(!open)}
       >
-        <span className="flex items-center gap-2 font-semibold">
-          <Icon className="h-4 w-4 text-green-400" />
-          {question}
+        <span className="flex items-start gap-2 text-sm font-semibold text-white">
+          <span className="pt-[2px]">
+            <Icon className="h-4 w-4 shrink-0 text-green-400" />
+          </span>
+          <span className="leading-[1.3]">{question}</span>
         </span>
         <ChevronDown
           className={`transition-transform ${open ? 'rotate-180' : ''}`}
