@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Target } from 'lucide-react';
 import {
   Bar,
   BarChart,
@@ -81,47 +81,12 @@ export default function HomeScreen() {
 
   const games = Array.isArray(rawGames) ? rawGames.map(parseChessComGame) : [];
 
-  const showEmpty =
-    !games.length && !drills.length && !loadingDrills && !loadingGames;
+  // const showEmpty =
+  //   !games.length && !drills.length && !loadingDrills && !loadingGames;
 
   const randomGreeting = useMemo(() => {
     return greetings[Math.floor(Math.random() * greetings.length)];
   }, []);
-
-  if (showEmpty) {
-    return (
-      <div className="p-4 pt-8 2xl:ml-12">
-        <div className="mx-auto mt-20 max-w-md space-y-6 text-center">
-          <h1 className="text-2xl font-bold text-gray-100">
-            Welcome{username ? `, ${username}` : ''}!
-          </h1>
-          <p className="text-gray-400">
-            Get started by importing a game or taking a quick drill.
-          </p>
-          <div className="space-y-4">
-            <button
-              onClick={() => navigate('/games')}
-              className="w-full rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-            >
-              Import Your First Game
-            </button>
-            <p className="text-xs text-gray-400">
-              Pull from Chess.com or upload PGN
-            </p>
-            <button
-              onClick={() => navigate('/drills')}
-              className="w-full rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
-            >
-              Take Your First Drill
-            </button>
-            <p className="text-xs text-gray-400">
-              Practice a sample blunder in 60s
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   const acplData = [
     { phase: 'Opening', acpl: 32 },
@@ -154,7 +119,7 @@ export default function HomeScreen() {
   return (
     <>
       <div className="p-4 pt-8 2xl:ml-12">
-        <div className="mx-auto max-w-5xl space-y-10">
+        <div className="mx-auto max-w-3xl space-y-10">
           <header>
             <h1 className="text-2xl font-bold text-gray-100">
               Welcome back{username ? `, ${username}` : ''}!
@@ -175,7 +140,7 @@ export default function HomeScreen() {
           </header>
 
           {/* Stats */}
-          <section className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
+          <section className="mb-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
             <div className="rounded bg-gray-800 p-4 text-center">
               <p className="text-2xl font-semibold text-blue-400">123</p>
               <p className="text-sm text-gray-200">Blunders Fixed</p>
@@ -213,7 +178,7 @@ export default function HomeScreen() {
           </section>
 
           {/* Charts */}
-          <div className="mb-2 flex justify-end">
+          <div className="mb-6 flex justify-start">
             <button
               className="flex items-center text-sm text-blue-400 hover:underline"
               onClick={() => setShowCharts((v) => !v)}
@@ -320,13 +285,13 @@ export default function HomeScreen() {
           <section>
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-xl font-semibold text-gray-100">
-                Next Drills
+                <Target className="inline-flex" /> Next Drills
               </h2>
               <button
                 className="text-sm text-blue-500 hover:underline"
                 onClick={() => navigate('/drills')}
               >
-                View all
+                All Drills »
               </button>
             </div>
             {loadingDrills ? (
@@ -348,7 +313,7 @@ export default function HomeScreen() {
               className="text-sm text-blue-500 hover:underline"
               onClick={() => navigate('/games')}
             >
-              View all
+              More games »
             </button>
           </div>
           <section>
