@@ -29,7 +29,7 @@ export default function NextDrillCarousel({ drills, onStart }: Props) {
         className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4"
       >
         {drills.map((d) => (
-          <div key={d.id} className="shrink-0 snap-center first:pl-4 last:pr-4">
+          <div key={d.id} className="snap-center">
             <DrillCard drill={d} onStartDrill={() => onStart(d.id)} />
           </div>
         ))}
