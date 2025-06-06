@@ -11,6 +11,8 @@ import {
   PolarRadiusAxis,
   Radar,
   RadarChart,
+  RadialBar,
+  RadialBarChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -23,6 +25,38 @@ import RecentDrillList from '@/pages/drills/components/RecentDrillList';
 import { useRecentDrills } from '@/pages/drills/hooks/useRecentDrills';
 import GameList from '@/pages/games/components/GameList';
 import { useRecentGames } from '@/pages/games/hooks/useRecentGames';
+
+function WinRateDial({
+  rate,
+  color,
+  label,
+}: {
+  rate: number;
+  color: string;
+  label: string;
+}) {
+  return (
+    <div className="flex flex-col items-center">
+      <div className="relative h-16 w-16">
+        <ResponsiveContainer width="100%" height="100%">
+          <RadialBarChart
+            innerRadius="80%"
+            outerRadius="100%"
+            startAngle={90}
+            endAngle={450}
+            data={[{ name: label, value: rate }]}
+          >
+            <RadialBar dataKey="value" cornerRadius={5} fill={color} />
+          </RadialBarChart>
+        </ResponsiveContainer>
+        <div className="absolute inset-0 flex items-center justify-center text-sm font-semibold text-gray-100">
+          {rate}%
+        </div>
+      </div>
+      <p className="mt-1 text-xs text-gray-300">{label}</p>
+    </div>
+  );
+}
 
 export default function InsightsPage() {
   const navigate = useNavigate();
@@ -98,13 +132,11 @@ export default function InsightsPage() {
             <p className="text-2xl font-semibold text-fuchsia-400">48%</p>
             <p className="text-sm text-gray-300">Endgame Wins</p>
           </div>
-          <div className="rounded bg-gray-800 p-4 text-center">
-            <p className="text-2xl font-semibold text-amber-400">58%</p>
-            <p className="text-sm text-gray-300">Win Rate (White)</p>
+          <div className="flex items-center justify-center rounded bg-gray-800 p-4">
+            <WinRateDial rate={58} color="#fbbf24" label="White Win %" />
           </div>
-          <div className="rounded bg-gray-800 p-4 text-center">
-            <p className="text-2xl font-semibold text-indigo-400">42%</p>
-            <p className="text-sm text-gray-300">Win Rate (Black)</p>
+          <div className="flex items-center justify-center rounded bg-gray-800 p-4">
+            <WinRateDial rate={42} color="#818cf8" label="Black Win %" />
           </div>
         </section>
 
