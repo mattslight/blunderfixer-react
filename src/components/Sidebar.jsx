@@ -151,11 +151,11 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
       backdrop
       placement="left"
       id="drawer-navigation"
-      className="fixed top-0 left-0 z-100 h-screen w-64 border-r border-gray-200 transition-transform 2xl:w-40 2xl:translate-x-0 2xl:p-0 2xl:pt-0 dark:border-gray-700 dark:bg-gray-800"
+      className="fixed top-0 left-0 z-100 h-screen w-64 border-r border-stone-200 transition-transform 2xl:w-40 2xl:translate-x-0 2xl:p-0 2xl:pt-0 dark:border-stone-700 dark:bg-stone-800"
     >
-      <div className="h-full overflow-y-auto bg-gray-800 px-3 py-5">
+      <div className="h-full overflow-y-auto bg-stone-800 px-3 py-5">
         <div
-          className="mb-4 font-medium whitespace-nowrap dark:text-gray-400"
+          className="mb-4 font-medium whitespace-nowrap dark:text-stone-400"
           onClick={onTapSidebar}
         >
           <img
@@ -164,7 +164,7 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
           />
           BlunderFixer
         </div>
-        <ul className="space-y-2 border-t border-gray-700 pt-8">
+        <ul className="space-y-2 border-t border-stone-700 pt-8">
           {mainNav.map(({ to, label, Icon }) => (
             <li key={to}>
               <LinkItem to={to} label={label} Icon={Icon} />
@@ -179,7 +179,7 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
           </li>
         </ul>
 
-        <ul className="mt-5 space-y-2 border-t border-gray-200 pt-5 dark:border-gray-700">
+        <ul className="mt-5 space-y-2 border-t border-stone-200 pt-5 dark:border-stone-700">
           {bottomNav.map(({ to, label, Icon }) => (
             <li key={to}>
               <LinkItem to={to} label={label} Icon={Icon} />
@@ -188,11 +188,11 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
         </ul>
       </div>
       {/* pinned settings at bottom on 2xl+ */}
-      <div className="absolute bottom-0 left-0 flex w-full justify-center bg-white p-4 dark:bg-gray-800">
+      <div className="absolute bottom-0 left-0 flex w-full justify-center bg-white p-4 dark:bg-stone-800">
         <NavLink
           to="/settings"
           data-tooltip-target="tooltip-settings"
-          className="group inline-flex cursor-pointer justify-center rounded p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+          className="group inline-flex cursor-pointer justify-center rounded p-2 text-stone-500 transition-colors hover:bg-stone-100 hover:text-stone-900 dark:text-stone-400 dark:hover:bg-stone-600 dark:hover:text-white"
         >
           <SettingsIcon className="h-6 w-6" />
         </NavLink>
@@ -200,7 +200,7 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
         <div
           id="tooltip-settings"
           role="tooltip"
-          className="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300"
+          className="tooltip invisible absolute z-10 inline-block rounded-lg bg-stone-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300"
         >
           Settings
           <div className="tooltip-arrow" data-popper-arrow></div>
@@ -220,9 +220,9 @@ function LinkItem({ to, label, Icon }) {
         const base =
           'group flex items-center rounded-lg p-2 text-base font-medium transition-colors';
         const active =
-          'bg-gray-200 text-blue-600 bg-gray-700 dark:text-white bg-green-900';
+          'bg-stone-200 text-blue-600 bg-stone-700 dark:text-white bg-green-900';
         const idle =
-          'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700';
+          'text-stone-900 hover:bg-stone-100 dark:text-white dark:hover:bg-stone-700';
 
         return (
           <motion.div
@@ -230,7 +230,7 @@ function LinkItem({ to, label, Icon }) {
             whileTap={{ scale: 0.95 }}
             className={`${base} ${isActive ? active : idle}`}
           >
-            <Icon className="h-6 w-6 flex-shrink-0 text-gray-400 transition-colors" />
+            <Icon className="h-6 w-6 flex-shrink-0 text-stone-400 transition-colors" />
             <span className="ml-3">{label}</span>
           </motion.div>
         );

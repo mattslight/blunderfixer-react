@@ -141,37 +141,37 @@ export default function HomeScreen() {
 
           {/* Stats */}
           <section className="mb-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
-            <div className="rounded bg-gray-800 p-4 text-center">
+            <div className="rounded bg-stone-800 p-4 text-center">
               <p className="text-2xl font-semibold text-blue-400">123</p>
               <p className="text-sm text-gray-200">Blunders Fixed</p>
               <p className="mt-1 text-xs text-gray-400">
                 Mistakes you corrected
               </p>
             </div>
-            <div className="rounded bg-gray-800 p-4 text-center">
+            <div className="rounded bg-stone-800 p-4 text-center">
               <p className="text-2xl font-semibold text-green-400">64%</p>
               <p className="text-sm text-gray-200">Tactic Accuracy</p>
               <p className="mt-1 text-xs text-gray-400">
                 Top-engine moves chosen
               </p>
             </div>
-            <div className="rounded bg-gray-800 p-4 text-center">
+            <div className="rounded bg-stone-800 p-4 text-center">
               <p className="text-2xl font-semibold text-purple-400">75%</p>
               <p className="text-sm text-gray-200">Winning Openings</p>
               <p className="mt-1 text-xs text-gray-400">
                 Wins from your openings
               </p>
             </div>
-            <div className="rounded bg-gray-800 p-4 text-center">
+            <div className="rounded bg-stone-800 p-4 text-center">
               <p className="text-2xl font-semibold text-fuchsia-400">48%</p>
               <p className="text-sm text-gray-200">Endgame Wins</p>
               <p className="mt-1 text-xs text-gray-400">Games converted late</p>
             </div>
-            <div className="hidden flex-col items-center justify-center rounded bg-gray-800 p-4 sm:flex">
+            <div className="hidden flex-col items-center justify-center rounded bg-stone-800 p-4 sm:flex">
               <WinRateDial rate={58} color="#fbbf24" label="White Win %" />
               <p className="mt-1 text-xs text-gray-400">Wins as White</p>
             </div>
-            <div className="hidden flex-col items-center justify-center rounded bg-gray-800 p-4 sm:flex">
+            <div className="hidden flex-col items-center justify-center rounded bg-stone-800 p-4 sm:flex">
               <WinRateDial rate={42} color="#818cf8" label="Black Win %" />
               <p className="mt-1 text-xs text-gray-400">Wins as Black</p>
             </div>
@@ -316,7 +316,7 @@ export default function HomeScreen() {
               More games »
             </button>
           </div>
-          <section>
+          <section className="mb-20">
             <GameList
               games={games}
               hero={username}

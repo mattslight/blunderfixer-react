@@ -53,7 +53,7 @@ export function DrillCard({ drill, onStartDrill }: Props) {
 
   return (
     <div
-      className="xs:grid-cols-[240px_1fr] xs:gap-0 grid rounded-lg bg-gray-800 shadow sm:grid-cols-[360px_1fr]"
+      className="xs:grid-cols-[240px_1fr] xs:gap-0 grid rounded-lg bg-stone-800 shadow sm:grid-cols-[360px_1fr]"
       onClick={() => onStartDrill(drill.id)}
     >
       {/* 1) Board */}

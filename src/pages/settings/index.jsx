@@ -40,7 +40,7 @@ export default function Settings() {
     : '';
 
   return (
-    <div className="flex min-h-screen items-start justify-center bg-gray-900 p-4 sm:p-6">
+    <div className="flex min-h-screen items-start justify-center bg-stone-900 p-4 sm:p-6">
       <div className="absolute top-16 left-4 md:hidden">
         <button
           onClick={() => navigate(-1)}
@@ -49,7 +49,7 @@ export default function Settings() {
           ← Back
         </button>
       </div>
-      <div className="mt-10 w-full max-w-2xl rounded-2xl border border-gray-700 bg-black/80 p-6 shadow-lg">
+      <div className="mt-10 w-full max-w-2xl rounded-2xl border border-stone-700 bg-black/80 p-6 shadow-lg">
         <h1 className="mb-2 text-3xl font-bold text-white">Settings</h1>
         <p className="mb-6 text-lg text-gray-400">
           Manage your Chess.com connection and profile
@@ -60,10 +60,10 @@ export default function Settings() {
             <img
               src={profile.avatar}
               alt={`${profile.username} avatar`}
-              className="h-18 w-18 rounded-full border border-gray-600"
+              className="h-18 w-18 rounded-full border border-stone-600"
             />
           ) : (
-            <div className="h-12 w-12 rounded-full bg-gray-600" />
+            <div className="h-12 w-12 rounded-full bg-stone-600" />
           )}
           <div className="mb-1">
             <p className="flex items-center text-lg text-white">
@@ -76,10 +76,10 @@ export default function Settings() {
               {profile.name || profile.username}
               {flagEmoji && <span className="ml-2 text-xl">{flagEmoji}</span>}
             </p>
-            <p className="text-sm text-gray-500">@{profile.username}</p>
+            <p className="text-sm text-stone-500">@{profile.username}</p>
             {/* Location */}
             {profile.location && (
-              <p className="mt-1 flex items-center text-xs text-gray-400">
+              <p className="mt-1 flex items-center text-xs text-stone-400">
                 <MapPin className="mr-1 h-4 w-4" />
                 {profile.location}
               </p>
@@ -88,10 +88,10 @@ export default function Settings() {
         </div>
 
         {/* � cool profile info � */}
-        <div className="mb-4 flex flex-wrap items-center gap-3 text-sm text-gray-400">
+        <div className="mb-4 flex flex-wrap items-center gap-3 text-sm text-stone-400">
           {/* Followers */}
           {typeof profile.followers === 'number' && (
-            <span className="inline-flex items-center gap-1 text-sm text-gray-400">
+            <span className="inline-flex items-center gap-1 text-sm text-stone-400">
               <Users /> {profile.followers.toLocaleString()} followers
             </span>
           )}
