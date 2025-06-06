@@ -1,5 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
   Line,
   LineChart,
   PolarAngleAxis,
@@ -39,6 +43,7 @@ export default function InsightsPage() {
   const acplData = [
     { phase: 'Opening', acpl: 32 },
     { phase: 'Middle', acpl: 47 },
+    { phase: 'Late', acpl: 38 },
     { phase: 'Endgame', acpl: 28 },
   ];
 
@@ -47,6 +52,20 @@ export default function InsightsPage() {
     { eco: 'C50', score: 60 },
     { eco: 'D30', score: 65 },
     { eco: 'E60', score: 55 },
+  ];
+
+  const lossReasonsData = [
+    { reason: 'Pawn push', games: 5 },
+    { reason: 'Knight fork', games: 3 },
+    { reason: 'Hung mate', games: 2 },
+    { reason: 'Impulsive', games: 8 },
+  ];
+
+  const timeControlData = [
+    { control: 'Bullet', impulsive: 5, slow: 1 },
+    { control: 'Blitz', impulsive: 7, slow: 2 },
+    { control: 'Rapid', impulsive: 4, slow: 3 },
+    { control: 'Classical', impulsive: 1, slow: 4 },
   ];
 
   return (
@@ -62,7 +81,7 @@ export default function InsightsPage() {
         </header>
 
         {/* Stats */}
-        <section className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <section className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
           <div className="rounded bg-gray-800 p-4 text-center">
             <p className="text-2xl font-semibold text-blue-400">123</p>
             <p className="text-sm text-gray-300">Blunders Fixed</p>
@@ -78,6 +97,14 @@ export default function InsightsPage() {
           <div className="rounded bg-gray-800 p-4 text-center">
             <p className="text-2xl font-semibold text-fuchsia-400">48%</p>
             <p className="text-sm text-gray-300">Endgame Wins</p>
+          </div>
+          <div className="rounded bg-gray-800 p-4 text-center">
+            <p className="text-2xl font-semibold text-amber-400">58%</p>
+            <p className="text-sm text-gray-300">Win Rate (White)</p>
+          </div>
+          <div className="rounded bg-gray-800 p-4 text-center">
+            <p className="text-2xl font-semibold text-indigo-400">42%</p>
+            <p className="text-sm text-gray-300">Win Rate (Black)</p>
           </div>
         </section>
 
@@ -122,6 +149,48 @@ export default function InsightsPage() {
                     strokeWidth={2}
                   />
                 </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="mb-4 text-xl font-semibold text-gray-100">
+              Reason for Loss
+            </h2>
+            <div className="h-60 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={lossReasonsData}
+                  margin={{ left: -20, right: 20 }}
+                >
+                  <CartesianGrid stroke="#444" />
+                  <XAxis dataKey="reason" stroke="#888" />
+                  <YAxis stroke="#888" />
+                  <Tooltip />
+                  <Bar dataKey="games" fill="#f472b6" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="mb-4 text-xl font-semibold text-gray-100">
+              Impulsive vs Slow
+            </h2>
+            <div className="h-60 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={timeControlData}
+                  margin={{ left: -20, right: 20 }}
+                >
+                  <CartesianGrid stroke="#444" />
+                  <XAxis dataKey="control" stroke="#888" />
+                  <YAxis stroke="#888" />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="impulsive" fill="#60a5fa" />
+                  <Bar dataKey="slow" fill="#c084fc" />
+                </BarChart>
               </ResponsiveContainer>
             </div>
           </div>
