@@ -40,7 +40,7 @@ function FAQItem({
         className="flex w-full items-center justify-between text-left"
         onClick={() => setOpen(!open)}
       >
-        <span className="flex items-start gap-2 text-base font-semibold text-white">
+        <span className="flex items-start gap-2 text-lg font-semibold text-white">
           <span className="pt-[2px]">
             <Icon className="mr-1 h-5 w-5 shrink-0 text-green-400" />
           </span>
@@ -60,7 +60,7 @@ export default function HelpPage() {
   return (
     <div className="prose dark:prose-invert mx-auto max-w-3xl space-y-8 px-6 py-12 md:py-16">
       <h1>Help &amp; FAQ</h1>
-      <p>
+      <p className="text-lg">
         BlunderFixer helps you understand your chess mistakes and turn them into
         learning opportunities. Tap a question below to learn more.
       </p>
