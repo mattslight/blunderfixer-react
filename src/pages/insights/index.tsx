@@ -9,6 +9,7 @@ import {
 } from 'recharts';
 
 import { useProfile } from '@/hooks/useProfile';
+import { parseChessComGame } from '@/lib/chessComParser';
 import RecentDrillList from '@/pages/drills/components/RecentDrillList';
 import { useRecentDrills } from '@/pages/drills/hooks/useRecentDrills';
 import GameList from '@/pages/games/components/GameList';
@@ -23,7 +24,12 @@ export default function InsightsPage() {
   const { drills, loading: loadingDrills } = useRecentDrills(username, {
     limit: 3,
   });
-  const { games, loading: loadingGames } = useRecentGames(username, 3);
+  const { games: rawGames, loading: loadingGames } = useRecentGames(
+    username,
+    3
+  );
+
+  const games = Array.isArray(rawGames) ? rawGames.map(parseChessComGame) : [];
 
   const phaseData = [
     { phase: 'Opening', value: 68 },
