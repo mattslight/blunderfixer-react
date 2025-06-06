@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import {
@@ -22,6 +22,7 @@ import {
 } from 'recharts';
 
 import NextDrillCarousel from './components/NextDrillCarousel';
+import { greetings } from './greetings.js';
 
 import { useProfile } from '@/hooks/useProfile';
 import { parseChessComGame } from '@/lib/chessComParser';
@@ -67,7 +68,6 @@ export default function HomeScreen() {
     profile: { username },
   } = useProfile();
   const [showCharts, setShowCharts] = useState(false);
-  const [showGames, setShowGames] = useState(false);
 
   const { drills, loading: loadingDrills } = useRecentDrills(username, {
     limit: 3,
@@ -80,10 +80,13 @@ export default function HomeScreen() {
   const nextDrillId = drills[0]?.id;
 
   const games = Array.isArray(rawGames) ? rawGames.map(parseChessComGame) : [];
-  const recentGameId = games[0]?.id;
 
   const showEmpty =
     !games.length && !drills.length && !loadingDrills && !loadingGames;
+
+  const randomGreeting = useMemo(() => {
+    return greetings[Math.floor(Math.random() * greetings.length)];
+  }, []);
 
   if (showEmpty) {
     return (
@@ -156,9 +159,7 @@ export default function HomeScreen() {
             <h1 className="text-2xl font-bold text-gray-100">
               Welcome back{username ? `, ${username}` : ''}!
             </h1>
-            <p className="text-sm text-gray-400">
-              Here&#39;s your latest progress.
-            </p>
+            <p className="text-gray-400">{randomGreeting}</p>
             <div className="mt-4">
               <button
                 onClick={() =>
@@ -201,11 +202,11 @@ export default function HomeScreen() {
               <p className="text-sm text-gray-200">Endgame Wins</p>
               <p className="mt-1 text-xs text-gray-400">Games converted late</p>
             </div>
-            <div className="flex hidden flex-col items-center justify-center rounded bg-gray-800 p-4 sm:flex">
+            <div className="hidden flex-col items-center justify-center rounded bg-gray-800 p-4 sm:flex">
               <WinRateDial rate={58} color="#fbbf24" label="White Win %" />
               <p className="mt-1 text-xs text-gray-400">Wins as White</p>
             </div>
-            <div className="flex hidden flex-col items-center justify-center rounded bg-gray-800 p-4 sm:flex">
+            <div className="hidden flex-col items-center justify-center rounded bg-gray-800 p-4 sm:flex">
               <WinRateDial rate={42} color="#818cf8" label="Black Win %" />
               <p className="mt-1 text-xs text-gray-400">Wins as Black</p>
             </div>
@@ -217,7 +218,7 @@ export default function HomeScreen() {
               className="flex items-center text-sm text-blue-400 hover:underline"
               onClick={() => setShowCharts((v) => !v)}
             >
-              {showCharts ? 'Hide Charts' : 'More Charts'}
+              {showCharts ? 'Hide Stats' : 'More Stats'}
               <ChevronDown
                 className={`ml-1 h-4 w-4 transition-transform ${showCharts ? 'rotate-180' : ''}`}
               />
@@ -340,48 +341,26 @@ export default function HomeScreen() {
 
           {/* Recent Games */}
           <div className="mb-2 flex justify-between">
-            <button
-              className="flex items-center text-sm text-blue-400 hover:underline"
-              onClick={() => setShowGames((v) => !v)}
-            >
+            <h2 className="text-xl font-semibold text-gray-100">
               Recent Games
-              <ChevronDown
-                className={`ml-1 h-4 w-4 transition-transform ${showGames ? 'rotate-180' : ''}`}
-              />
+            </h2>
+            <button
+              className="text-sm text-blue-500 hover:underline"
+              onClick={() => navigate('/games')}
+            >
+              View all
             </button>
           </div>
-          {showGames && (
-            <section>
-              {recentGameId && (
-                <div className="mb-4">
-                  <button
-                    onClick={() => navigate(`/report/${recentGameId}`)}
-                    className="rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
-                  >
-                    Analyse Latest Game
-                  </button>
-                </div>
-              )}
-              <GameList
-                games={games}
-                hero={username}
-                isAnalysed={() => false}
-                isLoading={() => loadingGames}
-                onAction={(g) => navigate(`/report/${g.id}`)}
-              />
-            </section>
-          )}
+          <section>
+            <GameList
+              games={games}
+              hero={username}
+              isAnalysed={() => false}
+              isLoading={() => loadingGames}
+              onAction={(g) => navigate(`/report/${g.id}`)}
+            />
+          </section>
         </div>
-      </div>
-      <div className="pointer-events-none fixed inset-x-0 bottom-4 flex justify-center">
-        <button
-          onClick={() =>
-            navigate(nextDrillId ? `/drills/play/${nextDrillId}` : '/drills')
-          }
-          className="pointer-events-auto rounded bg-green-600 px-5 py-3 text-sm font-semibold text-white shadow-lg hover:bg-green-700"
-        >
-          Start Next Drill
-        </button>
       </div>
     </>
   );
