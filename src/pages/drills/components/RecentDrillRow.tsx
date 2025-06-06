@@ -60,7 +60,7 @@ export default function RecentDrillRow({ drill, onPlay }: Props) {
       </div>
       <div className="flex flex-1 flex-col overflow-hidden p-4">
         <div className="flex items-baseline justify-between">
-          <span className={`text-sm ${resultColor}`}>
+          <span className={`text-sm`}>
             <div className="xs:text-xs mt-2 text-sm font-bold text-green-400 uppercase sm:text-xs">
               Last Attempt
             </div>
