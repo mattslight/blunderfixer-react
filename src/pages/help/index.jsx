@@ -4,10 +4,12 @@ import {
   Brain,
   CheckCircle,
   ChevronDown,
+  CloudOff,
   HelpCircle,
   Info,
   PlugZap,
   Sword,
+  Telescope,
   TrendingDown,
 } from 'lucide-react';
 
@@ -19,7 +21,7 @@ function FAQItem({
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="border-b border-gray-700 py-4">
+    <div className="border-b border-gray-700 py-2">
       <button
         type="button"
         className="flex w-full items-center justify-between text-left"
@@ -34,7 +36,7 @@ function FAQItem({
           size={20}
         />
       </button>
-      {open && <div className="mt-2 text-sm">{children}</div>}
+      {open && <div className="mt-4 mb-8 text-sm">{children}</div>}
     </div>
   );
 }
@@ -49,9 +51,9 @@ export default function HelpPage() {
       </p>
 
       <FAQItem question="What is BlunderFixer?" icon={HelpCircle} defaultOpen>
-        BlunderFixer analyses your games using Stockfish and our own heuristics
-        to highlight blunders and suggest better continuations. Chat with the
-        built-in coach to get human-like explanations for every mistake.
+        BlunderFixer analyses your games intelligently to highlight blunders and
+        suggest better continuations. Chat with the built-in coach to get
+        human-like explanations for every mistake.
       </FAQItem>
 
       <FAQItem question="How do I connect my Chess.com account?" icon={PlugZap}>
@@ -62,13 +64,13 @@ export default function HelpPage() {
 
       <FAQItem
         question="Why can't I connect my Lichess.org account?"
-        icon={PlugZap}
+        icon={CloudOff}
       >
         We&apos;re excited to add Lichess support soon! The integration is
         underway and will let you sync games just like on Chess.com. Stay tuned.
       </FAQItem>
 
-      <FAQItem question="How do I analyse a game?" icon={Sword}>
+      <FAQItem question="How do I analyse a game?" icon={Telescope}>
         Head to the <strong>Analyse</strong> page and paste a PGN or choose one
         of your recent games. You&apos;ll see an evaluation graph, a list of key
         mistakes and an interactive board where you can play out better moves.
@@ -105,7 +107,7 @@ export default function HelpPage() {
       </FAQItem>
 
       <FAQItem question="What are the drill goals?" icon={BarChart2}>
-        Each drill expects you to either win, draw or hold a worse position. The
+        Each drill expects you to either win, draw or hold a position. The
         banner at the top of a drill tells you the goal so you know what to aim
         for.
       </FAQItem>
@@ -113,7 +115,7 @@ export default function HelpPage() {
       <FAQItem question="Need more help?" icon={Info}>
         We&apos;re constantly improving. If something doesn&apos;t work or you
         have feature suggestions, send us feedback via the Settings page or
-        email
+        email{' '}
         <a href="mailto:support@blunderfixer.com">support@blunderfixer.com</a>.
       </FAQItem>
     </div>
