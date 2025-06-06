@@ -42,7 +42,7 @@ function FAQItem({
       >
         <span className="flex items-start gap-2 text-base font-semibold text-white">
           <span className="pt-[2px]">
-            <Icon className="h-5 w-5 shrink-0 text-green-400" />
+            <Icon className="mr-1 h-5 w-5 shrink-0 text-green-400" />
           </span>
           <span className="leading-[1.3]">{question}</span>
         </span>
@@ -156,8 +156,7 @@ export default function HelpPage() {
       <FAQItem question="What is a mastered drill?" icon={Star}>
         When you pass a drill five times in a row we mark it as{' '}
         <strong>Mastered</strong> and move it to your archive so you can focus
-        on new mistakes. You can still review mastered drills from the filter
-        menu.
+        on new drill. You can still review mastered drills from the filter menu.
       </FAQItem>
       <FAQItem question="Can I see my archived drills?" icon={Archive}>
         Yes. On the Drills page open <em>Filters</em> and enable{' '}
