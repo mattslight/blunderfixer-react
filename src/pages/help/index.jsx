@@ -1,7 +1,22 @@
 import { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import {
+  BarChart2,
+  Brain,
+  CheckCircle,
+  ChevronDown,
+  HelpCircle,
+  Info,
+  PlugZap,
+  Sword,
+  TrendingDown,
+} from 'lucide-react';
 
-function FAQItem({ question, children, defaultOpen = false }) {
+function FAQItem({
+  question,
+  icon: Icon = HelpCircle,
+  children,
+  defaultOpen = false,
+}) {
   const [open, setOpen] = useState(defaultOpen);
   return (
     <div className="border-b border-gray-700 py-4">
@@ -10,7 +25,10 @@ function FAQItem({ question, children, defaultOpen = false }) {
         className="flex w-full items-center justify-between text-left"
         onClick={() => setOpen(!open)}
       >
-        <span className="font-semibold">{question}</span>
+        <span className="flex items-center gap-2 font-semibold">
+          <Icon className="h-4 w-4 text-green-400" />
+          {question}
+        </span>
         <ChevronDown
           className={`transition-transform ${open ? 'rotate-180' : ''}`}
           size={20}
@@ -23,44 +41,76 @@ function FAQItem({ question, children, defaultOpen = false }) {
 
 export default function HelpPage() {
   return (
-    <div className="prose dark:prose-invert mx-auto max-w-3xl px-4 py-8">
+    <div className="prose dark:prose-invert mx-auto max-w-3xl space-y-6 px-4 py-10">
       <h1>Help &amp; FAQ</h1>
       <p>
         BlunderFixer helps you understand your chess mistakes and turn them into
         learning opportunities. Tap a question below to learn more.
       </p>
 
-      <FAQItem question="What is BlunderFixer?" defaultOpen>
+      <FAQItem question="What is BlunderFixer?" icon={HelpCircle} defaultOpen>
         BlunderFixer analyses your games using Stockfish and our own heuristics
         to highlight blunders and suggest better continuations. Chat with the
         built-in coach to get human-like explanations for every mistake.
       </FAQItem>
 
-      <FAQItem question="How do I connect my Chess.com account?">
+      <FAQItem question="How do I connect my Chess.com account?" icon={PlugZap}>
         On your first visit you&apos;ll be asked for your Chess.com username. We
         use it to fetch your recent games so you can start analysing right away.
         You can update your username anytime from the Settings page.
       </FAQItem>
 
-      <FAQItem question="How do I analyse a game?">
+      <FAQItem
+        question="Why can't I connect my Lichess.org account?"
+        icon={PlugZap}
+      >
+        We&apos;re excited to add Lichess support soon! The integration is
+        underway and will let you sync games just like on Chess.com. Stay tuned.
+      </FAQItem>
+
+      <FAQItem question="How do I analyse a game?" icon={Sword}>
         Head to the <strong>Analyse</strong> page and paste a PGN or choose one
         of your recent games. You&apos;ll see an evaluation graph, a list of key
         mistakes and an interactive board where you can play out better moves.
       </FAQItem>
 
-      <FAQItem question="What are drills?">
+      <FAQItem question="What are drills?" icon={Sword}>
         Drills are critical positions extracted from your games. Practice them
         against the engine to reinforce the right patterns and track your
         progress over time.
       </FAQItem>
 
-      <FAQItem question="What is Chess IQ?">
-        Chess IQ is our composite score reflecting your improvement across
+      <FAQItem question="What is Chess IQ™?" icon={Brain}>
+        Chess IQ™ is our composite score reflecting your improvement across
         blunder rate, tactical sharpness and time usage. The more you practice
         with BlunderFixer, the higher it climbs.
       </FAQItem>
 
-      <FAQItem question="Need more help?">
+      <FAQItem
+        question="What does the Blunder Size slider control?"
+        icon={TrendingDown}
+      >
+        Blunder Size filters drills by how big the evaluation swing is. Bigger
+        values represent more severe mistakes. Slide right for easier blunders
+        or left for only the toughest challenges.
+      </FAQItem>
+
+      <FAQItem
+        question="What do the tick and cross icons mean?"
+        icon={CheckCircle}
+      >
+        After each drill attempt we record whether you passed or failed. Green
+        ticks show successful tries and grey crosses show misses. The dots fill
+        up from left to right so you can quickly track recent progress.
+      </FAQItem>
+
+      <FAQItem question="What are the drill goals?" icon={BarChart2}>
+        Each drill expects you to either win, draw or hold a worse position. The
+        banner at the top of a drill tells you the goal so you know what to aim
+        for.
+      </FAQItem>
+
+      <FAQItem question="Need more help?" icon={Info}>
         We&apos;re constantly improving. If something doesn&apos;t work or you
         have feature suggestions, send us feedback via the Settings page or
         email
