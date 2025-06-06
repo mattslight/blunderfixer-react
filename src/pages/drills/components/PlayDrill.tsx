@@ -212,7 +212,7 @@ export default function PlayDrill() {
         <a
           onClick={() => navigate('/drills')}
           aria-label="Back to list"
-          className="relative top-4 z-100 ml-4 inline-flex w-fit items-center py-1 pr-4 text-blue-600 hover:underline"
+          className="xs:ml-0 relative top-4 z-100 ml-4 inline-flex w-fit items-center py-1 pr-4 text-blue-600 hover:underline"
         >
           ← Back to list
         </a>
