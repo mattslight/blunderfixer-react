@@ -10,6 +10,7 @@ type Props = {
   evalSwing: number;
   heroResult: 'win' | 'loss' | 'draw';
   hideGameResult?: boolean;
+  hideOpponentRating?: boolean;
 };
 
 export function GameInfoBadges({
@@ -19,6 +20,7 @@ export function GameInfoBadges({
   evalSwing,
   heroResult,
   hideGameResult = false,
+  hideOpponentRating = false,
 }: Props) {
   return (
     <div className="mt-4 flex items-center gap-2 text-sm">
@@ -32,7 +34,8 @@ export function GameInfoBadges({
         <span className="inline-flex items-center gap-1 rounded bg-gray-700 px-2 py-0.5 text-xs text-gray-400">
           <User className="h-3 w-3" />
           <p className="line-clamp-1">
-            {opponent.username}&nbsp;({opponent.rating})
+            {opponent.username}
+            {!hideOpponentRating && <>&nbsp;({opponent.rating})</>}
           </p>
         </span>
         <span className="inline-flex items-center gap-1 rounded bg-gray-700 px-2 py-0.5 text-xs text-gray-400 capitalize">
