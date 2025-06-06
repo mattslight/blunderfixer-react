@@ -5,6 +5,7 @@ import { Play } from 'lucide-react';
 import { GameInfoBadges } from './DrillCard/GameInfoBadges';
 import { HistoryDots } from './DrillCard/HistoryDots';
 
+import useBreakpoint from '@/hooks/useBreakpoint';
 import type { DrillPosition } from '@/types';
 
 interface Props {
@@ -45,8 +46,15 @@ export default function RecentDrillRow({ drill, onPlay }: Props) {
     : '';
   const absolute = drilledDate ? format(drilledDate, 'yyyy-MM-dd HH:mm') : '';
 
+  const { isAtLeast } = useBreakpoint();
+
+  const isDesktop = isAtLeast('sm');
+
   return (
-    <li className="flex items-center gap-2 rounded-lg bg-gray-800">
+    <li
+      className="flex items-center gap-2 rounded-lg bg-gray-800"
+      onClick={() => onPlay(drill.id)}
+    >
       <div className="shrink-0">
         <Chessboard
           position={drill.fen}
@@ -58,10 +66,10 @@ export default function RecentDrillRow({ drill, onPlay }: Props) {
           customLightSquareStyle={{ backgroundColor: '#F5F2E6' }}
         />
       </div>
-      <div className="flex flex-1 flex-col overflow-hidden p-4">
-        <div className="flex items-baseline justify-between">
+      <div className="flex flex-1 flex-col overflow-hidden p-2 sm:p-4">
+        <div className="flex flex-col items-baseline justify-between sm:flex-row">
           <span className={`text-sm`}>
-            <div className="xs:text-xs mt-2 text-sm font-bold text-green-400 uppercase sm:text-xs">
+            <div className="mt-2 text-xs font-bold text-green-400 uppercase sm:text-xs">
               Last Attempt
             </div>
             {resultLabel} – <i>{drill.history.at(-1)?.reason}</i>
@@ -81,15 +89,17 @@ export default function RecentDrillRow({ drill, onPlay }: Props) {
           }}
           evalSwing={drill.eval_swing}
           heroResult={drill.hero_result}
+          hideGameResult={!isDesktop}
+          hideOpponentRating={!isDesktop}
         />
-        <div className="xs:text-xs mt-2 text-sm font-bold text-gray-400 uppercase sm:text-xs">
+        <div className="mt-2 text-xs font-bold text-gray-400 uppercase sm:text-xs">
           Last 5 Tries
         </div>
         <div className="flex items-center justify-between">
           <HistoryDots history={drill.history} />
           <button
             onClick={() => onPlay(drill.id)}
-            className="ml-2 inline-flex items-center gap-1 rounded bg-green-600 px-2 py-1 text-sm text-white hover:bg-green-700"
+            className="xs:inline-flex ml-2 hidden items-center gap-1 rounded bg-green-600 px-2 py-1 text-sm text-white hover:bg-green-700"
           >
             Retry <Play size={14} />
           </button>
