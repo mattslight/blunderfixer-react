@@ -17,6 +17,8 @@ type Props = {
   onStartDrill: (id: number | string) => void;
 };
 
+const DEBUG = false; // Set to true for debugging output
+
 export function DrillCard({ drill, onStartDrill }: Props) {
   const {
     fen,
@@ -47,7 +49,7 @@ export function DrillCard({ drill, onStartDrill }: Props) {
       ? 240
       : screenWidth - 32;
 
-  console.debug('[useBreakpoint] ', current);
+  if (DEBUG) console.debug('[useBreakpoint] ', current);
 
   return (
     <div
