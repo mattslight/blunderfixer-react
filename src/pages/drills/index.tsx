@@ -226,8 +226,8 @@ export default function DrillsPage() {
           onChange={setTabIndex}
           className="mb-12"
         />
-        {tabIndex === 0 && newDrillsPanel}
-        {tabIndex === 1 && historyPanel}
+        <div className={tabIndex === 0 ? '' : 'hidden'}>{newDrillsPanel}</div>
+        <div className={tabIndex === 1 ? '' : 'hidden'}>{historyPanel}</div>
       </div>
     </div>
   );
