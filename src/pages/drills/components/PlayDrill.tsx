@@ -161,7 +161,7 @@ export default function PlayDrill() {
   }, [drill?.phase]);
 
   const phaseColor = useMemo(() => {
-    return PHASE_COLORS[displayPhase] ?? 'bg-gray-700';
+    return PHASE_COLORS[displayPhase] ?? 'bg-stone-700';
   }, [displayPhase]);
 
   // 12) Debug logging
@@ -277,7 +277,7 @@ export default function PlayDrill() {
           </div> */}
 
           {DEBUG && (
-            <div className="mt-2 w-full rounded bg-gray-800 p-2 text-xs text-gray-200">
+            <div className="mt-2 w-full rounded bg-stone-800 p-2 text-xs text-stone-200">
               <div>initialEval: {initialEval}</div>
               <div>currentEval: {evalScore}</div>
               <div>depth: {currentDepth}</div>
@@ -299,7 +299,7 @@ export default function PlayDrill() {
           </div>
           <button
             onClick={() => setShowConfirm(true)}
-            className="flex items-center text-xs text-gray-500 hover:text-red-400"
+            className="flex items-center text-xs text-stone-500 hover:text-red-400"
           >
             <Archive className="mr-1 h-4 w-4" />
             Archive drill
@@ -356,7 +356,7 @@ function CopyFenToClipboard({ fen }) {
   return (
     <button
       type="button"
-      className="group flex items-center space-x-2 rounded border border-gray-800 bg-gray-950 px-2 py-1 text-xs text-gray-400 transition-colors duration-150 hover:bg-green-500 hover:text-gray-900"
+      className="group flex items-center space-x-2 rounded border border-stone-800 bg-stone-950 px-2 py-1 text-xs text-stone-400 transition-colors duration-150 hover:bg-green-500 hover:text-stone-900"
       onClick={handleCopy}
       aria-label={isFenCopied ? 'FEN copied' : 'Copy position FEN'}
     >
@@ -364,7 +364,7 @@ function CopyFenToClipboard({ fen }) {
         {isFenCopied ? (
           <ClipboardCheck className="h-4 w-4 text-green-600 transition-opacity duration-200 group-hover:text-black" />
         ) : (
-          <Clipboard className="h-4 w-4 text-gray-400 transition-opacity duration-200 group-hover:text-black" />
+          <Clipboard className="h-4 w-4 text-stone-400 transition-opacity duration-200 group-hover:text-black" />
         )}
       </span>
       <span className="select-none">

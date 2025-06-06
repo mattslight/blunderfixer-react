@@ -18,7 +18,7 @@ export default function DrillList({ drills, loading, onStartDrill }: Props) {
   }
   if (!drills.length) {
     return (
-      <p className="mt-16 text-center text-gray-500">
+      <p className="mt-16 text-center text-stone-500">
         No drills matching filter
       </p>
     );

@@ -34,7 +34,7 @@ export default function UserMenu() {
     <div className="relative inline-block text-left" ref={menuRef}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center rounded-full bg-gray-800 p-1 focus:ring-2 focus:ring-gray-300 focus:outline-none"
+        className="flex items-center rounded-full bg-stone-800 p-1 focus:ring-2 focus:ring-stone-300 focus:outline-none"
         aria-haspopup="true"
         aria-expanded={open}
       >
@@ -44,38 +44,38 @@ export default function UserMenu() {
           src={profile.avatar || '/default-avatar.png'}
           alt={profile.name || profile.username}
         />
-        <ChevronDown className="ml-1 h-4 w-4 text-gray-400" />
+        <ChevronDown className="ml-1 h-4 w-4 text-stone-400" />
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-56 origin-top-right rounded-xl border border-gray-800 bg-black/90 shadow-lg backdrop-blur-lg">
+        <div className="absolute right-0 mt-2 w-56 origin-top-right rounded-xl border border-stone-800 bg-black/90 shadow-lg backdrop-blur-lg">
           <div className="px-4 py-3 text-center">
             <div className="flex items-center justify-center">
               {profile.avatar ? (
                 <img
                   src={profile.avatar}
                   alt={profile.name || profile.username}
-                  className="h-10 w-10 rounded-full border border-gray-600"
+                  className="h-10 w-10 rounded-full border border-stone-600"
                 />
               ) : (
-                <div className="h-10 w-10 rounded-full bg-gray-600" />
+                <div className="h-10 w-10 rounded-full bg-stone-600" />
               )}
             </div>
             <p className="mt-2 text-white">
               {profile.name || profile.username}{' '}
               {flagEmoji && <span className="ml-1">{flagEmoji}</span>}
             </p>
-            <p className="text-xs text-gray-400">@{profile.username}</p>
+            <p className="text-xs text-stone-400">@{profile.username}</p>
           </div>
-          <div className="divide-y divide-gray-700">
-            <ul className="py-1 text-gray-300">
+          <div className="divide-y divide-stone-700">
+            <ul className="py-1 text-stone-300">
               <li>
                 <button
                   onClick={() => {
                     setOpen(false);
                     navigate('/settings');
                   }}
-                  className="flex w-full items-center px-4 py-2 text-sm hover:bg-gray-700"
+                  className="flex w-full items-center px-4 py-2 text-sm hover:bg-stone-700"
                 >
                   {' '}
                   <UserPen className="mr-2 h-5 w-5" />
@@ -88,13 +88,13 @@ export default function UserMenu() {
                     setOpen(false);
                     navigate('/settings');
                   }}
-                  className="flex w-full items-center px-4 py-2 text-sm hover:bg-gray-700"
+                  className="flex w-full items-center px-4 py-2 text-sm hover:bg-stone-700"
                 >
                   Account settings
                 </button>
               </li> */}
             </ul>
-            <ul className="py-1 text-gray-300">
+            <ul className="py-1 text-stone-300">
               <li>
                 <button
                   onClick={() => {
@@ -102,7 +102,7 @@ export default function UserMenu() {
                     setUsername('');
                     setOpen(false);
                   }}
-                  className="flex w-full items-center px-4 py-2 text-sm hover:bg-gray-700"
+                  className="flex w-full items-center px-4 py-2 text-sm hover:bg-stone-700"
                 >
                   <LogOut className="mr-2 h-5 w-5" />
                   Sign out

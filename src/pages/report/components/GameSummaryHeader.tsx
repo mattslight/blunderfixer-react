@@ -67,29 +67,29 @@ export default function GameSummaryHeader({ game }) {
                 ? 'bg-green-500 text-white'
                 : lost
                   ? 'bg-red-500 text-white'
-                  : 'bg-gray-600 text-white')
+                  : 'bg-stone-600 text-white')
             }
           >
             {won ? 'You won' : lost ? 'You lost' : 'Draw'}
           </span>
           {displayReason && (
-            <span className="text-sm text-gray-600">{displayReason}</span>
+            <span className="text-sm text-stone-600">{displayReason}</span>
           )}
         </div>
         <h3 className="text-xl font-medium">
           {game.meta.players.white.player.username}{' '}
           <span className="text-2xl text-white">♞</span>{' '}
-          <span className="px-4 text-lg text-gray-600">vs</span>{' '}
+          <span className="px-4 text-lg text-stone-600">vs</span>{' '}
           {game.meta.players.black.player.username}{' '}
           <span className="text-2xl text-black [text-shadow:-0.5px_-0.5px_0_#4F46E5,0.5px_-0.5px_0_#4F46E5,-0.5px_0.5px_0_#4F46E5,0.5px_0.5px_0_#4F46E5]">
             ♞
           </span>
         </h3>
 
-        <p className="text-sm font-medium text-gray-600">
-          {dateStr} <span className="text-gray-800">•</span>{' '}
+        <p className="text-sm font-medium text-stone-600">
+          {dateStr} <span className="text-stone-800">•</span>{' '}
           {game.meta.timeControl / 60}m+{game.meta.increment}s{' '}
-          <span className="text-gray-800">•</span> {game.meta.timeClass}
+          <span className="text-stone-800">•</span> {game.meta.timeClass}
         </p>
       </div>
     </header>

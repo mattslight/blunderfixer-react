@@ -34,7 +34,7 @@ function FAQItem({
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="border-b border-gray-800 py-2">
+    <div className="border-b border-stone-800 py-2">
       <button
         type="button"
         className="flex w-full items-center justify-between text-left"
@@ -51,7 +51,7 @@ function FAQItem({
           size={20}
         />
       </button>
-      {open && <div className="mt-4 text-gray-400">{children}</div>}
+      {open && <div className="mt-4 text-stone-400">{children}</div>}
     </div>
   );
 }
@@ -107,9 +107,9 @@ export default function HelpPage() {
         <br />
         <span className="mt-1 inline-flex items-center gap-2">
           <span className="h-3 w-3 rounded-full bg-cyan-400"></span>
-          <span className="text-sm text-gray-300">Impulsive</span>
+          <span className="text-sm text-stone-300">Impulsive</span>
           <span className="ml-4 h-3 w-3 rounded-full bg-purple-500"></span>
-          <span className="text-sm text-gray-300">Overuse</span>
+          <span className="text-sm text-stone-300">Overuse</span>
         </span>
         <br />
         These appear in the move list to help you spot time-related decision
@@ -120,7 +120,7 @@ export default function HelpPage() {
         It tracks how much clock time you and your opponent had left after each
         move so you can spot spikes where you spent or saved a lot of time.
         <br />
-        <div className="mt-3 space-y-2 text-sm text-gray-300">
+        <div className="mt-3 space-y-2 text-sm text-stone-300">
           <div className="flex items-center gap-3">
             <span className="h-0.25 w-12 rounded bg-[oklch(55%_0.20_310)]"></span>
             <span>Opponent</span>

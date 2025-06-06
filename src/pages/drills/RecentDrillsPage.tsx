@@ -25,7 +25,7 @@ export default function RecentDrillsPage() {
           <button
             onClick={() => reload()}
             disabled={refreshing || loading || !username}
-            className="inline-flex items-center rounded bg-gray-800 px-3 py-1 text-sm text-gray-300 hover:bg-gray-700 disabled:opacity-50"
+            className="inline-flex items-center rounded bg-stone-800 px-3 py-1 text-sm text-stone-300 hover:bg-stone-700 disabled:opacity-50"
           >
             <RefreshCw
               className={`mr-2 ${refreshing && 'animate-spin'}`}

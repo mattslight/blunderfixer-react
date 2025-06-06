@@ -45,12 +45,12 @@ export default function Modal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-2 backdrop-blur-md">
       <div
         ref={modalRef}
-        className={`relative w-full max-w-md rounded-xl border border-gray-700 bg-black/80 p-6 shadow-xl ${className}`}
+        className={`relative w-full max-w-md rounded-xl border border-stone-700 bg-black/80 p-6 shadow-xl ${className}`}
       >
         <button
           onClick={onClose}
           aria-label="Close"
-          className="absolute top-4 right-4 text-gray-400 hover:text-white"
+          className="absolute top-4 right-4 text-stone-400 hover:text-white"
         >
           <X size={20} />
         </button>

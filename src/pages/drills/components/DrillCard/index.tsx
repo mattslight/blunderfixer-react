@@ -39,7 +39,7 @@ export function DrillCard({ drill, onStartDrill }: Props) {
 
   // Map API phase to display label & color
   const displayPhase = PHASE_DISPLAY[apiPhase] ?? 'Unknown';
-  const phaseColor = PHASE_COLORS[displayPhase] ?? 'bg-gray-700';
+  const phaseColor = PHASE_COLORS[displayPhase] ?? 'bg-stone-700';
 
   const { current, isAtLeast, screenWidth } = useBreakpoint();
 

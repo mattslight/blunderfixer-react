@@ -27,7 +27,7 @@ export default function TableView({
   return (
     <table className="mt-4 w-full table-auto text-sm">
       <thead className="lg:sticky lg:top-22">
-        <tr className="bg-gray-800">
+        <tr className="bg-stone-800">
           <th className="px-2 py-1" />
           <th colSpan={3} className="px-2 py-1 text-center align-bottom">
             Move
@@ -52,7 +52,7 @@ export default function TableView({
           return (
             <tr
               key={idx}
-              className="border-t border-gray-800 hover:bg-gray-700"
+              className="border-t border-stone-800 hover:bg-stone-700"
               onClick={() => onClick(r.analysis.halfMoveIndex)}
             >
               <td className="px-2 py-1 text-center">
@@ -65,7 +65,7 @@ export default function TableView({
                   ) : null
                 )}
               </td>
-              <td className="px-2 py-1 text-right text-gray-500">
+              <td className="px-2 py-1 text-right text-stone-500">
                 {r.analysis.halfMoveIndex}.
               </td>
               <td className="pl-5">
@@ -78,7 +78,7 @@ export default function TableView({
                     ? TEXT_SEVERITY_COLOR[getErrorSeverity(r.impact)]
                     : r.impact > 50
                       ? 'text-green-500'
-                      : 'text-gray-600'
+                      : 'text-stone-600'
                 }`}
               >
                 {`${r.impact > 0 ? '+' : ''}${(r.impact / 100).toFixed(2)}`}
@@ -90,13 +90,13 @@ export default function TableView({
                 )}`}
               >
                 {r.move.secondsRemaining?.toFixed(1) ?? '–'}{' '}
-                <span className="text-gray-600">s</span>
+                <span className="text-stone-600">s</span>
               </td>
               <td
                 className={`px-2 py-1 text-right font-medium ${TIME_TEXT_COLOR[timeTag]}`}
               >
                 {r.move.timeSpent?.toFixed(1) ?? '–'}{' '}
-                <span className="text-gray-600">s</span>
+                <span className="text-stone-600">s</span>
               </td>
             </tr>
           );

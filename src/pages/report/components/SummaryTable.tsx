@@ -38,8 +38,8 @@ function ToggleSwitch({
         checked={checked}
         onChange={onChange}
       />
-      <div className="h-3 w-7 rounded-full bg-gray-300 transition-colors duration-200 peer-checked:bg-blue-500" />
-      <div className="absolute left-0.25 h-3.5 w-3.5 rounded-full bg-gray-200 transition-transform duration-200 ease-in-out peer-checked:translate-x-3" />
+      <div className="h-3 w-7 rounded-full bg-stone-300 transition-colors duration-200 peer-checked:bg-blue-500" />
+      <div className="absolute left-0.25 h-3.5 w-3.5 rounded-full bg-stone-200 transition-transform duration-200 ease-in-out peer-checked:translate-x-3" />
     </label>
   );
 }
@@ -58,7 +58,7 @@ function LegendDot({
     return label.endsWith('y') ? label.slice(0, -1) + 'ies' : label + 's';
   };
   return (
-    <span className="flex items-center text-xs text-gray-500">
+    <span className="flex items-center text-xs text-stone-500">
       <span className={`mr-1 inline-block h-2 w-2 rounded-full ${colour}`} />
       {count} {formatLabel(label, count)}
     </span>
@@ -137,14 +137,16 @@ export default function GameSummaryTable({
             Review
           </span>
           <h2 className="mb-2 text-2xl font-bold text-white">Move Analysis</h2>
-          <span className="mr-2 text-sm text-gray-600">
+          <span className="mr-2 text-sm text-stone-600">
             Critical moves only
           </span>
           <ToggleSwitch
             checked={!showAll}
             onChange={() => setShowAll((v) => !v)}
           />
-          <span className="mr-2 ml-4 text-sm text-gray-600">My moves only</span>
+          <span className="mr-2 ml-4 text-sm text-stone-600">
+            My moves only
+          </span>
           <ToggleSwitch
             checked={heroOnly}
             onChange={() => setHeroOnly((v) => !v)}
@@ -152,7 +154,7 @@ export default function GameSummaryTable({
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center space-x-4 bg-gray-900 px-2 pb-2 text-xs text-gray-500 lg:sticky lg:top-12">
+      <div className="flex flex-wrap items-center space-x-4 bg-stone-900 px-2 pb-2 text-xs text-stone-500 lg:sticky lg:top-12">
         {severityOrder.map((sev) => (
           <LegendDot
             key={sev}
@@ -162,7 +164,7 @@ export default function GameSummaryTable({
           />
         ))}
         {counts.timeImpulsive + counts.timeOveruse > 0 && (
-          <span className="flex items-center text-xs text-gray-500">
+          <span className="flex items-center text-xs text-stone-500">
             <span className="mr-0.5 inline-block h-2 w-2 rounded-full bg-cyan-500" />
             <span className="mr-1 inline-block h-2 w-2 rounded-full bg-purple-600" />
             {counts.timeImpulsive + counts.timeOveruse} time control

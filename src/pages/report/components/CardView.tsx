@@ -72,9 +72,9 @@ export default function CardView({
   }, []);
 
   return (
-    <div className="mb-4 overflow-hidden rounded-lg bg-gray-800 shadow-lg">
+    <div className="mb-4 overflow-hidden rounded-lg bg-stone-800 shadow-lg">
       {/* HEADER */}
-      <div className="grid grid-cols-3 items-center bg-gray-700 p-4">
+      <div className="grid grid-cols-3 items-center bg-stone-700 p-4">
         <div>
           <span className="text-xs font-semibold text-green-500 uppercase">
             Move {r.analysis.halfMoveIndex}
@@ -98,7 +98,7 @@ export default function CardView({
       </div>
 
       {/* METRICS */}
-      <div className="grid grid-cols-3 gap-4 bg-gray-700 px-4 pb-4 text-sm text-gray-300">
+      <div className="grid grid-cols-3 gap-4 bg-stone-700 px-4 pb-4 text-sm text-stone-300">
         <div className="flex items-center">
           <BarChart className="mr-1 text-blue-400" size={16} />
           {mateLabel ||
@@ -112,7 +112,7 @@ export default function CardView({
               ? TEXT_SEVERITY_COLOR[getErrorSeverity(r.impact)]
               : r.impact > 50
                 ? 'text-green-500'
-                : 'text-gray-600'
+                : 'text-stone-600'
           }`}
         >
           {Math.abs(r.impact) > 0 && (
@@ -135,8 +135,8 @@ export default function CardView({
       </div>
 
       {/* BOARD */}
-      <div className="space-y-4 bg-gray-800">
-        <div className="pb- flex flex-row items-center border-gray-700">
+      <div className="space-y-4 bg-stone-800">
+        <div className="pb- flex flex-row items-center border-stone-700">
           <div className="mx-auto my-4">
             <Chessboard
               boardOrientation={heroSide === 'b' ? 'black' : 'white'}

@@ -25,15 +25,15 @@ export default function MoveStepper({
       const moveNum = i / 2 + 1;
       moves.push(
         <div key={i} className="flex items-center space-x-1 whitespace-nowrap">
-          <span className="text-sm text-gray-400">{moveNum}.</span>
+          <span className="text-sm text-stone-400">{moveNum}.</span>
 
           <button
             ref={currentIdx === i + 1 ? activeRef : null}
             onClick={() => setCurrentIdx(i + 1)}
             className={`px-1 text-sm font-bold whitespace-nowrap ${
               currentIdx === i + 1
-                ? 'rounded bg-gray-600 text-white'
-                : 'text-gray-200'
+                ? 'rounded bg-stone-600 text-white'
+                : 'text-stone-200'
             }`}
           >
             {moveList[i]}
@@ -45,8 +45,8 @@ export default function MoveStepper({
               onClick={() => setCurrentIdx(i + 2)}
               className={`px-1 text-sm font-bold whitespace-nowrap ${
                 currentIdx === i + 2
-                  ? 'rounded bg-gray-600 text-white'
-                  : 'text-gray-200'
+                  ? 'rounded bg-stone-600 text-white'
+                  : 'text-stone-200'
               }`}
             >
               {moveList[i + 1]}

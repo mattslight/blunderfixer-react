@@ -53,11 +53,11 @@ function WinRateDial({
             <RadialBar dataKey="value" cornerRadius={5} fill={color} />
           </RadialBarChart>
         </ResponsiveContainer>
-        <div className="absolute inset-0 flex items-center justify-center text-sm font-semibold text-gray-100">
+        <div className="absolute inset-0 flex items-center justify-center text-sm font-semibold text-stone-100">
           {rate}%
         </div>
       </div>
-      <p className="mt-1 text-xs text-gray-200">{label}</p>
+      <p className="mt-1 text-xs text-stone-200">{label}</p>
     </div>
   );
 }
@@ -121,10 +121,10 @@ export default function HomeScreen() {
       <div className="p-4 pt-8 2xl:ml-12">
         <div className="mx-auto max-w-3xl space-y-10">
           <header>
-            <h1 className="text-2xl font-bold text-gray-100">
+            <h1 className="text-2xl font-bold text-stone-100">
               Welcome back{username ? `, ${username}` : ''}!
             </h1>
-            <p className="text-gray-400">{randomGreeting}</p>
+            <p className="text-stone-400">{randomGreeting}</p>
             <div className="mt-4">
               <button
                 onClick={() =>
@@ -143,37 +143,39 @@ export default function HomeScreen() {
           <section className="mb-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
             <div className="rounded bg-stone-800 p-4 text-center">
               <p className="text-2xl font-semibold text-blue-400">123</p>
-              <p className="text-sm text-gray-200">Blunders Fixed</p>
-              <p className="mt-1 text-xs text-gray-400">
+              <p className="text-sm text-stone-200">Blunders Fixed</p>
+              <p className="mt-1 text-xs text-stone-400">
                 Mistakes you corrected
               </p>
             </div>
             <div className="rounded bg-stone-800 p-4 text-center">
               <p className="text-2xl font-semibold text-green-400">64%</p>
-              <p className="text-sm text-gray-200">Tactic Accuracy</p>
-              <p className="mt-1 text-xs text-gray-400">
+              <p className="text-sm text-stone-200">Tactic Accuracy</p>
+              <p className="mt-1 text-xs text-stone-400">
                 Top-engine moves chosen
               </p>
             </div>
             <div className="rounded bg-stone-800 p-4 text-center">
               <p className="text-2xl font-semibold text-purple-400">75%</p>
-              <p className="text-sm text-gray-200">Winning Openings</p>
-              <p className="mt-1 text-xs text-gray-400">
+              <p className="text-sm text-stone-200">Winning Openings</p>
+              <p className="mt-1 text-xs text-stone-400">
                 Wins from your openings
               </p>
             </div>
             <div className="rounded bg-stone-800 p-4 text-center">
               <p className="text-2xl font-semibold text-fuchsia-400">48%</p>
-              <p className="text-sm text-gray-200">Endgame Wins</p>
-              <p className="mt-1 text-xs text-gray-400">Games converted late</p>
+              <p className="text-sm text-stone-200">Endgame Wins</p>
+              <p className="mt-1 text-xs text-stone-400">
+                Games converted late
+              </p>
             </div>
             <div className="hidden flex-col items-center justify-center rounded bg-stone-800 p-4 sm:flex">
               <WinRateDial rate={58} color="#fbbf24" label="White Win %" />
-              <p className="mt-1 text-xs text-gray-400">Wins as White</p>
+              <p className="mt-1 text-xs text-stone-400">Wins as White</p>
             </div>
             <div className="hidden flex-col items-center justify-center rounded bg-stone-800 p-4 sm:flex">
               <WinRateDial rate={42} color="#818cf8" label="Black Win %" />
-              <p className="mt-1 text-xs text-gray-400">Wins as Black</p>
+              <p className="mt-1 text-xs text-stone-400">Wins as Black</p>
             </div>
           </section>
 
@@ -192,7 +194,7 @@ export default function HomeScreen() {
           {showCharts && (
             <section className="grid gap-8 md:grid-cols-2">
               <div>
-                <h2 className="mb-4 text-xl font-semibold text-gray-100">
+                <h2 className="mb-4 text-xl font-semibold text-stone-100">
                   Strength by Opening
                 </h2>
                 <div className="h-60 w-full">
@@ -214,7 +216,7 @@ export default function HomeScreen() {
               </div>
 
               <div>
-                <h2 className="mb-4 text-xl font-semibold text-gray-100">
+                <h2 className="mb-4 text-xl font-semibold text-stone-100">
                   Average CP Loss by Phase
                 </h2>
                 <div className="h-60 w-full">
@@ -238,7 +240,7 @@ export default function HomeScreen() {
               </div>
 
               <div>
-                <h2 className="mb-4 text-xl font-semibold text-gray-100">
+                <h2 className="mb-4 text-xl font-semibold text-stone-100">
                   Reason for Loss
                 </h2>
                 <div className="h-60 w-full">
@@ -258,7 +260,7 @@ export default function HomeScreen() {
               </div>
 
               <div>
-                <h2 className="mb-4 text-xl font-semibold text-gray-100">
+                <h2 className="mb-4 text-xl font-semibold text-stone-100">
                   Impulsive vs Slow
                 </h2>
                 <div className="h-60 w-full">
@@ -284,7 +286,7 @@ export default function HomeScreen() {
           {/* Next Drills */}
           <section>
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-100">
+              <h2 className="text-xl font-semibold text-stone-100">
                 <Target className="inline-flex" /> Next Drills
               </h2>
               <button
@@ -295,7 +297,7 @@ export default function HomeScreen() {
               </button>
             </div>
             {loadingDrills ? (
-              <p className="mt-4 text-center text-gray-500">Loading…</p>
+              <p className="mt-4 text-center text-stone-500">Loading…</p>
             ) : (
               <NextDrillCarousel
                 drills={drills}
@@ -306,7 +308,7 @@ export default function HomeScreen() {
 
           {/* Recent Games */}
           <div className="mb-2 flex justify-between">
-            <h2 className="text-xl font-semibold text-gray-100">
+            <h2 className="text-xl font-semibold text-stone-100">
               Recent Games
             </h2>
             <button

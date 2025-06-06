@@ -49,13 +49,13 @@ export default function ConfirmModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md">
       <div
         ref={modalRef}
-        className="relative w-full max-w-md scale-95 transform rounded-xl border border-gray-700 bg-black/80 p-6 shadow-xl transition duration-150 ease-out md:scale-100"
+        className="relative w-full max-w-md scale-95 transform rounded-xl border border-stone-700 bg-black/80 p-6 shadow-xl transition duration-150 ease-out md:scale-100"
       >
         {/* Close button */}
         <button
           onClick={onCancel}
           aria-label="Close"
-          className="absolute top-4 right-4 text-gray-400 hover:text-white"
+          className="absolute top-4 right-4 text-stone-400 hover:text-white"
         >
           <X size={20} />
         </button>
@@ -67,10 +67,10 @@ export default function ConfirmModal({
               <img
                 src={profile.avatar}
                 alt={`${profile.username} avatar`}
-                className="mx-auto h-24 w-24 rounded-full border-2 border-gray-600"
+                className="mx-auto h-24 w-24 rounded-full border-2 border-stone-600"
               />
             ) : (
-              <div className="mx-auto h-24 w-24 rounded-full bg-gray-600" />
+              <div className="mx-auto h-24 w-24 rounded-full bg-stone-600" />
             )}
           </div>
 
@@ -83,7 +83,7 @@ export default function ConfirmModal({
 
             {/* Location */}
             {profile.location && (
-              <div className="flex items-center justify-center space-x-1 text-sm text-gray-400">
+              <div className="flex items-center justify-center space-x-1 text-sm text-stone-400">
                 <MapPin className="h-4 w-4" />
                 <span>{profile.location}</span>
               </div>
@@ -92,7 +92,7 @@ export default function ConfirmModal({
 
           {/* Last seen */}
           {profile.last_online && (
-            <div className="flex items-center justify-center space-x-1 text-sm text-gray-400">
+            <div className="flex items-center justify-center space-x-1 text-sm text-stone-400">
               <Clock className="h-4 w-4" />
               <span>
                 Last seen{' '}
@@ -107,7 +107,7 @@ export default function ConfirmModal({
           <div className="mt-8 flex justify-between space-x-4 pt-2">
             <button
               onClick={onCancel}
-              className="px-4 py-2 text-sm whitespace-pre text-gray-300 hover:text-white focus:outline-none"
+              className="px-4 py-2 text-sm whitespace-pre text-stone-300 hover:text-white focus:outline-none"
             >
               Not me
             </button>

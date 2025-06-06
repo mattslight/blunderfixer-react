@@ -11,7 +11,7 @@ export default function UsernameInput({ username, onUsernameChange }: Props) {
         type="text"
         value={username}
         onChange={(e) => onUsernameChange(e.target.value)}
-        className="w-full rounded border border-gray-600 bg-gray-800 px-2 py-1 text-white"
+        className="w-full rounded border border-stone-600 bg-stone-800 px-2 py-1 text-white"
         placeholder="Enter your username…"
       />
     </div>

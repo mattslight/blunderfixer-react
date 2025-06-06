@@ -31,7 +31,7 @@ const roleStyles = {
   },
   typing: {
     wrapper: 'justify-start',
-    bubble: 'bg-gray-700 text-gray-400 italic',
+    bubble: 'bg-stone-700 text-stone-400 italic',
     avatar: false,
   },
 } as const;
@@ -73,7 +73,7 @@ function ChatMessage({ msg }: { msg: Msg }) {
             {[0, 0.1, 0.2].map((d, i) => (
               <motion.span
                 key={i}
-                className="mb-1 h-1 w-1 rounded-full bg-gray-400"
+                className="mb-1 h-1 w-1 rounded-full bg-stone-400"
                 animate={{ y: [0, -6, 0] }}
                 transition={{
                   repeat: Infinity,
@@ -122,12 +122,12 @@ function ChatInput({
         onKeyDown={(e) =>
           e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), send())
         }
-        className="w-full resize-none overflow-hidden rounded-lg bg-gray-700 p-2 pr-10 text-white placeholder-gray-400 focus:ring-1 focus:ring-blue-500"
+        className="w-full resize-none overflow-hidden rounded-lg bg-stone-700 p-2 pr-10 text-white placeholder-stone-400 focus:ring-1 focus:ring-blue-500"
       />
       <button
         onClick={send}
         disabled={!value.trim()}
-        className="absolute inset-y-0 right-2 rounded-full p-2 text-gray-400 hover:text-white disabled:opacity-50"
+        className="absolute inset-y-0 right-2 rounded-full p-2 text-stone-400 hover:text-white disabled:opacity-50"
       >
         <Send className="relative bottom-[2px] h-5 w-5 text-white" />
       </button>

@@ -82,13 +82,13 @@ export default function GameCard({
           <span className="truncate text-lg font-semibold">
             {whitePlayer.username}
           </span>
-          <span className="xs:flex hidden text-sm text-gray-500">
+          <span className="xs:flex hidden text-sm text-stone-500">
             ({whiteRating})
           </span>
         </div>
 
         {/* vs */}
-        <span className="text-sm text-gray-500">vs</span>
+        <span className="text-sm text-stone-500">vs</span>
 
         {/* Black */}
         <div className="flex items-center justify-end space-x-1 truncate">
@@ -98,14 +98,14 @@ export default function GameCard({
           <span className="truncate text-lg font-semibold">
             {blackPlayer.username}
           </span>
-          <span className="xs:flex hidden text-sm text-gray-500">
+          <span className="xs:flex hidden text-sm text-stone-500">
             ({blackRating})
           </span>
         </div>
       </header>
 
       {/* Meta: date & time control */}
-      <div className="mt-1 mb-2 flex space-x-4 text-sm text-gray-400">
+      <div className="mt-1 mb-2 flex space-x-4 text-sm text-stone-400">
         <div className="flex items-center space-x-1">
           <Calendar size={16} />
           <time dateTime={dateTime.toISOString()}>{dateStr}</time>
@@ -129,13 +129,13 @@ export default function GameCard({
                 ? 'bg-green-500 text-white'
                 : lost
                   ? 'bg-red-600 text-white'
-                  : 'bg-gray-600 text-white')
+                  : 'bg-stone-600 text-white')
             }
           >
             {won ? 'Won' : lost ? 'Lost' : 'Draw'}
           </span>
 
-          {reason && <span className="text-sm text-gray-500">{reason}</span>}
+          {reason && <span className="text-sm text-stone-500">{reason}</span>}
         </div>
 
         <button

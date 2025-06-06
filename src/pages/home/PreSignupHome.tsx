@@ -106,7 +106,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-6 text-white sm:p-10">
+    <div className="min-h-screen bg-gradient-to-br from-stone-900 via-purple-900 to-stone-900 p-6 text-white sm:p-10">
       {/* Hero */}
       <section className="bg-noise container mx-auto mt-16 mb-10 p-4 text-center">
         <h1 className="mb-4 text-center text-5xl font-extrabold text-white lg:text-7xl">
@@ -148,7 +148,7 @@ export default function HomePage() {
 
           <div
             onClick={() => setIsModalOpen(true)}
-            className="cursor-pointer rounded-xl border-1 border-b-6 border-gray-600 border-b-gray-900 bg-gray-700 p-6 text-white shadow-2xl transition hover:bg-gray-600"
+            className="cursor-pointer rounded-xl border-1 border-b-6 border-stone-600 border-b-stone-900 bg-stone-700 p-6 text-white shadow-2xl transition hover:bg-stone-600"
           >
             <div className="mb-4 flex items-center justify-center">
               <PlugZap className="h-8 w-8" />
@@ -317,7 +317,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* Final CTA */}
-      <section className="mb-20 overflow-hidden rounded-3xl border-r-2 border-b-4 border-l-1 border-r-gray-800 border-b-gray-700 border-l-gray-700 bg-gradient-to-br from-gray-800 to-black">
+      <section className="mb-20 overflow-hidden rounded-3xl border-r-2 border-b-4 border-l-1 border-r-stone-800 border-b-stone-700 border-l-stone-700 bg-gradient-to-br from-stone-800 to-black">
         <div className="container mx-auto px-8 py-20 text-center">
           <h2 className="text-center text-4xl font-bold tracking-tight text-white">
             From blunder to{' '}

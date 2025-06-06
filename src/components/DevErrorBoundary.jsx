@@ -23,7 +23,7 @@ export default class DevErrorBoundary extends React.Component {
       }
       // PRODUCTION fallback UI:
       return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-6 text-white">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-stone-900 via-purple-900 to-stone-900 p-6 text-white">
           <MessageCircleWarning className="mb-6 h-16 w-16 animate-pulse text-red-400" />
           <h1 className="mb-4 text-4xl font-extrabold">
             Oops — Something broke!
@@ -41,7 +41,7 @@ export default class DevErrorBoundary extends React.Component {
             </Link>
             <Link
               to="/"
-              className="flex items-center space-x-2 rounded-lg border-b-4 border-b-gray-900 bg-gray-700 px-6 py-3 font-semibold transition hover:bg-gray-600"
+              className="flex items-center space-x-2 rounded-lg border-b-4 border-b-stone-900 bg-stone-700 px-6 py-3 font-semibold transition hover:bg-stone-600"
             >
               <PlugZap className="h-5 w-5" />
               <span>Go Home</span>

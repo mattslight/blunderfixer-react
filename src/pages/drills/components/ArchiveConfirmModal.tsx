@@ -16,16 +16,16 @@ export default function ArchiveConfirmModal({
       <h2 className="mb-4 text-lg font-semibold text-white">
         Archive this drill?
       </h2>
-      <p className="text-md mb-6 text-gray-200">
+      <p className="text-md mb-6 text-stone-200">
         This drill will be removed from your active list.
       </p>
-      <p className="mb-6 text-sm text-gray-400">
+      <p className="mb-6 text-sm text-stone-400">
         Or, if you pass it five times in a row, it’ll be archived automatically.
       </p>
       <div className="flex justify-end gap-2">
         <button
           onClick={onCancel}
-          className="rounded bg-gray-700 px-4 py-2 text-sm text-gray-200 hover:bg-gray-600"
+          className="rounded bg-stone-700 px-4 py-2 text-sm text-stone-200 hover:bg-stone-600"
         >
           Cancel
         </button>
