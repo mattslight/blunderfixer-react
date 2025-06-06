@@ -9,6 +9,7 @@ import { HistoryDots } from './HistoryDots';
 import { TimePhaseHeader } from './TimePhaseHeader';
 
 import { PHASE_COLORS, PHASE_DISPLAY } from '@/constants/phase';
+import useBreakpoint from '@/hooks/useBreakpoint';
 import type { DrillPosition } from '@/types';
 
 type Props = {
@@ -38,20 +39,33 @@ export function DrillCard({ drill, onStartDrill }: Props) {
   const displayPhase = PHASE_DISPLAY[apiPhase] ?? 'Unknown';
   const phaseColor = PHASE_COLORS[displayPhase] ?? 'bg-gray-700';
 
+  const { current, isAtLeast, screenWidth } = useBreakpoint();
+
+  const boardWidth = isAtLeast('sm')
+    ? 360
+    : current === 'xs'
+      ? 240
+      : screenWidth - 32;
+
+  console.debug('[useBreakpoint] ', current);
+
   return (
     <div
       className="xs:grid-cols-[240px_1fr] xs:gap-0 grid rounded-lg bg-gray-800 shadow sm:grid-cols-[360px_1fr]"
       onClick={() => onStartDrill(drill.id)}
     >
       {/* 1) Board */}
-      <Chessboard
-        position={fen}
-        boardOrientation={orientation}
-        arePiecesDraggable={false}
-        customBoardStyle={{ borderRadius: '0.5rem' }}
-        customDarkSquareStyle={{ backgroundColor: '#B1B7C8' }}
-        customLightSquareStyle={{ backgroundColor: '#F5F2E6' }}
-      />
+      <div className="shrink-0">
+        <Chessboard
+          position={fen}
+          boardOrientation={orientation}
+          arePiecesDraggable={false}
+          boardWidth={boardWidth}
+          customBoardStyle={{ borderRadius: '0.5rem' }}
+          customDarkSquareStyle={{ backgroundColor: '#B1B7C8' }}
+          customLightSquareStyle={{ backgroundColor: '#F5F2E6' }}
+        />
+      </div>
 
       {/* 2) Details */}
       <div className="flex flex-col justify-between rounded px-4 py-6 tracking-wide">

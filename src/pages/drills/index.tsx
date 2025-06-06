@@ -1,6 +1,6 @@
 // src/pages/DrillsPage.tsx
 
-import { useEffect, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import { useNavigate } from 'react-router-dom';
 import { Badge, TextInput } from 'flowbite-react';
@@ -8,7 +8,9 @@ import { RefreshCw, SlidersHorizontal } from 'lucide-react';
 
 import DrillList from './components/DrillList';
 import FilterModal from './components/FilterModal';
+import RecentDrillList from './components/RecentDrillList';
 import { useDrills } from './hooks/useDrills';
+import { useRecentDrills } from './hooks/useRecentDrills';
 import {
   buildDrillFilters,
   PhaseFilter,
@@ -16,6 +18,7 @@ import {
 } from './utils/filters';
 import 'react-range-slider-input/dist/style.css';
 
+import Tabs from '@/components/Tabs';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useProfile } from '@/hooks/useProfile';
 import { useStickyValue } from '@/hooks/useStickyValue';
@@ -49,10 +52,15 @@ function ToggleSwitch({ checked, onChange }) {
 export default function DrillsPage() {
   const navigate = useNavigate();
 
+  const [tabIndex, setTabIndex] = useState(0);
+
   // profile
   const {
     profile: { username },
   } = useProfile();
+
+  const { drills: recentDrills, loading: recentLoading } =
+    useRecentDrills(username);
 
   // UI state
   const [phaseFilter, setPhaseFilter] = useStickyValue<Phase>(
@@ -99,10 +107,9 @@ export default function DrillsPage() {
 
   const { drills, loading, refresh } = useDrills(filters);
 
-  return (
-    <div className="p-4 pt-8 2xl:ml-12">
-      <div className="mx-auto max-w-2xl space-y-4">
-        <TabGroup />
+  const newDrillsPanel = useMemo(
+    () => (
+      <>
         {/* Controls */}
         <div className="flex flex-wrap items-center justify-between gap-2">
           {/* Phase badges */}
@@ -156,7 +163,7 @@ export default function DrillsPage() {
             <span className="text-xs font-bold text-gray-500">lg</span>
           </div>
         </div>
-        <div className="mt-10 flex items-center justify-between">
+        <div className="mt-10 mb-4 flex items-center justify-between">
           <div className="text-sm text-gray-400 sm:text-base">
             {`Showing ${drills.length} result${drills.length === 1 ? '' : 's'}`}
           </div>
@@ -185,49 +192,44 @@ export default function DrillsPage() {
           loading={loading}
           onStartDrill={(id) => navigate(`/drills/play/${id}`)}
         />
-      </div>
-    </div>
+      </>
+    ),
+    [
+      drills,
+      loading,
+      phaseFilter,
+      excludeWins,
+      includeArchived,
+      includeMastered,
+      rangeIdx,
+      search,
+    ]
   );
-}
-const TABS = ['New Drills', 'History', 'Mastered', 'Archived'];
 
-export function TabGroup() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0 });
-
-  useEffect(() => {
-    const current = tabRefs.current[activeIndex];
-    if (current) {
-      setUnderlineStyle({
-        left: current.offsetLeft,
-        width: current.offsetWidth,
-      });
-    }
-  }, [activeIndex]);
+  const historyPanel = useMemo(
+    () => (
+      <RecentDrillList
+        drills={recentDrills}
+        loading={recentLoading}
+        onPlay={(id) => navigate(`/drills/play/${id}`)}
+      />
+    ),
+    [recentDrills, recentLoading]
+  );
 
   return (
-    <div className="relative mb-12 border-b border-gray-700 text-sm text-gray-400">
-      <div className="flex space-x-8">
-        {TABS.map((label, idx) => (
-          <button
-            key={label}
-            ref={(el) => {
-              tabRefs.current[idx] = el;
-            }}
-            onClick={() => setActiveIndex(idx)}
-            className={`pb-3 tracking-wide transition-colors ${
-              activeIndex === idx ? 'text-white' : 'hover:text-gray-300'
-            }`}
-          >
-            {label}
-          </button>
-        ))}
+    <div className="p-4 pt-8 2xl:ml-12">
+      <div className="mx-auto max-w-2xl space-y-4">
+        <Tabs
+          labels={TABS}
+          activeIndex={tabIndex}
+          onChange={setTabIndex}
+          className="mb-12"
+        />
+        <div className={tabIndex === 0 ? '' : 'hidden'}>{newDrillsPanel}</div>
+        <div className={tabIndex === 1 ? '' : 'hidden'}>{historyPanel}</div>
       </div>
-      <span
-        className="absolute bottom-0 block h-0.5 bg-blue-500 transition-all duration-300"
-        style={underlineStyle}
-      />
     </div>
   );
 }
+const TABS = ['New Drills', 'History'];
