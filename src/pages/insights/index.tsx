@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ChevronDown } from 'lucide-react';
 import {
   Bar,
   BarChart,
@@ -56,7 +56,7 @@ function WinRateDial({
           {rate}%
         </div>
       </div>
-      <p className="mt-1 text-xs text-gray-300">{label}</p>
+      <p className="mt-1 text-xs text-gray-200">{label}</p>
     </div>
   );
 }
@@ -102,14 +102,18 @@ export default function HomeScreen() {
             >
               Import Your First Game
             </button>
-            <p className="text-xs text-gray-400">Pull from Chess.com or upload PGN</p>
+            <p className="text-xs text-gray-400">
+              Pull from Chess.com or upload PGN
+            </p>
             <button
               onClick={() => navigate('/drills')}
               className="w-full rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
             >
               Take Your First Drill
             </button>
-            <p className="text-xs text-gray-400">Practice a sample blunder in 60s</p>
+            <p className="text-xs text-gray-400">
+              Practice a sample blunder in 60s
+            </p>
           </div>
         </div>
       </div>
@@ -145,228 +149,240 @@ export default function HomeScreen() {
   ];
 
   return (
-    <div className="p-4 pt-8 2xl:ml-12">
-      <div className="mx-auto max-w-5xl space-y-10">
-        <header>
-          <h1 className="text-2xl font-bold text-gray-100">
-            Welcome back{username ? `, ${username}` : ''}!
-          </h1>
-          <p className="text-sm text-gray-400">
-            Here&#39;s your latest progress.
-          </p>
-          <div className="mt-4">
-            <button
-              onClick={() =>
-                navigate(
-                  nextDrillId ? `/drills/play/${nextDrillId}` : '/drills'
-                )
-              }
-              className="rounded bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700"
-            >
-              Start Next Drill
-            </button>
-          </div>
-        </header>
-
-        {/* Stats */}
-        <section className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
-          <div className="rounded bg-gray-800 p-4 text-center">
-            <p className="text-2xl font-semibold text-blue-400">123</p>
-            <p className="text-sm text-gray-300">Blunders Fixed</p>
-            <p className="mt-1 text-xs text-gray-400">Mistakes you corrected</p>
-          </div>
-          <div className="rounded bg-gray-800 p-4 text-center">
-            <p className="text-2xl font-semibold text-green-400">64%</p>
-            <p className="text-sm text-gray-300">Tactic Accuracy</p>
-            <p className="mt-1 text-xs text-gray-400">Top-engine moves chosen</p>
-          </div>
-          <div className="rounded bg-gray-800 p-4 text-center">
-            <p className="text-2xl font-semibold text-purple-400">75%</p>
-            <p className="text-sm text-gray-300">Winning Openings</p>
-            <p className="mt-1 text-xs text-gray-400">Wins from your openings</p>
-          </div>
-          <div className="rounded bg-gray-800 p-4 text-center">
-            <p className="text-2xl font-semibold text-fuchsia-400">48%</p>
-            <p className="text-sm text-gray-300">Endgame Wins</p>
-            <p className="mt-1 text-xs text-gray-400">Games converted late</p>
-          </div>
-          <div className="flex flex-col items-center justify-center rounded bg-gray-800 p-4">
-            <WinRateDial rate={58} color="#fbbf24" label="White Win %" />
-            <p className="mt-1 text-xs text-gray-400">Wins as White</p>
-          </div>
-          <div className="flex flex-col items-center justify-center rounded bg-gray-800 p-4">
-            <WinRateDial rate={42} color="#818cf8" label="Black Win %" />
-            <p className="mt-1 text-xs text-gray-400">Wins as Black</p>
-          </div>
-        </section>
-
-        {/* Charts */}
-        <div className="mb-2 flex justify-end">
-          <button
-            className="flex items-center text-sm text-blue-400 hover:underline"
-            onClick={() => setShowCharts((v) => !v)}
-          >
-            {showCharts ? 'Hide Charts' : 'More Charts'}
-            <ChevronDown
-              className={`ml-1 h-4 w-4 transition-transform ${showCharts ? 'rotate-180' : ''}`}
-            />
-          </button>
-        </div>
-        {showCharts && (
-          <section className="grid gap-8 md:grid-cols-2">
-          <div>
-            <h2 className="mb-4 text-xl font-semibold text-gray-100">
-              Strength by Opening
-            </h2>
-            <div className="h-60 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <RadarChart data={ecoData}>
-                  <PolarGrid stroke="#444" />
-                  <PolarAngleAxis dataKey="eco" stroke="#888" />
-                  <PolarRadiusAxis stroke="#888" />
-                  <Radar
-                    dataKey="score"
-                    stroke="#60a5fa"
-                    fill="#60a5fa"
-                    fillOpacity={0.6}
-                  />
-                  <Tooltip />
-                </RadarChart>
-              </ResponsiveContainer>
+    <>
+      <div className="p-4 pt-8 2xl:ml-12">
+        <div className="mx-auto max-w-5xl space-y-10">
+          <header>
+            <h1 className="text-2xl font-bold text-gray-100">
+              Welcome back{username ? `, ${username}` : ''}!
+            </h1>
+            <p className="text-sm text-gray-400">
+              Here&#39;s your latest progress.
+            </p>
+            <div className="mt-4">
+              <button
+                onClick={() =>
+                  navigate(
+                    nextDrillId ? `/drills/play/${nextDrillId}` : '/drills'
+                  )
+                }
+                className="rounded bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700"
+              >
+                Start Next Drill
+              </button>
             </div>
-          </div>
+          </header>
 
-          <div>
-            <h2 className="mb-4 text-xl font-semibold text-gray-100">
-              Average CP Loss by Phase
-            </h2>
-            <div className="h-60 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={acplData} margin={{ left: -20, right: 20 }}>
-                  <XAxis dataKey="phase" stroke="#888" />
-                  <YAxis stroke="#888" />
-                  <Tooltip />
-                  <Line
-                    type="monotone"
-                    dataKey="acpl"
-                    stroke="#a78bfa"
-                    strokeWidth={2}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+          {/* Stats */}
+          <section className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
+            <div className="rounded bg-gray-800 p-4 text-center">
+              <p className="text-2xl font-semibold text-blue-400">123</p>
+              <p className="text-sm text-gray-200">Blunders Fixed</p>
+              <p className="mt-1 text-xs text-gray-400">
+                Mistakes you corrected
+              </p>
             </div>
-          </div>
-
-          <div>
-            <h2 className="mb-4 text-xl font-semibold text-gray-100">
-              Reason for Loss
-            </h2>
-            <div className="h-60 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={lossReasonsData}
-                  margin={{ left: -20, right: 20 }}
-                >
-                  <CartesianGrid stroke="#444" />
-                  <XAxis dataKey="reason" stroke="#888" />
-                  <YAxis stroke="#888" />
-                  <Tooltip />
-                  <Bar dataKey="games" fill="#f472b6" />
-                </BarChart>
-              </ResponsiveContainer>
+            <div className="rounded bg-gray-800 p-4 text-center">
+              <p className="text-2xl font-semibold text-green-400">64%</p>
+              <p className="text-sm text-gray-200">Tactic Accuracy</p>
+              <p className="mt-1 text-xs text-gray-400">
+                Top-engine moves chosen
+              </p>
             </div>
-          </div>
-
-          <div>
-            <h2 className="mb-4 text-xl font-semibold text-gray-100">
-              Impulsive vs Slow
-            </h2>
-            <div className="h-60 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={timeControlData}
-                  margin={{ left: -20, right: 20 }}
-                >
-                  <CartesianGrid stroke="#444" />
-                  <XAxis dataKey="control" stroke="#888" />
-                  <YAxis stroke="#888" />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="impulsive" fill="#60a5fa" />
-                  <Bar dataKey="slow" fill="#c084fc" />
-                </BarChart>
-              </ResponsiveContainer>
+            <div className="rounded bg-gray-800 p-4 text-center">
+              <p className="text-2xl font-semibold text-purple-400">75%</p>
+              <p className="text-sm text-gray-200">Winning Openings</p>
+              <p className="mt-1 text-xs text-gray-400">
+                Wins from your openings
+              </p>
             </div>
-          </div>
-        </section>
-        )}
-
-        {/* Next Drills */}
-        <section>
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-gray-100">Next Drills</h2>
-            <button
-              className="text-sm text-blue-500 hover:underline"
-              onClick={() => navigate('/drills')}
-            >
-              View all
-            </button>
-          </div>
-          {loadingDrills ? (
-            <p className="mt-4 text-center text-gray-500">Loading…</p>
-          ) : (
-            <NextDrillCarousel
-              drills={drills}
-              onStart={(id) => navigate(`/drills/play/${id}`)}
-            />
-          )}
-        </section>
-
-        {/* Recent Games */}
-        <div className="mb-2 flex justify-between">
-          <button
-            className="flex items-center text-sm text-blue-400 hover:underline"
-            onClick={() => setShowGames((v) => !v)}
-          >
-            Recent Games
-            <ChevronDown
-              className={`ml-1 h-4 w-4 transition-transform ${showGames ? 'rotate-180' : ''}`}
-            />
-          </button>
-          <span className="text-xs text-gray-400">{games.length}</span>
-        </div>
-        {showGames && (
-          <section>
-            {recentGameId && (
-              <div className="mb-4">
-                <button
-                  onClick={() => navigate(`/report/${recentGameId}`)}
-                  className="rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
-                >
-                  Analyse Latest Game
-                </button>
-              </div>
-            )}
-            <GameList
-              games={games}
-              hero={username}
-              isAnalysed={() => false}
-              isLoading={() => loadingGames}
-              onAction={(g) => navigate(`/report/${g.id}`)}
-            />
+            <div className="rounded bg-gray-800 p-4 text-center">
+              <p className="text-2xl font-semibold text-fuchsia-400">48%</p>
+              <p className="text-sm text-gray-200">Endgame Wins</p>
+              <p className="mt-1 text-xs text-gray-400">Games converted late</p>
+            </div>
+            <div className="flex hidden flex-col items-center justify-center rounded bg-gray-800 p-4 sm:flex">
+              <WinRateDial rate={58} color="#fbbf24" label="White Win %" />
+              <p className="mt-1 text-xs text-gray-400">Wins as White</p>
+            </div>
+            <div className="flex hidden flex-col items-center justify-center rounded bg-gray-800 p-4 sm:flex">
+              <WinRateDial rate={42} color="#818cf8" label="Black Win %" />
+              <p className="mt-1 text-xs text-gray-400">Wins as Black</p>
+            </div>
           </section>
-        )}
+
+          {/* Charts */}
+          <div className="mb-2 flex justify-end">
+            <button
+              className="flex items-center text-sm text-blue-400 hover:underline"
+              onClick={() => setShowCharts((v) => !v)}
+            >
+              {showCharts ? 'Hide Charts' : 'More Charts'}
+              <ChevronDown
+                className={`ml-1 h-4 w-4 transition-transform ${showCharts ? 'rotate-180' : ''}`}
+              />
+            </button>
+          </div>
+          {showCharts && (
+            <section className="grid gap-8 md:grid-cols-2">
+              <div>
+                <h2 className="mb-4 text-xl font-semibold text-gray-100">
+                  Strength by Opening
+                </h2>
+                <div className="h-60 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RadarChart data={ecoData}>
+                      <PolarGrid stroke="#444" />
+                      <PolarAngleAxis dataKey="eco" stroke="#888" />
+                      <PolarRadiusAxis stroke="#888" />
+                      <Radar
+                        dataKey="score"
+                        stroke="#60a5fa"
+                        fill="#60a5fa"
+                        fillOpacity={0.6}
+                      />
+                      <Tooltip />
+                    </RadarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              <div>
+                <h2 className="mb-4 text-xl font-semibold text-gray-100">
+                  Average CP Loss by Phase
+                </h2>
+                <div className="h-60 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart
+                      data={acplData}
+                      margin={{ left: -20, right: 20 }}
+                    >
+                      <XAxis dataKey="phase" stroke="#888" />
+                      <YAxis stroke="#888" />
+                      <Tooltip />
+                      <Line
+                        type="monotone"
+                        dataKey="acpl"
+                        stroke="#a78bfa"
+                        strokeWidth={2}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              <div>
+                <h2 className="mb-4 text-xl font-semibold text-gray-100">
+                  Reason for Loss
+                </h2>
+                <div className="h-60 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={lossReasonsData}
+                      margin={{ left: -20, right: 20 }}
+                    >
+                      <CartesianGrid stroke="#444" />
+                      <XAxis dataKey="reason" stroke="#888" />
+                      <YAxis stroke="#888" />
+                      <Tooltip />
+                      <Bar dataKey="games" fill="#f472b6" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              <div>
+                <h2 className="mb-4 text-xl font-semibold text-gray-100">
+                  Impulsive vs Slow
+                </h2>
+                <div className="h-60 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={timeControlData}
+                      margin={{ left: -20, right: 20 }}
+                    >
+                      <CartesianGrid stroke="#444" />
+                      <XAxis dataKey="control" stroke="#888" />
+                      <YAxis stroke="#888" />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="impulsive" fill="#60a5fa" />
+                      <Bar dataKey="slow" fill="#c084fc" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Next Drills */}
+          <section>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-gray-100">
+                Next Drills
+              </h2>
+              <button
+                className="text-sm text-blue-500 hover:underline"
+                onClick={() => navigate('/drills')}
+              >
+                View all
+              </button>
+            </div>
+            {loadingDrills ? (
+              <p className="mt-4 text-center text-gray-500">Loading…</p>
+            ) : (
+              <NextDrillCarousel
+                drills={drills}
+                onStart={(id) => navigate(`/drills/play/${id}`)}
+              />
+            )}
+          </section>
+
+          {/* Recent Games */}
+          <div className="mb-2 flex justify-between">
+            <button
+              className="flex items-center text-sm text-blue-400 hover:underline"
+              onClick={() => setShowGames((v) => !v)}
+            >
+              Recent Games
+              <ChevronDown
+                className={`ml-1 h-4 w-4 transition-transform ${showGames ? 'rotate-180' : ''}`}
+              />
+            </button>
+          </div>
+          {showGames && (
+            <section>
+              {recentGameId && (
+                <div className="mb-4">
+                  <button
+                    onClick={() => navigate(`/report/${recentGameId}`)}
+                    className="rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+                  >
+                    Analyse Latest Game
+                  </button>
+                </div>
+              )}
+              <GameList
+                games={games}
+                hero={username}
+                isAnalysed={() => false}
+                isLoading={() => loadingGames}
+                onAction={(g) => navigate(`/report/${g.id}`)}
+              />
+            </section>
+          )}
+        </div>
       </div>
-    </div>
-    <div className="pointer-events-none fixed inset-x-0 bottom-4 flex justify-center">
-      <button
-        onClick={() =>
-          navigate(nextDrillId ? `/drills/play/${nextDrillId}` : '/drills')
-        }
-        className="pointer-events-auto rounded bg-green-600 px-5 py-3 text-sm font-semibold text-white shadow-lg hover:bg-green-700"
-      >
-        Start Next Drill
-      </button>
-    </div>
+      <div className="pointer-events-none fixed inset-x-0 bottom-4 flex justify-center">
+        <button
+          onClick={() =>
+            navigate(nextDrillId ? `/drills/play/${nextDrillId}` : '/drills')
+          }
+          className="pointer-events-auto rounded bg-green-600 px-5 py-3 text-sm font-semibold text-white shadow-lg hover:bg-green-700"
+        >
+          Start Next Drill
+        </button>
+      </div>
+    </>
   );
 }
