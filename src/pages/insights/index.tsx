@@ -124,7 +124,7 @@ export default function HomeScreen() {
             <h1 className="text-4xl font-bold text-gray-100">
               Welcome back{username ? `, ${username}` : ''}!
             </h1>
-            <p className="text-stone-400">{randomGreeting}</p>
+            <p className="leading-snug text-stone-400">{randomGreeting}</p>
             <div className="mt-4">
               <button
                 onClick={() =>
@@ -171,23 +171,15 @@ export default function HomeScreen() {
               ].map((stat, idx) => (
                 <div
                   key={idx}
-                  className="flex min-w-[200px] shrink-0 snap-start flex-col justify-center rounded bg-stone-800 p-4 text-center"
+                  className="flex min-w-[200px] shrink-0 snap-center flex-col justify-center rounded bg-stone-800 p-4 text-center"
                 >
-                  <p className={`text-3xl font-semibold ${stat.color}`}>
+                  <p className={`text-2xl font-semibold ${stat.color}`}>
                     {stat.value}
                   </p>
                   <p className="text-base text-stone-200">{stat.label}</p>
                   <p className="mt-1 text-xs text-stone-400">{stat.desc}</p>
                 </div>
               ))}
-              <div className="flex min-w-[200px] shrink-0 snap-start flex-col items-center justify-center rounded bg-stone-800 p-4">
-                <WinRateDial rate={58} color="#fbbf24" label="White Win %" />
-                <p className="mt-1 text-xs text-stone-400">Wins as White</p>
-              </div>
-              <div className="flex min-w-[200px] shrink-0 snap-start flex-col items-center justify-center rounded bg-stone-800 p-4">
-                <WinRateDial rate={42} color="#818cf8" label="Black Win %" />
-                <p className="mt-1 text-xs text-stone-400">Wins as Black</p>
-              </div>
             </div>
           </section>
 
