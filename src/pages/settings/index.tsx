@@ -53,7 +53,7 @@ export default function Settings() {
           ← Back
         </button>
       </div>
-      <div className="mt-10 w-full max-w-2xl rounded-2xl border border-stone-700 bg-black/80 p-6 shadow-lg">
+      <div className="mt-10 w-full max-w-2xl rounded-2xl border border-stone-700 bg-black/40 p-6 shadow-lg">
         <h1 className="mb-2 text-3xl font-bold text-white">Settings</h1>
         <p className="mb-6 text-lg text-stone-400">
           Manage your Chess.com connection and profile
