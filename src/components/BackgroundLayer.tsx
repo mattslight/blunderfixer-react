@@ -21,7 +21,7 @@ export default function BackgroundLayer() {
         style={{ backgroundImage: `url(${option.bgImage})` }}
         aria-hidden="true"
       />
-      <div className="pointer-events-none fixed inset-0 z-5 h-screen w-screen bg-black/30"></div>
+      <div className="pointer-events-none fixed inset-0 z-5 h-screen w-screen bg-black/20"></div>
     </>
   );
 }
