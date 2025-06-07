@@ -156,14 +156,14 @@ export default function HomeScreen() {
                 Top-engine moves chosen
               </p>
             </div>
-            <div className="rounded bg-stone-800 p-4 text-center">
+            <div className="xs:inline hidden rounded bg-stone-800 p-4 text-center">
               <p className="text-2xl font-semibold text-purple-400">75%</p>
               <p className="text-sm text-stone-200">Winning Openings</p>
               <p className="mt-1 text-xs text-stone-400">
                 Wins from your openings
               </p>
             </div>
-            <div className="rounded bg-stone-800 p-4 text-center">
+            <div className="xs:inline hidden rounded bg-stone-800 p-4 text-center">
               <p className="text-2xl font-semibold text-fuchsia-400">48%</p>
               <p className="text-sm text-stone-200">Endgame Wins</p>
               <p className="mt-1 text-xs text-stone-400">
@@ -181,9 +181,9 @@ export default function HomeScreen() {
           </section>
 
           {/* Charts */}
-          <div className="mb-6 flex justify-start">
+          <div className="mb-6 flex justify-center">
             <button
-              className="flex items-center text-sm text-blue-400 hover:underline"
+              className="flex items-center text-base font-medium text-blue-400 hover:underline"
               onClick={() => setShowCharts((v) => !v)}
             >
               {showCharts ? 'Hide Stats' : 'More Stats'}
