@@ -5,6 +5,8 @@ import { formatDistanceToNow } from 'date-fns';
 import { Gem, MapPin, Table, Users } from 'lucide-react';
 
 import UsernameInput from '@/components/UsernameInput';
+import { BackgroundPattern, PATTERN_OPTIONS } from '@/constants/background';
+import { useBackgroundPattern } from '@/hooks/useBackgroundPattern';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useProfile } from '@/hooks/useProfile';
 
@@ -13,6 +15,8 @@ export default function Settings() {
   const navigate = useNavigate();
   // Local input state
   const [localUsername, setLocalUsername] = useState(profile.username);
+  const { pattern: bgPattern, setPattern: setBgPattern } =
+    useBackgroundPattern();
 
   // Whenever the real profile username changes (e.g. on load or outside),
   // keep the input in sync
@@ -40,7 +44,7 @@ export default function Settings() {
     : '';
 
   return (
-    <div className="flex min-h-screen items-start justify-center bg-stone-900 p-4 sm:p-6">
+    <div className="flex min-h-screen items-start justify-center p-4 sm:p-6">
       <div className="absolute top-16 left-4 md:hidden">
         <button
           onClick={() => navigate(-1)}
@@ -143,6 +147,25 @@ export default function Settings() {
         <p className="mt-1 text-xs text-stone-500">
           Enter a new handle to refresh your profile data.
         </p>
+
+        <label
+          htmlFor="bgPattern"
+          className="mt-6 mb-1 block text-sm font-medium text-stone-200"
+        >
+          Background Pattern
+        </label>
+        <select
+          id="bgPattern"
+          value={bgPattern}
+          onChange={(e) => setBgPattern(e.target.value as BackgroundPattern)}
+          className="w-full rounded border border-stone-600 bg-stone-800 px-2 py-1 text-white"
+        >
+          {PATTERN_OPTIONS.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );

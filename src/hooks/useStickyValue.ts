@@ -1,22 +1,25 @@
-// src/hooks/useStickyValue.ts
-
 import { useEffect, useState } from 'react';
 
 const PREFIX = 'bf:params:';
 
 export function useStickyValue<T>(
   key: string,
-  defaultValue: T
-): [T, (v: T | ((prev: T) => T)) => void] {
+  defaultValue?: T
+): [T | undefined, (v: T | ((prev: T | undefined) => T)) => void] {
   const storageKey = `${PREFIX}${key}`;
 
-  const [value, setValue] = useState<T>(() => {
+  const [value, setValue] = useState<T | undefined>(() => {
     const stickyValue = localStorage.getItem(storageKey);
-    return stickyValue !== null ? JSON.parse(stickyValue) : defaultValue;
+    if (stickyValue !== null) {
+      return JSON.parse(stickyValue);
+    }
+    return defaultValue;
   });
 
   useEffect(() => {
-    localStorage.setItem(storageKey, JSON.stringify(value));
+    if (value !== undefined) {
+      localStorage.setItem(storageKey, JSON.stringify(value));
+    }
   }, [storageKey, value]);
 
   return [value, setValue];
