@@ -66,7 +66,7 @@ export default function GameCard({
   return (
     <li
       className={
-        `mt-6 flex flex-col rounded-lg border-l-6 bg-stone-800 px-5 py-4 ` +
+        `mt-6 flex flex-col rounded border-l-6 bg-stone-800 px-5 py-4 ` +
         (won
           ? 'border-green-500'
           : lost
