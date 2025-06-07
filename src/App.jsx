@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import AppRoutes from './routes';
+import BackgroundLayer from './components/BackgroundLayer';
 
 import { useProfile } from '@/hooks/useProfile';
 
@@ -31,6 +32,7 @@ export default function App() {
 
   return (
     <>
+      <BackgroundLayer />
       <Navbar toggleSidebar={toggleSidebar} />
       <Sidebar isSidebarOpen={isSidebarOpen} closeSidebar={closeSidebar} />
       <main className={`min-h-screen w-full ${loggedIn && 'pt-8 2xl:pl-32'}`}>

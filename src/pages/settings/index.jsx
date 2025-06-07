@@ -7,12 +7,15 @@ import { Gem, MapPin, Table, Users } from 'lucide-react';
 import UsernameInput from '@/components/UsernameInput';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useProfile } from '@/hooks/useProfile';
+import { useStickyValue } from '@/hooks/useStickyValue';
+import { PATTERN_OPTIONS, BackgroundPattern } from '@/constants/background';
 
 export default function Settings() {
   const { profile, setUsername } = useProfile();
   const navigate = useNavigate();
   // Local input state
   const [localUsername, setLocalUsername] = useState(profile.username);
+  const [bgPattern, setBgPattern] = useStickyValue<BackgroundPattern>('backgroundPattern', 'off');
 
   // Whenever the real profile username changes (e.g. on load or outside),
   // keep the input in sync
@@ -143,6 +146,25 @@ export default function Settings() {
         <p className="mt-1 text-xs text-stone-500">
           Enter a new handle to refresh your profile data.
         </p>
+
+        <label
+          htmlFor="bgPattern"
+          className="mb-1 mt-6 block text-sm font-medium text-stone-200"
+        >
+          Background Pattern
+        </label>
+        <select
+          id="bgPattern"
+          value={bgPattern}
+          onChange={(e) => setBgPattern(e.target.value as BackgroundPattern)}
+          className="w-full rounded border border-stone-600 bg-stone-800 px-2 py-1 text-white"
+        >
+          {PATTERN_OPTIONS.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );
