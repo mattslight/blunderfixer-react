@@ -9,16 +9,19 @@ export default function BackgroundLayer() {
   console.log('BackgroundLayer', option);
   if (!option || !option.bgImage) return null;
   return (
-    <div
-      className={[
-        'pointer-events-none fixed inset-0 z-0 h-screen w-screen bg-repeat',
-        option.sizeClass,
-        option.opacityClass,
-      ]
-        .filter(Boolean)
-        .join(' ')}
-      style={{ backgroundImage: `url(${option.bgImage})` }}
-      aria-hidden="true"
-    />
+    <>
+      <div
+        className={[
+          'pointer-events-none fixed inset-0 z-0 h-screen w-screen bg-repeat',
+          option.sizeClass,
+          option.opacityClass,
+        ]
+          .filter(Boolean)
+          .join(' ')}
+        style={{ backgroundImage: `url(${option.bgImage})` }}
+        aria-hidden="true"
+      />
+      <div className="pointer-events-none fixed inset-0 z-5 h-screen w-screen bg-black/30"></div>
+    </>
   );
 }
