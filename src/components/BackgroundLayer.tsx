@@ -6,7 +6,6 @@ export default function BackgroundLayer() {
   const { pattern } = useBackgroundPattern();
   const option = PATTERN_OPTIONS.find((o) => o.value === pattern);
 
-  console.log('BackgroundLayer', option);
   if (!option || !option.bgImage) return null;
   return (
     <>
