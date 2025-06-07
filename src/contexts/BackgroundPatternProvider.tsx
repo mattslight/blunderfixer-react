@@ -11,7 +11,7 @@ export function BackgroundPatternProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [pattern, setPatternState] = useState<BackgroundPattern>('off');
+  const [pattern, setPatternState] = useState<BackgroundPattern>('questions');
 
   useEffect(() => {
     const stored = localStorage.getItem(PREFIX);
