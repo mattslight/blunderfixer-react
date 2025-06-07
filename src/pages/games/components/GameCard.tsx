@@ -124,7 +124,7 @@ export default function GameCard({
         <div className="flex items-center space-x-2">
           <span
             className={
-              `rounded-full px-3 py-1 text-sm font-medium ` +
+              `rounded-full px-2.5 py-1 text-xs font-medium ` +
               (won
                 ? 'bg-green-500 text-white'
                 : lost
