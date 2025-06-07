@@ -3,10 +3,17 @@ export type BackgroundPattern =
   | 'questions'
   | 'classic'
   | 'checkmate'
+  | 'isometric'
   | 'tartan'
   | 'scotchgamnit'
+  | 'norwaychess'
   | 'moderndefense'
   | 'boldmoves'
+  | 'target'
+  | 'snakebit'
+  | 'goodknight'
+  | 'blunderglitch'
+  | 'russianschoolboy'
   | 'off';
 
 export const PATTERN_OPTIONS: {
@@ -16,6 +23,13 @@ export const PATTERN_OPTIONS: {
   sizeClass?: string;
   opacityClass?: string;
 }[] = [
+  {
+    value: 'blunderglitch',
+    label: 'Blunder Glitcher',
+    bgImage: '/blunder_glitcher.png',
+    sizeClass: 'bg-[length:400px]',
+    opacityClass: 'opacity-[20%]',
+  },
   {
     value: 'boldmoves',
     label: 'Bold Lines',
@@ -28,7 +42,14 @@ export const PATTERN_OPTIONS: {
     label: 'Checkmate!',
     bgImage: '/blunderfixer_bg_checkmate.png',
     sizeClass: 'bg-[length:400px]',
-    opacityClass: 'opacity-[4%]',
+    opacityClass: 'opacity-[6%]',
+  },
+  {
+    value: 'goodknight',
+    label: 'Good Knight',
+    bgImage: '/blunderfixer_good_knight.png',
+    sizeClass: 'bg-[length:400px]',
+    opacityClass: 'opacity-[10%]',
   },
   {
     value: 'moderndefense',
@@ -38,11 +59,25 @@ export const PATTERN_OPTIONS: {
     opacityClass: 'opacity-[4%]',
   },
   {
+    value: 'norwaychess',
+    label: 'Norway Chess',
+    bgImage: '/blunderfixer_norway_chess.png',
+    sizeClass: 'bg-[length:600px]',
+    opacityClass: 'opacity-[10%]',
+  },
+  {
     value: 'chess',
     label: "Queen's Gambit",
     bgImage: '/blunderfixer_bg_chess.png',
     sizeClass: 'bg-[length:900px]',
-    opacityClass: 'opacity-[7%]',
+    opacityClass: 'opacity-[10%]',
+  },
+  {
+    value: 'russianschoolboy',
+    label: 'Russian Schoolboy',
+    bgImage: '/blunderfixer_russian_schoolboy.png',
+    sizeClass: 'bg-[length:900px]',
+    opacityClass: 'opacity-[4%]',
   },
   {
     value: 'tartan',
@@ -57,6 +92,20 @@ export const PATTERN_OPTIONS: {
     bgImage: '/blunderfixer_tartan.png',
     sizeClass: 'bg-[length:200px]',
     opacityClass: 'opacity-[75%]',
+  },
+  {
+    value: 'snakebit',
+    label: 'Snake-Bit',
+    bgImage: '/blunderfixer_snake_bit.png',
+    sizeClass: 'bg-[length:500px]',
+    opacityClass: 'opacity-[8%]',
+  },
+  {
+    value: 'target',
+    label: 'Target Practice',
+    bgImage: '/blunderfixer_target_practice.png',
+    sizeClass: 'bg-[length:300px]',
+    opacityClass: 'opacity-[2%]',
   },
   {
     value: 'questions',
