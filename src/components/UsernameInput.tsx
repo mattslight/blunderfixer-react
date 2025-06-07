@@ -2,6 +2,7 @@
 interface Props {
   username: string;
   onUsernameChange: (u: string) => void;
+  id: string;
 }
 
 export default function UsernameInput({ username, onUsernameChange }: Props) {
