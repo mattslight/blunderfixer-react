@@ -181,9 +181,9 @@ export default function HomeScreen() {
           </section>
 
           {/* Charts */}
-          <div className="mb-6 flex justify-center">
+          <div className="mb-6 flex justify-start">
             <button
-              className="flex items-center text-base font-medium text-blue-400 hover:underline"
+              className="flex items-center text-sm text-blue-400 hover:underline"
               onClick={() => setShowCharts((v) => !v)}
             >
               {showCharts ? 'Hide Stats' : 'More Stats'}
@@ -285,7 +285,7 @@ export default function HomeScreen() {
           )}
 
           {/* Next Drills */}
-          <section className="mt-18">
+          <section className="mt-12">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-2xl font-semibold text-stone-100">
                 <Target className="relative bottom-0.25 mr-1 inline-flex" />{' '}
@@ -309,7 +309,7 @@ export default function HomeScreen() {
           </section>
 
           {/* Recent Games */}
-          <div className="mt-18 mb-2 flex justify-between">
+          <div className="mt-12 mb-2 flex justify-between">
             <h2 className="text-2xl font-semibold text-stone-100">
               Recent Games
             </h2>
