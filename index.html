@@ -6,11 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BlunderFixer</title>
   </head>
-  <body>
+  <body class="relative z-0 bg-stone-50 antialiased dark:bg-stone-900">
+    <!-- Background image layer -->
+    <!-- <div
+      class="pointer-events-none absolute inset-0 z-5 bg-[url('/blunderfixer_tiled_bg.png')] bg-[length:700px] bg-repeat opacity-[2%]"
+      aria-hidden="true"
+    ></div> -->
+    <!-- <div
+      class="pointer-events-none absolute inset-0 z-5 bg-[url('/blunderfixer_bg_chess.png')] bg-[length:900px] bg-repeat opacity-[3%]"
+      aria-hidden="true"
+    ></div> -->
     <div
-      id="root"
-      class="flex w-full bg-stone-50 antialiased dark:bg-stone-900"
+      class="pointer-events-none absolute inset-0 z-5 bg-[url('/blunderfixer_bg_questionmarks.png')] bg-[length:900px] bg-repeat opacity-[3%]"
+      aria-hidden="true"
     ></div>
+
+    <!-- Main app content -->
+    <div id="root" class="relative z-10 flex w-full"></div>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
