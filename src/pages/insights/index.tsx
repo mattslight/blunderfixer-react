@@ -292,7 +292,7 @@ export default function HomeScreen() {
                 Next Drills
               </h2>
               <button
-                className="text-sm text-blue-500 hover:underline"
+                className="text-sm text-blue-400 hover:underline"
                 onClick={() => navigate('/drills')}
               >
                 All Drills »
@@ -314,7 +314,7 @@ export default function HomeScreen() {
               Recent Games
             </h2>
             <button
-              className="text-sm text-blue-500 hover:underline"
+              className="text-sm text-blue-400 hover:underline"
               onClick={() => navigate('/games')}
             >
               More games »
