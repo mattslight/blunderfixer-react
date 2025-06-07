@@ -5,17 +5,18 @@ import { formatDistanceToNow } from 'date-fns';
 import { Gem, MapPin, Table, Users } from 'lucide-react';
 
 import UsernameInput from '@/components/UsernameInput';
+import { BackgroundPattern, PATTERN_OPTIONS } from '@/constants/background';
+import { useBackgroundPattern } from '@/hooks/useBackgroundPattern';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useProfile } from '@/hooks/useProfile';
-import { useStickyValue } from '@/hooks/useStickyValue';
-import { PATTERN_OPTIONS, BackgroundPattern } from '@/constants/background';
 
 export default function Settings() {
   const { profile, setUsername } = useProfile();
   const navigate = useNavigate();
   // Local input state
   const [localUsername, setLocalUsername] = useState(profile.username);
-  const [bgPattern, setBgPattern] = useStickyValue<BackgroundPattern>('backgroundPattern', 'off');
+  const { pattern: bgPattern, setPattern: setBgPattern } =
+    useBackgroundPattern();
 
   // Whenever the real profile username changes (e.g. on load or outside),
   // keep the input in sync
@@ -43,7 +44,7 @@ export default function Settings() {
     : '';
 
   return (
-    <div className="flex min-h-screen items-start justify-center bg-stone-900 p-4 sm:p-6">
+    <div className="flex min-h-screen items-start justify-center p-4 sm:p-6">
       <div className="absolute top-16 left-4 md:hidden">
         <button
           onClick={() => navigate(-1)}
@@ -149,7 +150,7 @@ export default function Settings() {
 
         <label
           htmlFor="bgPattern"
-          className="mb-1 mt-6 block text-sm font-medium text-stone-200"
+          className="mt-6 mb-1 block text-sm font-medium text-stone-200"
         >
           Background Pattern
         </label>
