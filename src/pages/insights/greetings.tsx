@@ -257,7 +257,7 @@ const chessionary = [
 ];
 
 export const greetings = [
-  /*"It's time to fix blunders and chew gum.",
+  "It's time to fix blunders and chew gum.",
   'Check your blunders at the door.',
   'Blunder-slaying season is open.',
   'No mercy. Just blunders to fix.',
@@ -405,6 +405,6 @@ export const greetings = [
   'Don’t ask me about the line—I made it up.',
   'I’d castle, but commitment scares me.',
   'Lost the initiative and my grip on reality.',
-  'Pawn stormed. So did I.',*/
+  'Pawn stormed. So did I.',
   ...chessionary,
 ];
