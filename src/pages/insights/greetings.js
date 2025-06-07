@@ -11,7 +11,7 @@ export const greetings = [
   'Grab a juicer. It’s cleanup time.',
   'Outwit. Outplay. Outblunder.',
   'Blunder today, brilliance tomorrow.',
-  "Forget the past—unless it's on move 27.",
+  "Forget the past — unless it's move 27.",
   'You. Me. Stockfish. Let’s dance.',
   'One blunder closer to greatness.',
   'The grind is real.',
