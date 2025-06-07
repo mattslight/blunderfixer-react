@@ -8,6 +8,7 @@ import DevErrorBoundary from './components/DevErrorBoundary.jsx';
 import './index.css';
 
 import 'flowbite';
+import { BackgroundPatternProvider } from '@/contexts/BackgroundPatternProvider';
 import { ProfileProvider } from '@/hooks/useProfile';
 
 const drawerTheme = createTheme({
@@ -23,9 +24,11 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <DevErrorBoundary>
         <ProfileProvider>
-          <ThemeProvider theme={drawerTheme}>
-            <App />
-          </ThemeProvider>
+          <BackgroundPatternProvider>
+            <ThemeProvider theme={drawerTheme}>
+              <App />
+            </ThemeProvider>
+          </BackgroundPatternProvider>
         </ProfileProvider>
       </DevErrorBoundary>
     </BrowserRouter>
