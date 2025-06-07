@@ -57,7 +57,7 @@ function WinRateDial({
           {rate}%
         </div>
       </div>
-      <p className="mt-1 text-xs text-stone-200">{label}</p>
+      <p className="mt-1 text-base text-stone-200 sm:text-sm">{label}</p>
     </div>
   );
 }
@@ -140,8 +140,59 @@ export default function HomeScreen() {
             </div>
           </header>
 
-          {/* Stats */}
-          <section className="mb-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
+          {/* Mobile Swipeable Layout */}
+          <section className="scrollbar-hide xs:hidden mb-4 snap-x snap-mandatory overflow-x-auto">
+            <div className="flex gap-4 px-1">
+              {[
+                {
+                  value: '123',
+                  label: 'Blunders Fixed',
+                  desc: 'Mistakes you corrected',
+                  color: 'text-blue-400',
+                },
+                {
+                  value: '64%',
+                  label: 'Tactic Accuracy',
+                  desc: 'Top-engine moves chosen',
+                  color: 'text-green-400',
+                },
+                {
+                  value: '75%',
+                  label: 'Winning Openings',
+                  desc: 'Wins from your openings',
+                  color: 'text-purple-400',
+                },
+                {
+                  value: '48%',
+                  label: 'Endgame Wins',
+                  desc: 'Games converted late',
+                  color: 'text-fuchsia-400',
+                },
+              ].map((stat, idx) => (
+                <div
+                  key={idx}
+                  className="flex min-w-[200px] shrink-0 snap-start flex-col justify-center rounded bg-stone-800 p-4 text-center"
+                >
+                  <p className={`text-3xl font-semibold ${stat.color}`}>
+                    {stat.value}
+                  </p>
+                  <p className="text-base text-stone-200">{stat.label}</p>
+                  <p className="mt-1 text-xs text-stone-400">{stat.desc}</p>
+                </div>
+              ))}
+              <div className="flex min-w-[200px] shrink-0 snap-start flex-col items-center justify-center rounded bg-stone-800 p-4">
+                <WinRateDial rate={58} color="#fbbf24" label="White Win %" />
+                <p className="mt-1 text-xs text-stone-400">Wins as White</p>
+              </div>
+              <div className="flex min-w-[200px] shrink-0 snap-start flex-col items-center justify-center rounded bg-stone-800 p-4">
+                <WinRateDial rate={42} color="#818cf8" label="Black Win %" />
+                <p className="mt-1 text-xs text-stone-400">Wins as Black</p>
+              </div>
+            </div>
+          </section>
+
+          {/* Desktop Grid Layout */}
+          <section className="xs:grid mb-4 hidden grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
             <div className="rounded bg-stone-800 p-4 text-center">
               <p className="text-2xl font-semibold text-blue-400">123</p>
               <p className="text-sm text-stone-200">Blunders Fixed</p>
@@ -156,14 +207,14 @@ export default function HomeScreen() {
                 Top-engine moves chosen
               </p>
             </div>
-            <div className="xs:inline hidden rounded bg-stone-800 p-4 text-center">
+            <div className="rounded bg-stone-800 p-4 text-center">
               <p className="text-2xl font-semibold text-purple-400">75%</p>
               <p className="text-sm text-stone-200">Winning Openings</p>
               <p className="mt-1 text-xs text-stone-400">
                 Wins from your openings
               </p>
             </div>
-            <div className="xs:inline hidden rounded bg-stone-800 p-4 text-center">
+            <div className="rounded bg-stone-800 p-4 text-center">
               <p className="text-2xl font-semibold text-fuchsia-400">48%</p>
               <p className="text-sm text-stone-200">Endgame Wins</p>
               <p className="mt-1 text-xs text-stone-400">
