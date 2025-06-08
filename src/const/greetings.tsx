@@ -1,4 +1,4 @@
-import { DictionaryEntry } from '../pages/insights/components/DictionaryEntry';
+import { DictionaryEntry } from '@/pages/insights/components/DictionaryEntry';
 
 const chessionary = [
   <DictionaryEntry
