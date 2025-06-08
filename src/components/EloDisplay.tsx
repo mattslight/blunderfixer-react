@@ -1,12 +1,18 @@
-import { Clock, Crosshair, Zap } from 'lucide-react';
+import { TimerReset } from 'lucide-react';
 import type { JSX } from 'react';
 
+import blitzIcon from '@/assets/blitz.png';
+import bulletIcon from '@/assets/bullet.png';
 import { type TimeClass, useChessComRatings } from '@/hooks/useChessComRatings';
 
 const icons: Record<TimeClass, JSX.Element> = {
-  bullet: <Crosshair className="inline h-5 w-5" />,
-  blitz: <Zap className="inline h-5 w-5" />,
-  rapid: <Clock className="inline h-5 w-5" />,
+  bullet: (
+    <img src={bulletIcon} alt="bullet" className="inline h-7 bg-transparent" />
+  ),
+  blitz: (
+    <img src={blitzIcon} alt="blitz" className="inline h-7 bg-transparent" />
+  ),
+  rapid: <TimerReset className="inline h-6 bg-transparent" />,
 };
 
 export default function EloDisplay() {
@@ -14,8 +20,8 @@ export default function EloDisplay() {
 
   return (
     <div className="mt-4 flex items-center justify-between rounded bg-stone-800 px-4 py-3">
-      <div className="flex items-baseline space-x-2 text-white">
-        {icons[timeClass]}
+      <div className="relative flex space-x-2 text-white">
+        <span className="relative top-0.75">{icons[timeClass]}</span>
         <span className="text-2xl font-bold">
           {rating !== null ? rating : '--'}
         </span>
@@ -34,7 +40,9 @@ export default function EloDisplay() {
             key={tc}
             onClick={() => setTimeClass(tc)}
             className={`rounded p-1 ${
-              tc === timeClass ? 'bg-stone-700 text-white' : 'text-stone-400'
+              tc === timeClass
+                ? 'bg-stone-700 text-white'
+                : 'text-white opacity-50'
             }`}
             title={tc.charAt(0).toUpperCase() + tc.slice(1)}
           >
