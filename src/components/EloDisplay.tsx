@@ -12,7 +12,7 @@ const icons: Record<TimeClass, JSX.Element> = {
   blitz: (
     <img src={blitzIcon} alt="blitz" className="inline h-7 bg-transparent" />
   ),
-  rapid: <TimerReset className="inline h-6 bg-transparent" />,
+  rapid: <TimerReset className="mb-1 inline h-6 bg-transparent" />,
 };
 
 export default function EloDisplay() {
@@ -20,19 +20,21 @@ export default function EloDisplay() {
 
   return (
     <div className="mt-4 flex items-center justify-between rounded bg-stone-800 px-4 py-3">
-      <div className="relative flex space-x-2 text-white">
-        <span className="relative top-0.75">{icons[timeClass]}</span>
-        <span className="text-2xl font-bold">
-          {rating !== null ? rating : '--'}
-        </span>
-        {delta !== null && (
-          <span
-            className={`text-sm ${delta >= 0 ? 'text-green-400' : 'text-red-400'}`}
-          >
-            {delta >= 0 ? '+' : ''}
-            {delta}
+      <div className="relative flex flex-col">
+        <div className="flex items-baseline space-x-2 text-white">
+          <span className="relative bottom-1">{icons[timeClass]}</span>
+          <span className="text-2xl font-bold">
+            {rating !== null ? rating : '--'}
           </span>
-        )}
+          {delta !== null && (
+            <span
+              className={`text-sm ${delta >= 0 ? 'text-green-400' : 'text-red-400'}`}
+            >
+              {delta >= 0 ? '+' : ''}
+              {delta}
+            </span>
+          )}
+        </div>
       </div>
       <div className="flex space-x-2">
         {(['bullet', 'blitz', 'rapid'] as TimeClass[]).map((tc) => (
