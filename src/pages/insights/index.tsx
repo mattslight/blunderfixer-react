@@ -137,7 +137,7 @@ export default function HomeScreen() {
       <div className="p-4 pt-16 2xl:ml-12">
         <div className="mx-auto max-w-3xl space-y-3">
           <header>
-            <h1 className="text-2xl font-bold text-stone-100">
+            <h1 className="text-3xl font-bold text-stone-100">
               Welcome back{username ? `, ${username}` : ''}!
             </h1>
             <p className="leading-snug text-stone-400">{randomGreeting}</p>
