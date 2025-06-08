@@ -12,9 +12,9 @@ export function DictionaryEntry({
   colorClass = 'text-stone-300',
 }: DictionaryEntryProps) {
   return (
-    <div className="opacity-80">
+    <span className="opacity-80">
       <span className={`font-semibold ${colorClass}`}>{term}</span>{' '}
       <em>({pos})</em> – {definition}
-    </div>
+    </span>
   );
 }
