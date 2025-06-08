@@ -700,7 +700,7 @@ export const greetings = [
   'I’d castle, but commitment scares me.',
   'Lost the initiative… and my grip on reality.',
   'Pawn stormed. So did I.',
-  'Change my mind… Blundering is just creative calculation.',
+  'Blundering is just creative calculation.',
   'Change my mind… Mouse slips are a real tactic.',
   ...chessionary,
 ];
