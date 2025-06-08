@@ -27,7 +27,8 @@ import { greetings } from '@/const/greetings';
 import { useAnalyseAndGoToReport } from '@/hooks/useAnalyseAndGoToReport';
 import { useProfile } from '@/hooks/useProfile';
 import { parseChessComGame } from '@/lib/chessComParser';
-import { useRecentDrills } from '@/pages/drills/hooks/useRecentDrills';
+import { useDrills } from '@/pages/drills/hooks/useDrills';
+import { buildDrillFilters } from '@/pages/drills/utils/filters';
 import GameList from '@/pages/games/components/GameList';
 import { useRecentGames } from '@/pages/games/hooks/useRecentGames';
 
@@ -70,9 +71,20 @@ export default function HomeScreen() {
   } = useProfile();
   const [showCharts, setShowCharts] = useState(false);
 
-  const { drills, loading: loadingDrills } = useRecentDrills(username, {
-    limit: 3,
-  });
+  const filters = buildDrillFilters(
+    username,
+    {
+      phaseFilter: 'all',
+      excludeWins: false,
+      includeArchived: false,
+      includeMastered: false,
+      rangeIdx: [0, 5], // full range, or adjust as needed
+    },
+    undefined
+  );
+
+  const { drills, loading: loadingDrills } = useDrills(filters);
+
   const { games: rawGames, loading: loadingGames } = useRecentGames(
     username,
     3
