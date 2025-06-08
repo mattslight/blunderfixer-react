@@ -1,9 +1,6 @@
 # TODO
 
 - Prioritised
-  [ ] FIX: Debug why click on Analyze in recent games does nothing
-  [ ] QA: Check order of drills
-  [ ] FEAT: When showing next drills show three different games
   [ ] FEAT: Show ELO on home screen and delta since last login (detect which Rapid/Blitz to show and allow to tap to change)
   [ ] FEAT: Wire up stats on home screen
 
@@ -14,6 +11,9 @@
   [ ] Move a drill to analysis mode (if I fail dig into why I failed, better understanding)
   [ ] Tag drills with theme (e.g. “fork tactic in middlegame”).
 
+[x] FEAT: When showing next drills show three different games
+[x] QA: Check order of drills
+[x] FIX: Debug why click on Analyze in recent games does nothing
 [x] Homepage of my stats, recent games, recommended drills
 [x] BUG: Issue with status rapidly change and recording multiple histories
 [x] Back to drill list
