@@ -702,6 +702,5 @@ export const greetings = [
   'Pawn stormed. So did I.',
   'Change my mind… Blundering is just creative calculation.',
   'Change my mind… Mouse slips are a real tactic.',
-  'Change my mind…Opening theory is a conspiracy.',
   ...chessionary,
 ];
