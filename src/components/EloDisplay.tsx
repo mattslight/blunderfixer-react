@@ -7,12 +7,12 @@ import { type TimeClass, useChessComRatings } from '@/hooks/useChessComRatings';
 
 const icons: Record<TimeClass, JSX.Element> = {
   bullet: (
-    <img src={bulletIcon} alt="bullet" className="inline h-7 bg-transparent" />
+    <img src={bulletIcon} alt="bullet" className="inline h-6 bg-transparent" />
   ),
   blitz: (
-    <img src={blitzIcon} alt="blitz" className="inline h-7 bg-transparent" />
+    <img src={blitzIcon} alt="blitz" className="inline h-6 bg-transparent" />
   ),
-  rapid: <TimerReset className="mb-1 inline h-6 bg-transparent" />,
+  rapid: <TimerReset className="mb-1 inline h-5 bg-transparent" />,
 };
 
 export default function EloDisplay() {
@@ -22,10 +22,11 @@ export default function EloDisplay() {
     <div className="mt-4 flex items-center justify-between rounded bg-stone-800 px-4 py-3">
       <div className="relative flex flex-col">
         <div className="flex items-baseline space-x-2 text-white">
-          <span className="relative bottom-1">{icons[timeClass]}</span>
           <span className="text-2xl font-bold">
             {rating !== null ? rating : '--'}
           </span>
+          <span className="text-sm font-medium">Elo</span>
+
           {delta !== null && (
             <span
               className={`text-sm ${delta >= 0 ? 'text-green-400' : 'text-red-400'}`}
