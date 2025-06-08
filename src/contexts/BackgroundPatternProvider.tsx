@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { BackgroundPatternContext } from './BackgroundPatternContext';
 
-import { BackgroundPattern } from '@/constants/background';
+import { BackgroundPattern } from '@/const/background';
 
 const PREFIX = 'bf:params:backgroundPattern';
 

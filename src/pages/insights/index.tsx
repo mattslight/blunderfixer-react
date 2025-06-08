@@ -22,8 +22,9 @@ import {
 } from 'recharts';
 
 import NextDrillCarousel from './components/NextDrillCarousel';
-import { greetings } from './greetings';
 
+import { greetings } from '@/const/greetings';
+import { useAnalyseAndGoToReport } from '@/hooks/useAnalyseAndGoToReport';
 import { useProfile } from '@/hooks/useProfile';
 import { parseChessComGame } from '@/lib/chessComParser';
 import { useRecentDrills } from '@/pages/drills/hooks/useRecentDrills';
@@ -76,6 +77,8 @@ export default function HomeScreen() {
     username,
     3
   );
+
+  const analyseAndGo = useAnalyseAndGoToReport();
 
   const nextDrillId = drills[0]?.id;
 
@@ -369,7 +372,7 @@ export default function HomeScreen() {
               hero={username}
               isAnalysed={() => false}
               isLoading={() => loadingGames}
-              onAction={(g) => navigate(`/report/${g.id}`)}
+              onAction={analyseAndGo}
             />
           </section>
         </div>

@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import { BackgroundPattern } from '@/constants/background';
+import { BackgroundPattern } from '@/const/background';
 
 export const BackgroundPatternContext = createContext<{
   pattern: BackgroundPattern;

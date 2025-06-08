@@ -20,7 +20,7 @@ import { useSaveDrillHistory } from './hooks/useSaveDrillHistory';
 
 import { getDrills } from '@/api/drills';
 import { updateDrill } from '@/api/drills';
-import { PHASE_COLORS, PHASE_DISPLAY } from '@/constants/phase';
+import { PHASE_COLORS, PHASE_DISPLAY } from '@/const/phase';
 import useAnalysisEngine from '@/hooks/useAnalysisEngine';
 import useGameHistory from '@/hooks/useGameHistory';
 import useGameResult from '@/hooks/useGameResult';

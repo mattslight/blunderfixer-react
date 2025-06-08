@@ -1,4 +1,4 @@
-import { DictionaryEntry } from './components/DictionaryEntry';
+import { DictionaryEntry } from '../pages/insights/components/DictionaryEntry';
 
 const chessionary = [
   <DictionaryEntry
@@ -228,7 +228,7 @@ const chessionary = [
     key="stockfished"
     term="Stock·fished"
     pos="verb"
-    definition="When the engine brutally outplays you."
+    definition="Brutally outplayed by the engine."
   />,
   <DictionaryEntry
     key="theorish"
@@ -444,7 +444,7 @@ const chessionary = [
     key="evalation"
     term="E·val·a·tion"
     pos="noun"
-    definition="Spiritual awakening seeing engine analysis."
+    definition="Spiritual awakening when seeing engine analysis."
   />,
   <DictionaryEntry
     key="gambiteyes"
@@ -696,12 +696,58 @@ export const greetings = [
   'Queen gone. Still slay.',
   'I’m not tilted — just diagonally misaligned.',
   'This move brought to you by sleep deprivation.',
-  'Don’t ask me about the line—I made it up.',
+  'Don’t ask me about the line—I m̶a̶d̶e̶ ̶i̶t̶ ̶u̶p̶ improvised.',
   'I’d castle, but commitment scares me.',
   'Lost the initiative… and my grip on reality.',
   'Pawn stormed. So did I.',
   'Blundering is just creative calculation.',
   'Change my mind… Mouse slips are a real tactic.',
   'After the game, the king and pawn end up in the same box.',
+  'A pawn that never advances, never promotes.',
+  'Check is loud. Mate is final.',
+  'The board is equal. The players are not.',
+  'One move can ruin forty good ones.',
+  'Patience plays the long game.',
+  'Every master was once a piece up and still lost.',
+  'The clock doesn’t care how beautiful your plan was.',
+  'Even a queen is useless in stalemate.',
+  'A single tempo can cost a kingdom.',
+  'Checkmate begins three moves ago.',
+  'Trade wisely — regret is not recapturable.',
+  'Blunders love confidence.',
+  'The king starts slow, but ends strong.',
+  'He who chases pawns loses queens.',
+  'One careless hand, whole army falls.',
+  'The pawn that steps patiently becomes a queen.',
+  'To attack blindly is to defend with eyes closed.',
+  'A rook trapped is a rook lost.',
+  'When the queen is restless, trouble follows.',
+  'Castles built too early crumble fast.',
+  'A rushed move is a quiet defeat.',
+  'The coldest blunders come from warm hands.',
+  'A good plan waits; a bad one hurries.',
+  'A calm mind sees through storms of tactics.',
+  'Panic moves before thought catches up.',
+  'Anger blunders where patience waits.',
+  'The fog of fear clouds the best line.',
+  'He who falls in love with a move, loses the game.',
+  'Hope is not a strategy.',
+  'Anger plays fast and loses faster.',
+  'Impatience hangs the game.',
+  'Excitement forgets to calculate.',
+  'Regret over a rushed middlegame is a poor endgame.',
+  'Grief clings to lost pieces.',
+  'A quiet move often speaks loudest.',
+  'Panic can sacrifice more than the exchange.',
+  'Over-confidence moves quickly; wisdom takes time.',
+  'The heart cannot calculate.',
+  'Anxious minds play from behind.',
+  'The game ends, the lesson begins.',
+  'A good move doesn’t beg for applause.',
+  'A restless player blunders twice.',
+  'Blunder once shame on you, blunder twice shame on me.',
+  'The potential for final mistake starts at move one.',
+  'What you ignore becomes your downfall.',
+  'Hone your temprement, and the board will follow.',
   ...chessionary,
 ];

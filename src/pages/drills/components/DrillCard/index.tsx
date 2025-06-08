@@ -8,7 +8,7 @@ import { GameInfoBadges } from './GameInfoBadges';
 import { HistoryDots } from './HistoryDots';
 import { TimePhaseHeader } from './TimePhaseHeader';
 
-import { PHASE_COLORS, PHASE_DISPLAY } from '@/constants/phase';
+import { PHASE_COLORS, PHASE_DISPLAY } from '@/const/phase';
 import useBreakpoint from '@/hooks/useBreakpoint';
 import type { DrillPosition } from '@/types';
 

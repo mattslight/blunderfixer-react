@@ -1,5 +1,5 @@
 // src/components/BackgroundLayer.tsx
-import { PATTERN_OPTIONS } from '@/constants/background';
+import { PATTERN_OPTIONS } from '@/const/background';
 import { useBackgroundPattern } from '@/hooks/useBackgroundPattern';
 
 export default function BackgroundLayer() {

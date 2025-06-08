@@ -5,7 +5,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { Gem, MapPin, Table, Users } from 'lucide-react';
 
 import UsernameInput from '@/components/UsernameInput';
-import { BackgroundPattern, PATTERN_OPTIONS } from '@/constants/background';
+import { BackgroundPattern, PATTERN_OPTIONS } from '@/const/background';
 import { useBackgroundPattern } from '@/hooks/useBackgroundPattern';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useProfile } from '@/hooks/useProfile';
