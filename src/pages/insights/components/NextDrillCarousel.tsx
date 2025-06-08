@@ -34,7 +34,7 @@ export default function NextDrillCarousel({ drills, onStart }: Props) {
   }, []);
 
   const uniqueDrills = useMemo(() => {
-    return [...new Map(drills.map((d) => [d.game_id, d])).values()].slice(0, 3);
+    return [...new Map(drills.map((d) => [d.game_id, d])).values()].slice(0, 5);
   }, [drills]);
 
   if (!uniqueDrills.length) {
