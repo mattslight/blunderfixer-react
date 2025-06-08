@@ -135,9 +135,9 @@ export default function HomeScreen() {
   return (
     <>
       <div className="p-4 pt-16 2xl:ml-12">
-        <div className="mx-auto max-w-3xl space-y-6">
+        <div className="mx-auto max-w-3xl space-y-3">
           <header>
-            <h1 className="text-2xl font-bold text-white">
+            <h1 className="text-2xl font-bold text-stone-100">
               Welcome back{username ? `, ${username}` : ''}!
             </h1>
             <p className="leading-snug text-stone-400">{randomGreeting}</p>
@@ -154,7 +154,9 @@ export default function HomeScreen() {
                 <Play className="relative bottom-0.25 ml-1 inline h-4 w-4" />
               </button>
             </div>
-            <EloDisplay />
+            <div className="mt-8">
+              <EloDisplay />
+            </div>
           </header>
 
           {/* Mobile Swipeable Layout */}
@@ -347,9 +349,9 @@ export default function HomeScreen() {
           {/* Next Drills */}
           <section className="mt-12">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-2xl font-semibold text-stone-100">
-                <Target className="relative bottom-0.25 mr-1 inline-flex" />{' '}
-                Next Drills
+              <h2 className="text-xl font-semibold text-stone-100">
+                <Target className="relative bottom-0.25 mr-1 inline-flex w-5" />{' '}
+                More Drills
               </h2>
               <button
                 className="text-sm text-blue-400 hover:underline"
