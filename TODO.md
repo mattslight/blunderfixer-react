@@ -1,7 +1,8 @@
 # TODO
 
 - Prioritised
-  [ ] FEAT: Show ELO on home screen and delta since last login (detect which Rapid/Blitz to show and allow to tap to change)
+
+  [ ] FEAT: Detect which formats (Biltz, Rapid, Bullet, Daily) I care about when I log in (allow me to change in preferences) (consider using ToggleSwitch). Only show EloDisplay options for chosen preferences.
   [ ] FEAT: Wire up stats on home screen
 
 - Backlog
@@ -11,6 +12,7 @@
   [ ] Move a drill to analysis mode (if I fail dig into why I failed, better understanding)
   [ ] Tag drills with theme (e.g. “fork tactic in middlegame”).
 
+[x] FEAT: Show ELO on home screen and delta since last login (detect which Rapid/Blitz to show and allow to tap to change)
 [x] FEAT: When showing next drills show three different games
 [x] QA: Check order of drills
 [x] FIX: Debug why click on Analyze in recent games does nothing
