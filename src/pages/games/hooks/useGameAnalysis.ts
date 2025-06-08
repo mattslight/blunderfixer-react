@@ -46,7 +46,8 @@ export function useGameAnalysis(gamesMap: Record<string, GameRecord>) {
   const analyse = useCallback(
     async (id: string): Promise<void> => {
       // cache‐skip
-      if (analysisMap[id]?.length) return;
+      if (Array.isArray(analysisMap[id]) && analysisMap[id].some(Boolean))
+        return;
 
       const game = gamesMap[id];
       if (!game?.pgn) return;
