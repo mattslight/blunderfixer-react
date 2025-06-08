@@ -23,6 +23,7 @@ import {
 
 import NextDrillCarousel from './components/NextDrillCarousel';
 
+import EloDisplay from '@/components/EloDisplay';
 import { greetings } from '@/const/greetings';
 import { useAnalyseAndGoToReport } from '@/hooks/useAnalyseAndGoToReport';
 import { useProfile } from '@/hooks/useProfile';
@@ -153,6 +154,7 @@ export default function HomeScreen() {
                 <Play className="relative bottom-0.25 ml-1 inline h-4 w-4" />
               </button>
             </div>
+            <EloDisplay />
           </header>
 
           {/* Mobile Swipeable Layout */}
