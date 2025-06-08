@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import DrillCard from '@/pages/drills/components/DrillCard';
 import type { DrillPosition } from '@/types';
@@ -33,7 +33,11 @@ export default function NextDrillCarousel({ drills, onStart }: Props) {
     return () => el.removeEventListener('scroll', handleScroll);
   }, []);
 
-  if (!drills.length) {
+  const uniqueDrills = useMemo(() => {
+    return [...new Map(drills.map((d) => [d.game_id, d])).values()].slice(0, 3);
+  }, [drills]);
+
+  if (!uniqueDrills.length) {
     return <p className="mt-4 text-center text-stone-500">No drills queued.</p>;
   }
 
@@ -43,14 +47,14 @@ export default function NextDrillCarousel({ drills, onStart }: Props) {
         ref={ref}
         className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4"
       >
-        {drills.map((d) => (
+        {uniqueDrills.map((d) => (
           <div key={d.id} className="snap-center">
             <DrillCard drill={d} onStartDrill={() => onStart(d.id)} />
           </div>
         ))}
       </div>
       <div className="mt-2 flex justify-center gap-1">
-        {drills.map((_, idx) => (
+        {uniqueDrills.map((_, idx) => (
           <div
             key={idx}
             className={`h-2 w-2 rounded-full ${
