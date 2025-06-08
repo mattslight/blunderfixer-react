@@ -702,5 +702,6 @@ export const greetings = [
   'Pawn stormed. So did I.',
   'Blundering is just creative calculation.',
   'Change my mind… Mouse slips are a real tactic.',
+  'After the game, the king and pawn end up in the same box.',
   ...chessionary,
 ];
