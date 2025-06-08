@@ -5,6 +5,7 @@ import { createTheme, ThemeProvider } from 'flowbite-react';
 
 import App from './App.jsx';
 import DevErrorBoundary from './components/DevErrorBoundary.jsx';
+import ScrollToTop from './components/ScrollToTop.jsx';
 import './index.css';
 
 import 'flowbite';
@@ -22,6 +23,7 @@ const drawerTheme = createTheme({
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
+      <ScrollToTop />
       <DevErrorBoundary>
         <ProfileProvider>
           <BackgroundPatternProvider>
