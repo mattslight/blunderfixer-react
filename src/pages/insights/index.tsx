@@ -135,7 +135,7 @@ export default function HomeScreen() {
   return (
     <>
       <div className="p-4 pt-16 2xl:ml-12">
-        <div className="mx-auto max-w-3xl space-y-10">
+        <div className="mx-auto max-w-3xl space-y-6">
           <header>
             <h1 className="text-4xl font-bold text-white">
               Welcome back{username ? `, ${username}` : ''}!
@@ -148,7 +148,7 @@ export default function HomeScreen() {
                     nextDrillId ? `/drills/play/${nextDrillId}` : '/drills'
                   )
                 }
-                className="rounded bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700"
+                className="rounded bg-green-600 px-4 py-2 font-semibold text-white hover:bg-green-700"
               >
                 Start Next Drill{' '}
                 <Play className="relative bottom-0.25 ml-1 inline h-4 w-4" />
@@ -159,7 +159,7 @@ export default function HomeScreen() {
 
           {/* Mobile Swipeable Layout */}
           <section className="scrollbar-hide xs:hidden mb-4 snap-x snap-mandatory overflow-x-auto">
-            <div className="flex gap-4 px-1">
+            <div className="flex gap-3">
               {[
                 {
                   value: '123',
@@ -201,7 +201,7 @@ export default function HomeScreen() {
           </section>
 
           {/* Desktop Grid Layout */}
-          <section className="xs:grid mb-4 hidden grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
+          <section className="xs:grid mb-4 hidden grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">
             <div className="rounded bg-stone-800 p-4 text-center">
               <p className="text-2xl font-semibold text-blue-400">123</p>
               <p className="text-sm text-stone-200">Blunders Fixed</p>
