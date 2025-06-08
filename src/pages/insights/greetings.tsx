@@ -254,6 +254,300 @@ const chessionary = [
     pos="verb"
     definition="Falling asleep at the board."
   />,
+  <DictionaryEntry
+    key="endgamergize"
+    term="End·gam·er·gize"
+    pos="verb"
+    definition="Energy gained with queens off."
+  />,
+  <DictionaryEntry
+    key="batteryitis"
+    term="Bat·ter·y·i·tis"
+    pos="noun"
+    definition="Fixation to stack heavy pieces."
+  />,
+  <DictionaryEntry
+    key="smotherosis"
+    term="Smo·ther·o·sis"
+    pos="noun"
+    definition="When your king traps itself."
+  />,
+  <DictionaryEntry
+    key="backrankage"
+    term="Back·ran·kage"
+    pos="noun"
+    definition="Quality of the back-rank situation."
+  />,
+  <DictionaryEntry
+    key="zugzwangst"
+    term="Zug·zwangst"
+    pos="noun"
+    definition="Rage from having no good moves."
+  />,
+  <DictionaryEntry
+    key="fishhook"
+    term="Fish·hook"
+    pos="noun"
+    definition="When Stockfish lures you into a trap."
+  />,
+  <DictionaryEntry
+    key="prepportunity"
+    term="Prep·por·tu·ni·ty"
+    pos="noun"
+    definition="The urge to memorize one more line."
+  />,
+  <DictionaryEntry
+    key="swindlecraft"
+    term="Swin·dle·craft"
+    pos="noun"
+    definition="Art of lost game comeback."
+  />,
+  <DictionaryEntry
+    key="postmatem"
+    term="Post·matem,"
+    pos="noun"
+    definition="Seeing the checkmate in post-game analysis."
+  />,
+  <DictionaryEntry
+    key="pawnanza"
+    term="Pawn·an·za"
+    pos="noun"
+    definition="A pawn storm on steriods."
+  />,
+  <DictionaryEntry
+    key="monarchmeander"
+    term="Mon·arch·Meand·er"
+    pos="noun"
+    definition="Making it sound like this king walk was planned."
+  />,
+  <DictionaryEntry
+    key="stalemoticon"
+    term="Sta·le·mo·ti·con"
+    pos="noun"
+    definition="😐 used after a drawn endgame."
+  />,
+  <DictionaryEntry
+    key="tempophobia"
+    term="Tem·po·pho·bia"
+    pos="noun"
+    definition="Irrational terror of losing a single tempo."
+  />,
+  <DictionaryEntry
+    key="ghostpin"
+    term="Ghost·pin"
+    pos="noun"
+    definition="An entirely imaginary pin you swear exists."
+  />,
+  <DictionaryEntry
+    key="promoflop"
+    term="Pro·mo·flop"
+    pos="noun"
+    definition="Pawn promotion that dies on sight."
+  />,
+  <DictionaryEntry
+    key="schroedingersmate"
+    term="Schroe·ding·er’s Mate"
+    pos="noun"
+    definition="Checkmate both there and not until you play it."
+  />,
+  <DictionaryEntry
+    key="golemgambit"
+    term="Go·lem Gam·bit"
+    pos="noun"
+    definition="A sacrifice so absurd it shocks both sides."
+  />,
+  <DictionaryEntry
+    key="metapawn"
+    term="Me·ta·pawn"
+    pos="noun"
+    definition="A pawn move for philosophical flair."
+  />,
+  <DictionaryEntry
+    key="heisenfork"
+    term="Hei·sen·fork Prin·ci·ple"
+    pos="noun"
+    definition="You can’t calculate forks and safety together."
+  />,
+  <DictionaryEntry
+    key="zugzombie"
+    term="Zug·zom·bie"
+    pos="noun"
+    definition="Mindlessly marching into zugzwang."
+  />,
+  <DictionaryEntry
+    key="refutopia"
+    term="Re·fu·to·pi·a"
+    pos="noun"
+    definition="The perfect (non-existant) refutation."
+  />,
+  <DictionaryEntry
+    key="evalmorse"
+    term="E·val·morse"
+    pos="noun"
+    definition="Remorse over an eval dip."
+  />,
+  <DictionaryEntry
+    key="eloflux"
+    term="E·lo·flux"
+    pos="noun"
+    definition="Unpredictable swings in your rating."
+  />,
+  <DictionaryEntry
+    key="mousejitter"
+    term="Mouse·jit·ter"
+    pos="noun"
+    definition="Twitchy clicks playing bullet."
+  />,
+  <DictionaryEntry
+    key="swapocalypse"
+    term="Swap·a·lypse"
+    pos="noun"
+    definition="When trades devastate your position."
+  />,
+  <DictionaryEntry
+    key="queenocide"
+    term="Queen·o·cide"
+    pos="noun"
+    definition="Sending the queen in early."
+  />,
+  <DictionaryEntry
+    key="pinquisition"
+    term="Pin·quisition"
+    pos="noun"
+    definition="Demand to know who made the pin."
+  />,
+  <DictionaryEntry
+    key="pinished"
+    term="Pin·ished"
+    pos="adj."
+    definition="Punished slowly by a brutal pin."
+  />,
+  <DictionaryEntry
+    key="furked"
+    term="Furked"
+    pos="adj."
+    definition="Collapse after a nasty fork."
+  />,
+  <DictionaryEntry
+    key="blunderment"
+    term="Blun·der·ment"
+    pos="noun"
+    definition="Wondering how that just happened."
+  />,
+  <DictionaryEntry
+    key="sacralysis"
+    term="Sac·ra·ly·sis"
+    pos="noun"
+    definition="Emotional paralysis after a failed sacrifice."
+  />,
+  <DictionaryEntry
+    key="evalation"
+    term="E·val·a·tion"
+    pos="noun"
+    definition="Spiritual awakening seeing engine analysis."
+  />,
+  <DictionaryEntry
+    key="gambiteyes"
+    term="Gam·bit Eyes"
+    pos="noun"
+    definition="Delusion that every opening needs a sacrifice."
+  />,
+  <DictionaryEntry
+    key="tactcident"
+    term="Tact·ci·dent"
+    pos="noun"
+    definition="An unintended winning tactic."
+  />,
+  <DictionaryEntry
+    key="misclickery"
+    term="Mis·click·ery"
+    pos="noun"
+    definition="Throwing games via mouse slip."
+  />,
+  <DictionaryEntry
+    key="resignature"
+    term="Re·sig·na·ture"
+    pos="noun"
+    definition="Your stylistic way of giving up."
+  />,
+  <DictionaryEntry
+    key="pawnflict"
+    term="Pawn·flict"
+    pos="noun"
+    definition="A moral dilemma over pushing the pawn."
+  />,
+  <DictionaryEntry
+    key="evalescence"
+    term="E·val·es·cence"
+    pos="noun"
+    definition="Fading beauty of a promising position."
+  />,
+  <DictionaryEntry
+    key="bishopointment"
+    term="Bish·op·oint·ment"
+    pos="noun"
+    definition="A bishop move that worsens everything."
+  />,
+  <DictionaryEntry
+    key="blundamentals"
+    term="Blun·da·men·tals"
+    pos="noun"
+    definition="Core principles, expertly ignored."
+  />,
+  <DictionaryEntry
+    key="lightsquareenvy"
+    term="Light·Square En·vy"
+    pos="noun"
+    definition="Wishing you hadn’t traded your bishop."
+  />,
+  <DictionaryEntry
+    key="kingstallment"
+    term="King·stall·ment"
+    pos="noun"
+    definition="A slow king walk trying to gain increment."
+  />,
+  <DictionaryEntry
+    key="knightstand"
+    term="Knight·stand"
+    pos="noun"
+    definition="Stubborn defense powered by one horse."
+  />,
+  <DictionaryEntry
+    key="rookgrets"
+    term="Rook·grets"
+    pos="noun"
+    definition="All the things your rook didn’t do."
+  />,
+  <DictionaryEntry
+    key="pawnache"
+    term="Pawn·ache"
+    pos="noun"
+    definition="Lingering pain from a bad push."
+  />,
+  <DictionaryEntry
+    key="bishopnesia"
+    term="Bish·op·ne·sia"
+    pos="noun"
+    definition="Forgetting your opponent’s fianchetto."
+  />,
+  <DictionaryEntry
+    key="rookslide"
+    term="Rook·slide"
+    pos="noun"
+    definition="When your rook makes things worse."
+  />,
+  <DictionaryEntry
+    key="castlepology"
+    term="Castle·pol·o·gy"
+    pos="noun"
+    definition="Explaining why you castled long."
+  />,
+  <DictionaryEntry
+    key="conspiracytheory"
+    term="Con·spir·a·cy Theory"
+    pos="noun"
+    definition="When their opening theory feels like a trap."
+  />,
 ];
 
 export const greetings = [
@@ -404,7 +698,10 @@ export const greetings = [
   'This move brought to you by sleep deprivation.',
   'Don’t ask me about the line—I made it up.',
   'I’d castle, but commitment scares me.',
-  'Lost the initiative and my grip on reality.',
+  'Lost the initiative… and my grip on reality.',
   'Pawn stormed. So did I.',
+  'Change my mind… Blundering is just creative calculation.',
+  'Change my mind… Mouse slips are a real tactic.',
+  'Change my mind…Opening theory is a conspiracy.',
   ...chessionary,
 ];
