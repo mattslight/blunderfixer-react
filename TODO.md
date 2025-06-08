@@ -1,18 +1,20 @@
 # TODO
 
-[ ] When detecting drills somehow group similar positions - WIP
+- Prioritised
+  [ ] FIX: Debug why click on Analyze in recent games does nothing
+  [ ] QA: Check order of drills
+  [ ] FEAT: When showing next drills show three different games
+  [ ] FEAT: Show ELO on home screen and delta since last login (detect which Rapid/Blitz to show and allow to tap to change)
+  [ ] FEAT: Wire up stats on home screen
 
-[ ] Load new games and drills when logging in
-[ ] Load games from DB
+- Backlog
+  [ ] Load new games and drills when logging in
+  [ ] Load games from DB
+  [ ] Ask coach for hint on drill
+  [ ] Move a drill to analysis mode (if I fail dig into why I failed, better understanding)
+  [ ] Tag drills with theme (e.g. “fork tactic in middlegame”).
 
-[ ] Ask coach for hint on drill
-
-[ ] Move a drill to analysis mode (if I fail dig into why I failed, better understanding)
-
-[ ] Homepage of my stats, recent games, recommended drills
-
-[ ] QA: Check order of drills
-
+[x] Homepage of my stats, recent games, recommended drills
 [x] BUG: Issue with status rapidly change and recording multiple histories
 [x] Back to drill list
 [x] recent drills remove from sidebar and find a better way to display Drill History
@@ -64,8 +66,8 @@
 
 - [x] **Flag Critical Positions:**  
        As a user, I want the system to flag “critical positions” where evaluation swung ≥1.0 pawn or where I lost a won position, classified by tactic vs positional vs time.
-- [ ] **Tag Position Metadata:**  
-       As a user, I want each extracted position tagged with phase and theme (e.g. “fork tactic in middlegame”).
+- [x] **Tag Position Metadata:**  
+       As a user, I want each extracted position tagged with phase
 - [x] **Prioritize Drills:**  
        As a user, I want a score for each drill indicating urgency (e.g. frequency of that mistake × CP drop).
 
@@ -109,5 +111,5 @@
 
 - [ ] **Follow-Up Scheduling:**  
        As the system, I want to schedule follow-up drills for positions I’ve failed multiple times, with increasing intervals.
-- [ ] **Mastered Drill De-Prioritization:**  
+- [x] **Mastered Drill De-Prioritization:**  
        As the system, I want to lower priority on drills I’ve “mastered” to focus on weaknesses.
