@@ -69,11 +69,9 @@ export default function StatsSummary() {
         ))}
         <div className="hidden flex-col items-center justify-center rounded bg-stone-800 p-4 sm:flex">
           <WinRateDial rate={58} color="#fbbf24" label="White Win %" />
-          <p className="mt-1 text-xs text-stone-400">Wins as White</p>
         </div>
         <div className="hidden flex-col items-center justify-center rounded bg-stone-800 p-4 sm:flex">
           <WinRateDial rate={42} color="#818cf8" label="Black Win %" />
-          <p className="mt-1 text-xs text-stone-400">Wins as Black</p>
         </div>
       </section>
     </>
