@@ -16,14 +16,12 @@ export default function StatsSummary() {
       label: 'Blunders Fixed',
       desc: 'Mistakes you corrected',
       color: 'text-blue-400',
-      trend: 'up',
     },
     {
       value: '64%',
       label: 'Tactic Accuracy',
       desc: 'Top-engine moves chosen',
       color: 'text-green-400',
-      trend: 'down',
     },
     {
       value: '75%',
