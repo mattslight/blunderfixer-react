@@ -27,7 +27,6 @@ export default function DrillSection({ drills, loading }: Props) {
           All Drills »
         </button>
       </div>
-      <p className="mb-4 text-sm text-stone-400">Based on recent mistakes</p>
       {loading ? (
         <p className="mt-4 text-center text-stone-500">Loading…</p>
       ) : (
