@@ -9,7 +9,11 @@ interface Props {
   greeting: string;
 }
 
-export default function HeroSection({ username, nextDrillId, greeting }: Props) {
+export default function HeroSection({
+  username,
+  nextDrillId,
+  greeting,
+}: Props) {
   const navigate = useNavigate();
 
   return (
@@ -17,15 +21,16 @@ export default function HeroSection({ username, nextDrillId, greeting }: Props) 
       <h1 className="text-3xl font-bold text-stone-100">
         Welcome back{username ? `, ${username}` : ''}!
       </h1>
-      <p className="leading-snug text-stone-400">{greeting}</p>
-      <div className="mt-8 flex justify-start">
+      <p className="mt-1 text-sm leading-snug text-stone-400">{greeting}</p>
+      <div className="mt-6 flex justify-start">
         <button
           onClick={() =>
             navigate(nextDrillId ? `/drills/play/${nextDrillId}` : '/drills')
           }
           className="rounded bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700"
         >
-          Next Drill <Play className="relative bottom-0.25 ml-1 inline h-4 w-4" />
+          Next Drill{' '}
+          <Play className="relative bottom-0.25 ml-1 inline h-4 w-4" />
         </button>
       </div>
       <div className="mt-8">

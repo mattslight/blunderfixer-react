@@ -2,18 +2,28 @@ import StatCard from './StatCard';
 import WinRateDial from './WinRateDial';
 
 export default function StatsSummary() {
-  const stats = [
+  type Stat = {
+    value: string | number;
+    label: string;
+    desc: string;
+    color: string;
+    trend?: 'up' | 'down';
+  };
+
+  const stats: Stat[] = [
     {
       value: '123',
       label: 'Blunders Fixed',
       desc: 'Mistakes you corrected',
       color: 'text-blue-400',
+      trend: 'up',
     },
     {
       value: '64%',
       label: 'Tactic Accuracy',
       desc: 'Top-engine moves chosen',
       color: 'text-green-400',
+      trend: 'down',
     },
     {
       value: '75%',
@@ -40,6 +50,7 @@ export default function StatsSummary() {
               value={stat.value}
               label={stat.label}
               desc={stat.desc}
+              trend={stat.trend}
               colorClass={stat.color}
               className="min-w-[200px] shrink-0 snap-center"
             />
@@ -54,6 +65,7 @@ export default function StatsSummary() {
             value={stat.value}
             label={stat.label}
             desc={stat.desc}
+            trend={stat.trend}
             colorClass={stat.color}
           />
         ))}

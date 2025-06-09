@@ -10,7 +10,12 @@ interface Props {
   onAnalyse: (game: GameRecord) => void;
 }
 
-export default function GameSection({ games, username, loading, onAnalyse }: Props) {
+export default function GameSection({
+  games,
+  username,
+  loading,
+  onAnalyse,
+}: Props) {
   const navigate = useNavigate();
 
   return (
