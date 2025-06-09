@@ -210,11 +210,11 @@ export default function PlayDrill() {
     <>
       <div className="mx-auto max-w-md space-y-4">
         <a
-          onClick={() => navigate('/drills')}
-          aria-label="Back to list"
+          onClick={() => navigate(-1)}
+          aria-label="Back"
           className="xs:ml-0 relative top-4 z-100 ml-4 inline-flex w-fit items-center py-1 pr-4 text-blue-600 hover:underline"
         >
-          ← Back to list
+          ← Back
         </a>
         {/* ---------- Board + EvalBar ---------- */}
         <div className="mt-4 flex flex-col items-center">
