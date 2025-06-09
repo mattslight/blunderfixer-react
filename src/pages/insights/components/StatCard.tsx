@@ -12,14 +12,14 @@ interface Props {
 export default function StatCard({
   value,
   label,
-  desc,
+  //desc,
   colorClass,
   trend,
   className = '',
 }: Props) {
   return (
     <div
-      className={`cursor-default rounded bg-stone-800 p-4 text-center select-none ${className}`}
+      className={`cursor-default rounded bg-stone-800 p-5 text-center select-none ${className}`}
     >
       <p
         className={`flex items-center justify-center text-2xl font-semibold ${colorClass}`}
@@ -36,7 +36,6 @@ export default function StatCard({
         )}
       </p>
       <p className="text-base text-stone-200 sm:text-sm">{label}</p>
-      <p className="mt-1 text-xs text-stone-400">{desc}</p>
     </div>
   );
 }
