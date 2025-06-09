@@ -1,0 +1,3 @@
+# Allow all crawlers access to the site by default
+User-agent: *
+Disallow:
