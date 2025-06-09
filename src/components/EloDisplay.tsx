@@ -3,6 +3,7 @@ import { CalendarClock, TimerReset } from 'lucide-react';
 
 import blitzIcon from '@/assets/blitz.png';
 import bulletIcon from '@/assets/bullet.png';
+import { TIME_ORDER } from '@/const/phase';
 import { type TimeClass, useChessComRatings } from '@/hooks/useChessComRatings';
 
 const icons: Record<TimeClass, JSX.Element> = {
@@ -20,18 +21,22 @@ export default function EloDisplay() {
   const { rating, delta, timeClass, setTimeClass, preferred } =
     useChessComRatings();
 
+  const sortedPreferred = [...preferred].sort(
+    (a, b) => TIME_ORDER.indexOf(a) - TIME_ORDER.indexOf(b)
+  );
+
   const touchStartX = useRef<number | null>(null);
   const lastTrigger = useRef(0);
   const cooldown = 700; // ms
 
   const cycleTimeClass = (dir: 'left' | 'right') => {
-    const index = preferred.indexOf(timeClass);
+    const index = sortedPreferred.indexOf(timeClass);
     if (index === -1) return;
     const nextIndex =
       dir === 'left'
-        ? (index + 1) % preferred.length
-        : (index - 1 + preferred.length) % preferred.length;
-    setTimeClass(preferred[nextIndex]);
+        ? (index - 1) % sortedPreferred.length
+        : (index + 1 + sortedPreferred.length) % sortedPreferred.length;
+    setTimeClass(sortedPreferred[nextIndex]);
   };
 
   return (
@@ -77,7 +82,7 @@ export default function EloDisplay() {
       </div>
       {preferred.length > 1 && (
         <div className="flex space-x-2">
-          {preferred.map((tc) => (
+          {sortedPreferred.map((tc) => (
             <button
               key={tc}
               onClick={() => setTimeClass(tc)}
