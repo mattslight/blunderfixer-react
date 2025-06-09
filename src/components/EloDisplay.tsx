@@ -1,5 +1,5 @@
+import { JSX, useRef } from 'react';
 import { CalendarClock, TimerReset } from 'lucide-react';
-import type { JSX } from 'react';
 
 import blitzIcon from '@/assets/blitz.png';
 import bulletIcon from '@/assets/bullet.png';
@@ -17,10 +17,47 @@ const icons: Record<TimeClass, JSX.Element> = {
 };
 
 export default function EloDisplay() {
-  const { rating, delta, timeClass, setTimeClass, preferred } = useChessComRatings();
+  const { rating, delta, timeClass, setTimeClass, preferred } =
+    useChessComRatings();
+
+  const touchStartX = useRef<number | null>(null);
+  const lastTrigger = useRef(0);
+  const cooldown = 700; // ms
+
+  const cycleTimeClass = (dir: 'left' | 'right') => {
+    const index = preferred.indexOf(timeClass);
+    if (index === -1) return;
+    const nextIndex =
+      dir === 'left'
+        ? (index + 1) % preferred.length
+        : (index - 1 + preferred.length) % preferred.length;
+    setTimeClass(preferred[nextIndex]);
+  };
 
   return (
-    <div className="mt-4 flex items-center justify-between rounded bg-stone-800 px-4 py-3">
+    <div
+      className="mt-4 flex items-center justify-between rounded bg-stone-800 px-4 py-3"
+      onWheel={(e) => {
+        const now = Date.now();
+        const threshold = 5;
+
+        if (Math.abs(e.deltaX) < threshold) return;
+
+        if (now - lastTrigger.current > cooldown) {
+          cycleTimeClass(e.deltaX > 0 ? 'left' : 'right');
+          lastTrigger.current = now;
+        }
+      }}
+      onTouchStart={(e) => (touchStartX.current = e.touches[0].clientX)}
+      onTouchEnd={(e) => {
+        if (touchStartX.current === null) return;
+        const diff = e.changedTouches[0].clientX - touchStartX.current;
+        if (Math.abs(diff) > 30) {
+          cycleTimeClass(diff < 0 ? 'left' : 'right');
+        }
+        touchStartX.current = null;
+      }}
+    >
       <div className="relative flex flex-col">
         <div className="flex items-baseline space-x-2 text-white">
           <span className="text-2xl font-bold">
