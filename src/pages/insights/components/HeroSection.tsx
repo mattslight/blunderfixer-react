@@ -1,0 +1,36 @@
+import { useNavigate } from 'react-router-dom';
+import { Play } from 'lucide-react';
+
+import EloDisplay from '@/components/EloDisplay';
+
+interface Props {
+  username: string;
+  nextDrillId?: number | string;
+  greeting: string;
+}
+
+export default function HeroSection({ username, nextDrillId, greeting }: Props) {
+  const navigate = useNavigate();
+
+  return (
+    <header>
+      <h1 className="text-3xl font-bold text-stone-100">
+        Welcome back{username ? `, ${username}` : ''}!
+      </h1>
+      <p className="leading-snug text-stone-400">{greeting}</p>
+      <div className="mt-8 flex justify-start">
+        <button
+          onClick={() =>
+            navigate(nextDrillId ? `/drills/play/${nextDrillId}` : '/drills')
+          }
+          className="rounded bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700"
+        >
+          Next Drill <Play className="relative bottom-0.25 ml-1 inline h-4 w-4" />
+        </button>
+      </div>
+      <div className="mt-8">
+        <EloDisplay />
+      </div>
+    </header>
+  );
+}
