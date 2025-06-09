@@ -45,7 +45,7 @@ export default function NextDrillCarousel({ drills, onStart }: Props) {
     <div className="relative">
       <div
         ref={ref}
-        className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4"
+        className="scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4"
       >
         {uniqueDrills.map((d) => (
           <div key={d.id} className="snap-center">
