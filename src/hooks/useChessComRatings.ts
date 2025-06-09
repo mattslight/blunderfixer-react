@@ -5,7 +5,9 @@ import { useProfile } from './useProfile';
 export type TimeClass = 'bullet' | 'blitz' | 'rapid' | 'daily';
 
 function isTimeClass(val: any): val is TimeClass {
-  return val === 'bullet' || val === 'blitz' || val === 'rapid' || val === 'daily';
+  return (
+    val === 'bullet' || val === 'blitz' || val === 'rapid' || val === 'daily'
+  );
 }
 
 interface Ratings {
@@ -55,9 +57,12 @@ export function useChessComRatings(): UseChessComRatings {
     }
   }, [username]);
 
-  // fetch current ratings
+  //  Fetch latest ratings and initialize localStorage-based defaults
+  // Runs only when `username` changes to avoid unnecessary fetches.
+  // Sets: ratings, preferred formats, and most-played timeClass if not already stored.
   useEffect(() => {
     if (!username) return;
+
     fetch(`https://api.chess.com/pub/player/${username}/stats`)
       .then((res) => res.json())
       .then((data) => {
@@ -85,7 +90,11 @@ export function useChessComRatings(): UseChessComRatings {
 
         setRatings({ bullet, blitz, rapid, daily });
 
-        // default preferred time class based on most games
+        localStorage.setItem(
+          `bf:elo_prev:${username}`,
+          JSON.stringify({ bullet, blitz, rapid, daily })
+        );
+
         const prefKey = `bf:elo_pref:${username}`;
         if (!localStorage.getItem(prefKey)) {
           const counts: [TimeClass, number][] = [
@@ -95,8 +104,9 @@ export function useChessComRatings(): UseChessComRatings {
             ['daily', dailyGames],
           ];
           counts.sort((a, b) => b[1] - a[1]);
-          setTimeClassState(counts[0][0]);
-          localStorage.setItem(prefKey, counts[0][0]);
+          const mostPlayed = counts[0][0];
+          setTimeClassState(mostPlayed);
+          localStorage.setItem(prefKey, mostPlayed);
         }
 
         const listKey = `bf:elo_formats:${username}`;
@@ -106,22 +116,26 @@ export function useChessComRatings(): UseChessComRatings {
           if (blitzGames > 0) detected.push('blitz');
           if (rapidGames > 0) detected.push('rapid');
           if (dailyGames > 0) detected.push('daily');
-          const defaults = detected.length ? detected : ['blitz'];
+          const defaults = detected.length
+            ? detected
+            : (['blitz'] as TimeClass[]);
           setPreferredState(defaults);
           localStorage.setItem(listKey, JSON.stringify(defaults));
-          if (!defaults.includes(timeClass)) setTimeClassState(defaults[0]);
         }
-
-        // store current as new previous for next login
-        localStorage.setItem(
-          `bf:elo_prev:${username}`,
-          JSON.stringify({ bullet, blitz, rapid, daily })
-        );
       })
       .catch(() => {
         // ignore errors
       });
   }, [username]);
+
+  //  Sync selected `timeClass` with available `preferred` formats
+  // Ensures UI doesn't break if current timeClass is invalid (e.g. after reset)
+  // Runs only when preferred list or timeClass changes
+  useEffect(() => {
+    if (preferred.length && !preferred.includes(timeClass)) {
+      setTimeClassState(preferred[0]);
+    }
+  }, [preferred, timeClass]);
 
   const rating = ratings[timeClass] ?? null;
   const delta =
@@ -145,5 +159,13 @@ export function useChessComRatings(): UseChessComRatings {
     setTimeClassState((prev) => (vals.includes(prev) ? prev : vals[0]));
   };
 
-  return { rating, delta, timeClass, setTimeClass, ratings, preferred, setPreferred };
+  return {
+    rating,
+    delta,
+    timeClass,
+    setTimeClass,
+    ratings,
+    preferred,
+    setPreferred,
+  };
 }
