@@ -2,7 +2,15 @@ import StatCard from './StatCard';
 import WinRateDial from './WinRateDial';
 
 export default function StatsSummary() {
-  const stats = [
+  type Stat = {
+    value: string | number;
+    label: string;
+    desc: string;
+    color: string;
+    trend?: 'up' | 'down';
+  };
+
+  const stats: Stat[] = [
     {
       value: '123',
       label: 'Blunders Fixed',
@@ -40,6 +48,7 @@ export default function StatsSummary() {
               value={stat.value}
               label={stat.label}
               desc={stat.desc}
+              trend={stat.trend}
               colorClass={stat.color}
               className="min-w-[200px] shrink-0 snap-center"
             />
@@ -54,16 +63,15 @@ export default function StatsSummary() {
             value={stat.value}
             label={stat.label}
             desc={stat.desc}
+            trend={stat.trend}
             colorClass={stat.color}
           />
         ))}
         <div className="hidden flex-col items-center justify-center rounded bg-stone-800 p-4 sm:flex">
           <WinRateDial rate={58} color="#fbbf24" label="White Win %" />
-          <p className="mt-1 text-xs text-stone-400">Wins as White</p>
         </div>
         <div className="hidden flex-col items-center justify-center rounded bg-stone-800 p-4 sm:flex">
           <WinRateDial rate={42} color="#818cf8" label="Black Win %" />
-          <p className="mt-1 text-xs text-stone-400">Wins as Black</p>
         </div>
       </section>
     </>

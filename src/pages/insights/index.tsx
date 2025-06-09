@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
 
-import HeroSection from './components/HeroSection';
-import StatsSummary from './components/StatsSummary';
 import AdvancedStats from './components/AdvancedStats';
 import DrillSection from './components/DrillSection';
 import GameSection from './components/GameSection';
+import HeroSection from './components/HeroSection';
+import StatsSummary from './components/StatsSummary';
+
 import { greetings } from '@/const/greetings';
 import { useAnalyseAndGoToReport } from '@/hooks/useAnalyseAndGoToReport';
 import { useProfile } from '@/hooks/useProfile';
@@ -27,14 +28,14 @@ export default function HomeScreen() {
       includeMastered: false,
       rangeIdx: [0, 5],
     },
-    undefined,
+    undefined
   );
 
   const { drills, loading: loadingDrills } = useDrills(filters);
 
   const { games: rawGames, loading: loadingGames } = useRecentGames(
     username,
-    3,
+    3
   );
 
   const analyseAndGo = useAnalyseAndGoToReport();

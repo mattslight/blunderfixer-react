@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { BarChart2, ChevronDown } from 'lucide-react';
 import {
   Bar,
   BarChart,
@@ -32,9 +32,10 @@ export default function AdvancedStats() {
     <>
       <div className="mb-6 flex justify-start">
         <button
-          className="flex items-center text-sm text-blue-400 hover:underline"
+          className="flex items-center text-sm font-semibold text-blue-400 hover:underline"
           onClick={() => setShowCharts((v) => !v)}
         >
+          <BarChart2 className="mr-1 h-4 w-4" />
           {showCharts ? 'Hide Stats' : 'More Stats'}
           <ChevronDown
             className={`ml-1 h-4 w-4 transition-transform ${showCharts ? 'rotate-180' : ''}`}
@@ -53,7 +54,12 @@ export default function AdvancedStats() {
                   <PolarGrid stroke="#444" />
                   <PolarAngleAxis dataKey="eco" stroke="#888" />
                   <PolarRadiusAxis stroke="#888" />
-                  <Radar dataKey="score" stroke="#60a5fa" fill="#60a5fa" fillOpacity={0.6} />
+                  <Radar
+                    dataKey="score"
+                    stroke="#60a5fa"
+                    fill="#60a5fa"
+                    fillOpacity={0.6}
+                  />
                   <Tooltip />
                 </RadarChart>
               </ResponsiveContainer>
@@ -70,17 +76,27 @@ export default function AdvancedStats() {
                   <XAxis dataKey="phase" stroke="#888" />
                   <YAxis stroke="#888" />
                   <Tooltip />
-                  <Line type="monotone" dataKey="acpl" stroke="#a78bfa" strokeWidth={2} />
+                  <Line
+                    type="monotone"
+                    dataKey="acpl"
+                    stroke="#a78bfa"
+                    strokeWidth={2}
+                  />
                 </LineChart>
               </ResponsiveContainer>
             </div>
           </div>
 
           <div>
-            <h2 className="mb-4 text-xl font-semibold text-stone-100">Reason for Loss</h2>
+            <h2 className="mb-4 text-xl font-semibold text-stone-100">
+              Reason for Loss
+            </h2>
             <div className="h-60 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={lossReasonsData} margin={{ left: -20, right: 20 }}>
+                <BarChart
+                  data={lossReasonsData}
+                  margin={{ left: -20, right: 20 }}
+                >
                   <CartesianGrid stroke="#444" />
                   <XAxis dataKey="reason" stroke="#888" />
                   <YAxis stroke="#888" />
@@ -92,10 +108,15 @@ export default function AdvancedStats() {
           </div>
 
           <div>
-            <h2 className="mb-4 text-xl font-semibold text-stone-100">Impulsive vs Slow</h2>
+            <h2 className="mb-4 text-xl font-semibold text-stone-100">
+              Impulsive vs Slow
+            </h2>
             <div className="h-60 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={timeControlData} margin={{ left: -20, right: 20 }}>
+                <BarChart
+                  data={timeControlData}
+                  margin={{ left: -20, right: 20 }}
+                >
                   <CartesianGrid stroke="#444" />
                   <XAxis dataKey="control" stroke="#888" />
                   <YAxis stroke="#888" />

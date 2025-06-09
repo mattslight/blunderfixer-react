@@ -63,7 +63,7 @@ export default function EloDisplay() {
         touchStartX.current = null;
       }}
     >
-      <div className="relative flex flex-col">
+      <div className="relative flex flex-col" title="Chess.com rating">
         <div className="flex items-baseline space-x-2 text-white">
           <span className="text-2xl font-bold">
             {rating !== null ? rating : '--'}
@@ -92,6 +92,7 @@ export default function EloDisplay() {
                   : 'text-white opacity-50'
               }`}
               title={tc.charAt(0).toUpperCase() + tc.slice(1)}
+              aria-label={tc}
             >
               {icons[tc]}
             </button>
