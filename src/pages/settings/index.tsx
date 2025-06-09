@@ -5,10 +5,12 @@ import { formatDistanceToNow } from 'date-fns';
 import { Gem, MapPin, Table, Users } from 'lucide-react';
 
 import UsernameInput from '@/components/UsernameInput';
+import ToggleSwitch from '@/components/ToggleSwitch';
 import { BackgroundPattern, PATTERN_OPTIONS } from '@/const/background';
 import { useBackgroundPattern } from '@/hooks/useBackgroundPattern';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useProfile } from '@/hooks/useProfile';
+import { useChessComRatings, type TimeClass } from '@/hooks/useChessComRatings';
 
 export default function Settings() {
   const { profile, setUsername } = useProfile();
@@ -17,6 +19,7 @@ export default function Settings() {
   const [localUsername, setLocalUsername] = useState(profile.username);
   const { pattern: bgPattern, setPattern: setBgPattern } =
     useBackgroundPattern();
+  const { preferred, setPreferred } = useChessComRatings();
 
   // Whenever the real profile username changes (e.g. on load or outside),
   // keep the input in sync
@@ -166,6 +169,26 @@ export default function Settings() {
             </option>
           ))}
         </select>
+
+        <label className="mt-6 mb-1 block text-sm font-medium text-stone-200">
+          Show Ratings For
+        </label>
+        <div className="space-y-2">
+          {(['bullet', 'blitz', 'rapid', 'daily'] as TimeClass[]).map((tc) => (
+            <ToggleSwitch
+              key={tc}
+              checked={preferred.includes(tc)}
+              onChange={() =>
+                setPreferred(
+                  preferred.includes(tc)
+                    ? preferred.filter((p) => p !== tc)
+                    : [...preferred, tc]
+                )
+              }
+              label={tc.charAt(0).toUpperCase() + tc.slice(1)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

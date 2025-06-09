@@ -1,4 +1,4 @@
-import { TimerReset } from 'lucide-react';
+import { CalendarClock, TimerReset } from 'lucide-react';
 import type { JSX } from 'react';
 
 import blitzIcon from '@/assets/blitz.png';
@@ -13,10 +13,11 @@ const icons: Record<TimeClass, JSX.Element> = {
     <img src={blitzIcon} alt="blitz" className="inline h-6 bg-transparent" />
   ),
   rapid: <TimerReset className="mb-1 inline h-5 bg-transparent" />,
+  daily: <CalendarClock className="mb-1 inline h-5 bg-transparent" />,
 };
 
 export default function EloDisplay() {
-  const { rating, delta, timeClass, setTimeClass } = useChessComRatings();
+  const { rating, delta, timeClass, setTimeClass, preferred } = useChessComRatings();
 
   return (
     <div className="mt-4 flex items-center justify-between rounded bg-stone-800 px-4 py-3">
@@ -37,22 +38,24 @@ export default function EloDisplay() {
           )}
         </div>
       </div>
-      <div className="flex space-x-2">
-        {(['bullet', 'blitz', 'rapid'] as TimeClass[]).map((tc) => (
-          <button
-            key={tc}
-            onClick={() => setTimeClass(tc)}
-            className={`rounded p-1 ${
-              tc === timeClass
-                ? 'bg-stone-700 text-white'
-                : 'text-white opacity-50'
-            }`}
-            title={tc.charAt(0).toUpperCase() + tc.slice(1)}
-          >
-            {icons[tc]}
-          </button>
-        ))}
-      </div>
+      {preferred.length > 1 && (
+        <div className="flex space-x-2">
+          {preferred.map((tc) => (
+            <button
+              key={tc}
+              onClick={() => setTimeClass(tc)}
+              className={`rounded p-1 ${
+                tc === timeClass
+                  ? 'bg-stone-700 text-white'
+                  : 'text-white opacity-50'
+              }`}
+              title={tc.charAt(0).toUpperCase() + tc.slice(1)}
+            >
+              {icons[tc]}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
