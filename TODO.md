@@ -2,7 +2,7 @@
 
 - Prioritised
 
-  [ ] FEAT: Detect which formats (Biltz, Rapid, Bullet, Daily) I care about when I log in (allow me to change in preferences) (consider using ToggleSwitch). Only show EloDisplay options for chosen preferences.
+  [x] FEAT: Detect which formats (Biltz, Rapid, Bullet, Daily) I care about when I log in (allow me to change in preferences) (consider using ToggleSwitch). Only show EloDisplay options for chosen preferences.
   [ ] FEAT: Wire up stats on home screen
 
 - Backlog

@@ -1,4 +1,6 @@
 // src/constants/phase.ts
+import { type TimeClass } from '@/hooks/useChessComRatings';
+
 export const PHASE_DISPLAY: Record<string, string> = {
   opening: 'Opening',
   middle: 'Middle',
@@ -11,3 +13,4 @@ export const PHASE_COLORS: Record<string, string> = {
   Late: 'bg-fuchsia-700',
   Endgame: 'bg-rose-700',
 };
+export const TIME_ORDER: TimeClass[] = ['bullet', 'blitz', 'rapid', 'daily'];

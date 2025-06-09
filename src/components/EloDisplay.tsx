@@ -1,8 +1,9 @@
-import { TimerReset } from 'lucide-react';
-import type { JSX } from 'react';
+import { JSX, useRef } from 'react';
+import { CalendarClock, TimerReset } from 'lucide-react';
 
 import blitzIcon from '@/assets/blitz.png';
 import bulletIcon from '@/assets/bullet.png';
+import { TIME_ORDER } from '@/const/phase';
 import { type TimeClass, useChessComRatings } from '@/hooks/useChessComRatings';
 
 const icons: Record<TimeClass, JSX.Element> = {
@@ -13,13 +14,55 @@ const icons: Record<TimeClass, JSX.Element> = {
     <img src={blitzIcon} alt="blitz" className="inline h-6 bg-transparent" />
   ),
   rapid: <TimerReset className="mb-1 inline h-5 bg-transparent" />,
+  daily: <CalendarClock className="mb-1 inline h-5 bg-transparent" />,
 };
 
 export default function EloDisplay() {
-  const { rating, delta, timeClass, setTimeClass } = useChessComRatings();
+  const { rating, delta, timeClass, setTimeClass, preferred } =
+    useChessComRatings();
+
+  const sortedPreferred = [...preferred].sort(
+    (a, b) => TIME_ORDER.indexOf(a) - TIME_ORDER.indexOf(b)
+  );
+
+  const touchStartX = useRef<number | null>(null);
+  const lastTrigger = useRef(0);
+  const cooldown = 700; // ms
+
+  const cycleTimeClass = (dir: 'left' | 'right') => {
+    const index = sortedPreferred.indexOf(timeClass);
+    if (index === -1) return;
+    const nextIndex =
+      dir === 'left'
+        ? (index - 1) % sortedPreferred.length
+        : (index + 1 + sortedPreferred.length) % sortedPreferred.length;
+    setTimeClass(sortedPreferred[nextIndex]);
+  };
 
   return (
-    <div className="mt-4 flex items-center justify-between rounded bg-stone-800 px-4 py-3">
+    <div
+      className="mt-4 flex items-center justify-between rounded bg-stone-800 px-4 py-3"
+      onWheel={(e) => {
+        const now = Date.now();
+        const threshold = 5;
+
+        if (Math.abs(e.deltaX) < threshold) return;
+
+        if (now - lastTrigger.current > cooldown) {
+          cycleTimeClass(e.deltaX > 0 ? 'left' : 'right');
+          lastTrigger.current = now;
+        }
+      }}
+      onTouchStart={(e) => (touchStartX.current = e.touches[0].clientX)}
+      onTouchEnd={(e) => {
+        if (touchStartX.current === null) return;
+        const diff = e.changedTouches[0].clientX - touchStartX.current;
+        if (Math.abs(diff) > 30) {
+          cycleTimeClass(diff < 0 ? 'left' : 'right');
+        }
+        touchStartX.current = null;
+      }}
+    >
       <div className="relative flex flex-col">
         <div className="flex items-baseline space-x-2 text-white">
           <span className="text-2xl font-bold">
@@ -37,22 +80,24 @@ export default function EloDisplay() {
           )}
         </div>
       </div>
-      <div className="flex space-x-2">
-        {(['bullet', 'blitz', 'rapid'] as TimeClass[]).map((tc) => (
-          <button
-            key={tc}
-            onClick={() => setTimeClass(tc)}
-            className={`rounded p-1 ${
-              tc === timeClass
-                ? 'bg-stone-700 text-white'
-                : 'text-white opacity-50'
-            }`}
-            title={tc.charAt(0).toUpperCase() + tc.slice(1)}
-          >
-            {icons[tc]}
-          </button>
-        ))}
-      </div>
+      {preferred.length > 1 && (
+        <div className="flex space-x-2">
+          {sortedPreferred.map((tc) => (
+            <button
+              key={tc}
+              onClick={() => setTimeClass(tc)}
+              className={`rounded p-1 ${
+                tc === timeClass
+                  ? 'bg-stone-700 text-white'
+                  : 'text-white opacity-50'
+              }`}
+              title={tc.charAt(0).toUpperCase() + tc.slice(1)}
+            >
+              {icons[tc]}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
