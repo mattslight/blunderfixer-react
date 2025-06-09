@@ -1,3 +1,4 @@
+import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Play } from 'lucide-react';
 
@@ -6,7 +7,7 @@ import EloDisplay from '@/components/EloDisplay';
 interface Props {
   username: string;
   nextDrillId?: number | string;
-  greeting: string;
+  greeting: string | JSX.Element;
 }
 
 export default function HeroSection({
@@ -18,7 +19,7 @@ export default function HeroSection({
 
   return (
     <header>
-      <h1 className="text-3xl font-bold text-stone-100">
+      <h1 className="text-3xl leading-[1.1] font-bold text-stone-100">
         Welcome back{username ? `, ${username}` : ''}!
       </h1>
       <p className="mt-1 text-sm leading-snug text-stone-400">{greeting}</p>
