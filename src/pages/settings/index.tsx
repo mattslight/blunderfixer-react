@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
 import { Gem, MapPin, Table, Users } from 'lucide-react';
 
-import UsernameInput from '@/components/UsernameInput';
 import ToggleSwitch from '@/components/ToggleSwitch';
+import UsernameInput from '@/components/UsernameInput';
 import { BackgroundPattern, PATTERN_OPTIONS } from '@/const/background';
 import { useBackgroundPattern } from '@/hooks/useBackgroundPattern';
+import { type TimeClass, useChessComRatings } from '@/hooks/useChessComRatings';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useProfile } from '@/hooks/useProfile';
-import { useChessComRatings, type TimeClass } from '@/hooks/useChessComRatings';
 
 export default function Settings() {
   const { profile, setUsername } = useProfile();
@@ -171,9 +171,9 @@ export default function Settings() {
         </select>
 
         <label className="mt-6 mb-1 block text-sm font-medium text-stone-200">
-          Show Ratings For
+          Enable Ratings / Stats
         </label>
-        <div className="space-y-2">
+        <div className="space-x-6">
           {(['bullet', 'blitz', 'rapid', 'daily'] as TimeClass[]).map((tc) => (
             <ToggleSwitch
               key={tc}
