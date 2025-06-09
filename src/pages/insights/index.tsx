@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { ChevronDown, Play, Target } from 'lucide-react';
 import {
   Bar,
@@ -27,6 +28,7 @@ import EloDisplay from '@/components/EloDisplay';
 import { greetings } from '@/const/greetings';
 import { useAnalyseAndGoToReport } from '@/hooks/useAnalyseAndGoToReport';
 import { useProfile } from '@/hooks/useProfile';
+import { fadeIn } from '@/lib/animations';
 import { parseChessComGame } from '@/lib/chessComParser';
 import { useDrills } from '@/pages/drills/hooks/useDrills';
 import { buildDrillFilters } from '@/pages/drills/utils/filters';
@@ -85,20 +87,13 @@ export default function HomeScreen() {
   );
 
   const { drills, loading: loadingDrills } = useDrills(filters);
-
   const { games: rawGames, loading: loadingGames } = useRecentGames(
     username,
     3
   );
-
   const analyseAndGo = useAnalyseAndGoToReport();
-
   const nextDrillId = drills[0]?.id;
-
   const games = Array.isArray(rawGames) ? rawGames.map(parseChessComGame) : [];
-
-  // const showEmpty =
-  //   !games.length && !drills.length && !loadingDrills && !loadingGames;
 
   const randomGreeting = useMemo(() => {
     return greetings[Math.floor(Math.random() * greetings.length)];
@@ -133,266 +128,276 @@ export default function HomeScreen() {
   ];
 
   return (
-    <>
-      <div className="p-4 pt-16 2xl:ml-12">
-        <div className="mx-auto max-w-3xl space-y-3">
-          <header>
-            <h1 className="text-3xl font-bold text-stone-100">
-              Welcome back{username ? `, ${username}` : ''}!
-            </h1>
-            <p className="leading-snug text-stone-400">{randomGreeting}</p>
-            <div className="mt-8 flex justify-start">
-              <button
-                onClick={() =>
-                  navigate(
-                    nextDrillId ? `/drills/play/${nextDrillId}` : '/drills'
-                  )
-                }
-                className="rounded bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700"
-              >
-                Next Drill{' '}
-                <Play className="relative bottom-0.25 ml-1 inline h-4 w-4" />
-              </button>
-            </div>
-            <div className="mt-8">
-              <EloDisplay />
-            </div>
-          </header>
+    <div className="p-4 pt-16 2xl:ml-12">
+      <div className="mx-auto max-w-3xl space-y-3">
+        <header>
+          <motion.h1
+            {...fadeIn(0)}
+            className="text-3xl font-bold text-stone-100"
+          >
+            Welcome back{username ? `, ${username}` : ''}!
+          </motion.h1>
 
-          {/* Mobile Swipeable Layout */}
-          <section className="scrollbar-hide xs:hidden mb-4 snap-x snap-mandatory overflow-x-auto">
-            <div className="flex gap-3">
-              {[
-                {
-                  value: '123',
-                  label: 'Blunders Fixed',
-                  desc: 'Mistakes you corrected',
-                  color: 'text-blue-400',
-                },
-                {
-                  value: '64%',
-                  label: 'Tactic Accuracy',
-                  desc: 'Top-engine moves chosen',
-                  color: 'text-green-400',
-                },
-                {
-                  value: '75%',
-                  label: 'Winning Openings',
-                  desc: 'Wins from your openings',
-                  color: 'text-purple-400',
-                },
-                {
-                  value: '48%',
-                  label: 'Endgame Wins',
-                  desc: 'Games converted late',
-                  color: 'text-fuchsia-400',
-                },
-              ].map((stat, idx) => (
-                <div
-                  key={idx}
-                  className="flex min-w-[200px] shrink-0 snap-center flex-col justify-center rounded bg-stone-800 p-4 text-center"
-                >
-                  <p className={`text-2xl font-semibold ${stat.color}`}>
-                    {stat.value}
-                  </p>
-                  <p className="text-base text-stone-200">{stat.label}</p>
-                  <p className="mt-1 text-xs text-stone-400">{stat.desc}</p>
-                </div>
-              ))}
-            </div>
-          </section>
+          <motion.p {...fadeIn(0)} className="leading-snug text-stone-400">
+            {randomGreeting}
+          </motion.p>
 
-          {/* Desktop Grid Layout */}
-          <section className="xs:grid mb-4 hidden grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">
-            <div className="rounded bg-stone-800 p-4 text-center">
-              <p className="text-2xl font-semibold text-blue-400">123</p>
-              <p className="text-sm text-stone-200">Blunders Fixed</p>
-              <p className="mt-1 text-xs text-stone-400">
-                Mistakes you corrected
-              </p>
-            </div>
-            <div className="rounded bg-stone-800 p-4 text-center">
-              <p className="text-2xl font-semibold text-green-400">64%</p>
-              <p className="text-sm text-stone-200">Tactic Accuracy</p>
-              <p className="mt-1 text-xs text-stone-400">
-                Top-engine moves chosen
-              </p>
-            </div>
-            <div className="rounded bg-stone-800 p-4 text-center">
-              <p className="text-2xl font-semibold text-purple-400">75%</p>
-              <p className="text-sm text-stone-200">Winning Openings</p>
-              <p className="mt-1 text-xs text-stone-400">
-                Wins from your openings
-              </p>
-            </div>
-            <div className="rounded bg-stone-800 p-4 text-center">
-              <p className="text-2xl font-semibold text-fuchsia-400">48%</p>
-              <p className="text-sm text-stone-200">Endgame Wins</p>
-              <p className="mt-1 text-xs text-stone-400">
-                Games converted late
-              </p>
-            </div>
-            <div className="hidden flex-col items-center justify-center rounded bg-stone-800 p-4 sm:flex">
-              <WinRateDial rate={58} color="#fbbf24" label="White Win %" />
-              <p className="mt-1 text-xs text-stone-400">Wins as White</p>
-            </div>
-            <div className="hidden flex-col items-center justify-center rounded bg-stone-800 p-4 sm:flex">
-              <WinRateDial rate={42} color="#818cf8" label="Black Win %" />
-              <p className="mt-1 text-xs text-stone-400">Wins as Black</p>
-            </div>
-          </section>
-
-          {/* Charts */}
-          <div className="mb-6 flex justify-start">
+          <motion.div {...fadeIn(0.1)} className="mt-6 flex justify-start">
             <button
-              className="flex items-center text-sm text-blue-400 hover:underline"
-              onClick={() => setShowCharts((v) => !v)}
+              onClick={() =>
+                navigate(
+                  nextDrillId ? `/drills/play/${nextDrillId}` : '/drills'
+                )
+              }
+              className="rounded bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700"
             >
-              {showCharts ? 'Hide Stats' : 'More Stats'}
-              <ChevronDown
-                className={`ml-1 h-4 w-4 transition-transform ${showCharts ? 'rotate-180' : ''}`}
-              />
+              Next Drill{' '}
+              <Play className="relative bottom-0.25 ml-1 inline h-4 w-4" />
             </button>
-          </div>
-          {showCharts && (
-            <section className="grid gap-8 md:grid-cols-2">
-              <div>
-                <h2 className="mb-4 text-xl font-semibold text-stone-100">
-                  Strength by Opening
-                </h2>
-                <div className="h-60 w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart data={ecoData}>
-                      <PolarGrid stroke="#444" />
-                      <PolarAngleAxis dataKey="eco" stroke="#888" />
-                      <PolarRadiusAxis stroke="#888" />
-                      <Radar
-                        dataKey="score"
-                        stroke="#60a5fa"
-                        fill="#60a5fa"
-                        fillOpacity={0.6}
-                      />
-                      <Tooltip />
-                    </RadarChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
+          </motion.div>
 
-              <div>
-                <h2 className="mb-4 text-xl font-semibold text-stone-100">
-                  Average CP Loss by Phase
-                </h2>
-                <div className="h-60 w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart
-                      data={acplData}
-                      margin={{ left: -20, right: 20 }}
-                    >
-                      <XAxis dataKey="phase" stroke="#888" />
-                      <YAxis stroke="#888" />
-                      <Tooltip />
-                      <Line
-                        type="monotone"
-                        dataKey="acpl"
-                        stroke="#a78bfa"
-                        strokeWidth={2}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
+          <motion.div {...fadeIn(0.2)} className="mt-8">
+            <EloDisplay />
+          </motion.div>
+        </header>
 
-              <div>
-                <h2 className="mb-4 text-xl font-semibold text-stone-100">
-                  Reason for Loss
-                </h2>
-                <div className="h-60 w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={lossReasonsData}
-                      margin={{ left: -20, right: 20 }}
-                    >
-                      <CartesianGrid stroke="#444" />
-                      <XAxis dataKey="reason" stroke="#888" />
-                      <YAxis stroke="#888" />
-                      <Tooltip />
-                      <Bar dataKey="games" fill="#f472b6" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-
-              <div>
-                <h2 className="mb-4 text-xl font-semibold text-stone-100">
-                  Impulsive vs Slow
-                </h2>
-                <div className="h-60 w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={timeControlData}
-                      margin={{ left: -20, right: 20 }}
-                    >
-                      <CartesianGrid stroke="#444" />
-                      <XAxis dataKey="control" stroke="#888" />
-                      <YAxis stroke="#888" />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey="impulsive" fill="#60a5fa" />
-                      <Bar dataKey="slow" fill="#c084fc" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-            </section>
-          )}
-
-          {/* Next Drills */}
-          <section className="mt-12">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-stone-100">
-                <Target className="relative bottom-0.25 mr-1 inline-flex w-5" />{' '}
-                More Drills
-              </h2>
-              <button
-                className="text-sm text-blue-400 hover:underline"
-                onClick={() => navigate('/drills')}
+        <motion.section
+          {...fadeIn(0.2)}
+          className="scrollbar-hide xs:hidden mb-4 snap-x snap-mandatory overflow-x-auto"
+        >
+          {/* Mobile Swipeable Layout */}
+          <div className="flex gap-3">
+            {[
+              {
+                value: '123',
+                label: 'Blunders Fixed',
+                desc: 'Mistakes you corrected',
+                color: 'text-blue-400',
+              },
+              {
+                value: '64%',
+                label: 'Tactic Accuracy',
+                desc: 'Top-engine moves chosen',
+                color: 'text-green-400',
+              },
+              {
+                value: '75%',
+                label: 'Winning Openings',
+                desc: 'Wins from your openings',
+                color: 'text-purple-400',
+              },
+              {
+                value: '48%',
+                label: 'Endgame Wins',
+                desc: 'Games converted late',
+                color: 'text-fuchsia-400',
+              },
+            ].map((stat, idx) => (
+              <div
+                key={idx}
+                className="flex min-w-[200px] shrink-0 snap-center flex-col justify-center rounded bg-stone-800 p-4 text-center"
               >
-                All Drills »
-              </button>
-            </div>
-            {loadingDrills ? (
-              <p className="mt-4 text-center text-stone-500">Loading…</p>
-            ) : (
-              <NextDrillCarousel
-                drills={drills}
-                onStart={(id) => navigate(`/drills/play/${id}`)}
-              />
-            )}
-          </section>
+                <p className={`text-2xl font-semibold ${stat.color}`}>
+                  {stat.value}
+                </p>
+                <p className="text-base text-stone-200">{stat.label}</p>
+                <p className="mt-1 text-xs text-stone-400">{stat.desc}</p>
+              </div>
+            ))}
+          </div>
+        </motion.section>
 
-          {/* Recent Games */}
-          <div className="mt-12 mb-2 flex justify-between">
+        <motion.section
+          {...fadeIn(0.2)}
+          className="xs:grid mb-4 hidden grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6"
+        >
+          {/* Desktop Grid Layout */}
+          <div className="rounded bg-stone-800 p-4 text-center">
+            <p className="text-2xl font-semibold text-blue-400">123</p>
+            <p className="text-sm text-stone-200">Blunders Fixed</p>
+            <p className="mt-1 text-xs text-stone-400">
+              Mistakes you corrected
+            </p>
+          </div>
+          <div className="rounded bg-stone-800 p-4 text-center">
+            <p className="text-2xl font-semibold text-green-400">64%</p>
+            <p className="text-sm text-stone-200">Tactic Accuracy</p>
+            <p className="mt-1 text-xs text-stone-400">
+              Top-engine moves chosen
+            </p>
+          </div>
+          <div className="rounded bg-stone-800 p-4 text-center">
+            <p className="text-2xl font-semibold text-purple-400">75%</p>
+            <p className="text-sm text-stone-200">Winning Openings</p>
+            <p className="mt-1 text-xs text-stone-400">
+              Wins from your openings
+            </p>
+          </div>
+          <div className="rounded bg-stone-800 p-4 text-center">
+            <p className="text-2xl font-semibold text-fuchsia-400">48%</p>
+            <p className="text-sm text-stone-200">Endgame Wins</p>
+            <p className="mt-1 text-xs text-stone-400">Games converted late</p>
+          </div>
+          <div className="hidden flex-col items-center justify-center rounded bg-stone-800 p-4 sm:flex">
+            <WinRateDial rate={58} color="#fbbf24" label="White Win %" />
+            <p className="mt-1 text-xs text-stone-400">Wins as White</p>
+          </div>
+          <div className="hidden flex-col items-center justify-center rounded bg-stone-800 p-4 sm:flex">
+            <WinRateDial rate={42} color="#818cf8" label="Black Win %" />
+            <p className="mt-1 text-xs text-stone-400">Wins as Black</p>
+          </div>
+        </motion.section>
+
+        <motion.div {...fadeIn(0.6)} className="mb-6 flex justify-start">
+          <button
+            className="flex items-center text-sm text-blue-400 hover:underline"
+            onClick={() => setShowCharts((v) => !v)}
+          >
+            {showCharts ? 'Hide Stats' : 'More Stats'}
+            <ChevronDown
+              className={`ml-1 h-4 w-4 transition-transform ${showCharts ? 'rotate-180' : ''}`}
+            />
+          </button>
+        </motion.div>
+
+        {showCharts && (
+          <motion.section
+            {...fadeIn(0.3)}
+            className="grid gap-8 md:grid-cols-2"
+          >
+            <div>
+              <h2 className="mb-4 text-xl font-semibold text-stone-100">
+                Strength by Opening
+              </h2>
+              <div className="h-60 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <RadarChart data={ecoData}>
+                    <PolarGrid stroke="#444" />
+                    <PolarAngleAxis dataKey="eco" stroke="#888" />
+                    <PolarRadiusAxis stroke="#888" />
+                    <Radar
+                      dataKey="score"
+                      stroke="#60a5fa"
+                      fill="#60a5fa"
+                      fillOpacity={0.6}
+                    />
+                    <Tooltip />
+                  </RadarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="mb-4 text-xl font-semibold text-stone-100">
+                Average CP Loss by Phase
+              </h2>
+              <div className="h-60 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={acplData} margin={{ left: -20, right: 20 }}>
+                    <XAxis dataKey="phase" stroke="#888" />
+                    <YAxis stroke="#888" />
+                    <Tooltip />
+                    <Line
+                      type="monotone"
+                      dataKey="acpl"
+                      stroke="#a78bfa"
+                      strokeWidth={2}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="mb-4 text-xl font-semibold text-stone-100">
+                Reason for Loss
+              </h2>
+              <div className="h-60 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={lossReasonsData}
+                    margin={{ left: -20, right: 20 }}
+                  >
+                    <CartesianGrid stroke="#444" />
+                    <XAxis dataKey="reason" stroke="#888" />
+                    <YAxis stroke="#888" />
+                    <Tooltip />
+                    <Bar dataKey="games" fill="#f472b6" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="mb-4 text-xl font-semibold text-stone-100">
+                Impulsive vs Slow
+              </h2>
+              <div className="h-60 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={timeControlData}
+                    margin={{ left: -20, right: 20 }}
+                  >
+                    <CartesianGrid stroke="#444" />
+                    <XAxis dataKey="control" stroke="#888" />
+                    <YAxis stroke="#888" />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="impulsive" fill="#60a5fa" />
+                    <Bar dataKey="slow" fill="#c084fc" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </motion.section>
+        )}
+
+        <motion.section {...fadeIn(0.4)} className="mt-12">
+          <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold text-stone-100">
-              Recent Games
+              <Target className="relative bottom-0.25 mr-1 inline-flex w-5" />{' '}
+              More Drills
             </h2>
             <button
               className="text-sm text-blue-400 hover:underline"
-              onClick={() => navigate('/games')}
+              onClick={() => navigate('/drills')}
             >
-              More games »
+              All Drills »
             </button>
           </div>
-          <section className="mb-20">
-            <GameList
-              games={games}
-              hero={username}
-              isAnalysed={() => false}
-              isLoading={() => loadingGames}
-              onAction={analyseAndGo}
+          {loadingDrills ? (
+            <p className="mt-4 text-center text-stone-500">Loading…</p>
+          ) : (
+            <NextDrillCarousel
+              drills={drills}
+              onStart={(id) => navigate(`/drills/play/${id}`)}
             />
-          </section>
-        </div>
+          )}
+        </motion.section>
+
+        <motion.div
+          {...fadeIn(0.9)}
+          className="mt-12 mb-2 flex justify-between"
+        >
+          <h2 className="text-xl font-semibold text-stone-100">Recent Games</h2>
+          <button
+            className="text-sm text-blue-400 hover:underline"
+            onClick={() => navigate('/games')}
+          >
+            More games »
+          </button>
+        </motion.div>
+
+        <motion.section {...fadeIn(0.4)} className="mb-20">
+          <GameList
+            games={games}
+            hero={username}
+            isAnalysed={() => false}
+            isLoading={() => loadingGames}
+            onAction={analyseAndGo}
+          />
+        </motion.section>
       </div>
-    </>
+    </div>
   );
 }
