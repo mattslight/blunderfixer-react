@@ -32,7 +32,7 @@ export default function AdvancedStats() {
     <>
       <div className="mb-6 flex justify-start">
         <button
-          className="flex items-center text-base font-semibold text-blue-400 hover:underline"
+          className="flex items-center text-sm font-semibold text-blue-400 hover:underline"
           onClick={() => setShowCharts((v) => !v)}
         >
           <BarChart2 className="mr-1 h-4 w-4" />
