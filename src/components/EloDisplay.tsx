@@ -68,7 +68,7 @@ export default function EloDisplay() {
           <span className="text-2xl font-bold">
             {rating !== null ? rating : '--'}
           </span>
-          <span className="text-sm font-medium">Chess.com Elo</span>
+          <span className="text-sm font-medium">Elo</span>
 
           {delta !== null && (
             <span
