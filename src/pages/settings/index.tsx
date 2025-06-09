@@ -173,20 +173,22 @@ export default function Settings() {
         <label className="mt-6 mb-1 block text-sm font-medium text-stone-200">
           Enable Ratings / Stats
         </label>
-        <div className="space-x-6">
+        <div className="space-x-8">
           {(['bullet', 'blitz', 'rapid', 'daily'] as TimeClass[]).map((tc) => (
-            <ToggleSwitch
-              key={tc}
-              checked={preferred.includes(tc)}
-              onChange={() =>
-                setPreferred(
-                  preferred.includes(tc)
-                    ? preferred.filter((p) => p !== tc)
-                    : [...preferred, tc]
-                )
-              }
-              label={tc.charAt(0).toUpperCase() + tc.slice(1)}
-            />
+            <span key={tc}>
+              <ToggleSwitch
+                key={tc}
+                checked={preferred.includes(tc)}
+                onChange={() =>
+                  setPreferred(
+                    preferred.includes(tc)
+                      ? preferred.filter((p) => p !== tc)
+                      : [...preferred, tc]
+                  )
+                }
+                label={tc.charAt(0).toUpperCase() + tc.slice(1)}
+              />
+            </span>
           ))}
         </div>
       </div>
