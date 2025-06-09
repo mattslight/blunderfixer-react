@@ -372,7 +372,7 @@ export default function HomeScreen() {
 
           {/* Recent Games */}
           <div className="mt-12 mb-2 flex justify-between">
-            <h2 className="text-2xl font-semibold text-stone-100">
+            <h2 className="text-xl font-semibold text-stone-100">
               Recent Games
             </h2>
             <button
