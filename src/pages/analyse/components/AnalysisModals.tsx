@@ -5,19 +5,13 @@ import {
   ModalFooter,
   ModalHeader,
 } from 'flowbite-react';
-import { Clipboard, Clock, Trash2 } from 'lucide-react';
+import { Clipboard, Trash2 } from 'lucide-react';
 
 import GameLoader from './GameLoader';
 
-export function AnalysisToolbar({ onOpenPaste, onOpenGames, onClear }) {
+export function AnalysisToolbar({ onOpenPaste, onClear }) {
   return (
     <div className="mt-2 flex flex-wrap justify-center gap-4 text-sm md:mt-4">
-      <Button
-        onClick={onOpenGames}
-        className="flex items-center gap-1 rounded-none px-0 py-1.5 text-sm font-medium text-stone-400 shadow-sm transition-colors hover:text-white"
-      >
-        <Clock className="h-3 w-3" /> Recent
-      </Button>
       <Button
         onClick={onOpenPaste}
         className="flex items-center gap-1 rounded-none px-0 py-1.5 text-sm font-medium text-stone-400 shadow-sm transition-colors hover:text-white"
@@ -28,7 +22,7 @@ export function AnalysisToolbar({ onOpenPaste, onOpenGames, onClear }) {
         onClick={onClear}
         className="flex items-center gap-1 rounded-none px-0 py-1.5 text-sm font-medium text-stone-400 shadow-sm transition-colors hover:text-white"
       >
-        <Trash2 className="h-3 w-3" /> Reset
+        <Trash2 className="h-3 w-3" /> Reset Board
       </Button>
     </div>
   );
