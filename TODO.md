@@ -2,13 +2,7 @@
 
 - Prioritised
 
-  [ ] FIX: Drills, Endgames – explain that we should play until the end, don't lose if the advantage drops and its still winning only end, only count as fail if it's now a dead draw
-  [ ] FIX: Drills, For Endgames – in drill worker ignore drills where the blunders occur that were already in losing positions (unwinable) OR alternatively for those positons don't force play till the end? [DECISION]
-
   [ ] [FEAT] Get a hint about a position – what's the key idea(s)?
-
-  HISTORY ENHANCEMENTS
-  [ ] Save the losing line in the history id of a drillposition
 
 - Backlog
   [ ] FEAT: Wire up stats on home screen
@@ -21,6 +15,9 @@
 [ ] Opening Trainer (practice specific openings, where the computer will gladly enter into certain lines with you)
 [ ] Endgame Trainer (two rooks, extra pawn etc.)
 
+[x] FIX: Drills, Endgames – explain that we should play until the end, don't lose if the advantage drops and its still winning only end, only count as fail if it's now a dead draw
+[x] FIX: Drills, For Endgames don't require to convert already losing positions (-100) or more. Simply hold for three moves as usual.
+[x] Save the losing line in the history id of a drillposition
 [x] [TODO_prod] Run alembic upgrade head to deploy move and eval migrations to drillhistory table
 [x] FIX: When viewing a /report the board should show the first move in the table which if only critical moves is enabled it should show the first critical move not the first move
 [x] Fix PGN paster so we can use analysis mode inside BlunderFixer
