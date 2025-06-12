@@ -332,7 +332,7 @@ export default function PlayDrill() {
           heroResult={drill.hero_result}
           hideGameResult={true}
         />
-        <div className="my-10 flex items-center justify-start gap-4 space-x-2">
+        <div className="my-10 flex items-center justify-between gap-4 space-x-2">
           {!drill.pgn && <CopyFenToClipboard fen={fen} />}
           {drill.pgn && (
             <AnalysePositionButton
