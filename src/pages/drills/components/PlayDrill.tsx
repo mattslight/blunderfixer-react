@@ -328,7 +328,7 @@ export default function PlayDrill() {
           hideGameResult={true}
         />
         <div className="my-10 flex items-center justify-start space-x-2">
-          <CopyFenToClipboard fen={fen} />
+          {!drill.pgn && <CopyFenToClipboard fen={fen} />}
           {drill.pgn && (
             <AnalysePositionButton
               pgn={drill.pgn}
@@ -363,7 +363,7 @@ function CopyFenToClipboard({ fen }) {
   return (
     <button
       type="button"
-      className="group flex items-center space-x-2 rounded border border-stone-800 bg-stone-950 px-2 py-1 text-xs text-stone-400 transition-colors duration-150 hover:bg-green-500 hover:text-stone-900"
+      className="group flex items-center space-x-2 rounded border border-stone-500 bg-stone-950 px-3 py-2 text-xs text-stone-400 transition-colors duration-150 hover:bg-green-500 hover:text-stone-900"
       onClick={handleCopy}
       aria-label={isFenCopied ? 'FEN copied' : 'Copy position FEN'}
     >
@@ -394,7 +394,7 @@ function AnalysePositionButton({ pgn, halfMoveIndex, heroSide }) {
   return (
     <button
       type="button"
-      className="group flex items-center space-x-2 rounded border border-stone-800 bg-stone-950 px-2 py-1 text-xs text-stone-400 transition-colors duration-150 hover:bg-blue-500 hover:text-stone-900"
+      className="group flex items-center space-x-2 rounded border border-stone-300 bg-stone-950 px-3 py-2 text-xs text-stone-400 transition-colors duration-150 hover:border-0 hover:bg-blue-500 hover:text-stone-900"
       onClick={handleAnalyse}
     >
       <Inspect className="h-4 w-4 text-stone-400 transition-opacity duration-200 group-hover:text-black" />
