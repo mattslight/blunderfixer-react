@@ -2,8 +2,6 @@
 
 - Prioritised
 
-  [ ] FIX: Drills – when completed, Solid play "Good job" change CTA from Skip to Next (and add replay option)
-
   [ ] FIX: Drills, Endgames – explain that we should play until the end, don't lose if the advantage drops and its still winning only end, only count as fail if it's now a dead draw
   [ ] FIX: Drills, For Endgames – in drill worker ignore drills where the blunders occur that were already in losing positions (unwinable) OR alternatively for those positons don't force play till the end? [DECISION]
 
@@ -11,11 +9,6 @@
 
   HISTORY ENHANCEMENTS
   [ ] Save the losing line in the history id of a drillposition
-
-  EPIC - get Anaysis mode working again!
-  [ ] Fix PGN paster so we can use analysis mode inside BlunderFixer
-  [ ] Copy PGN -> analyse position
-  [ ] Switch to analysis mode in a drill – ask coach
 
 - Backlog
   [ ] FEAT: Wire up stats on home screen
@@ -28,6 +21,10 @@
 [ ] Opening Trainer (practice specific openings, where the computer will gladly enter into certain lines with you)
 [ ] Endgame Trainer (two rooks, extra pawn etc.)
 
+[x] Fix PGN paster so we can use analysis mode inside BlunderFixer
+[x] Copy PGN -> analyse position
+[x] Switch to analysis mode in a drill
+[x] FIX: Drills – when completed, Solid play "Good job" change CTA from Skip to Next (and add replay option)
 [x] Save the full winning line(s) into the drill
 [x] Save the positional features into the drill
 [x] FIX: When saving a drill link to the game so that we have access to the full PGN and move idx so that we can see game context. (Don't we already link to a GameID?)
