@@ -6,7 +6,7 @@ import { useDrills } from '@/pages/drills/hooks/useDrills';
 import { buildDrillFilters } from '@/pages/drills/utils/filters';
 import { useRecentGames } from '@/pages/games/hooks/useRecentGames';
 
-export function useNewGamesIndicator(limit = 10) {
+export function useNewGamesIndicator(limit = 10, refreshKey?: number) {
   const {
     profile: { username },
   } = useProfile();
@@ -24,12 +24,12 @@ export function useNewGamesIndicator(limit = 10) {
       0
     );
     setHasNew(latest > lastSeen);
-  }, [games, username]);
+  }, [games, username, refreshKey]); // <-- added refreshKey
 
   return hasNew;
 }
 
-export function useNewDrillsIndicator() {
+export function useNewDrillsIndicator(refreshKey?: number) {
   const {
     profile: { username },
   } = useProfile();
@@ -63,7 +63,7 @@ export function useNewDrillsIndicator() {
       return Number.isFinite(ts) ? Math.max(max, ts) : max;
     }, 0);
     setHasNew(latest > lastSeen);
-  }, [drills, username]);
+  }, [drills, username, refreshKey]); // <-- added refreshKey
 
   return hasNew;
 }

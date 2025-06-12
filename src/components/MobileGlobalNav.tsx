@@ -35,8 +35,10 @@ export default function MobileGlobalNav() {
   const { profile, setUsername } = useProfile();
   const blundersFixed = useBlundersFixed();
   const scrollUp = useScrollDirection();
-  const hasNewDrills = useNewDrillsIndicator();
-  const hasNewGames = useNewGamesIndicator();
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const hasNewDrills = useNewDrillsIndicator(refreshKey);
+  const hasNewGames = useNewGamesIndicator(10, refreshKey);
 
   const x = useMotionValue(0);
 
@@ -67,6 +69,20 @@ export default function MobileGlobalNav() {
   ];
 
   const handleNav = (path: string) => {
+    const now = Date.now();
+    const { username } = profile;
+
+    if (path === '/games') {
+      localStorage.setItem(`bf:last_visited_games:${username}`, now.toString());
+    } else if (path === '/drills') {
+      localStorage.setItem(
+        `bf:last_visited_drills:${username}`,
+        now.toString()
+      );
+    }
+
+    setRefreshKey((k) => k + 1); // <== trigger re-eval of indicator hooks
+
     setOpen(false);
     navigate(path);
   };
@@ -209,7 +225,11 @@ export default function MobileGlobalNav() {
                       {item.icon}
                       {item.label}
                       {item.hasNew && (
-                        <span className="ml-1 inline-block h-2 w-2 rounded-full bg-red-500" />
+                        <img
+                          src={blunderLogoSvg}
+                          alt="New"
+                          className="relative right-2 bottom-1 h-4 w-4 drop-shadow"
+                        />
                       )}
                     </button>
                   </motion.li>
