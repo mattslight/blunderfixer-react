@@ -129,11 +129,20 @@ export default function DrillBanner({
                 Retry
               </button>
             )}
+            {drillResult === 'pass' && (
+              <button
+                onClick={() => setResetKey((prev) => prev + 1)}
+                className="inline-flex items-center rounded-md bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-green-700"
+              >
+                <RotateCcw className="mr-1 hidden h-3 w-3" />
+                Replay
+              </button>
+            )}
             <button
               onClick={onNext}
               className="inline-flex items-center self-end rounded-md bg-blue-600 px-2 py-1 text-xs font-medium text-white hover:bg-blue-700"
             >
-              Skip{' '}
+              {drillResult === 'pass' ? 'Next' : 'Skip'}{' '}
               <StepForward className="xs:inline-flex ml-1 hidden h-3 w-3" />
             </button>
           </span>
