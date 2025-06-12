@@ -6,7 +6,11 @@ interface Props {
   onConfirm: () => void;
 }
 
-export default function SignOutConfirmModal({ show, onCancel, onConfirm }: Props) {
+export default function SignOutConfirmModal({
+  show,
+  onCancel,
+  onConfirm,
+}: Props) {
   return (
     <Modal show={show} onClose={onCancel}>
       <h2 className="mb-4 text-lg font-semibold text-white">Sign out?</h2>

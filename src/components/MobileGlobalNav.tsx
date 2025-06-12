@@ -12,11 +12,12 @@ import {
   X,
 } from 'lucide-react';
 
+import SignOutConfirmModal from './SignOutConfirmModal';
+
 //import EloDisplay from './EloDisplay';
 import blunderLogoSvg from '@/assets/blunderfixer.svg';
 import useBlundersFixed from '@/hooks/useBlundersFixed';
 import { useProfile } from '@/hooks/useProfile';
-import SignOutConfirmModal from './SignOutConfirmModal';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 
 export default function MobileGlobalNav() {
@@ -98,6 +99,13 @@ export default function MobileGlobalNav() {
             >
               {/* Drag handle */}
               <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-stone-200" />
+
+              {/* Logo top-left */}
+              <img
+                src={blunderLogoSvg}
+                alt="BlunderFixer logo"
+                className="shake-icon absolute top-3 left-4 h-6 w-6"
+              />
 
               {/* Close button top-right */}
               <button
