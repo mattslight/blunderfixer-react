@@ -78,15 +78,12 @@ export default function BoardAndEval({
         />
       </div>
       {/* <-- zero-gap flex container --> */}
-      <div
-        ref={wrapperRef}
-        className="flex w-full max-w-lg gap-0 lg:max-w-[464px] xl:max-w-lg"
-      >
+      <div ref={wrapperRef} className="flex w-full max-w-lg gap-0">
         <div className="flex-1">
           {boardWidth > 0 && (
             <Chessboard
               boardOrientation={boardOrientation}
-              boardWidth={boardWidth - 16}
+              boardWidth={boardWidth}
               position={fen}
               promotionDialogVariant={'modal'}
               onSquareClick={onSquareClick}
