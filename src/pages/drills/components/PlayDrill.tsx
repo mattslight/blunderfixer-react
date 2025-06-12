@@ -309,6 +309,13 @@ export default function PlayDrill() {
             </div>
             <HistoryDots history={drill.history ?? []} />
           </div>
+          <button
+            onClick={() => setShowConfirm(true)}
+            className="flex items-center rounded-md text-xs text-stone-500 hover:text-red-400"
+          >
+            <Archive className="mr-2 h-4 w-4" />
+            Archive drill
+          </button>
         </div>
 
         <TimePhaseHeader
@@ -341,13 +348,6 @@ export default function PlayDrill() {
               heroSide={heroColor === 'black' ? 'b' : 'w'}
             />
           )}
-          <button
-            onClick={() => setShowConfirm(true)}
-            className="flex items-center rounded-md border px-3 py-2 text-xs text-stone-500 hover:text-red-400"
-          >
-            <Archive className="mr-2 h-4 w-4" />
-            Archive drill
-          </button>
         </div>
 
         <ArchiveConfirmModal
