@@ -128,7 +128,7 @@ export default function BoardAndEval({
       </div>
 
       {/* 4) Engine continuation lines */}
-      <div className="w-full max-w-lg">
+      <div className="w-full max-w-lg px-2 sm:p-0">
         <div className="flex flex-row items-center justify-between text-sm text-stone-400">
           <div>
             <ToggleSwitch
