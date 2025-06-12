@@ -5,8 +5,10 @@ export function useScrollDirection(threshold = 50) {
 
   useEffect(() => {
     let lastY = window.scrollY;
-    const onScroll = () => {
-      const currentY = window.scrollY;
+    let ticking = false;
+
+    const update = () => {
+      const currentY = Math.max(window.scrollY, 0); // clamp to 0
 
       if (currentY <= threshold) {
         setScrollUp(true);
@@ -15,6 +17,14 @@ export function useScrollDirection(threshold = 50) {
       }
 
       lastY = currentY;
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
