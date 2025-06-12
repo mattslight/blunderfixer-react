@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Clock, Home, Target, Upload, X } from 'lucide-react';
 
+import { useScrollDirection } from '@/hooks/useScrollDirection';
+
 export default function MobileGlobalNav() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -27,29 +29,30 @@ export default function MobileGlobalNav() {
     navigate(path);
   };
 
+  const scrollUp = useScrollDirection();
+
   return (
     <>
-      <button
+      <motion.button
+        initial={{ opacity: 1, y: 0 }}
+        animate={{ opacity: scrollUp ? 1 : 0, y: scrollUp ? 0 : 40 }}
+        transition={{ duration: 0.3 }}
         className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white shadow-md"
         onClick={() => setOpen(true)}
       >
         Menu
-      </button>
+      </motion.button>
 
       <AnimatePresence>
         {open && (
           <>
             {/* Backdrop */}
             <motion.div
-              className="fixed right-0 bottom-0 left-0 z-50 rounded-t-2xl bg-stone-900 px-6 pt-4 pb-8 text-white shadow-xl"
-              initial={{ y: '100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '100%' }}
-              transition={{ type: 'spring', damping: 20, stiffness: 250 }}
-              onDragEnd={(e, info) => {
-                if (info.offset.y > 100) setOpen(false); // threshold in px
-              }}
-              onClick={(e) => e.stopPropagation()}
+              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setOpen(false)}
             />
 
             {/* Sheet */}
