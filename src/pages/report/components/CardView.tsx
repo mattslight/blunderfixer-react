@@ -168,7 +168,7 @@ export default function CardView({
             onClick={() => onDrill?.(pgn, r.analysis.halfMoveIndex, heroSide)}
           >
             <MessagesSquare className="mr-2 mb-[1px] inline-flex h-4 w-4" />
-            Discuss with coach
+            Analysis Board
           </button>
         </div>
       </div>
