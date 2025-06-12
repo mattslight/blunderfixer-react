@@ -4,7 +4,13 @@ import { useEffect, useMemo, useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import { useNavigate } from 'react-router-dom';
 import { Badge } from 'flowbite-react';
-import { RefreshCw, SlidersHorizontal } from 'lucide-react';
+import {
+  CheckCheck,
+  Clock,
+  RefreshCw,
+  SlidersHorizontal,
+  Target,
+} from 'lucide-react';
 
 import DrillList from './components/DrillList';
 import FilterModal from './components/FilterModal';
@@ -265,4 +271,8 @@ export default function DrillsPage() {
     </div>
   );
 }
-const TABS = ['All', 'Recently Drilled', 'Mastered'];
+const TABS = [
+  { label: 'All', icon: <Target className="h-4 w-4" /> },
+  { label: 'Recently Drilled', icon: <Clock className="h-4 w-4" /> },
+  { label: 'Mastered', icon: <CheckCheck className="h-4 w-4" /> },
+];
