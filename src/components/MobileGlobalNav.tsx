@@ -41,11 +41,15 @@ export default function MobileGlobalNav() {
           <>
             {/* Backdrop */}
             <motion.div
-              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setOpen(false)}
+              className="fixed right-0 bottom-0 left-0 z-50 rounded-t-2xl bg-stone-900 px-6 pt-4 pb-8 text-white shadow-xl"
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 20, stiffness: 250 }}
+              onDragEnd={(e, info) => {
+                if (info.offset.y > 100) setOpen(false); // threshold in px
+              }}
+              onClick={(e) => e.stopPropagation()}
             />
 
             {/* Sheet */}
@@ -55,6 +59,11 @@ export default function MobileGlobalNav() {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 20, stiffness: 250 }}
+              drag="y"
+              dragConstraints={{ top: 0, bottom: 0 }}
+              onDragEnd={(e, info) => {
+                if (info.offset.y > 100) setOpen(false); // threshold in px
+              }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Drag handle */}
