@@ -12,6 +12,7 @@ interface UseDrillResultParams {
   currentDepth: number;
   heroSide: 'white' | 'black';
   maxMoves: number;
+  isEndgame: boolean;
   lossThreshold: number;
   gameOver?: boolean;
   gameResult?: GameResult;
@@ -26,6 +27,7 @@ export function useDrillResult({
   currentDepth,
   heroSide,
   maxMoves,
+  isEndgame,
   lossThreshold,
   gameOver,
   gameResult,
@@ -76,7 +78,7 @@ export function useDrillResult({
       } else if (evalDelta >= 300) {
         newResult = 'fail';
         newReason = 'You blundered a piece';
-      } else if (maxMoves === 0) {
+      } else if (isEndgame) {
         if (expectedResult === 'draw') {
           if (heroEval <= -200) {
             newResult = 'fail';
@@ -166,6 +168,7 @@ export function useDrillResult({
     resetKey,
     moveCount,
     currentDepth,
+    isEndgame,
   ]);
 
   return { result, expectedResult, reason };

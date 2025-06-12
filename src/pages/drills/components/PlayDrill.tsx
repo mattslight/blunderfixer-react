@@ -108,10 +108,7 @@ export default function PlayDrill() {
   // 9) Decide defaults for this drill:
   const initialEval = drill?.initial_eval ?? null;
   const isEndgame = drill?.phase === 'endgame';
-  const isLosingStart =
-    initialEval !== null &&
-    (heroColor === 'white' ? initialEval <= -100 : initialEval >= 100);
-  const maxMoves = isEndgame && !isLosingStart ? 0 : REQUIRED_MOVES;
+  const maxMoves = REQUIRED_MOVES;
   const lossThreshold = Math.max(drill?.initial_eval / 2, 100); // default to half the initial eval or 100 CP
 
   // 10) Drill‐result hook
@@ -125,6 +122,7 @@ export default function PlayDrill() {
     currentDepth,
     heroSide: heroColor,
     maxMoves,
+    isEndgame,
     lossThreshold,
     gameOver: Boolean(gameResult),
     gameResult,
@@ -235,7 +233,6 @@ export default function PlayDrill() {
             setResetKey={setResetKey}
             onNext={handleNextDrill}
             initialEval={initialEval}
-            isEndgame={isEndgame && !isLosingStart}
           />
           <div className="mt-4 flex w-full items-center">
             {/* <EvalBar
