@@ -2,19 +2,15 @@
 
 - Prioritised
 
+  [ ] FIX: Drills – when completed, Solid play "Good job" change CTA from Skip to Next (and add replay option)
+
   [ ] FIX: Drills, Endgames – explain that we should play until the end, don't lose if the advantage drops and its still winning only end, only count as fail if it's now a dead draw
-  [ ] FIX: Drills, For Endgames – in drill worker ignore drills where the blunders occur that were already in losing positions (unwinable) OR for those positons don't force play till the end? [DECISION]
-  [ ] FIX: Drills – when completed, Solid play "Good job" change CTA from Skip to Next (or replay)
-  [ ] FIX: When saving a drill link to the game so that we have access to the full PGN and move idx so that we can see game context. (Don't we already link to a GameID?)
+  [ ] FIX: Drills, For Endgames – in drill worker ignore drills where the blunders occur that were already in losing positions (unwinable) OR alternatively for those positons don't force play till the end? [DECISION]
+
   [ ] [FEAT] Get a hint about a position – what's the key idea(s)?
 
-  DRILL WORKER ENHANCEMENTS
-  [ ] Save the full winning line(s) into the drill
-  [ ] Save the positional features into the drill
-  (we will use both of the above for the hint)
-
   HISTORY ENHANCEMENTS
-  [ ] Save the losing line in the history id
+  [ ] Save the losing line in the history id of a drillposition
 
   EPIC - get Anaysis mode working again!
   [ ] Fix PGN paster so we can use analysis mode inside BlunderFixer
@@ -32,6 +28,9 @@
 [ ] Opening Trainer (practice specific openings, where the computer will gladly enter into certain lines with you)
 [ ] Endgame Trainer (two rooks, extra pawn etc.)
 
+[x] Save the full winning line(s) into the drill
+[x] Save the positional features into the drill
+[x] FIX: When saving a drill link to the game so that we have access to the full PGN and move idx so that we can see game context. (Don't we already link to a GameID?)
 [x] FEAT: Detect which formats (Biltz, Rapid, Bullet, Daily) I care about when I log in (allow me to change in preferences) (consider using ToggleSwitch). Only show EloDisplay options for chosen preferences.
 [x] FEAT: Show ELO on home screen and delta since last login (detect which Rapid/Blitz to show and allow to tap to change)
 [x] FEAT: When showing next drills show three different games
