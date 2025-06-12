@@ -133,7 +133,7 @@ export default function MobileGlobalNav() {
                   >
                     <button
                       onClick={() => handleNav(item.path)}
-                      className="flex items-center gap-4 text-lg text-stone-200 hover:text-stone-100"
+                      className="flex w-full items-center gap-4 text-lg text-stone-200 hover:text-stone-100"
                     >
                       {item.icon}
                       {item.label}
@@ -153,7 +153,7 @@ export default function MobileGlobalNav() {
                 >
                   <button
                     onClick={() => handleNav('/help')}
-                    className="flex items-center gap-3 text-sm text-stone-400 hover:text-stone-200"
+                    className="flex w-full items-center gap-3 text-sm text-stone-400 hover:text-stone-200"
                   >
                     <LifeBuoy className="h-4 w-4" />
                     Help
@@ -168,7 +168,7 @@ export default function MobileGlobalNav() {
                 >
                   <button
                     onClick={() => handleNav('/settings')}
-                    className="flex items-center gap-3 text-sm text-stone-400 hover:text-stone-200"
+                    className="flex w-full items-center gap-3 text-sm text-stone-400 hover:text-stone-200"
                   >
                     <Settings className="h-4 w-4" />
                     Settings
