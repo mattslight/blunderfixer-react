@@ -22,6 +22,7 @@ import { getDrills } from '@/api/drills';
 import { updateDrill } from '@/api/drills';
 import { PHASE_COLORS, PHASE_DISPLAY } from '@/const/phase';
 import useAnalysisEngine from '@/hooks/useAnalysisEngine';
+import { useDebounce } from '@/hooks/useDebounce';
 import useGameHistory from '@/hooks/useGameHistory';
 import useGameResult from '@/hooks/useGameResult';
 import useMoveInput from '@/hooks/useMoveInput';
@@ -130,9 +131,11 @@ export default function PlayDrill() {
     moveCount,
   });
 
+  const debouncedDrillResult = useDebounce(drillResult, 500);
+
   useSaveDrillHistory(
     drill?.id,
-    drillResult,
+    debouncedDrillResult,
     reason,
     currentDepth,
     moveHistory,
@@ -229,7 +232,7 @@ export default function PlayDrill() {
         <div className="mt-4 flex flex-col items-center">
           <DrillBanner
             expectedResult={expectedResult}
-            drillResult={drillResult}
+            drillResult={debouncedDrillResult}
             reason={reason}
             setResetKey={setResetKey}
             onNext={handleNextDrill}
