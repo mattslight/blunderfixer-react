@@ -70,7 +70,7 @@ export default function MobileGlobalNav() {
         initial={{ opacity: 1, y: 0 }}
         animate={{ opacity: scrollUp ? 1 : 0, y: scrollUp ? 0 : 40 }}
         transition={{ duration: 0.3 }}
-        className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full bg-black/70 px-2 py-1.5 pr-6 text-sm font-semibold text-stone-200 shadow-md backdrop-blur-sm"
+        className="xs:hidden fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full bg-black/70 px-2 py-1.5 pr-6 text-sm font-semibold text-stone-200 shadow-md backdrop-blur-sm"
         onClick={() => setOpen(true)}
       >
         <img
@@ -107,7 +107,7 @@ export default function MobileGlobalNav() {
               onClick={(e) => e.stopPropagation()}
             >
               {/* Drag handle */}
-              <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-stone-200" />
+              <div className="mx-auto mb-8 h-1.5 w-10 rounded-full bg-stone-400" />
 
               {/* Close button top-right */}
               <button
