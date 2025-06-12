@@ -48,7 +48,7 @@ export default function Settings() {
 
   return (
     <div className="flex min-h-screen items-start justify-center p-4 sm:p-6">
-      <div className="absolute top-16 left-4 md:hidden">
+      <div className="xs:hidden absolute top-4 left-4">
         <button
           onClick={() => navigate(-1)}
           className="whitespace-pre text-blue-600 hover:underline"
