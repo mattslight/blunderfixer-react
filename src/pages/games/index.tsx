@@ -1,5 +1,5 @@
 // src/pages/games/index.tsx
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RefreshCw } from 'lucide-react';
 
@@ -28,6 +28,15 @@ export default function GamesHistoryPage() {
     error: recentError,
     reload,
   } = useRecentGames(username);
+
+  useEffect(() => {
+    if (username) {
+      localStorage.setItem(
+        `bf:last_visited_games:${username}`,
+        Date.now().toString()
+      );
+    }
+  }, [username]);
 
   usePullToRefresh(reload);
 

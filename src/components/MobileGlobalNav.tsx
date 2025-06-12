@@ -21,6 +21,10 @@ import SignOutConfirmModal from './SignOutConfirmModal';
 
 import blunderLogoSvg from '@/assets/blunderfixer.svg';
 import useBlundersFixed from '@/hooks/useBlundersFixed';
+import {
+  useNewDrillsIndicator,
+  useNewGamesIndicator,
+} from '@/hooks/useNewIndicators';
 import { useProfile } from '@/hooks/useProfile';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 
@@ -31,6 +35,10 @@ export default function MobileGlobalNav() {
   const { profile, setUsername } = useProfile();
   const blundersFixed = useBlundersFixed();
   const scrollUp = useScrollDirection();
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const hasNewDrills = useNewDrillsIndicator(refreshKey);
+  const hasNewGames = useNewGamesIndicator(10, refreshKey);
 
   const x = useMotionValue(0);
 
@@ -41,11 +49,17 @@ export default function MobileGlobalNav() {
 
   const menuItems = [
     { label: 'Home', icon: <Home className="h-5 w-5" />, path: '/' },
-    { label: 'Drills', icon: <Target className="h-5 w-5" />, path: '/drills' },
+    {
+      label: 'Drills',
+      icon: <Target className="h-5 w-5" />,
+      path: '/drills',
+      hasNew: hasNewDrills,
+    },
     {
       label: 'Recent Games',
       icon: <Clock className="h-5 w-5" />,
       path: '/games',
+      hasNew: hasNewGames,
     },
     {
       label: 'Analyse',
@@ -55,6 +69,20 @@ export default function MobileGlobalNav() {
   ];
 
   const handleNav = (path: string) => {
+    const now = Date.now();
+    const { username } = profile;
+
+    if (path === '/games') {
+      localStorage.setItem(`bf:last_visited_games:${username}`, now.toString());
+    } else if (path === '/drills') {
+      localStorage.setItem(
+        `bf:last_visited_drills:${username}`,
+        now.toString()
+      );
+    }
+
+    setRefreshKey((k) => k + 1); // <== trigger re-eval of indicator hooks
+
     setOpen(false);
     navigate(path);
   };
@@ -196,6 +224,13 @@ export default function MobileGlobalNav() {
                     >
                       {item.icon}
                       {item.label}
+                      {item.hasNew && (
+                        <img
+                          src={blunderLogoSvg}
+                          alt="New"
+                          className="relative right-2 bottom-1 h-4 w-4 drop-shadow"
+                        />
+                      )}
                     </button>
                   </motion.li>
                 ))}
