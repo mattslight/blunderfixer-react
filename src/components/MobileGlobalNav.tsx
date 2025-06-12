@@ -55,6 +55,15 @@ export default function MobileGlobalNav() {
 
   const scrollUp = useScrollDirection();
 
+  // derive flag emoji
+  const countryCode = profile.country?.split('/').pop()?.toUpperCase() || '';
+  const flagEmoji = countryCode
+    ? countryCode
+        .split('')
+        .map((c) => String.fromCodePoint(c.charCodeAt(0) + 127397))
+        .join('')
+    : '';
+
   return (
     <>
       <motion.button
@@ -100,13 +109,6 @@ export default function MobileGlobalNav() {
               {/* Drag handle */}
               <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-stone-200" />
 
-              {/* Logo top-left */}
-              <img
-                src={blunderLogoSvg}
-                alt="BlunderFixer logo"
-                className="shake-icon absolute top-3 left-4 h-6 w-6"
-              />
-
               {/* Close button top-right */}
               <button
                 className="absolute top-3 right-4 z-10 text-stone-200 hover:text-black"
@@ -127,6 +129,7 @@ export default function MobileGlobalNav() {
                 )}
                 <p className="mt-2 text-white">
                   {profile.name || profile.username}
+                  {flagEmoji && <span className="ml-1">{flagEmoji}</span>}
                 </p>
                 <p className="text-xs text-stone-400">@{profile.username}</p>
               </div>
