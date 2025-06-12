@@ -107,7 +107,7 @@ export default function MobileGlobalNav() {
               onClick={(e) => e.stopPropagation()}
             >
               {/* Drag handle */}
-              <div className="mx-auto mb-8 h-1.5 w-10 rounded-full bg-stone-400" />
+              <div className="mx-auto mb-6 h-1 w-12 rounded-full border border-stone-700/40 bg-stone-500/60 shadow-sm" />
 
               {/* Close button top-right */}
               <button
