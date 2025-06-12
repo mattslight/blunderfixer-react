@@ -1,4 +1,4 @@
-import { useStickyValue } from './useStickyValue';
+import { useStickyValue } from '../../../hooks/useStickyValue';
 
 export interface ReportTableFilters {
   showAll: boolean;
