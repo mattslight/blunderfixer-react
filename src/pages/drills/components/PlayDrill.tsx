@@ -128,7 +128,13 @@ export default function PlayDrill() {
     moveCount,
   });
 
-  useSaveDrillHistory(drill?.id, drillResult, reason, currentDepth, moveHistory);
+  useSaveDrillHistory(
+    drill?.id,
+    drillResult,
+    reason,
+    currentDepth,
+    moveHistory
+  );
 
   const handleNextDrill = async () => {
     if (!username || !drill?.id) {

@@ -21,6 +21,10 @@ import SignOutConfirmModal from './SignOutConfirmModal';
 
 import blunderLogoSvg from '@/assets/blunderfixer.svg';
 import useBlundersFixed from '@/hooks/useBlundersFixed';
+import {
+  useNewDrillsIndicator,
+  useNewGamesIndicator,
+} from '@/hooks/useNewIndicators';
 import { useProfile } from '@/hooks/useProfile';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 
@@ -31,6 +35,8 @@ export default function MobileGlobalNav() {
   const { profile, setUsername } = useProfile();
   const blundersFixed = useBlundersFixed();
   const scrollUp = useScrollDirection();
+  const hasNewDrills = useNewDrillsIndicator();
+  const hasNewGames = useNewGamesIndicator();
 
   const x = useMotionValue(0);
 
@@ -41,11 +47,17 @@ export default function MobileGlobalNav() {
 
   const menuItems = [
     { label: 'Home', icon: <Home className="h-5 w-5" />, path: '/' },
-    { label: 'Drills', icon: <Target className="h-5 w-5" />, path: '/drills' },
+    {
+      label: 'Drills',
+      icon: <Target className="h-5 w-5" />,
+      path: '/drills',
+      hasNew: hasNewDrills,
+    },
     {
       label: 'Recent Games',
       icon: <Clock className="h-5 w-5" />,
       path: '/games',
+      hasNew: hasNewGames,
     },
     {
       label: 'Analyse',
@@ -196,6 +208,9 @@ export default function MobileGlobalNav() {
                     >
                       {item.icon}
                       {item.label}
+                      {item.hasNew && (
+                        <span className="ml-1 inline-block h-2 w-2 rounded-full bg-red-500" />
+                      )}
                     </button>
                   </motion.li>
                 ))}

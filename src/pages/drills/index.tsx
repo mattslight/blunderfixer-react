@@ -1,6 +1,6 @@
 // src/pages/DrillsPage.tsx
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import { useNavigate } from 'react-router-dom';
 import { Badge } from 'flowbite-react';
@@ -64,6 +64,15 @@ export default function DrillsPage() {
     useRecentDrills(username);
   const { drills: masteredDrills, loading: masteredLoading } =
     useMasteredDrills(username);
+
+  useEffect(() => {
+    if (username) {
+      localStorage.setItem(
+        `bf:last_visited_drills:${username}`,
+        Date.now().toString()
+      );
+    }
+  }, [username]);
 
   // UI state
   const [phaseFilter, setPhaseFilter] = useStickyValue<Phase>(
