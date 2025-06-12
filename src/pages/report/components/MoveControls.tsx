@@ -1,5 +1,5 @@
 // src/pages/report/components/MoveControls.tsx
-import { ChevronLeft, ChevronRight, FastForward, Rewind } from 'lucide-react';
+import { ChevronLeft, ChevronRight, SkipBack, SkipForward } from 'lucide-react';
 
 interface MoveControlsProps {
   onPrev: () => void;
@@ -30,7 +30,7 @@ export default function MoveControls({
         aria-label="Jump to previous key move"
         className="rounded bg-stone-700 p-2 hover:bg-stone-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       >
-        <Rewind size={26} strokeWidth={1} className="text-stone-300" />
+        <SkipBack size={26} strokeWidth={1} className="text-stone-300" />
       </button>
 
       <button
@@ -57,7 +57,7 @@ export default function MoveControls({
         aria-label="Jump to next key move"
         className="rounded bg-stone-700 p-2 hover:bg-stone-600 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       >
-        <FastForward size={26} strokeWidth={1} className="text-stone-300" />
+        <SkipForward size={26} strokeWidth={1} className="text-stone-300" />
       </button>
     </div>
   );
