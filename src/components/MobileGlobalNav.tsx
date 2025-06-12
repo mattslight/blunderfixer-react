@@ -141,6 +141,7 @@ export default function MobileGlobalNav() {
                   </button>
                 </motion.li>
               </ul>
+              <div className="pointer-events-none absolute right-0 -bottom-64 left-0 h-64 bg-stone-900" />
             </motion.div>
           </>
         )}
