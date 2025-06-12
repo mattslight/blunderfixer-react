@@ -1,6 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import {
+  animate,
+  AnimatePresence,
+  motion,
+  useMotionValue,
+} from 'framer-motion';
 import {
   Clock,
   Home,
@@ -14,7 +19,6 @@ import {
 
 import SignOutConfirmModal from './SignOutConfirmModal';
 
-//import EloDisplay from './EloDisplay';
 import blunderLogoSvg from '@/assets/blunderfixer.svg';
 import useBlundersFixed from '@/hooks/useBlundersFixed';
 import { useProfile } from '@/hooks/useProfile';
@@ -26,6 +30,14 @@ export default function MobileGlobalNav() {
   const navigate = useNavigate();
   const { profile, setUsername } = useProfile();
   const blundersFixed = useBlundersFixed();
+  const scrollUp = useScrollDirection();
+
+  const x = useMotionValue(0);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('bf:params:menuXOffset');
+    if (saved) x.set(parseFloat(saved));
+  }, []);
 
   const menuItems = [
     { label: 'Home', icon: <Home className="h-5 w-5" />, path: '/' },
@@ -53,9 +65,6 @@ export default function MobileGlobalNav() {
     setOpen(false);
   };
 
-  const scrollUp = useScrollDirection();
-
-  // derive flag emoji
   const countryCode = profile.country?.split('/').pop()?.toUpperCase() || '';
   const flagEmoji = countryCode
     ? countryCode
@@ -64,9 +73,45 @@ export default function MobileGlobalNav() {
         .join('')
     : '';
 
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [constraints, setConstraints] = useState({ left: -150, right: 150 });
+
+  useLayoutEffect(() => {
+    if (!buttonRef.current) return;
+
+    const buttonWidth = buttonRef.current.offsetWidth;
+    const screenWidth = window.innerWidth;
+
+    const maxOffset = (screenWidth - buttonWidth) / 2;
+    setConstraints({ left: -maxOffset, right: maxOffset });
+  }, []);
+
   return (
     <>
       <motion.button
+        drag="x"
+        dragConstraints={constraints}
+        onDragEnd={(e, info) => {
+          const rawOffset = info.point.x - window.innerWidth / 2;
+          const snapThreshold = 40;
+          const buttonWidth = 120;
+          const maxOffset = (window.innerWidth - buttonWidth) / 2;
+          const clampedOffset = Math.max(
+            -maxOffset,
+            Math.min(maxOffset, rawOffset)
+          );
+          const finalOffset =
+            Math.abs(clampedOffset) < snapThreshold ? 0 : clampedOffset;
+
+          animate(x, finalOffset, {
+            type: 'spring',
+            stiffness: 600,
+            damping: 40,
+          });
+
+          localStorage.setItem('bf:params:menuXOffset', finalOffset.toString());
+        }}
+        style={{ x }}
         initial={{ opacity: 1, y: 0 }}
         animate={{ opacity: scrollUp ? 1 : 0, y: scrollUp ? 0 : 40 }}
         transition={{ duration: 0.3 }}
@@ -76,14 +121,13 @@ export default function MobileGlobalNav() {
         <img
           src={blunderLogoSvg}
           className="shake-icon mr-1.5 inline-flex h-6 w-6"
-        />{' '}
+        />
         Menu
       </motion.button>
 
       <AnimatePresence>
         {open && (
           <>
-            {/* Backdrop */}
             <motion.div
               className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
               initial={{ opacity: 0 }}
@@ -92,7 +136,6 @@ export default function MobileGlobalNav() {
               onClick={() => setOpen(false)}
             />
 
-            {/* Sheet */}
             <motion.div
               className="fixed right-0 bottom-0 left-0 z-50 rounded-t-2xl bg-stone-900 px-6 pt-4 pb-8 text-white shadow-xl md:w-2xl md:justify-self-center"
               initial={{ y: '100%' }}
@@ -102,14 +145,12 @@ export default function MobileGlobalNav() {
               drag="y"
               dragConstraints={{ top: 0, bottom: 0 }}
               onDragEnd={(e, info) => {
-                if (info.offset.y > 100) setOpen(false); // threshold in px
+                if (info.offset.y > 100) setOpen(false);
               }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Drag handle */}
               <div className="mx-auto mb-6 h-1 w-12 rounded-full border border-stone-700/40 bg-stone-500/60 shadow-sm" />
 
-              {/* Close button top-right */}
               <button
                 className="absolute top-3 right-4 z-10 text-stone-200 hover:text-black"
                 onClick={() => setOpen(false)}
@@ -133,8 +174,8 @@ export default function MobileGlobalNav() {
                 </p>
                 <p className="text-xs text-stone-400">@{profile.username}</p>
               </div>
+
               <div className="mt-4">
-                {/* <EloDisplay /> */}
                 <p className="mt-2 text-center text-xs text-stone-400">
                   Blunders Fixed: {blundersFixed}
                 </p>
@@ -159,15 +200,13 @@ export default function MobileGlobalNav() {
                   </motion.li>
                 ))}
 
-                {/* Divider */}
                 <hr className="my-4 border-t border-stone-700" />
 
-                {/* Secondary actions */}
                 <motion.li
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
-                  transition={{ delay: 0.1 + 6 * 0.025 }}
+                  transition={{ delay: 0.25 }}
                 >
                   <button
                     onClick={() => handleNav('/help')}
@@ -182,7 +221,7 @@ export default function MobileGlobalNav() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
-                  transition={{ delay: 0.1 + 7 * 0.025 }}
+                  transition={{ delay: 0.275 }}
                 >
                   <button
                     onClick={() => handleNav('/settings')}
@@ -197,7 +236,7 @@ export default function MobileGlobalNav() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
-                  transition={{ delay: 0.1 + 8 * 0.025 }}
+                  transition={{ delay: 0.3 }}
                 >
                   <button
                     onClick={() => setShowSignOut(true)}
@@ -213,6 +252,7 @@ export default function MobileGlobalNav() {
           </>
         )}
       </AnimatePresence>
+
       <SignOutConfirmModal
         show={showSignOut}
         onCancel={() => setShowSignOut(false)}
