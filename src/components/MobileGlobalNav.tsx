@@ -1,0 +1,96 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Clock, Home, Target, Upload, X } from 'lucide-react';
+
+export default function MobileGlobalNav() {
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const menuItems = [
+    { label: 'Home', icon: <Home className="h-5 w-5" />, path: '/' },
+    { label: 'Drills', icon: <Target className="h-5 w-5" />, path: '/drills' },
+    {
+      label: 'Recent Games',
+      icon: <Clock className="h-5 w-5" />,
+      path: '/games',
+    },
+    {
+      label: 'Analyse',
+      icon: <Upload className="h-5 w-5" />,
+      path: '/analyse',
+    },
+  ];
+
+  const handleNav = (path: string) => {
+    setOpen(false);
+    navigate(path);
+  };
+
+  return (
+    <>
+      <button
+        className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white shadow-md"
+        onClick={() => setOpen(true)}
+      >
+        Menu
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setOpen(false)}
+            />
+
+            {/* Sheet */}
+            <motion.div
+              className="fixed right-0 bottom-0 left-0 z-50 rounded-t-2xl bg-stone-900 px-6 pt-4 pb-8 text-white shadow-xl"
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 20, stiffness: 250 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Drag handle */}
+              <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-stone-200" />
+
+              {/* Close button top-right */}
+              <button
+                className="absolute top-3 right-4 z-10 text-stone-200 hover:text-black"
+                onClick={() => setOpen(false)}
+              >
+                <X className="h-5 w-5" />
+              </button>
+
+              <ul className="mt-2 space-y-5">
+                {menuItems.map((item, i) => (
+                  <motion.li
+                    key={item.label}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ delay: 0.1 + i * 0.05 }}
+                  >
+                    <button
+                      onClick={() => handleNav(item.path)}
+                      className="flex items-center gap-4 text-lg text-stone-200 hover:text-stone-400"
+                    >
+                      {item.icon}
+                      {item.label}
+                    </button>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
