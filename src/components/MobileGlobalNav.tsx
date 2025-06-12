@@ -5,18 +5,25 @@ import {
   Clock,
   Home,
   LifeBuoy,
+  LogOut,
   Settings,
   Target,
   Upload,
   X,
 } from 'lucide-react';
 
+import EloDisplay from './EloDisplay';
+
 import blunderLogoSvg from '@/assets/blunderfixer.svg';
+import useBlundersFixed from '@/hooks/useBlundersFixed';
+import { useProfile } from '@/hooks/useProfile';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 
 export default function MobileGlobalNav() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const { profile, setUsername } = useProfile();
+  const blundersFixed = useBlundersFixed();
 
   const menuItems = [
     { label: 'Home', icon: <Home className="h-5 w-5" />, path: '/' },
@@ -93,7 +100,29 @@ export default function MobileGlobalNav() {
                 <X className="h-5 w-5" />
               </button>
 
-              <ul className="mt-2 space-y-5">
+              <div className="mt-4 text-center">
+                {profile.avatar ? (
+                  <img
+                    src={profile.avatar}
+                    alt={profile.name || profile.username}
+                    className="mx-auto h-12 w-12 rounded-full border border-stone-600"
+                  />
+                ) : (
+                  <div className="mx-auto h-12 w-12 rounded-full bg-stone-600" />
+                )}
+                <p className="mt-2 text-white">
+                  {profile.name || profile.username}
+                </p>
+                <p className="text-xs text-stone-400">@{profile.username}</p>
+              </div>
+              <div className="mt-4">
+                <EloDisplay />
+                <p className="mt-2 text-center text-xs text-stone-400">
+                  Blunders Fixed: {blundersFixed}
+                </p>
+              </div>
+
+              <ul className="mt-6 space-y-5">
                 {menuItems.map((item, i) => (
                   <motion.li
                     key={item.label}
@@ -143,6 +172,24 @@ export default function MobileGlobalNav() {
                   >
                     <Settings className="h-4 w-4" />
                     Settings
+                  </button>
+                </motion.li>
+
+                <motion.li
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ delay: 0.45 }}
+                >
+                  <button
+                    onClick={() => {
+                      setUsername('');
+                      setOpen(false);
+                    }}
+                    className="flex items-center gap-3 text-sm text-red-500 hover:text-red-400"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign out
                   </button>
                 </motion.li>
               </ul>

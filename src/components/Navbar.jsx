@@ -316,7 +316,11 @@ export default function Navbar({ toggleSidebar }) {
               </div>
             </a>
           </div> */}
-          {username && <UserMenu />}
+          {username && (
+            <div className="xs:block hidden">
+              <UserMenu />
+            </div>
+          )}
         </div>
       </div>
     </nav>

@@ -4,6 +4,7 @@ import { mutate } from 'swr';
 
 import { postDrillHistory } from '@/api/drills';
 import { useDebounce } from '@/hooks/useDebounce';
+import { useProfile } from '@/hooks/useProfile';
 
 export function useSaveDrillHistory(
   drillId: string | number | null | undefined,
@@ -17,6 +18,9 @@ export function useSaveDrillHistory(
 
   const debouncedResult = useDebounce(result, delay);
   const debouncedReason = useDebounce(reason, delay);
+  const {
+    profile: { username },
+  } = useProfile();
 
   // Reset posted flag when moving to a new drill
   useEffect(() => {
@@ -39,6 +43,16 @@ export function useSaveDrillHistory(
         .then(() => {
           // Re-fetch `/drills/{drillId}` after history is saved
           mutate(`/drills/${drillId}`);
+          if (debouncedResult === 'pass' && username) {
+            try {
+              const key = `bf:blunders_fixed:${username}`;
+              const raw = localStorage.getItem(key);
+              const val = raw ? parseInt(raw, 10) : 0;
+              localStorage.setItem(key, String(val + 1));
+            } catch {
+              // ignore
+            }
+          }
         })
         .catch((err) => {
           console.error('Could not save drill history:', err);
