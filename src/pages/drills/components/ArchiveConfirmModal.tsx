@@ -20,7 +20,8 @@ export default function ArchiveConfirmModal({
         This drill will be removed from your active list.
       </p>
       <p className="mb-6 text-sm text-stone-400">
-        Or, if you pass it five times in a row, it’ll be archived automatically.
+        Drills are automatically removed from your active list once you pass
+        them 5 times in a row.
       </p>
       <div className="flex justify-end gap-2">
         <button
