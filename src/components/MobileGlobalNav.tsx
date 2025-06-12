@@ -116,7 +116,7 @@ export default function MobileGlobalNav() {
                 <p className="text-xs text-stone-400">@{profile.username}</p>
               </div>
               <div className="mt-4">
-                <EloDisplay />
+                {/* <EloDisplay /> */}
                 <p className="mt-2 text-center text-xs text-stone-400">
                   Blunders Fixed: {blundersFixed}
                 </p>
