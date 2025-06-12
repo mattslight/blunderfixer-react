@@ -301,7 +301,7 @@ export default function PlayDrill() {
           )}
         </div>
       </div>
-      <div className="xs:px-0 mx-auto mt-5 max-w-md space-y-4 px-4">
+      <div className="xs:px-0 mx-auto mt-5 max-w-md space-y-2 px-4">
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-row items-center space-x-2">
             <div className="text-xs font-bold text-green-400 uppercase">
@@ -309,13 +309,6 @@ export default function PlayDrill() {
             </div>
             <HistoryDots history={drill.history ?? []} />
           </div>
-          <button
-            onClick={() => setShowConfirm(true)}
-            className="flex items-center rounded-md text-xs text-stone-500 hover:text-red-400"
-          >
-            <Archive className="mr-2 h-4 w-4" />
-            Archive drill
-          </button>
         </div>
 
         <TimePhaseHeader
@@ -339,7 +332,7 @@ export default function PlayDrill() {
           heroResult={drill.hero_result}
           hideGameResult={true}
         />
-        <div className="my-10 flex items-center justify-between space-x-2">
+        <div className="my-10 flex items-center justify-start gap-4 space-x-2">
           {!drill.pgn && <CopyFenToClipboard fen={fen} />}
           {drill.pgn && (
             <AnalysePositionButton
@@ -348,6 +341,13 @@ export default function PlayDrill() {
               heroSide={heroColor === 'black' ? 'b' : 'w'}
             />
           )}
+          <button
+            onClick={() => setShowConfirm(true)}
+            className="flex items-center rounded-md border bg-black/50 px-3 py-2 text-xs text-stone-500 backdrop-blur hover:text-red-400"
+          >
+            <Archive className="mr-2 h-4 w-4" />
+            Archive drill
+          </button>
         </div>
 
         <ArchiveConfirmModal
@@ -355,6 +355,7 @@ export default function PlayDrill() {
           onCancel={() => setShowConfirm(false)}
           onConfirm={handleArchive}
         />
+        <div className="mt-32">&nbsp;</div>
       </div>
     </>
   );
