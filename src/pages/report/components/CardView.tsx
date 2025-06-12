@@ -4,7 +4,7 @@ import { Chessboard } from 'react-chessboard';
 import { Square } from 'chess.js';
 import {
   BarChart,
-  MessagesSquare,
+  LayoutGrid,
   TimerReset,
   TrendingDown,
   TrendingUp,
@@ -167,7 +167,7 @@ export default function CardView({
             className="items-center rounded-md border-b-2 border-b-purple-900 bg-purple-600 px-3 py-2 text-sm font-semibold text-white hover:bg-purple-600"
             onClick={() => onDrill?.(pgn, r.analysis.halfMoveIndex, heroSide)}
           >
-            <MessagesSquare className="mr-2 mb-[1px] inline-flex h-4 w-4" />
+            <LayoutGrid className="mr-2 mb-[1px] inline-flex h-4 w-4" />
             Analysis Board
           </button>
         </div>
