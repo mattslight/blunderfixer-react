@@ -24,7 +24,10 @@ export default function MoveStepper({
     for (let i = 0; i < moveList.length; i += 2) {
       const moveNum = i / 2 + 1;
       moves.push(
-        <div key={i} className="flex items-center space-x-1 whitespace-nowrap">
+        <div
+          key={i}
+          className="xs:space-x-1 flex items-center space-x-0 whitespace-nowrap"
+        >
           <span className="text-sm text-stone-400">{moveNum}.</span>
 
           <button
@@ -59,7 +62,7 @@ export default function MoveStepper({
   };
 
   return (
-    <div className="flex items-center justify-between gap-4 py-2">
+    <div className="xs:gap-4 flex items-center justify-between gap-2 py-2">
       <button
         onClick={() => setCurrentIdx(currentIdx - 1)}
         disabled={currentIdx === 0}
