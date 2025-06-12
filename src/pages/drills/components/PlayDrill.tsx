@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Chess, Square } from 'chess.js';
-import { Archive, Clipboard, ClipboardCheck, Inspect } from 'lucide-react';
+import { Archive, Clipboard, ClipboardCheck, ExternalLink } from 'lucide-react';
 
 // import EvalBar from '../../analyse/components/EvalBar';
 import useAutoMove from '../hooks/useAutoMove';
@@ -393,12 +393,11 @@ function AnalysePositionButton({ pgn, halfMoveIndex, heroSide }) {
 
   return (
     <button
-      type="button"
-      className="group flex items-center space-x-2 rounded border border-stone-300 bg-stone-950 px-3 py-2 text-xs text-stone-400 transition-colors duration-150 hover:border-0 hover:bg-blue-500 hover:text-stone-900"
+      className="items-center rounded-md border-b-2 border-b-purple-900 bg-purple-600 px-3 py-2 text-xs font-semibold text-white hover:bg-purple-600"
       onClick={handleAnalyse}
     >
-      <Inspect className="h-4 w-4 text-stone-400 transition-opacity duration-200 group-hover:text-black" />
-      <span className="select-none">Analyse</span>
+      Analysis Board
+      <ExternalLink className="relative bottom-[2px] ml-2 inline-flex h-3 w-3" />
     </button>
   );
 }
