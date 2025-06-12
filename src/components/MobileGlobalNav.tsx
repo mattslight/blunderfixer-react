@@ -12,11 +12,12 @@ import {
   X,
 } from 'lucide-react';
 
+import SignOutConfirmModal from './SignOutConfirmModal';
+
 //import EloDisplay from './EloDisplay';
 import blunderLogoSvg from '@/assets/blunderfixer.svg';
 import useBlundersFixed from '@/hooks/useBlundersFixed';
 import { useProfile } from '@/hooks/useProfile';
-import SignOutConfirmModal from './SignOutConfirmModal';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 
 export default function MobileGlobalNav() {
@@ -84,7 +85,7 @@ export default function MobileGlobalNav() {
 
             {/* Sheet */}
             <motion.div
-              className="fixed right-0 bottom-0 left-0 z-50 rounded-t-2xl bg-stone-900 px-6 pt-4 pb-8 text-white shadow-xl"
+              className="fixed right-0 bottom-0 left-0 z-50 rounded-t-2xl bg-stone-900 px-6 pt-4 pb-8 text-white shadow-xl md:w-2xl md:justify-self-center"
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
