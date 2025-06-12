@@ -2,6 +2,7 @@
 
 - Prioritised
 
+  [ ] [BUG] Fix logic in useSaveDrillHistory, check optimistic updates and saving twice on the first play, UI only updates after clicking Replay
   [ ] [FEAT] Get a hint about a position – what's the key idea(s)?
 
 - Backlog
