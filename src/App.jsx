@@ -37,7 +37,7 @@ export default function App() {
       <Navbar toggleSidebar={toggleSidebar} />
       <Sidebar isSidebarOpen={isSidebarOpen} closeSidebar={closeSidebar} />
       <main
-        className={`z-10 min-h-screen w-full ${loggedIn && 'pt-8 2xl:pl-32'}`}
+        className={`z-10 min-h-screen w-full ${loggedIn && 'xs:pt-8 2xl:pl-32'}`}
       >
         <AppRoutes />
         {loggedIn && <MobileGlobalNav />} {/* 👈 Add here */}
