@@ -11,7 +11,7 @@ import GameLoader from './GameLoader';
 
 export function AnalysisToolbar({ onOpenPaste, onClear }) {
   return (
-    <div className="mt-2 flex flex-wrap justify-center gap-4 text-sm md:mt-4">
+    <div className="flex flex-wrap justify-center gap-4 text-sm md:mt-4">
       <Button
         onClick={onOpenPaste}
         className="flex items-center gap-1 rounded-none px-0 py-1.5 text-sm font-medium text-stone-400 shadow-sm transition-colors hover:text-white"
