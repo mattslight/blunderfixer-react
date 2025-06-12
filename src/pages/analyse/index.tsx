@@ -25,12 +25,14 @@ export default function AnalysePage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Clear any router state on mount
+  // Clear any router state on mount. This must only run once to avoid
+  // repeatedly replacing history which can cause `replaceState()` warnings.
   useEffect(() => {
-    if (location.state) {
-      navigate('.', { replace: true, state: {} });
+    if (location.state && Object.keys(location.state).length > 0) {
+      navigate('.', { replace: true, state: null });
     }
-  }, [location.state, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Cast router state to our shape
   const {
