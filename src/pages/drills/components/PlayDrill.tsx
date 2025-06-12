@@ -306,13 +306,6 @@ export default function PlayDrill() {
             </div>
             <HistoryDots history={drill.history ?? []} />
           </div>
-          <button
-            onClick={() => setShowConfirm(true)}
-            className="flex items-center text-xs text-stone-500 hover:text-red-400"
-          >
-            <Archive className="mr-1 h-4 w-4" />
-            Archive drill
-          </button>
         </div>
 
         <TimePhaseHeader
@@ -336,7 +329,7 @@ export default function PlayDrill() {
           heroResult={drill.hero_result}
           hideGameResult={true}
         />
-        <div className="my-10 flex items-center justify-start space-x-2">
+        <div className="my-10 flex items-center justify-between space-x-2">
           {!drill.pgn && <CopyFenToClipboard fen={fen} />}
           {drill.pgn && (
             <AnalysePositionButton
@@ -345,6 +338,13 @@ export default function PlayDrill() {
               heroSide={heroColor === 'black' ? 'b' : 'w'}
             />
           )}
+          <button
+            onClick={() => setShowConfirm(true)}
+            className="flex items-center rounded-md border px-3 py-2 text-xs text-stone-500 hover:text-red-400"
+          >
+            <Archive className="mr-2 h-4 w-4" />
+            Archive drill
+          </button>
         </div>
 
         <ArchiveConfirmModal
@@ -406,7 +406,7 @@ function AnalysePositionButton({ pgn, halfMoveIndex, heroSide }) {
       onClick={handleAnalyse}
     >
       Analysis Board
-      <ExternalLink className="relative bottom-[2px] ml-2 inline-flex h-3 w-3" />
+      <ExternalLink className="relative bottom-[1px] ml-2 inline-flex h-3 w-3" />
     </button>
   );
 }
