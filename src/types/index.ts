@@ -148,5 +148,7 @@ export type DrillHistory = {
   drill_position_id: number;
   result: 'pass' | 'fail';
   reason?: string | null;
+  moves: string[];
+  final_eval?: number | null;
   timestamp: string; // ISO date string
 };

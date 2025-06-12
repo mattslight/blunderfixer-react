@@ -11,6 +11,7 @@ export function useSaveDrillHistory(
   result: 'pass' | 'fail' | null,
   reason: string | null,
   currentDepth: number,
+  moves: string[],
   delay = 750,
   minDepth = 12
 ) {
@@ -39,6 +40,7 @@ export function useSaveDrillHistory(
       postDrillHistory(drillId, {
         result: debouncedResult,
         reason: debouncedReason || undefined,
+        moves,
       })
         .then(() => {
           // Re-fetch `/drills/{drillId}` after history is saved
