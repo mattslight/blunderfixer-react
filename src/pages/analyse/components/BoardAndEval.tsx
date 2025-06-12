@@ -68,7 +68,7 @@ export default function BoardAndEval({
   );
 
   return (
-    <div className="flex flex-col items-center space-y-3">
+    <div className="flex flex-col items-center space-y-2">
       {/* 2) MoveStepper navigation */}
       <div className="w-full max-w-lg">
         <MoveStepper

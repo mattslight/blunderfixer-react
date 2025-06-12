@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Chess, Square } from 'chess.js';
-import { Archive, Clipboard, ClipboardCheck } from 'lucide-react';
+import { Archive, Clipboard, ClipboardCheck, Inspect } from 'lucide-react';
 
 // import EvalBar from '../../analyse/components/EvalBar';
 import useAutoMove from '../hooks/useAutoMove';
@@ -327,8 +327,15 @@ export default function PlayDrill() {
           heroResult={drill.hero_result}
           hideGameResult={true}
         />
-        <div className="mt-10 flex items-center justify-start">
+        <div className="mt-10 flex items-center justify-start space-x-2">
           <CopyFenToClipboard fen={fen} />
+          {drill.pgn && (
+            <AnalysePositionButton
+              pgn={drill.pgn}
+              halfMoveIndex={drill.ply + currentIdx}
+              heroSide={heroColor === 'black' ? 'b' : 'w'}
+            />
+          )}
         </div>
 
         <ArchiveConfirmModal
@@ -373,6 +380,25 @@ function CopyFenToClipboard({ fen }) {
       <div role="status" aria-live="polite" className="sr-only">
         {isFenCopied && 'Position FEN copied to clipboard'}
       </div>
+    </button>
+  );
+}
+
+function AnalysePositionButton({ pgn, halfMoveIndex, heroSide }) {
+  const navigate = useNavigate();
+
+  const handleAnalyse = () => {
+    navigate('/analyse', { state: { pgn, halfMoveIndex, heroSide } });
+  };
+
+  return (
+    <button
+      type="button"
+      className="group flex items-center space-x-2 rounded border border-stone-800 bg-stone-950 px-2 py-1 text-xs text-stone-400 transition-colors duration-150 hover:bg-blue-500 hover:text-stone-900"
+      onClick={handleAnalyse}
+    >
+      <Inspect className="h-4 w-4 text-stone-400 transition-opacity duration-200 group-hover:text-black" />
+      <span className="select-none">Analyse</span>
     </button>
   );
 }

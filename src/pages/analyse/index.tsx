@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { AnalysisToolbar, PasteModal } from './components/AnalysisModals';
 import BoardAndEval from './components/BoardAndEval';
-import CoachAndChat from './components/CoachAndChat';
+//import CoachAndChat from './components/CoachAndChat';
 import useFeatureExtraction from './hooks/useFeatureExtraction';
 import useGameInputParser from './hooks/useGameInputParser';
 import useKeyboardNavigation from './hooks/useKeyboardNavigation';
@@ -89,8 +89,14 @@ export default function AnalysePage() {
   } = useMoveInput(fen, makeMove);
 
   // 6) Feature extraction & analysis engine
-  const { features, error: featuresError } = useFeatureExtraction(fen);
-  const { lines, evalScore, legalMoves, bestMoveUCI } = useAnalysisEngine(fen);
+  const { features: _features, error: featuresError } =
+    useFeatureExtraction(fen);
+  const {
+    lines,
+    evalScore,
+    legalMoves: _leagalmoves,
+    bestMoveUCI,
+  } = useAnalysisEngine(fen);
 
   // 7) Keyboard navigation (← / → arrows, etc.)
   useKeyboardNavigation({
@@ -135,7 +141,8 @@ export default function AnalysePage() {
 
       <div className="flex flex-col gap-8 lg:flex-row">
         {/* ─── Left column: board + evaluation ─────────────────────────── */}
-        <div className="w-full lg:w-1/2">
+        <div className="w-full">
+          {/* Enable coach&chat className="w-full lg:w-1/2" */}
           <BoardAndEval
             fen={fen}
             evalScore={evalScore}
@@ -156,7 +163,7 @@ export default function AnalysePage() {
         </div>
 
         {/* ─── Right column: coach insights, chat, etc. ───────────────── */}
-        <div className="w-full lg:w-1/2">
+        {/* <div className="w-full lg:w-1/2">
           <CoachAndChat
             fen={fen}
             features={features}
@@ -164,7 +171,7 @@ export default function AnalysePage() {
             lines={lines}
             heroSide={initialHeroSide}
           />
-        </div>
+        </div> */}
       </div>
 
       <PasteModal
