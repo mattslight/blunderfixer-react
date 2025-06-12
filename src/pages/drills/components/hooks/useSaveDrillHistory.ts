@@ -54,7 +54,11 @@ export function useSaveDrillHistory(
       `/drills/${drillId}`,
       (current: any) =>
         current
-          ? { ...current, history: [...current.history, optimistic], last_drilled_at: ts }
+          ? {
+              ...current,
+              history: [...current.history, optimistic],
+              last_drilled_at: ts,
+            }
           : current,
       { revalidate: false }
     );
@@ -63,9 +67,22 @@ export function useSaveDrillHistory(
       result,
       reason: reason || undefined,
       moves,
+      timestamp: ts,
     })
-      .then(() => {
-        mutate(`/drills/${drillId}`);
+      .then((saved) => {
+        mutate(
+          `/drills/${drillId}`,
+          (current: any) =>
+            current
+              ? {
+                  ...current,
+                  history: current.history.map((h: any) =>
+                    h.timestamp === optimistic.timestamp ? saved : h
+                  ),
+                }
+              : current,
+          { revalidate: false }
+        );
         if (result === 'pass' && username) {
           try {
             const key = `bf:blunders_fixed:${username}`;
