@@ -3,7 +3,6 @@ import { useMemo } from 'react';
 
 import TableView from './TableView';
 
-import { useStickyValue } from '@/hooks/useStickyValue';
 import type { Severity } from '@/lib/severity';
 import { DOT_COLOR, scoreMove } from '@/lib/severity';
 import type { AnalysisNode, GameRecord } from '@/types';
@@ -21,6 +20,10 @@ interface GameSummaryTableProps {
   pgn: string;
   timeControl?: number;
   heroSide: 'w' | 'b';
+  showAll: boolean;
+  setShowAll: (v: boolean | ((prev: boolean) => boolean)) => void;
+  heroOnly: boolean;
+  setHeroOnly: (v: boolean | ((prev: boolean) => boolean)) => void;
 }
 
 function ToggleSwitch({
@@ -70,12 +73,11 @@ export default function GameSummaryTable({
   onClick,
   timeControl,
   heroSide,
+  showAll,
+  setShowAll,
+  heroOnly,
+  setHeroOnly,
 }: GameSummaryTableProps) {
-  const [showAll, setShowAll] = useStickyValue<boolean>('showAllMoves', false);
-  const [heroOnly, setHeroOnly] = useStickyValue<boolean>(
-    'showHeroMovesOnly',
-    false
-  );
   // compute top-5 by score
   const keyEntries = useMemo(() => {
     return [...combined]

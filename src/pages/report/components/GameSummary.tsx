@@ -7,6 +7,7 @@ import StackView from './StackView';
 import GameSummaryTable, { CombinedEntry } from './SummaryTable';
 import TimeUsageChart from './TimeUsageChart';
 
+import { useReportTableFilters } from '@/hooks/useReportTableFilters';
 import {
   getErrorSeverity,
   getTimeSeverity,
@@ -33,6 +34,8 @@ export function GameSummary({
   const MAX = 4;
 
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const { showAll, setShowAll, heroOnly, setHeroOnly } =
+    useReportTableFilters();
 
   // 1) Eval‐graph data
   const chartData = useMemo(
@@ -77,20 +80,6 @@ export function GameSummary({
   // set initial position to first entry shown in the table
   useEffect(() => {
     if (selectedIndex != null || combined.length === 0) return;
-    let showAll = false;
-    try {
-      const raw = localStorage.getItem('bf:params:showAllMoves');
-      if (raw !== null) showAll = JSON.parse(raw);
-    } catch {
-      // ignore parse errors
-    }
-    let heroOnly = false;
-    try {
-      const raw = localStorage.getItem('bf:params:showHeroMovesOnly');
-      if (raw !== null) heroOnly = JSON.parse(raw);
-    } catch {
-      // ignore parse errors
-    }
     const entry = combined.find(
       (e) =>
         (showAll || e.tags[0] !== 'none') &&
@@ -98,7 +87,7 @@ export function GameSummary({
     );
     if (entry) setSelectedIndex(entry.analysis.halfMoveIndex);
     else setSelectedIndex(combined[0].analysis.halfMoveIndex);
-  }, [combined, heroSide, selectedIndex]);
+  }, [combined, heroSide, selectedIndex, showAll, heroOnly]);
 
   // 3) Time‐usage chart data
   const timeData: TimePoint[] = useMemo(() => {
@@ -152,6 +141,10 @@ export function GameSummary({
             pgn={game.pgn}
             timeControl={game.meta.timeControl}
             heroSide={heroSide}
+            showAll={showAll}
+            setShowAll={setShowAll}
+            heroOnly={heroOnly}
+            setHeroOnly={setHeroOnly}
           />
         </aside>
         {/* Right pane: board + transport */}
