@@ -135,7 +135,6 @@ export default function AnalysePage() {
     <>
       <AnalysisToolbar
         onOpenPaste={() => setPasteOpen(true)}
-        onOpenGames={() => navigate('/games')}
         onClear={handleClear}
       />
 
