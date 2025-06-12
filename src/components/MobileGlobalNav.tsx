@@ -44,7 +44,7 @@ export default function MobileGlobalNav() {
     navigate(path);
   };
 
-  const scrollUp = useScrollDirection();
+  const scrollUp = useScrollDirection(100);
 
   return (
     <>
