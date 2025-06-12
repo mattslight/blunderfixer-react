@@ -256,4 +256,4 @@ export default function DrillsPage() {
     </div>
   );
 }
-const TABS = ['New Drills', 'History', 'Mastered'];
+const TABS = ['All', 'Recently Drilled', 'Mastered'];
