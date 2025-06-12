@@ -16,10 +16,12 @@ import {
 import blunderLogoSvg from '@/assets/blunderfixer.svg';
 import useBlundersFixed from '@/hooks/useBlundersFixed';
 import { useProfile } from '@/hooks/useProfile';
+import SignOutConfirmModal from './SignOutConfirmModal';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 
 export default function MobileGlobalNav() {
   const [open, setOpen] = useState(false);
+  const [showSignOut, setShowSignOut] = useState(false);
   const navigate = useNavigate();
   const { profile, setUsername } = useProfile();
   const blundersFixed = useBlundersFixed();
@@ -42,6 +44,12 @@ export default function MobileGlobalNav() {
   const handleNav = (path: string) => {
     setOpen(false);
     navigate(path);
+  };
+
+  const handleSignOut = () => {
+    setUsername('');
+    setShowSignOut(false);
+    setOpen(false);
   };
 
   const scrollUp = useScrollDirection();
@@ -181,10 +189,7 @@ export default function MobileGlobalNav() {
                   transition={{ delay: 0.45 }}
                 >
                   <button
-                    onClick={() => {
-                      setUsername('');
-                      setOpen(false);
-                    }}
+                    onClick={() => setShowSignOut(true)}
                     className="flex items-center gap-3 text-sm text-red-500 hover:text-red-400"
                   >
                     <LogOut className="h-4 w-4" />
@@ -197,6 +202,11 @@ export default function MobileGlobalNav() {
           </>
         )}
       </AnimatePresence>
+      <SignOutConfirmModal
+        show={showSignOut}
+        onCancel={() => setShowSignOut(false)}
+        onConfirm={handleSignOut}
+      />
     </>
   );
 }
