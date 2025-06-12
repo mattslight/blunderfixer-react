@@ -1,6 +1,8 @@
-// src/pages/games/components/GameSummary.tsx
+// src/pages/report/components/GameSummary.tsx
 import { useMemo, useState } from 'react';
 
+import { useInitialSelectedIndex } from '../hooks/useInitialSelectedIndex';
+import { useReportTableFilters } from '../hooks/useReportTableFilters';
 import EvalGraph from './EvalGraph';
 import GameSummaryHeader from './GameSummaryHeader';
 import StackView from './StackView';
@@ -33,6 +35,8 @@ export function GameSummary({
   const MAX = 4;
 
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const { showAll, setShowAll, heroOnly, setHeroOnly } =
+    useReportTableFilters();
 
   // 1) Eval‐graph data
   const chartData = useMemo(
@@ -71,8 +75,18 @@ export function GameSummary({
         const impact = heroSide === 'b' ? -a.deltaCP : a.deltaCP;
         return { move: mv, analysis: a, tags, impact };
       }),
-    [analysis, game.moves, heroSide]
+    [analysis, game.moves, heroSide, game.meta.increment, game.meta.timeControl]
   );
+
+  // set initial position to first entry shown in the table
+  useInitialSelectedIndex({
+    combined,
+    selectedIndex,
+    setSelectedIndex,
+    heroSide,
+    showAll,
+    heroOnly,
+  });
 
   // 3) Time‐usage chart data
   const timeData: TimePoint[] = useMemo(() => {
@@ -126,6 +140,10 @@ export function GameSummary({
             pgn={game.pgn}
             timeControl={game.meta.timeControl}
             heroSide={heroSide}
+            showAll={showAll}
+            setShowAll={setShowAll}
+            heroOnly={heroOnly}
+            setHeroOnly={setHeroOnly}
           />
         </aside>
         {/* Right pane: board + transport */}

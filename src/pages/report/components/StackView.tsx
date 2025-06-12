@@ -13,7 +13,7 @@ export default function StackView({
   heroSide,
 }: {
   entries: CombinedEntry[];
-  onDrill?: (pgn: string, halfMoveIndex: number) => void;
+  onDrill?: (pgn: string, halfMoveIndex: number, heroSide: 'w' | 'b') => void;
   pgn: string;
   selectedIndex?: number | null;
   heroSide: 'w' | 'b';

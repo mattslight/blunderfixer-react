@@ -21,6 +21,8 @@
 [ ] Opening Trainer (practice specific openings, where the computer will gladly enter into certain lines with you)
 [ ] Endgame Trainer (two rooks, extra pawn etc.)
 
+[x] [TODO_prod] Run alembic upgrade head to deploy move and eval migrations to drillhistory table
+[x] FIX: When viewing a /report the board should show the first move in the table which if only critical moves is enabled it should show the first critical move not the first move
 [x] Fix PGN paster so we can use analysis mode inside BlunderFixer
 [x] Copy PGN -> analyse position
 [x] Switch to analysis mode in a drill
