@@ -12,8 +12,7 @@ import {
   X,
 } from 'lucide-react';
 
-import EloDisplay from './EloDisplay';
-
+//import EloDisplay from './EloDisplay';
 import blunderLogoSvg from '@/assets/blunderfixer.svg';
 import useBlundersFixed from '@/hooks/useBlundersFixed';
 import { useProfile } from '@/hooks/useProfile';
