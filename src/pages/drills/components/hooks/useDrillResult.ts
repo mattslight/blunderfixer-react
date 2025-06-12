@@ -5,6 +5,7 @@ export type GameResult = 'win' | 'loss' | 'draw' | null;
 export type ExpectedResult = 'win' | 'draw' | 'hold' | null;
 
 const DEBUG = false;
+const MIN_DEPTH = 12;
 
 interface UseDrillResultParams {
   initialEval: number | null;
@@ -53,14 +54,12 @@ export function useDrillResult({
     setReason(null);
   }, [resetKey]);
 
-  //const MIN_DEPTH = 12;
-
   useEffect(() => {
-    // if (initialEval == null || currentDepth < MIN_DEPTH) {
-    //   setResult(null);
-    //   setReason(null);
-    //   return;
-    // }
+    if (initialEval == null || currentDepth < MIN_DEPTH) {
+      setResult(null);
+      setReason(null);
+      return;
+    }
 
     const evalDelta =
       heroSide === 'white'
@@ -89,6 +88,9 @@ export function useDrillResult({
           } else if (gameOver && gameResult === 'loss') {
             newResult = 'fail';
             newReason = 'You lost a drawn endgame';
+          } else if (moveCount >= maxMoves) {
+            newResult = 'pass';
+            newReason = 'Solid technique — you kept the balance ⚖️';
           }
         } else if (expectedResult === 'win') {
           if (heroEval <= 0) {
@@ -103,6 +105,9 @@ export function useDrillResult({
           } else if (gameOver && gameResult === 'loss') {
             newResult = 'fail';
             newReason = 'You lost a winning game 😖';
+          } else if (moveCount >= maxMoves) {
+            newResult = 'pass';
+            newReason = 'You maintained the winning edge!';
           }
         } else {
           if (evalDelta >= lossThreshold && moveCount > 1) {
@@ -115,6 +120,9 @@ export function useDrillResult({
           ) {
             newResult = 'pass';
             newReason = 'Good save — you held the draw 🙌🏻';
+          } else if (moveCount >= maxMoves) {
+            newResult = 'pass';
+            newReason = 'You held firm under pressure — great save!';
           }
         }
       } else {
@@ -138,7 +146,6 @@ export function useDrillResult({
       setResult(newResult);
       setReason(newReason);
     } else {
-      // Clear results when no condition is met
       setResult(null);
       setReason(null);
     }
