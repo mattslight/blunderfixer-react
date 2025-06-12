@@ -22,7 +22,7 @@ export default function Navbar({ toggleSidebar }) {
         >
           {loggedIn && (
             <button
-              className="mr-2 cursor-pointer rounded-lg p-2 text-stone-600 hover:bg-stone-100 hover:text-stone-900 focus:bg-stone-100 focus:ring-2 focus:ring-stone-100 2xl:hidden dark:text-stone-400 dark:hover:bg-stone-700 dark:hover:text-white dark:focus:bg-stone-700 dark:focus:ring-stone-700"
+              className="xs:block mr-2 hidden cursor-pointer rounded-lg p-2 text-stone-600 hover:bg-stone-100 hover:text-stone-900 focus:bg-stone-100 focus:ring-2 focus:ring-stone-100 2xl:hidden dark:text-stone-400 dark:hover:bg-stone-700 dark:hover:text-white dark:focus:bg-stone-700 dark:focus:ring-stone-700"
               onClick={toggleSidebar}
             >
               <svg
