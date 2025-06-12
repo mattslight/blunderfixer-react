@@ -55,6 +55,15 @@ export default function MobileGlobalNav() {
 
   const scrollUp = useScrollDirection();
 
+  // derive flag emoji
+  const countryCode = profile.country?.split('/').pop()?.toUpperCase() || '';
+  const flagEmoji = countryCode
+    ? countryCode
+        .split('')
+        .map((c) => String.fromCodePoint(c.charCodeAt(0) + 127397))
+        .join('')
+    : '';
+
   return (
     <>
       <motion.button
@@ -120,6 +129,7 @@ export default function MobileGlobalNav() {
                 )}
                 <p className="mt-2 text-white">
                   {profile.name || profile.username}
+                  {flagEmoji && <span className="ml-1">{flagEmoji}</span>}
                 </p>
                 <p className="text-xs text-stone-400">@{profile.username}</p>
               </div>
