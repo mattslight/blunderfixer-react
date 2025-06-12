@@ -93,7 +93,7 @@ export default function MobileGlobalNav() {
         dragConstraints={constraints}
         onDragEnd={(e, info) => {
           const rawOffset = info.point.x - window.innerWidth / 2;
-          const snapThreshold = 40;
+          const snapThreshold = 50;
           const buttonWidth = 120;
           const maxOffset = (window.innerWidth - buttonWidth) / 2;
           const clampedOffset = Math.max(
