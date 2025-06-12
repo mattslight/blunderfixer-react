@@ -11,6 +11,7 @@ import {
   X,
 } from 'lucide-react';
 
+import blunderLogoSvg from '@/assets/blunderfixer.svg';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 
 export default function MobileGlobalNav() {
@@ -45,9 +46,13 @@ export default function MobileGlobalNav() {
         initial={{ opacity: 1, y: 0 }}
         animate={{ opacity: scrollUp ? 1 : 0, y: scrollUp ? 0 : 40 }}
         transition={{ duration: 0.3 }}
-        className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white shadow-md"
+        className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full bg-black px-2 py-2 pr-3 text-sm font-semibold text-white shadow-md"
         onClick={() => setOpen(true)}
       >
+        <img
+          src={blunderLogoSvg}
+          className="shake-icon mr-1.5 inline-flex h-6 w-6"
+        />{' '}
         Menu
       </motion.button>
 
