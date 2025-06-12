@@ -140,6 +140,7 @@ export interface DrillPosition {
   winning_moves: string[];
   losing_move: string;
   history: DrillHistory[];
+  pgn: string;
 }
 
 export type DrillHistory = {
