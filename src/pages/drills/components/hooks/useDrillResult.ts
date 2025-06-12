@@ -107,7 +107,7 @@ export function useDrillResult({
             newReason = 'You lost a winning game 😖';
           } else if (moveCount >= maxMoves) {
             newResult = 'pass';
-            newReason = 'You maintained the winning edge!';
+            newReason = 'You kept the winning edge!';
           }
         } else {
           if (evalDelta >= lossThreshold && moveCount > 1) {
