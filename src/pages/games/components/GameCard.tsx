@@ -1,6 +1,6 @@
 // src/pages/games/components/GameCard.tsx
 import { formatDistanceToNow } from 'date-fns';
-import { Calendar, Inspect, Loader, Timer } from 'lucide-react';
+import { Calendar, ChartNoAxesCombined, Loader, Timer } from 'lucide-react';
 
 import { GameRecord } from '@/types';
 
@@ -147,8 +147,8 @@ export default function GameCard({
             <Loader className="h-4 w-4 animate-spin" />
           ) : (
             <span>
-              <Inspect className="mr-2 inline-flex h-4 w-4" />
-              Analyse
+              <ChartNoAxesCombined className="relative bottom-0.5 mr-2 inline-flex h-4 w-4" />
+              Report
             </span>
           )}
         </button>
