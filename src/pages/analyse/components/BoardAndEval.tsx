@@ -79,11 +79,17 @@ export default function BoardAndEval({
       </div>
       {/* <-- zero-gap flex container --> */}
       <div ref={wrapperRef} className="flex w-full max-w-lg gap-0">
+        {/* EvalBar sits flush to the left, no margin/padding */}
+        <EvalBar
+          score={evalScore}
+          className="w-2"
+          boardOrientation={boardOrientation}
+        />
         <div className="flex-1">
           {boardWidth > 0 && (
             <Chessboard
               boardOrientation={boardOrientation}
-              boardWidth={boardWidth}
+              boardWidth={boardWidth - 8}
               position={fen}
               promotionDialogVariant={'modal'}
               onSquareClick={onSquareClick}
@@ -103,8 +109,8 @@ export default function BoardAndEval({
               customArrows={arrows}
               customBoardStyle={{
                 transition: 'none',
-                boxShadow: `0 4px 12px rgba(0,0,0,0.35),
-                        inset 0 0 4px rgba(0,0,0,0.15)`,
+                boxShadow: `0 2px 6px rgba(0,0,0,0.35),
+                        inset 0 0 2px rgba(0,0,0,0.15)`,
               }}
               customDarkSquareStyle={{
                 backgroundColor: '#B1B7C8',
@@ -115,13 +121,6 @@ export default function BoardAndEval({
             />
           )}
         </div>
-
-        {/* EvalBar sits flush to the right, no margin/padding */}
-        <EvalBar
-          score={evalScore}
-          className="w-4"
-          boardOrientation={boardOrientation}
-        />
       </div>
 
       {/* 4) Engine continuation lines */}
