@@ -3,7 +3,6 @@ import { useEffect, useRef } from 'react';
 import { mutate } from 'swr';
 
 import { postDrillHistory } from '@/api/drills';
-import { useDebounce } from '@/hooks/useDebounce';
 import { useProfile } from '@/hooks/useProfile';
 
 export function useSaveDrillHistory(
@@ -13,13 +12,10 @@ export function useSaveDrillHistory(
   currentDepth: number,
   moves: string[],
   resetKey: number,
-  delay = 750,
   minDepth = 12
 ) {
   const hasPosted = useRef(false);
 
-  const debouncedResult = useDebounce(result, delay);
-  const debouncedReason = useDebounce(reason, delay);
   const {
     profile: { username },
   } = useProfile();
@@ -27,27 +23,50 @@ export function useSaveDrillHistory(
   // Reset posted flag when moving to a new drill
   useEffect(() => {
     hasPosted.current = false;
+    // reset per drill attempt
   }, [drillId, resetKey]);
 
   useEffect(() => {
-    const canSave =
-      drillId != null &&
-      !hasPosted.current &&
-      currentDepth >= minDepth &&
-      (debouncedResult === 'pass' || debouncedResult === 'fail');
-
-    if (!canSave) return;
+    if (
+      drillId == null ||
+      hasPosted.current ||
+      currentDepth < minDepth ||
+      (result !== 'pass' && result !== 'fail')
+    ) {
+      return;
+    }
 
     hasPosted.current = true;
 
+    const ts = new Date().toISOString();
+
+    const optimistic = {
+      id: Date.now(),
+      drill_position_id: Number(drillId),
+      result,
+      reason: reason ?? null,
+      moves,
+      final_eval: null,
+      timestamp: ts,
+    };
+
+    mutate(
+      `/drills/${drillId}`,
+      (current: any) =>
+        current
+          ? { ...current, history: [...current.history, optimistic], last_drilled_at: ts }
+          : current,
+      { revalidate: false }
+    );
+
     postDrillHistory(drillId, {
-      result: debouncedResult,
-      reason: debouncedReason || undefined,
+      result,
+      reason: reason || undefined,
       moves,
     })
       .then(() => {
         mutate(`/drills/${drillId}`);
-        if (debouncedResult === 'pass' && username) {
+        if (result === 'pass' && username) {
           try {
             const key = `bf:blunders_fixed:${username}`;
             const raw = localStorage.getItem(key);
@@ -60,15 +79,8 @@ export function useSaveDrillHistory(
       })
       .catch((err) => {
         console.error('Could not save drill history:', err);
+        mutate(`/drills/${drillId}`);
         hasPosted.current = false; // retry on failure
       });
-  }, [
-    drillId,
-    debouncedResult,
-    debouncedReason,
-    currentDepth,
-    minDepth,
-    moves,
-    username,
-  ]);
+  }, [drillId, result, reason, currentDepth, moves, minDepth, username]);
 }
