@@ -98,7 +98,7 @@ export default function BoardAndEval({
                 ...moveSquares,
               }}
               customNotationStyle={{
-                fontSize: '1rem',
+                fontSize: '0.75rem',
                 color: 'oklch(55.1% 0.027 264.364)',
                 fontWeight: 700,
               }}
