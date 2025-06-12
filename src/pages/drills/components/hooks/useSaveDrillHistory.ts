@@ -12,6 +12,7 @@ export function useSaveDrillHistory(
   reason: string | null,
   currentDepth: number,
   moves: string[],
+  resetKey: number,
   delay = 750,
   minDepth = 12
 ) {
@@ -26,40 +27,48 @@ export function useSaveDrillHistory(
   // Reset posted flag when moving to a new drill
   useEffect(() => {
     hasPosted.current = false;
-  }, [drillId]);
+  }, [drillId, resetKey]);
 
   useEffect(() => {
-    if (
+    const canSave =
       drillId != null &&
-      currentDepth >= minDepth &&
       !hasPosted.current &&
-      (debouncedResult === 'pass' || debouncedResult === 'fail')
-    ) {
-      hasPosted.current = true;
+      currentDepth >= minDepth &&
+      (debouncedResult === 'pass' || debouncedResult === 'fail');
 
-      postDrillHistory(drillId, {
-        result: debouncedResult,
-        reason: debouncedReason || undefined,
-        moves,
-      })
-        .then(() => {
-          // Re-fetch `/drills/{drillId}` after history is saved
-          mutate(`/drills/${drillId}`);
-          if (debouncedResult === 'pass' && username) {
-            try {
-              const key = `bf:blunders_fixed:${username}`;
-              const raw = localStorage.getItem(key);
-              const val = raw ? parseInt(raw, 10) : 0;
-              localStorage.setItem(key, String(val + 1));
-            } catch {
-              // ignore
-            }
+    if (!canSave) return;
+
+    hasPosted.current = true;
+
+    postDrillHistory(drillId, {
+      result: debouncedResult,
+      reason: debouncedReason || undefined,
+      moves,
+    })
+      .then(() => {
+        mutate(`/drills/${drillId}`);
+        if (debouncedResult === 'pass' && username) {
+          try {
+            const key = `bf:blunders_fixed:${username}`;
+            const raw = localStorage.getItem(key);
+            const val = raw ? parseInt(raw, 10) : 0;
+            localStorage.setItem(key, String(val + 1));
+          } catch {
+            // ignore
           }
-        })
-        .catch((err) => {
-          console.error('Could not save drill history:', err);
-          hasPosted.current = false; // allow retry on error
-        });
-    }
-  }, [drillId, debouncedResult, debouncedReason, currentDepth]);
+        }
+      })
+      .catch((err) => {
+        console.error('Could not save drill history:', err);
+        hasPosted.current = false; // retry on failure
+      });
+  }, [
+    drillId,
+    debouncedResult,
+    debouncedReason,
+    currentDepth,
+    minDepth,
+    moves,
+    username,
+  ]);
 }

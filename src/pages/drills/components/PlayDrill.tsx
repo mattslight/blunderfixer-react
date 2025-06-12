@@ -14,7 +14,7 @@ import DrillBanner from './DrillBanner';
 import { GameInfoBadges } from './DrillCard/GameInfoBadges';
 import { HistoryDots } from './DrillCard/HistoryDots';
 import { TimePhaseHeader } from './DrillCard/TimePhaseHeader';
-import useDrill from './hooks/useDrill';
+import { useDrill } from './hooks/useDrill';
 import { useDrillResult } from './hooks/useDrillResult';
 import { useSaveDrillHistory } from './hooks/useSaveDrillHistory';
 
@@ -135,7 +135,8 @@ export default function PlayDrill() {
     drillResult,
     reason,
     currentDepth,
-    moveHistory
+    moveHistory,
+    resetKey
   );
 
   const handleNextDrill = async () => {

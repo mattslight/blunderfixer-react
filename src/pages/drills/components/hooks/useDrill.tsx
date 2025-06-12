@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import { getDrill } from '@/api/drills';
 import type { DrillPosition } from '@/types';
 
-export default function useDrill(id: number | string) {
+export function useDrill(id: number | string) {
   const { data, error, isLoading, mutate } = useSWR<DrillPosition>(
     id ? `/drills/${id}` : null,
     () => getDrill(Number(id))
