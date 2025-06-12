@@ -9,6 +9,7 @@ interface Props {
   setResetKey: React.Dispatch<React.SetStateAction<number>>;
   onNext: () => void;
   initialEval?: number;
+  isEndgame?: boolean;
 }
 
 function getRandomMessage(messages: string[]) {
@@ -22,6 +23,7 @@ export default function DrillBanner({
   setResetKey,
   onNext,
   initialEval,
+  isEndgame = false,
 }: Props) {
   const drawMessage = useMemo(
     () =>
@@ -87,6 +89,7 @@ export default function DrillBanner({
             <Crosshair className="relative bottom-0.25 mr-2 inline-flex h-4 w-4 text-purple-400" />
             <span className="text-sm">
               <span className="mr-1 font-bold text-white/80">
+                {isEndgame && 'Play until the end — '}
                 {expectedResult === 'win' &&
                   initialEval !== undefined &&
                   (initialEval >= 200 ? convertMessage : maintainMessage)}

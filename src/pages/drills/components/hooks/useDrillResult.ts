@@ -64,6 +64,7 @@ export function useDrillResult({
       heroSide === 'white'
         ? initialEval - currentEval
         : currentEval - initialEval;
+    const heroEval = heroSide === 'white' ? currentEval : -currentEval;
 
     let newResult: DrillResult = null;
     let newReason: string | null = null;
@@ -75,36 +76,59 @@ export function useDrillResult({
       } else if (evalDelta >= 300) {
         newResult = 'fail';
         newReason = 'You blundered a piece';
-      } else if (evalDelta >= lossThreshold && moveCount > 1) {
-        newResult = 'fail';
-        // give a more specific reason based on expectedResult
-        if (expectedResult === 'win') {
-          newReason = 'You lost a winning position 😭';
-        } else if (expectedResult === 'draw') {
-          newReason = 'You let the draw slip 🤨';
-        } else if (expectedResult === 'hold') {
-          newReason = 'Defensive chances missed 😓';
+      } else if (maxMoves === 0) {
+        if (expectedResult === 'draw') {
+          if (heroEval <= -200) {
+            newResult = 'fail';
+            newReason = 'You let the draw slip 🤨';
+          } else if (gameOver && gameResult === 'draw') {
+            newResult = 'pass';
+            newReason = 'You held the draw 😅';
+          } else if (gameOver && gameResult === 'loss') {
+            newResult = 'fail';
+            newReason = 'You lost a drawn endgame';
+          }
+        } else if (expectedResult === 'win') {
+          if (heroEval <= 0) {
+            newResult = 'fail';
+            newReason = 'You lost a winning position 😭';
+          } else if (gameOver && gameResult === 'win') {
+            newResult = 'pass';
+            newReason = 'You converted the win — great job!';
+          } else if (gameOver && gameResult === 'draw') {
+            newResult = 'fail';
+            newReason = 'You let the win slip to a draw';
+          } else if (gameOver && gameResult === 'loss') {
+            newResult = 'fail';
+            newReason = 'You lost a winning game 😖';
+          }
+        } else {
+          if (evalDelta >= lossThreshold && moveCount > 1) {
+            newResult = 'fail';
+            newReason = 'Defensive chances missed 😓';
+          } else if (
+            gameOver &&
+            gameResult === 'draw' &&
+            expectedResult === 'hold'
+          ) {
+            newResult = 'pass';
+            newReason = 'Good save — you held the draw 🙌🏻';
+          }
         }
-      } else if (maxMoves === 0 && gameOver && gameResult) {
-        if (expectedResult === 'win' && gameResult === 'win') {
-          newResult = 'pass';
-          newReason = 'You converted the win — great job!';
-        } else if (expectedResult === 'draw' && gameResult === 'draw') {
-          newResult = 'pass';
-          newReason = 'You held the draw 😅';
-        } else if (expectedResult === 'win' && gameResult === 'loss') {
+      } else {
+        if (evalDelta >= lossThreshold && moveCount > 1) {
           newResult = 'fail';
-          newReason = 'You lost a winning game 😖';
-        } else if (expectedResult === 'win' && gameResult === 'draw') {
-          newResult = 'fail';
-          newReason = 'You let the win slip to a draw';
-        } else if (expectedResult === 'hold' && gameResult === 'draw') {
+          if (expectedResult === 'win') {
+            newReason = 'You lost a winning position 😭';
+          } else if (expectedResult === 'draw') {
+            newReason = 'You let the draw slip 🤨';
+          } else if (expectedResult === 'hold') {
+            newReason = 'Defensive chances missed 😓';
+          }
+        } else if (moveCount >= maxMoves) {
           newResult = 'pass';
-          newReason = 'Good save — you held the draw 🙌🏻';
+          newReason = 'Solid play — good job!';
         }
-      } else if (maxMoves > 0 && moveCount >= maxMoves) {
-        newResult = 'pass';
-        newReason = 'Solid play — good job!';
       }
     }
 
