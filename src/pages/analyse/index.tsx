@@ -133,6 +133,13 @@ export default function AnalysePage() {
 
   return (
     <>
+      <a
+        onClick={() => navigate(-1)}
+        aria-label="Back"
+        className="xs:ml-0 xs:hidden relative top-4 z-100 ml-4 inline-flex w-fit items-center py-1 pr-4 text-blue-600 hover:underline"
+      >
+        ← Back
+      </a>
       <AnalysisToolbar
         onOpenPaste={() => setPasteOpen(true)}
         onClear={handleClear}
