@@ -1,5 +1,5 @@
 // src/pages/games/components/GameSummary.tsx
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import EvalGraph from './EvalGraph';
 import GameSummaryHeader from './GameSummaryHeader';
@@ -71,8 +71,34 @@ export function GameSummary({
         const impact = heroSide === 'b' ? -a.deltaCP : a.deltaCP;
         return { move: mv, analysis: a, tags, impact };
       }),
-    [analysis, game.moves, heroSide]
+    [analysis, game.moves, heroSide, game.meta.increment, game.meta.timeControl]
   );
+
+  // set initial position to first entry shown in the table
+  useEffect(() => {
+    if (selectedIndex != null || combined.length === 0) return;
+    let showAll = false;
+    try {
+      const raw = localStorage.getItem('bf:params:showAllMoves');
+      if (raw !== null) showAll = JSON.parse(raw);
+    } catch {
+      // ignore parse errors
+    }
+    let heroOnly = false;
+    try {
+      const raw = localStorage.getItem('bf:params:showHeroMovesOnly');
+      if (raw !== null) heroOnly = JSON.parse(raw);
+    } catch {
+      // ignore parse errors
+    }
+    const entry = combined.find(
+      (e) =>
+        (showAll || e.tags[0] !== 'none') &&
+        (!heroOnly || e.move.side === heroSide)
+    );
+    if (entry) setSelectedIndex(entry.analysis.halfMoveIndex);
+    else setSelectedIndex(combined[0].analysis.halfMoveIndex);
+  }, [combined, heroSide, selectedIndex]);
 
   // 3) Time‐usage chart data
   const timeData: TimePoint[] = useMemo(() => {
