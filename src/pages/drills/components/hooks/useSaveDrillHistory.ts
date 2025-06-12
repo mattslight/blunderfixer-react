@@ -12,11 +12,9 @@ export function useSaveDrillHistory(
   currentDepth: number,
   moves: string[],
   resetKey: number,
-  delay = 750,
   minDepth = 12
 ) {
   const hasPosted = useRef(false);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const {
     profile: { username },
@@ -25,10 +23,7 @@ export function useSaveDrillHistory(
   // Reset posted flag when moving to a new drill
   useEffect(() => {
     hasPosted.current = false;
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
+    // reset per drill attempt
   }, [drillId, resetKey]);
 
   useEffect(() => {
@@ -41,37 +36,51 @@ export function useSaveDrillHistory(
       return;
     }
 
-    timeoutRef.current = setTimeout(() => {
-      postDrillHistory(drillId, {
-        result,
-        reason: reason || undefined,
-        moves,
-      })
-        .then(() => {
-          mutate(`/drills/${drillId}`);
-          if (result === 'pass' && username) {
-            try {
-              const key = `bf:blunders_fixed:${username}`;
-              const raw = localStorage.getItem(key);
-              const val = raw ? parseInt(raw, 10) : 0;
-              localStorage.setItem(key, String(val + 1));
-            } catch {
-              // ignore
-            }
-          }
-          hasPosted.current = true;
-        })
-        .catch((err) => {
-          console.error('Could not save drill history:', err);
-          hasPosted.current = false; // retry on failure
-        });
-    }, delay);
+    hasPosted.current = true;
 
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
-      }
+    const ts = new Date().toISOString();
+
+    const optimistic = {
+      id: Date.now(),
+      drill_position_id: Number(drillId),
+      result,
+      reason: reason ?? null,
+      moves,
+      final_eval: null,
+      timestamp: ts,
     };
-  }, [drillId, result, reason, currentDepth, moves, delay, minDepth, username]);
+
+    mutate(
+      `/drills/${drillId}`,
+      (current: any) =>
+        current
+          ? { ...current, history: [...current.history, optimistic], last_drilled_at: ts }
+          : current,
+      { revalidate: false }
+    );
+
+    postDrillHistory(drillId, {
+      result,
+      reason: reason || undefined,
+      moves,
+    })
+      .then(() => {
+        mutate(`/drills/${drillId}`);
+        if (result === 'pass' && username) {
+          try {
+            const key = `bf:blunders_fixed:${username}`;
+            const raw = localStorage.getItem(key);
+            const val = raw ? parseInt(raw, 10) : 0;
+            localStorage.setItem(key, String(val + 1));
+          } catch {
+            // ignore
+          }
+        }
+      })
+      .catch((err) => {
+        console.error('Could not save drill history:', err);
+        mutate(`/drills/${drillId}`);
+        hasPosted.current = false; // retry on failure
+      });
+  }, [drillId, result, reason, currentDepth, moves, minDepth, username]);
 }
