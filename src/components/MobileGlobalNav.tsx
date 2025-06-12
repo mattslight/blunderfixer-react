@@ -143,14 +143,14 @@ export default function MobileGlobalNav() {
         initial={{ opacity: 1, y: 0 }}
         animate={{ opacity: scrollUp ? 1 : 0, y: scrollUp ? 0 : 40 }}
         transition={{ duration: 0.3 }}
-        className="xs:hidden fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full bg-black/70 px-2 py-1.5 pr-6 text-sm font-semibold text-stone-200 shadow-md backdrop-blur-sm"
+        className="xs:hidden fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full bg-black/50 px-2 py-1.5 pr-6 text-sm font-semibold text-stone-200 shadow-md backdrop-blur-sm"
         onClick={() => setOpen(true)}
       >
         <img
           src={blunderLogoSvg}
           className="shake-icon mr-1.5 inline-flex h-6 w-6"
         />
-        Menu
+        <span className="relative top-[1px] left-[5px]">Menu</span>
       </motion.button>
 
       <AnimatePresence>
