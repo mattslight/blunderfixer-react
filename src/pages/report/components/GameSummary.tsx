@@ -1,13 +1,14 @@
-// src/pages/games/components/GameSummary.tsx
-import { useEffect, useMemo, useState } from 'react';
+// src/pages/report/components/GameSummary.tsx
+import { useMemo, useState } from 'react';
 
+import { useInitialSelectedIndex } from '../hooks/useInitialSelectedIndex';
+import { useReportTableFilters } from '../hooks/useReportTableFilters';
 import EvalGraph from './EvalGraph';
 import GameSummaryHeader from './GameSummaryHeader';
 import StackView from './StackView';
 import GameSummaryTable, { CombinedEntry } from './SummaryTable';
 import TimeUsageChart from './TimeUsageChart';
 
-import { useReportTableFilters } from '@/hooks/useReportTableFilters';
 import {
   getErrorSeverity,
   getTimeSeverity,
@@ -78,16 +79,14 @@ export function GameSummary({
   );
 
   // set initial position to first entry shown in the table
-  useEffect(() => {
-    if (selectedIndex != null || combined.length === 0) return;
-    const entry = combined.find(
-      (e) =>
-        (showAll || e.tags[0] !== 'none') &&
-        (!heroOnly || e.move.side === heroSide)
-    );
-    if (entry) setSelectedIndex(entry.analysis.halfMoveIndex);
-    else setSelectedIndex(combined[0].analysis.halfMoveIndex);
-  }, [combined, heroSide, selectedIndex, showAll, heroOnly]);
+  useInitialSelectedIndex({
+    combined,
+    selectedIndex,
+    setSelectedIndex,
+    heroSide,
+    showAll,
+    heroOnly,
+  });
 
   // 3) Time‐usage chart data
   const timeData: TimePoint[] = useMemo(() => {
