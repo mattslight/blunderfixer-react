@@ -147,7 +147,7 @@ export default function MobileGlobalNav() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    transition={{ delay: 0.1 + i * 0.05 }}
+                    transition={{ delay: 0.1 + i * 0.025 }}
                   >
                     <button
                       onClick={() => handleNav(item.path)}
@@ -167,7 +167,7 @@ export default function MobileGlobalNav() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
-                  transition={{ delay: 0.35 }}
+                  transition={{ delay: 0.1 + 6 * 0.025 }}
                 >
                   <button
                     onClick={() => handleNav('/help')}
@@ -182,7 +182,7 @@ export default function MobileGlobalNav() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
-                  transition={{ delay: 0.4 }}
+                  transition={{ delay: 0.1 + 7 * 0.025 }}
                 >
                   <button
                     onClick={() => handleNav('/settings')}
@@ -197,7 +197,7 @@ export default function MobileGlobalNav() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
-                  transition={{ delay: 0.45 }}
+                  transition={{ delay: 0.1 + 8 * 0.025 }}
                 >
                   <button
                     onClick={() => setShowSignOut(true)}
