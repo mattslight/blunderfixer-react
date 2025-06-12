@@ -1,7 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Clock, Home, Target, Upload, X } from 'lucide-react';
+import {
+  Clock,
+  Home,
+  LifeBuoy,
+  Settings,
+  Target,
+  Upload,
+  X,
+} from 'lucide-react';
 
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 
@@ -91,13 +99,47 @@ export default function MobileGlobalNav() {
                   >
                     <button
                       onClick={() => handleNav(item.path)}
-                      className="flex items-center gap-4 text-lg text-stone-200 hover:text-stone-400"
+                      className="flex items-center gap-4 text-lg text-stone-200 hover:text-stone-100"
                     >
                       {item.icon}
                       {item.label}
                     </button>
                   </motion.li>
                 ))}
+
+                {/* Divider */}
+                <hr className="my-4 border-t border-stone-700" />
+
+                {/* Secondary actions */}
+                <motion.li
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ delay: 0.35 }}
+                >
+                  <button
+                    onClick={() => handleNav('/help')}
+                    className="flex items-center gap-3 text-sm text-stone-400 hover:text-stone-200"
+                  >
+                    <LifeBuoy className="h-4 w-4" />
+                    Help
+                  </button>
+                </motion.li>
+
+                <motion.li
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <button
+                    onClick={() => handleNav('/settings')}
+                    className="flex items-center gap-3 text-sm text-stone-400 hover:text-stone-200"
+                  >
+                    <Settings className="h-4 w-4" />
+                    Settings
+                  </button>
+                </motion.li>
               </ul>
             </motion.div>
           </>
