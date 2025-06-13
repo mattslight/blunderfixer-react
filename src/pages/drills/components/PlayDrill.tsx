@@ -338,6 +338,8 @@ export default function PlayDrill() {
           }}
           evalSwing={drill.eval_swing}
           heroResult={drill.hero_result}
+          eco={drill.eco}
+          ecoUrl={drill.eco_url}
           hideGameResult={true}
         />
         <div className="my-10 flex items-center justify-between gap-4 space-x-2">

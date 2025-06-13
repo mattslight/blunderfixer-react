@@ -9,6 +9,8 @@ type Props = {
   opponent: { username: string; rating: number };
   evalSwing: number;
   heroResult: 'win' | 'loss' | 'draw';
+  eco?: string;
+  ecoUrl?: string;
   hideGameResult?: boolean;
   hideOpponentRating?: boolean;
 };
@@ -19,6 +21,8 @@ export function GameInfoBadges({
   opponent,
   evalSwing,
   heroResult,
+  eco,
+  ecoUrl,
   hideGameResult = false,
   hideOpponentRating = false,
 }: Props) {
@@ -42,6 +46,22 @@ export function GameInfoBadges({
           <TrendingDown className="h-4 w-3" />
           {evalSwing > 10000 ? 'Mate' : `${evalSwing / 100} pawns`}
         </span>
+        {eco && (
+          <span className="inline-flex items-center gap-1 rounded bg-stone-700 px-2 py-0.5 text-xs text-stone-400">
+            {ecoUrl ? (
+              <a
+                href={ecoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                {eco}
+              </a>
+            ) : (
+              eco
+            )}
+          </span>
+        )}
         {!hideGameResult && (
           <span className="inline-flex items-center gap-1 rounded bg-stone-700 px-2 py-0.5 text-xs text-stone-400 capitalize">
             <span
