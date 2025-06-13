@@ -4,7 +4,7 @@ export type DrillResult = 'pass' | 'fail' | null;
 export type GameResult = 'win' | 'loss' | 'draw' | null;
 export type ExpectedResult = 'win' | 'draw' | 'hold' | null;
 
-const DEBUG = false;
+const DEBUG = true;
 const MIN_DEPTH = 18;
 
 interface UseDrillResultParams {
@@ -162,7 +162,8 @@ export function useDrillResult({
       console.log('evalDelta:', evalDelta);
       console.log('gameOver:', gameOver);
       console.log('gameResult:', gameResult);
-      console.log('result:', newResult);
+      console.log('newResult:', newResult);
+      console.log('result:', result);
       console.log('reason:', newReason);
     }
   }, [
@@ -178,6 +179,7 @@ export function useDrillResult({
     moveCount,
     currentDepth,
     isEndgame,
+    result,
   ]);
 
   return { result, expectedResult, reason };
