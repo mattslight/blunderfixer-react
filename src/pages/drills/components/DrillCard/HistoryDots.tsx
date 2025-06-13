@@ -1,8 +1,8 @@
+import { type ReactElement, useEffect } from 'react';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { Tooltip } from 'flowbite-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check, X } from 'lucide-react';
-import type { ReactElement } from 'react';
 
 type HistoryEntry = {
   result: 'pass' | 'fail';
@@ -16,6 +16,14 @@ type HistoryDotsProps = {
 
 export function HistoryDots({ history }: HistoryDotsProps) {
   // 1) Make a _copy_ and sort descending by timestamp
+
+  useEffect(() => {
+    console.log(
+      '[DOTS INPUT]',
+      history.map((h) => h.timestamp)
+    );
+  }, [history]);
+
   const sorted = [...history].sort(
     (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
   );
@@ -29,7 +37,9 @@ export function HistoryDots({ history }: HistoryDotsProps) {
       <AnimatePresence initial={false}>
         {padded.map((entry, idx) => {
           // 3) Build a stable key: use timestamp for real entries, or `empty-<idx>`
-          const key = entry ? entry.timestamp : `empty-${idx}`;
+          const key = entry
+            ? new Date(entry.timestamp).toISOString()
+            : `empty-${idx}`;
 
           // 4) Pre‐compute tooltip content / dot‐styles
           let dotContent: ReactElement;
