@@ -149,3 +149,5 @@ export async function updateDrill(
 
   return res.json() as Promise<DrillPosition>;
 }
+
+export const drillKey = (id: number | string) => `/drills/${id}`;

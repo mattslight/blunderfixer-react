@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { mutate } from 'swr';
 
-import { postDrillHistory } from '@/api/drills';
+import { drillKey, postDrillHistory } from '@/api/drills';
 import { useProfile } from '@/hooks/useProfile';
 
-const DEBUG = false;
+const DEBUG = true;
 
 interface UseSaveDrillHistoryProps {
   drillId: string | number | null | undefined;
@@ -52,10 +52,11 @@ export function useSaveDrillHistory({
       timestamp: ts,
     };
 
-    if (DEBUG) console.log('[OPTIMISTIC]', optimistic);
+    if (DEBUG)
+      console.log('[SAVE] optimistic mutate', drillKey(drillId), optimistic);
 
     mutate(
-      `/drills/${drillId}`,
+      drillKey(drillId),
       (current: any) => {
         const allTimestamps =
           current?.history.map((h: any) => h.timestamp) ?? [];
@@ -86,8 +87,9 @@ export function useSaveDrillHistory({
           console.log('[REVALIDATE - START]');
           console.log('[SERVER RETURNED]', res);
         }
+        if (DEBUG) console.log('[SAVE] server mutate', drillKey(drillId));
 
-        mutate(`/drills/${drillId}`, (data: any) => {
+        mutate(drillKey(drillId), (data: any) => {
           if (DEBUG) {
             console.log(
               '[REVALIDATE - RAW HISTORY]',
