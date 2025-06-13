@@ -22,7 +22,6 @@ import { getDrills } from '@/api/drills';
 import { updateDrill } from '@/api/drills';
 import { PHASE_COLORS, PHASE_DISPLAY } from '@/const/phase';
 import useAnalysisEngine from '@/hooks/useAnalysisEngine';
-import { useDebounce } from '@/hooks/useDebounce';
 import useGameHistory from '@/hooks/useGameHistory';
 import useGameResult from '@/hooks/useGameResult';
 import useMoveInput from '@/hooks/useMoveInput';
@@ -131,16 +130,13 @@ export default function PlayDrill() {
     moveCount,
   });
 
-  const debouncedDrillResult = useDebounce(drillResult, 500);
-
-  useSaveDrillHistory(
-    drill?.id,
-    debouncedDrillResult,
+  useSaveDrillHistory({
+    drillId: drill?.id,
+    result: drillResult,
     reason,
-    currentDepth,
-    moveHistory,
-    resetKey
-  );
+    moves: moveHistory,
+    resetKey,
+  });
 
   const handleNextDrill = async () => {
     if (!username || !drill?.id) {
@@ -233,7 +229,7 @@ export default function PlayDrill() {
           <div className="xs:px-0 w-full px-2">
             <DrillBanner
               expectedResult={expectedResult}
-              drillResult={debouncedDrillResult}
+              drillResult={drillResult}
               reason={reason}
               setResetKey={setResetKey}
               onNext={handleNextDrill}
