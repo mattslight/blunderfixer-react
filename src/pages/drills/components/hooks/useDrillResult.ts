@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 export type DrillResult = 'pass' | 'fail' | null;
 export type GameResult = 'win' | 'loss' | 'draw' | null;
 export type ExpectedResult = 'win' | 'draw' | 'hold' | null;
 
 const DEBUG = true;
-const MIN_DEPTH = 18;
+const MIN_DEPTH = 15;
 
 interface UseDrillResultParams {
   initialEval: number | null;
@@ -34,10 +34,15 @@ export function useDrillResult({
   gameResult,
   moveCount,
 }: UseDrillResultParams) {
-  const [result, setResult] = useState<DrillResult>(null);
-  const [reason, setReason] = useState<string | null>(null);
+  const latchedResult = useRef<DrillResult>(null);
+  const latchedReason = useRef<string | null>(null);
 
-  const expectedResult: ExpectedResult = (() => {
+  useEffect(() => {
+    latchedResult.current = null;
+    latchedReason.current = null;
+  }, [resetKey]);
+
+  const expectedResult: ExpectedResult = useMemo(() => {
     if (initialEval == null) return null;
     if (heroSide === 'white') {
       if (initialEval >= 100) return 'win';
@@ -47,140 +52,131 @@ export function useDrillResult({
       if (initialEval >= 100) return 'hold';
     }
     return 'draw';
-  })();
+  }, [initialEval, heroSide]);
 
-  useEffect(() => {
-    setResult(null);
-    setReason(null);
-  }, [resetKey]);
-
-  useEffect(() => {
-    if (initialEval == null || currentDepth < MIN_DEPTH) {
-      setResult(null);
-      setReason(null);
+  useMemo(() => {
+    if (
+      latchedResult.current !== null ||
+      initialEval == null ||
+      currentDepth < MIN_DEPTH ||
+      moveCount === 0
+    ) {
       return;
     }
-
-    if (result) return;
 
     const evalDelta =
       heroSide === 'white'
         ? initialEval - currentEval
         : currentEval - initialEval;
+
     const heroEval = heroSide === 'white' ? currentEval : -currentEval;
 
-    let newResult: DrillResult = null;
-    let newReason: string | null = null;
+    let result: DrillResult = null;
+    let reason: string | null = null;
 
-    if (moveCount > 0) {
-      if (evalDelta >= 2000) {
-        newResult = 'fail';
-        newReason = 'Oops — you hung mate';
-      } else if (evalDelta >= 300) {
-        newResult = 'fail';
-        newReason = 'You blundered a piece';
-      } else if (isEndgame) {
-        if (expectedResult === 'draw') {
-          if (heroEval <= -200) {
-            newResult = 'fail';
-            newReason = 'You let the draw slip 🤨';
-          } else if (gameOver && gameResult === 'draw') {
-            newResult = 'pass';
-            newReason = 'You held the draw 😅';
-          } else if (gameOver && gameResult === 'loss') {
-            newResult = 'fail';
-            newReason = 'You lost a drawn endgame';
-          } else if (moveCount >= maxMoves) {
-            newResult = 'pass';
-            newReason = 'Solid technique — you kept the balance ⚖️';
-          }
-        } else if (expectedResult === 'win') {
-          if (heroEval <= 0) {
-            newResult = 'fail';
-            newReason = 'You lost a winning position 😭';
-          } else if (gameOver && gameResult === 'win') {
-            newResult = 'pass';
-            newReason = 'You converted the win — great job!';
-          } else if (gameOver && gameResult === 'draw') {
-            newResult = 'fail';
-            newReason = 'You let the win slip to a draw';
-          } else if (gameOver && gameResult === 'loss') {
-            newResult = 'fail';
-            newReason = 'You lost a winning game 😖';
-          } else if (moveCount >= maxMoves) {
-            newResult = 'pass';
-            newReason = 'You kept the winning edge!';
-          }
-        } else {
-          if (evalDelta >= lossThreshold && moveCount > 1) {
-            newResult = 'fail';
-            newReason = 'Defensive chances missed 😓';
-          } else if (
-            gameOver &&
-            gameResult === 'draw' &&
-            expectedResult === 'hold'
-          ) {
-            newResult = 'pass';
-            newReason = 'Good save — you held the draw 🙌🏻';
-          } else if (moveCount >= maxMoves) {
-            newResult = 'pass';
-            newReason = 'You held firm under pressure — great save!';
-          }
+    if (evalDelta >= 2000) {
+      result = 'fail';
+      reason = 'Oops — you hung mate';
+    } else if (evalDelta >= 300) {
+      result = 'fail';
+      reason = 'You blundered a piece';
+    } else if (isEndgame) {
+      if (expectedResult === 'draw') {
+        if (heroEval <= -200) {
+          result = 'fail';
+          reason = 'You let the draw slip 🤨';
+        } else if (gameOver && gameResult === 'draw') {
+          result = 'pass';
+          reason = 'You held the draw 😅';
+        } else if (gameOver && gameResult === 'loss') {
+          result = 'fail';
+          reason = 'You lost a drawn endgame';
+        } else if (moveCount >= maxMoves) {
+          result = 'pass';
+          reason = 'Solid technique — you kept the balance ⚖️';
+        }
+      } else if (expectedResult === 'win') {
+        if (heroEval <= 0) {
+          result = 'fail';
+          reason = 'You lost a winning position 😭';
+        } else if (gameOver && gameResult === 'win') {
+          result = 'pass';
+          reason = 'You converted the win — great job!';
+        } else if (gameOver && gameResult === 'draw') {
+          result = 'fail';
+          reason = 'You let the win slip to a draw';
+        } else if (gameOver && gameResult === 'loss') {
+          result = 'fail';
+          reason = 'You lost a winning game 😖';
+        } else if (moveCount >= maxMoves) {
+          result = 'pass';
+          reason = 'You kept the winning edge!';
         }
       } else {
         if (evalDelta >= lossThreshold && moveCount > 1) {
-          newResult = 'fail';
-          if (expectedResult === 'win') {
-            newReason = 'You lost a winning position 😭';
-          } else if (expectedResult === 'draw') {
-            newReason = 'You let the draw slip 🤨';
-          } else if (expectedResult === 'hold') {
-            newReason = 'Defensive chances missed 😓';
-          }
+          result = 'fail';
+          reason = 'Defensive chances missed 😓';
+        } else if (
+          gameOver &&
+          gameResult === 'draw' &&
+          expectedResult === 'hold'
+        ) {
+          result = 'pass';
+          reason = 'Good save — you held the draw 🙌🏻';
         } else if (moveCount >= maxMoves) {
-          newResult = 'pass';
-          newReason = 'Solid play — good job!';
+          result = 'pass';
+          reason = 'You held firm under pressure — great save!';
         }
+      }
+    } else {
+      if (evalDelta >= lossThreshold && moveCount > 1) {
+        result = 'fail';
+        reason =
+          expectedResult === 'win'
+            ? 'You lost a winning position 😭'
+            : expectedResult === 'draw'
+              ? 'You let the draw slip 🤨'
+              : 'Defensive chances missed 😓';
+      } else if (moveCount >= maxMoves) {
+        result = 'pass';
+        reason = 'Solid play — good job!';
       }
     }
 
-    if (newResult !== null) {
-      setResult(newResult);
-      setReason(newReason);
-    } else {
-      setResult(null);
-      setReason(null);
-    }
+    latchedResult.current = result;
+    latchedReason.current = reason;
 
     if (DEBUG) {
       console.log('— useDrillResult debug —');
-      console.log('moveCount:', moveCount);
-      console.log('maxMoves:', maxMoves);
-      console.log('initialEval:', initialEval);
-      console.log('currentEval:', currentEval);
-      console.log('currentDepth:', currentDepth);
-      console.log('evalDelta:', evalDelta);
-      console.log('gameOver:', gameOver);
-      console.log('gameResult:', gameResult);
-      console.log('newResult:', newResult);
-      console.log('result:', result);
-      console.log('reason:', newReason);
+      console.log({
+        resetKey,
+        result,
+        initialEval,
+        currentEval,
+        currentDepth,
+        evalDelta,
+        heroEval,
+        expectedResult,
+      });
     }
   }, [
+    resetKey,
+    initialEval,
     currentEval,
+    currentDepth,
+    heroSide,
+    maxMoves,
+    isEndgame,
+    lossThreshold,
     gameOver,
     gameResult,
-    initialEval,
-    lossThreshold,
-    maxMoves,
-    heroSide,
-    expectedResult,
-    resetKey,
     moveCount,
-    currentDepth,
-    isEndgame,
-    result,
+    expectedResult,
   ]);
 
-  return { result, expectedResult, reason };
+  return {
+    result: latchedResult.current,
+    reason: latchedReason.current,
+    expectedResult,
+  };
 }
