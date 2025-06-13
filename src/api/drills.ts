@@ -19,7 +19,7 @@ export interface DrillHistoryPayload {
   result: 'pass' | 'fail';
   reason?: string; // optional reason for failure
   moves?: string[]; // sequence of moves played
-  // (timestamp is optional; backend will default to now)
+  timestamp?: string;
 }
 
 export async function getDrills({
