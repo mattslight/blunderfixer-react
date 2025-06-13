@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Drawer } from 'flowbite-react';
 import { motion } from 'framer-motion';
+import { Castle } from 'lucide-react';
 
 import EasterEggCredits, { useRapidTaps } from './EasterEggCredits';
 
@@ -96,7 +97,14 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
     ),
   };
 
+  const endgamesNav = {
+    to: '/endgames',
+    label: 'Endgames',
+    Icon: ({ className }) => <Castle className={className} />,
+  };
+
   const bottomNav = [
+    endgamesNav,
     {
       to: '/help',
       label: 'Help',
