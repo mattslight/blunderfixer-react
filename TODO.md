@@ -2,9 +2,7 @@
 
 - Prioritised
 
-  [x] [BUG] Fix logic in useSaveDrillHistory, check optimistic updates and saving twice on the first play, UI only updates after clicking Replay, consider only returning the reason from useDrillResult after depth 12
   [ ] [FEAT] Get a hint about a position – what's the key idea(s)?
-  [ ] [FEAT] Fix blunders fixed logic!
 
 - Backlog
   [ ] FEAT: Wire up stats on home screen
@@ -17,6 +15,8 @@
 [ ] Opening Trainer (practice specific openings, where the computer will gladly enter into certain lines with you)
 [ ] Endgame Trainer (two rooks, extra pawn etc.)
 
+[x] [FEAT] Fix "blunders fixed" count logic!
+[x] [BUG] Fix logic in useSaveDrillHistory, check optimistic updates and saving twice on the first play, UI only updates after clicking Replay, consider only returning the reason from useDrillResult after depth 12
 [x] FIX: Drills, Endgames – explain that we should play until the end, don't lose if the advantage drops and its still winning only end, only count as fail if it's now a dead draw
 [x] FIX: Drills, For Endgames don't require to convert already losing positions (-100) or more. Simply hold for three moves as usual.
 [x] Save the losing line in the history id of a drillposition
