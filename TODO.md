@@ -6,6 +6,7 @@
   [~] Opening Trainer (practice specific openings, where the computer will gladly enter into certain lines with you)
   [~] Endgame Trainer (two rooks, extra pawn etc.)
   [~] Add ECO tag to drill position cards, update DrillPosition with eco, eco_url fields
+  
 - Backlog
   [ ] FEAT: Wire up stats on home screen
   [ ] [FEAT] Get a hint about a position – what's the key idea(s)?
@@ -13,6 +14,12 @@
 - Longtail
   [ ] Load new games and drills when logging in
   [ ] Load games from DB
+  [ ] Ask coach for hint on drill
+  [ ] Move a drill to analysis mode (if I fail dig into why I failed, better understanding)
+  [ ] Tag drills with theme (e.g. “fork tactic in middlegame”).
+
+[ ] Opening Trainer (practice specific openings; see docs/OPENING_TRAINER.md)
+[ ] Endgame Trainer (two rooks, extra pawn etc.)
 
 [x] In /drills/{id} endpoint join game object (we will use this for ECO codes and time controls and PGN can be retired as it will be included in the game object)
 [x] Move a drill to analysis mode (if I fail dig into why I failed, better understanding)
