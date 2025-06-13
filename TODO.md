@@ -2,8 +2,9 @@
 
 - Prioritised
 
-  [ ] [BUG] Fix logic in useSaveDrillHistory, check optimistic updates and saving twice on the first play, UI only updates after clicking Replay, consider only returning the reason from useDrillResult after depth 12
+  [x] [BUG] Fix logic in useSaveDrillHistory, check optimistic updates and saving twice on the first play, UI only updates after clicking Replay, consider only returning the reason from useDrillResult after depth 12
   [ ] [FEAT] Get a hint about a position – what's the key idea(s)?
+  [ ] [FEAT] Fix blunders fixed logic!
 
 - Backlog
   [ ] FEAT: Wire up stats on home screen
