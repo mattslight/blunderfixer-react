@@ -61,7 +61,7 @@ export function useSaveDrillHistory({
         const allTimestamps =
           current?.history.map((h: any) => h.timestamp) ?? [];
         if (DEBUG) {
-          console.log('[CURRENT BEFORE OPTIMISTIC]', allTimestamps);
+          console.debug('[CURRENT BEFORE OPTIMISTIC]', allTimestamps);
           console.log('[ADDING OPTIMISTIC]', optimistic.timestamp);
         }
 
@@ -76,6 +76,14 @@ export function useSaveDrillHistory({
       { revalidate: false }
     );
 
+    console.log(
+      '[SAVE] Posting history for drill',
+      drillId,
+      'with result',
+      result,
+      'at',
+      ts
+    );
     postDrillHistory(drillId, {
       result,
       reason,
@@ -91,7 +99,7 @@ export function useSaveDrillHistory({
 
         mutate(drillKey(drillId), (data: any) => {
           if (DEBUG) {
-            console.log(
+            console.debug(
               '[REVALIDATE - RAW HISTORY]',
               data.history.map((h: any) => h.timestamp)
             );
@@ -103,7 +111,7 @@ export function useSaveDrillHistory({
           const deduped = Array.from(unique.values());
 
           if (DEBUG) {
-            console.log(
+            console.debug(
               '[REVALIDATE - DEDUPED HISTORY]',
               deduped.map((h) => new Date(h.timestamp).toISOString())
             );
