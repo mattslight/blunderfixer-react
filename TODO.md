@@ -3,10 +3,9 @@
 - Prioritised
   [~] In drill worker – tag drills with themes (e.g. “fork tactic", "pawn push")
   [~] In drill worder - tag drills with time used (time spent on the move), later we will used this on the FE to classify time impulsive or time overspend
-  [~] In /drills/{id} endpoint join game object (we will use this for ECO codes and time controls and PGN can be retired as it will be included in the game object)
   [~] Opening Trainer (practice specific openings, where the computer will gladly enter into certain lines with you)
   [~] Endgame Trainer (two rooks, extra pawn etc.)
-
+  [~] Add ECO tag to drill position cards, update DrillPosition with eco, eco_url fields
 - Backlog
   [ ] FEAT: Wire up stats on home screen
   [ ] [FEAT] Get a hint about a position – what's the key idea(s)?
@@ -15,6 +14,7 @@
   [ ] Load new games and drills when logging in
   [ ] Load games from DB
 
+[x] In /drills/{id} endpoint join game object (we will use this for ECO codes and time controls and PGN can be retired as it will be included in the game object)
 [x] Move a drill to analysis mode (if I fail dig into why I failed, better understanding)
 [x] [FEAT] Fix "blunders fixed" count logic!
 [x] [BUG] Fix logic in useSaveDrillHistory, check optimistic updates and saving twice on the first play, UI only updates after clicking Replay, consider only returning the reason from useDrillResult after depth 12
