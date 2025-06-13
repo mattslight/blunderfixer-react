@@ -9,6 +9,7 @@ import {
 import {
   Clock,
   Home,
+  LayoutGrid,
   LifeBuoy,
   LogOut,
   Settings,
@@ -19,7 +20,6 @@ import {
 
 import SignOutConfirmModal from './SignOutConfirmModal';
 
-import blunderLogoSvg from '@/assets/blunderfixer.svg';
 import useBlundersFixed from '@/hooks/useBlundersFixed';
 import {
   useNewDrillsIndicator,
@@ -122,7 +122,7 @@ export default function MobileGlobalNav() {
         onDragEnd={(e, info) => {
           const rawOffset = info.point.x - window.innerWidth / 2;
           const snapThreshold = 50;
-          const buttonWidth = 120;
+          const buttonWidth = 54;
           const maxOffset = (window.innerWidth - buttonWidth) / 2;
           const clampedOffset = Math.max(
             -maxOffset,
@@ -143,14 +143,11 @@ export default function MobileGlobalNav() {
         initial={{ opacity: 1, y: 0 }}
         animate={{ opacity: scrollUp ? 1 : 0, y: scrollUp ? 0 : 40 }}
         transition={{ duration: 0.3 }}
-        className="xs:hidden fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full bg-black/50 px-2 py-1.5 pr-6 text-sm font-semibold text-stone-200 shadow-md backdrop-blur-sm"
+        className="xs:hidden fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full bg-purple-600 px-2 py-2 text-sm font-semibold text-stone-200 shadow-md backdrop-blur-sm"
         onClick={() => setOpen(true)}
       >
-        <img
-          src={blunderLogoSvg}
-          className="shake-icon mr-1.5 inline-flex h-6 w-6"
-        />
-        <span className="relative top-[1px] left-[5px]">Menu</span>
+        <LayoutGrid className="h-6 w-6" />
+        {/* or use an icon */}
       </motion.button>
 
       <AnimatePresence>
@@ -225,11 +222,7 @@ export default function MobileGlobalNav() {
                       {item.icon}
                       {item.label}
                       {item.hasNew && (
-                        <img
-                          src={blunderLogoSvg}
-                          alt="New"
-                          className="relative right-2 bottom-1 h-4 w-4 drop-shadow"
-                        />
+                        <span className="relative right-2 bottom-1 h-2.5 w-2.5 rounded-full bg-blue-500 shadow-md" />
                       )}
                     </button>
                   </motion.li>
