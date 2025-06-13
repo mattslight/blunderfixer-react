@@ -40,7 +40,7 @@ export function useStockfish(
   // 3) Local state for PV info, best‐move UCI string, and deepest depth seen
   const [lines, setLines] = useState<PVLine[]>(emptyLines);
   const [bestMoveUCI, setBestUCI] = useState<string>();
-  const [currentDepth, setDepthState] = useState(0);
+  const [depthSeen, setDepthSeen] = useState(0);
 
   // 4) We track a runId/ref so that if `fen` changes quickly, old output is thrown away
   const runId = useRef(0);
@@ -82,7 +82,7 @@ export function useStockfish(
     if (!enabled || !fen) {
       setLines(emptyLines);
       setBestUCI(undefined);
-      setDepthState(0);
+      setDepthSeen(0);
       return;
     }
 
@@ -100,7 +100,7 @@ export function useStockfish(
     // Immediately reset our displayed lines and bestMoveUCI
     setLines(emptyLines);
     setBestUCI(undefined);
-    setDepthState(0);
+    setDepthSeen(0);
 
     let sub: Subscription | null = null;
     let canceled = false;
@@ -159,7 +159,7 @@ export function useStockfish(
           }
 
           // 5) Always track the maximum depth seen so far
-          setDepthState((prev) => (info.depth > prev ? info.depth : prev));
+          setDepthSeen((prev) => (info.depth > prev ? info.depth : prev));
         });
       } catch (e) {
         console.error('[useStockfish] analyze() error:', e);
@@ -175,5 +175,5 @@ export function useStockfish(
     };
   }, [fen, depth, engine, emptyLines, enabled, isInitialized]);
 
-  return { lines, bestMoveUCI, currentDepth: currentDepth };
+  return { lines, bestMoveUCI, currentDepth: depthSeen };
 }
