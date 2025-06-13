@@ -14,14 +14,16 @@ type HistoryDotsProps = {
   history: HistoryEntry[];
 };
 
+const DEBUG = false;
 export function HistoryDots({ history }: HistoryDotsProps) {
   // 1) Make a _copy_ and sort descending by timestamp
 
   useEffect(() => {
-    console.log(
-      '[DOTS INPUT]',
-      history.map((h) => h.timestamp)
-    );
+    if (DEBUG)
+      console.log(
+        '[DOTS INPUT]',
+        history.map((h) => h.timestamp)
+      );
   }, [history]);
 
   const sorted = [...history].sort(
