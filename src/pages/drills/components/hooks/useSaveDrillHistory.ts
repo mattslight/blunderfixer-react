@@ -1,26 +1,32 @@
-// src/hooks/useSaveDrillHistory.ts
 import { useEffect, useRef } from 'react';
 import { mutate } from 'swr';
 
 import { postDrillHistory } from '@/api/drills';
 import { useProfile } from '@/hooks/useProfile';
 
-const MIN_DEPTH = 12;
-export function useSaveDrillHistory(
-  drillId: string | number | null | undefined,
-  result: 'pass' | 'fail' | null,
-  reason: string | null,
-  currentDepth: number,
-  moves: string[],
-  resetKey: number
-) {
+const DEBUG = false;
+
+interface UseSaveDrillHistoryProps {
+  drillId: string | number | null | undefined;
+  result: 'pass' | 'fail' | null;
+  reason: string | null;
+  moves: string[];
+  resetKey: number;
+}
+
+export function useSaveDrillHistory({
+  drillId,
+  result,
+  reason,
+  moves,
+  resetKey,
+}: UseSaveDrillHistoryProps) {
   const hasPosted = useRef(false);
 
   const {
     profile: { username },
   } = useProfile();
 
-  // Reset posted flag when moving to a new drill
   useEffect(() => {
     hasPosted.current = false;
   }, [drillId, resetKey]);
@@ -29,13 +35,11 @@ export function useSaveDrillHistory(
     const canSave =
       drillId != null &&
       !hasPosted.current &&
-      currentDepth >= MIN_DEPTH &&
       (result === 'pass' || result === 'fail');
 
     if (!canSave) return;
 
     hasPosted.current = true;
-
     const ts = new Date().toISOString();
 
     const optimistic = {
@@ -48,16 +52,26 @@ export function useSaveDrillHistory(
       timestamp: ts,
     };
 
+    if (DEBUG) console.log('[OPTIMISTIC]', optimistic);
+
     mutate(
       `/drills/${drillId}`,
-      (current: any) =>
-        current
+      (current: any) => {
+        const allTimestamps =
+          current?.history.map((h: any) => h.timestamp) ?? [];
+        if (DEBUG) {
+          console.log('[CURRENT BEFORE OPTIMISTIC]', allTimestamps);
+          console.log('[ADDING OPTIMISTIC]', optimistic.timestamp);
+        }
+
+        return current
           ? {
               ...current,
               history: [...current.history, optimistic],
               last_drilled_at: ts,
             }
-          : current,
+          : current;
+      },
       { revalidate: false }
     );
 
@@ -65,9 +79,37 @@ export function useSaveDrillHistory(
       result,
       reason,
       moves,
+      timestamp: ts,
     })
-      .then(() => {
-        mutate(`/drills/${drillId}`);
+      .then((res) => {
+        if (DEBUG) {
+          console.log('[REVALIDATE - START]');
+          console.log('[SERVER RETURNED]', res);
+        }
+
+        mutate(`/drills/${drillId}`, (data: any) => {
+          if (DEBUG) {
+            console.log(
+              '[REVALIDATE - RAW HISTORY]',
+              data.history.map((h: any) => h.timestamp)
+            );
+          }
+          const unique = new Map();
+          for (const h of data.history) {
+            unique.set(new Date(h.timestamp).toISOString(), h);
+          }
+          const deduped = Array.from(unique.values());
+
+          if (DEBUG) {
+            console.log(
+              '[REVALIDATE - DEDUPED HISTORY]',
+              deduped.map((h) => new Date(h.timestamp).toISOString())
+            );
+          }
+
+          return { ...data, history: deduped };
+        });
+
         if (result === 'pass' && username) {
           try {
             const key = `bf:blunders_fixed:${username}`;
@@ -83,5 +125,5 @@ export function useSaveDrillHistory(
         console.error('Could not save drill history:', err);
         hasPosted.current = false; // retry on failure
       });
-  }, [drillId, result, reason, currentDepth, moves, username]);
+  }, [drillId, result, reason, moves, resetKey, username]);
 }
