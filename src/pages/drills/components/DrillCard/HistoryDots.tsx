@@ -14,7 +14,7 @@ type HistoryDotsProps = {
   history: HistoryEntry[];
 };
 
-const DEBUG = true;
+const DEBUG = false;
 export function HistoryDots({ history }: HistoryDotsProps) {
   // 1) Make a _copy_ and sort descending by timestamp
 
