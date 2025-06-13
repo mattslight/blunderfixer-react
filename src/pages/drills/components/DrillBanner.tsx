@@ -79,7 +79,7 @@ export default function DrillBanner({
   );
 
   return (
-    <div className="xs:p-0 flex w-full flex-col items-center space-y-2 px-4">
+    <div className="flex w-full flex-col items-center space-y-2">
       {/* Drill Goal Banner (only show before result) */}
       {expectedResult && !drillResult && (
         <div className="flex w-full items-center justify-between rounded border border-purple-500 bg-purple-900 px-4 py-2 text-center text-purple-200">
@@ -108,7 +108,7 @@ export default function DrillBanner({
       {/* Drill Result Banner */}
       {drillResult && (
         <div
-          className={`flex w-full items-center justify-between space-x-2 rounded-md px-4 py-2 text-center text-sm font-medium ${
+          className={`flex w-full items-center justify-between space-x-2 rounded-md px-3 py-2 text-center text-sm font-medium ${
             drillResult === 'pass'
               ? 'border border-green-500 bg-green-900 text-green-100'
               : 'border border-red-500 bg-red-900 text-red-100'
@@ -119,7 +119,7 @@ export default function DrillBanner({
               ? `✅ ${reason ?? 'Great job!'}`
               : `❌ ${reason ?? 'Better luck next time.'}`}
           </span>
-          <span className="space-x-2">
+          <span className="space-x-3">
             {drillResult === 'fail' && (
               <button
                 onClick={() => setResetKey((prev) => prev + 1)}

@@ -230,14 +230,16 @@ export default function PlayDrill() {
         </a>
         {/* ---------- Board + EvalBar ---------- */}
         <div className="mt-4 flex flex-col items-center">
-          <DrillBanner
-            expectedResult={expectedResult}
-            drillResult={debouncedDrillResult}
-            reason={reason}
-            setResetKey={setResetKey}
-            onNext={handleNextDrill}
-            initialEval={initialEval}
-          />
+          <div className="xs:px-0 w-full px-2">
+            <DrillBanner
+              expectedResult={expectedResult}
+              drillResult={debouncedDrillResult}
+              reason={reason}
+              setResetKey={setResetKey}
+              onNext={handleNextDrill}
+              initialEval={initialEval}
+            />
+          </div>
           <div className="mt-4 flex w-full items-center">
             {/* <EvalBar
               score={evalScore}
@@ -301,7 +303,7 @@ export default function PlayDrill() {
           )}
         </div>
       </div>
-      <div className="xs:px-0 mx-auto mt-5 max-w-md space-y-2 px-4">
+      <div className="xs:px-0 mx-auto mt-5 max-w-md space-y-2 px-2">
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-row items-center space-x-2">
             <div className="text-xs font-bold text-green-400 uppercase">
