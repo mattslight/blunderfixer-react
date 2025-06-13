@@ -29,7 +29,7 @@ import { useProfile } from '@/hooks/useProfile';
 
 const DEBUG = false;
 
-const REQUIRED_MOVES = 6; // default for early/midgame/late drills
+const REQUIRED_MOVES = 6;
 
 export default function PlayDrill() {
   const { id } = useParams<{ id: string }>();
@@ -52,6 +52,16 @@ export default function PlayDrill() {
       console.error('Could not archive drill:', err);
     }
   };
+
+  //debug
+  useEffect(() => {
+    if (DEBUG) console.log('[PlayDrill] Render — resetKey:', resetKey);
+    if (DEBUG)
+      console.log(
+        '[PlayDrill] drill.history timestamps:',
+        drill?.history?.map((h) => h.timestamp)
+      );
+  }, [drill?.history, resetKey]);
 
   // Whenever a new drill arrives, bump resetKey to re‐initialize
   useEffect(() => {
@@ -305,7 +315,7 @@ export default function PlayDrill() {
             <div className="text-xs font-bold text-green-400 uppercase">
               Last 5 Tries
             </div>
-            <HistoryDots history={drill.history ?? []} />
+            <HistoryDots key={resetKey} history={drill.history ?? []} />
           </div>
         </div>
 
