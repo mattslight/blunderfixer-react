@@ -5,7 +5,7 @@ export type GameResult = 'win' | 'loss' | 'draw' | null;
 export type ExpectedResult = 'win' | 'draw' | 'hold' | null;
 
 const DEBUG = false;
-const MIN_DEPTH = 12;
+const MIN_DEPTH = 18;
 
 interface UseDrillResultParams {
   initialEval: number | null;
@@ -60,6 +60,8 @@ export function useDrillResult({
       setReason(null);
       return;
     }
+
+    if (result) return;
 
     const evalDelta =
       heroSide === 'white'
