@@ -4,7 +4,7 @@ export type DrillResult = 'pass' | 'fail' | null;
 export type GameResult = 'win' | 'loss' | 'draw' | null;
 export type ExpectedResult = 'win' | 'draw' | 'hold' | null;
 
-const DEBUG = true;
+const DEBUG = false;
 const MIN_DEPTH = 15;
 
 interface UseDrillResultParams {
