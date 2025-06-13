@@ -15,6 +15,8 @@ function getRandomMessage(messages: string[]) {
   return messages[Math.floor(Math.random() * messages.length)];
 }
 
+const DEBUG = true;
+
 export default function DrillBanner({
   expectedResult,
   drillResult,
@@ -78,6 +80,12 @@ export default function DrillBanner({
     []
   );
 
+  function handleReset() {
+    if (DEBUG)
+      console.log('[DRILL BANNER] Resetting drill state with new resetKey');
+    setResetKey((prev) => prev + 1);
+  }
+
   return (
     <div className="flex w-full flex-col items-center space-y-2">
       {/* Drill Goal Banner (only show before result) */}
@@ -122,7 +130,7 @@ export default function DrillBanner({
           <span className="space-x-3">
             {drillResult === 'fail' && (
               <button
-                onClick={() => setResetKey((prev) => prev + 1)}
+                onClick={handleReset}
                 className="inline-flex items-center rounded-md bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-blue-700"
               >
                 <RotateCcw className="mr-1 hidden h-3 w-3" />
@@ -131,7 +139,7 @@ export default function DrillBanner({
             )}
             {drillResult === 'pass' && (
               <button
-                onClick={() => setResetKey((prev) => prev + 1)}
+                onClick={handleReset}
                 className="inline-flex items-center rounded-md bg-green-600 px-2 py-1 text-xs font-medium text-white hover:bg-green-700"
               >
                 <RotateCcw className="mr-1 hidden h-3 w-3" />
