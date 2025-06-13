@@ -27,9 +27,16 @@ export function useSaveDrillHistory({
     profile: { username },
   } = useProfile();
 
+  // Reset posted flag when changing drills or when the result is cleared
+  useEffect(() => {
+    if (result === null) {
+      hasPosted.current = false;
+    }
+  }, [result]);
+
   useEffect(() => {
     hasPosted.current = false;
-  }, [drillId, resetKey]);
+  }, [drillId]);
 
   useEffect(() => {
     const canSave =
