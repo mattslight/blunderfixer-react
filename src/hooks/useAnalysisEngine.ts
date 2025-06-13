@@ -5,6 +5,7 @@ import { Chess, PieceSymbol, Square } from 'chess.js';
 import { useStockfish } from '@/hooks/useStockfish';
 import { uciToArrow, uciToMove } from '@/lib/uci';
 
+const DEBUG = false;
 interface UseAnalysisResult {
   /** Full PV lines (rank-sorted), for display if needed. */
   lines: {
@@ -45,6 +46,20 @@ export default function useAnalysisEngine(
   //    If scoreCP is available, use it directly. If mateIn is reported (checkmate found),
   //    convert to ±10000: +10000 if White is winning, -10000 if Black is winning.
   const [evalScore, setEvalScore] = useState(0);
+
+  // log currentDepth and rawLines for debugging
+  useEffect(() => {
+    if (rawLines.length > 0) {
+      if (DEBUG)
+        console.log(
+          `Current Depth: ${currentDepth}, Raw Lines: ${JSON.stringify(rawLines)}`
+        );
+    } else {
+      if (DEBUG)
+        console.log(`Current Depth: ${currentDepth}, No raw lines available.`);
+    }
+  }, [currentDepth, rawLines]);
+
   useEffect(() => {
     if (!enabled) return;
     const bestLine = rawLines[0];
