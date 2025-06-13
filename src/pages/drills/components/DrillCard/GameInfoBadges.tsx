@@ -49,12 +49,7 @@ export function GameInfoBadges({
         {eco && (
           <span className="inline-flex items-center gap-1 rounded bg-stone-700 px-2 py-0.5 text-xs text-stone-400">
             {ecoUrl ? (
-              <a
-                href={ecoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline"
-              >
+              <a href={ecoUrl} target="_blank" rel="noopener noreferrer">
                 {eco}
               </a>
             ) : (
