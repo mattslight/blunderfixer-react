@@ -93,7 +93,7 @@ export function useDrillResult({
           reason = 'You lost a drawn endgame';
         } else if (moveCount >= maxMoves) {
           result = 'pass';
-          reason = 'Solid technique — you kept the balance ⚖️';
+          reason = 'Solid technique, you kept the balance';
         }
       } else if (expectedResult === 'win') {
         if (heroEval <= 0) {
