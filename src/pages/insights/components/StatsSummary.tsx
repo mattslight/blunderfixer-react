@@ -1,6 +1,8 @@
 import StatCard from './StatCard';
 import WinRateDial from './WinRateDial';
 
+import useBlundersFixed from '@/hooks/useBlundersFixed';
+
 export default function StatsSummary() {
   type Stat = {
     value: string | number;
@@ -10,9 +12,11 @@ export default function StatsSummary() {
     trend?: 'up' | 'down';
   };
 
+  const blundersFixed = useBlundersFixed();
+
   const stats: Stat[] = [
     {
-      value: '123',
+      value: blundersFixed,
       label: 'Blunders Fixed',
       desc: 'Mistakes you corrected',
       color: 'text-blue-400',
