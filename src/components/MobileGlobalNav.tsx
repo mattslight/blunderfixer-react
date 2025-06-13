@@ -146,7 +146,7 @@ export default function MobileGlobalNav() {
         className="xs:hidden fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full bg-purple-600 px-2 py-2 text-sm font-semibold text-stone-200 shadow-md backdrop-blur-sm"
         onClick={() => setOpen(true)}
       >
-        <LayoutGrid className="h-6 w-6" />
+        <LayoutGrid className="h-7 w-7" />
         {/* or use an icon */}
       </motion.button>
 
