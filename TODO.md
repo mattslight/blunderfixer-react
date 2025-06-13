@@ -12,7 +12,7 @@
   [ ] Move a drill to analysis mode (if I fail dig into why I failed, better understanding)
   [ ] Tag drills with theme (e.g. “fork tactic in middlegame”).
 
-[ ] Opening Trainer (practice specific openings, where the computer will gladly enter into certain lines with you)
+[ ] Opening Trainer (practice specific openings; see docs/OPENING_TRAINER.md)
 [ ] Endgame Trainer (two rooks, extra pawn etc.)
 
 [x] [FEAT] Fix "blunders fixed" count logic!
