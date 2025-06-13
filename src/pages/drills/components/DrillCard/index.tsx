@@ -86,6 +86,8 @@ export function DrillCard({ drill, onStartDrill }: Props) {
             opponent={{ username: opponent_username, rating: opponent_rating }}
             evalSwing={eval_swing}
             heroResult={hero_result}
+            eco={drill.eco}
+            ecoUrl={drill.eco_url}
           />
         </div>
         {/* 3 Last 5 Tries (HistoryDots) & Drill Button */}

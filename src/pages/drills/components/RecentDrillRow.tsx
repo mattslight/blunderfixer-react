@@ -89,6 +89,8 @@ export default function RecentDrillRow({ drill, onPlay }: Props) {
           }}
           evalSwing={drill.eval_swing}
           heroResult={drill.hero_result}
+          eco={drill.eco}
+          ecoUrl={drill.eco_url}
           hideGameResult={!isDesktop}
           hideOpponentRating={!isDesktop}
         />

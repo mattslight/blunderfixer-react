@@ -141,6 +141,8 @@ export interface DrillPosition {
   losing_move: string;
   history: DrillHistory[];
   pgn: string;
+  eco?: string;
+  eco_url?: string;
 }
 
 export type DrillHistory = {
