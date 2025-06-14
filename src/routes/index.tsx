@@ -8,6 +8,7 @@ import AnalyseGame from '@/pages/analyse';
 import Drills from '@/pages/drills';
 import PlayDrill from '@/pages/drills/components/PlayDrill';
 import RecentDrillsPage from '@/pages/drills/RecentDrillsPage';
+import EndgameTrainer from '@/pages/endgames';
 import GameHistory from '@/pages/games';
 import Help from '@/pages/help';
 import PreSignupHome from '@/pages/home/PreSignupHome';
@@ -76,6 +77,14 @@ export default function AppRoutes() {
         }
       />
       <Route path="/drills/play/:id" element={<PlayDrill />} />
+      <Route
+        path="/endgames"
+        element={
+          <ProtectedRoute>
+            <EndgameTrainer />
+          </ProtectedRoute>
+        }
+      />
       <Route
         path="/help"
         element={

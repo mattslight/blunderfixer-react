@@ -7,6 +7,7 @@ import {
   useMotionValue,
 } from 'framer-motion';
 import {
+  Castle,
   Clock,
   Home,
   LayoutGrid,
@@ -65,6 +66,11 @@ export default function MobileGlobalNav() {
       label: 'Analyse',
       icon: <Upload className="h-5 w-5" />,
       path: '/analyse',
+    },
+    {
+      label: 'Endgames',
+      icon: <Castle className="h-5 w-5" />,
+      path: '/endgames',
     },
   ];
 
