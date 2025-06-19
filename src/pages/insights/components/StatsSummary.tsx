@@ -44,7 +44,7 @@ export default function StatsSummary() {
   return (
     <>
       {/* Mobile */}
-      <section className="scrollbar-hide xs:hidden mb-4 snap-x snap-mandatory overflow-x-auto">
+      <section className="scrollbar-hide xs:hidden -mx-4 mb-4 snap-x snap-mandatory overflow-x-auto pl-4">
         <div className="flex gap-3">
           {stats.map((stat, idx) => (
             <StatCard
