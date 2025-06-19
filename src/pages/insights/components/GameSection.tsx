@@ -26,7 +26,7 @@ export default function GameSection({
           className="text-sm text-blue-400 hover:underline"
           onClick={() => navigate('/games')}
         >
-          More games »
+          More »
         </button>
       </div>
       <section className="mb-20">
