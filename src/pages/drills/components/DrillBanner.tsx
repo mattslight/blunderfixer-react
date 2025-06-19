@@ -105,7 +105,7 @@ export default function DrillBanner({
           </div>
           <button
             onClick={onNext}
-            className="inline-flex items-center self-end rounded-md bg-stone-600 px-2 py-1 text-xs font-medium text-stone-400 hover:bg-stone-700"
+            className="xs:inline-flex hidden items-center self-end rounded-md bg-stone-600 px-2 py-1 text-xs font-medium text-stone-400 hover:bg-stone-700"
           >
             Skip Drill
             <SkipForward className="ml-1 inline-flex h-3 w-3" />
@@ -124,10 +124,10 @@ export default function DrillBanner({
         >
           <span>
             {drillResult === 'pass'
-              ? `✅ ${reason ?? 'Great job!'}`
-              : `❌ ${reason ?? 'Better luck next time.'}`}
+              ? `${reason ?? 'Great job!'}`
+              : `${reason ?? 'Better luck next time.'}`}
           </span>
-          <span className="space-x-3">
+          <span className="xs:inline-flex hidden space-x-3">
             {drillResult === 'fail' && (
               <button
                 onClick={handleReset}
