@@ -398,7 +398,6 @@ export default function PlayDrill() {
           onCancel={() => setShowConfirm(false)}
           onConfirm={handleArchive}
         />
-        <div className="mt-32">&nbsp;</div>
       </div>
     </>
   );
