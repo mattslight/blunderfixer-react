@@ -1,6 +1,7 @@
 // src/pages/drills/components/ActionBar.tsx
 import { useState } from 'react';
 import { RotateCcw, SkipForward } from 'lucide-react';
+import { Ellipsis } from 'lucide-react';
 
 import BottomSheet from './BottomSheet';
 
@@ -57,13 +58,7 @@ export default function ActionBar({
           onClick={() => setMenuOpen(true)}
           className="rounded-md p-2 text-stone-200 hover:text-white"
         >
-          <svg
-            className="h-6 w-6 text-stone-200"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zm0 6a2 2 0 110-4 2 2 0 010 4zm0 6a2 2 0 110-4 2 2 0 010 4z" />
-          </svg>
+          <Ellipsis />
         </button>
 
         {/* Primary big button */}
