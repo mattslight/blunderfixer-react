@@ -1,7 +1,6 @@
 // src/pages/drills/components/ActionBar.tsx
 import { useState } from 'react';
-import { Redo, RotateCcw } from 'lucide-react';
-import { Ellipsis } from 'lucide-react';
+import { EllipsisVertical, Redo, RotateCcw } from 'lucide-react';
 
 import BottomSheet from './BottomSheet';
 
@@ -56,9 +55,9 @@ export default function ActionBar({
         {/* Menu trigger */}
         <button
           onClick={() => setMenuOpen(true)}
-          className="rounded-md p-1 text-stone-200 hover:text-white"
+          className="mr-1 rounded-md text-stone-200 hover:text-white"
         >
-          <Ellipsis />
+          <EllipsisVertical />
         </button>
 
         {/* Primary big button */}
