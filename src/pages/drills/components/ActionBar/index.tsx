@@ -1,6 +1,6 @@
 // src/pages/drills/components/ActionBar.tsx
 import { useState } from 'react';
-import { RotateCcw, SkipForward } from 'lucide-react';
+import { Redo, RotateCcw } from 'lucide-react';
 import { Ellipsis } from 'lucide-react';
 
 import BottomSheet from './BottomSheet';
@@ -40,7 +40,7 @@ export default function ActionBar({
         : 'bg-green-600 hover:bg-green-700';
 
   // secondary button icon+label
-  let SecondaryIcon = SkipForward;
+  let SecondaryIcon = Redo;
   let secondaryLabel = 'Skip';
   let secondaryAction = onNext;
 
