@@ -50,7 +50,7 @@ export default function HomeScreen() {
 
   return (
     <>
-      <div className="p-4 pt-16 2xl:ml-12">
+      <div className="p-4 px-8 pt-16 2xl:ml-12">
         <div className="mx-auto max-w-3xl space-y-3">
           <HeroSection
             username={username}
