@@ -17,14 +17,14 @@ export default function DrillSection({ drills, loading }: Props) {
     <section className="mt-12">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-xl font-semibold text-stone-100">
-          <Target className="relative bottom-0.25 mr-1 inline-flex w-5" /> More
+          <Target className="relative bottom-0.25 mr-1 inline-flex w-5" />
           Drills
         </h2>
         <button
           className="text-sm text-blue-400 hover:underline"
           onClick={() => navigate('/drills')}
         >
-          All Drills »
+          More »
         </button>
       </div>
       {loading ? (
