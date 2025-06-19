@@ -253,7 +253,7 @@ export default function PlayDrill() {
         </a>
         {/* ---------- Board + EvalBar ---------- */}
         <div className="mt-4 flex flex-col items-center">
-          <div className="xs:px-0 w-full px-2">
+          <div className="xs:px-0 w-full px-4">
             <DrillBanner
               expectedResult={expectedResult}
               drillResult={drillResult}
