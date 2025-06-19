@@ -28,7 +28,7 @@ export default function HeroSection({
           }
           className="rounded bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700"
         >
-          Next Drill{' '}
+          Start Training{' '}
           <Play className="relative bottom-0.25 ml-1 inline h-4 w-4" />
         </button>
       </div>
