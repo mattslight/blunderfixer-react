@@ -14,7 +14,7 @@ export default function Navbar({ toggleSidebar }) {
 
   return (
     <nav
-      className={`fixed top-0 right-0 left-0 z-50 py-1.5 pr-2 pl-2 2xl:pl-8`}
+      className={`xs:left-0 fixed top-0 right-0 z-50 py-1.5 pr-2 pl-2 2xl:pl-8`}
     >
       <div className="flex flex-wrap items-center justify-between">
         <div
