@@ -371,7 +371,7 @@ export default function PlayDrill() {
           ecoUrl={drill.eco_url}
           hideGameResult={true}
         />
-        <div className="my-10 flex items-center justify-between gap-4 space-x-2">
+        <div className="xs:flex my-10 hidden items-center justify-between gap-4 space-x-2">
           {!drill.pgn && <CopyFenToClipboard fen={fen} />}
           {drill.pgn && (
             <AnalysePositionButton
