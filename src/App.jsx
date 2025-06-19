@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import BackgroundLayer from '@/components/BackgroundLayer';
-import MobileGlobalNav from '@/components/MobileGlobalNav';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import { useProfile } from '@/hooks/useProfile';
@@ -40,7 +39,6 @@ export default function App() {
         className={`z-10 min-h-screen w-full ${loggedIn && 'xs:pt-8 2xl:pl-32'}`}
       >
         <AppRoutes />
-        {loggedIn && <MobileGlobalNav />} {/* 👈 Add here */}
       </main>
     </>
   );

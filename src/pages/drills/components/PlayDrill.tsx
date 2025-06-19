@@ -173,6 +173,22 @@ export default function PlayDrill() {
     }
   };
 
+  const handleAnalysis = () => {
+    if (!drill?.pgn) return;
+    navigate('/analyse', {
+      state: {
+        pgn: drill.pgn,
+        halfMoveIndex: drill.ply + currentIdx,
+        heroSide: heroColor === 'black' ? 'b' : 'w',
+      },
+    });
+  };
+
+  const handleCopy = () => {
+    const text = drill?.pgn ?? fen;
+    navigator.clipboard.writeText(text);
+  };
+
   // 11) Derive displayPhase & phaseColor for header
   const displayPhase = useMemo(() => {
     if (!drill?.phase) return 'Unknown';
@@ -313,9 +329,13 @@ export default function PlayDrill() {
       <div className="xs:hidden">
         <ActionBar
           drillResult={drillResult}
+          onHint={() => alert('hint not implemented yet')}
           onRetry={() => setResetKey((k) => k + 1)}
           onNext={handleNextDrill}
-          onHint={() => alert('need to show a hint')} // or whatever shows your hint
+          // ← new props:
+          onAnalysis={handleAnalysis}
+          onArchive={() => setShowConfirm(true)}
+          onCopy={handleCopy}
         />
       </div>
       <div className="xs:px-0 mx-auto mt-5 max-w-md space-y-2 px-2">
