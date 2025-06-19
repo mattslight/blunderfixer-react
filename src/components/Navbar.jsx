@@ -1,3 +1,5 @@
+import { EllipsisVertical, Menu } from 'lucide-react';
+
 import UserMenu from './UserMenu';
 
 import blunderLogoSvg from '@/assets/blunderfixer.svg';
@@ -22,35 +24,11 @@ export default function Navbar({ toggleSidebar }) {
         >
           {loggedIn && (
             <button
-              className="mr-2 cursor-pointer rounded-lg p-2 text-stone-600 hover:bg-stone-100 hover:text-stone-900 focus:bg-stone-100 focus:ring-2 focus:ring-stone-100 2xl:hidden dark:text-stone-400 dark:hover:bg-stone-700 dark:hover:text-white dark:focus:bg-stone-700 dark:focus:ring-stone-700"
+              className="mr-2 cursor-pointer rounded-lg p-2 text-stone-600 hover:bg-stone-100 hover:text-stone-900 2xl:hidden dark:text-stone-400 dark:hover:bg-stone-700 dark:hover:text-white"
               onClick={toggleSidebar}
             >
-              <svg
-                aria-hidden="true"
-                className="h-6 w-6"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-              <svg
-                aria-hidden="true"
-                className="hidden h-6 w-6"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
+              <EllipsisVertical className="xs:hidden" />
+              <Menu className="xs:block hidden" />
               <span className="sr-only">Toggle sidebar</span>
             </button>
           )}
