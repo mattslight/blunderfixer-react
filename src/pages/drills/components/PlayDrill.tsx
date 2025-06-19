@@ -9,6 +9,7 @@ import { Archive, Clipboard, ClipboardCheck, ExternalLink } from 'lucide-react';
 import useAutoMove from '../hooks/useAutoMove';
 import useBotPlayer from '../hooks/useBotPlayer';
 import { buildDrillFilters, readStickyFilters } from '../utils/filters';
+import ActionBar from './ActionBar';
 import ArchiveConfirmModal from './ArchiveConfirmModal';
 import DrillBanner from './DrillBanner';
 import { GameInfoBadges } from './DrillCard/GameInfoBadges';
@@ -308,6 +309,14 @@ export default function PlayDrill() {
             </div>
           )}
         </div>
+      </div>
+      <div className="xs:hidden">
+        <ActionBar
+          drillResult={drillResult}
+          onRetry={() => setResetKey((k) => k + 1)}
+          onNext={handleNextDrill}
+          onHint={() => alert('need to show a hint')} // or whatever shows your hint
+        />
       </div>
       <div className="xs:px-0 mx-auto mt-5 max-w-md space-y-2 px-2">
         <div className="flex flex-row items-center justify-between">
