@@ -56,7 +56,7 @@ export default function ActionBar({
         {/* Menu trigger */}
         <button
           onClick={() => setMenuOpen(true)}
-          className="rounded-md p-2 text-stone-200 hover:text-white"
+          className="rounded-md p-1 text-stone-200 hover:text-white"
         >
           <Ellipsis />
         </button>
