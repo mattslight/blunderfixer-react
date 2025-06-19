@@ -90,7 +90,7 @@ export default function DrillBanner({
     <div className="flex w-full flex-col items-center space-y-2">
       {/* Drill Goal Banner (only show before result) */}
       {expectedResult && !drillResult && (
-        <div className="flex w-full items-center justify-between rounded border border-indigo-500 bg-indigo-900 px-4 py-2 text-center text-indigo-200">
+        <div className="flex w-full items-center justify-between rounded bg-indigo-900 px-4 py-2 text-center text-indigo-200">
           <div>
             <Crosshair className="relative bottom-0.25 mr-2 inline-flex h-4 w-4 text-indigo-400" />
             <span className="text-sm">
