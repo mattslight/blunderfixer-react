@@ -348,29 +348,33 @@ export default function PlayDrill() {
           </div>
         </div>
 
-        <TimePhaseHeader
-          playedAt={drill.game_played_at}
-          displayPhase={displayPhase}
-          phaseColor={phaseColor}
-        />
+        <div className="xs:block hidden">
+          <TimePhaseHeader
+            playedAt={drill.game_played_at}
+            displayPhase={displayPhase}
+            phaseColor={phaseColor}
+          />
+        </div>
         {/*
         Game Info Badges (from DrillCard)
         ---------------------------------
         Shows time class, time control, opponent, eval swing, and result.
       */}
-        <GameInfoBadges
-          timeClass={drill.time_class}
-          timeControl={drill.time_control}
-          opponent={{
-            username: drill.opponent_username,
-            rating: drill.opponent_rating,
-          }}
-          evalSwing={drill.eval_swing}
-          heroResult={drill.hero_result}
-          eco={drill.eco}
-          ecoUrl={drill.eco_url}
-          hideGameResult={true}
-        />
+        <div className="xs:block hidden">
+          <GameInfoBadges
+            timeClass={drill.time_class}
+            timeControl={drill.time_control}
+            opponent={{
+              username: drill.opponent_username,
+              rating: drill.opponent_rating,
+            }}
+            evalSwing={drill.eval_swing}
+            heroResult={drill.hero_result}
+            eco={drill.eco}
+            ecoUrl={drill.eco_url}
+            hideGameResult={true}
+          />
+        </div>
         <div className="xs:flex my-10 hidden items-center justify-between gap-4 space-x-2">
           {!drill.pgn && <CopyFenToClipboard fen={fen} />}
           {drill.pgn && (
