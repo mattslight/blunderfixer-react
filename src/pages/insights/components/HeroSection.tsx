@@ -16,22 +16,23 @@ export default function HeroSection({
   const navigate = useNavigate();
 
   return (
-    <header className="mb-8">
-      <h1 className="text-3xl leading-[1.1] font-bold text-stone-100">
-        Welcome back{username ? `, ${username}` : ''}!
-      </h1>
-      <p className="mt-1 text-sm leading-snug text-stone-400">{greeting}</p>
-      <div className="mt-6 flex justify-start">
-        <button
-          onClick={() =>
-            navigate(nextDrillId ? `/drills/play/${nextDrillId}` : '/drills')
-          }
-          className="rounded bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700"
-        >
-          Start Training{' '}
-          <Play className="relative bottom-0.25 ml-1 inline h-4 w-4" />
-        </button>
+    <header className="mb-4 space-y-1 rounded-lg bg-stone-900/60 py-2 text-stone-300 shadow-inner">
+      <div className="flex items-center justify-between">
+        <span>
+          <span className="font-semibold text-white">Hi {username}</span> 👋
+        </span>
+        <div className="flex items-center gap-3"></div>
       </div>
+      <p className="leading-tight text-stone-400">{greeting}</p>
+      <button
+        onClick={() =>
+          navigate(nextDrillId ? `/drills/play/${nextDrillId}` : '/drills')
+        }
+        className="mt-8 rounded bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700"
+      >
+        Start Training{' '}
+        <Play className="relative bottom-0.25 ml-1 inline h-4 w-4" />
+      </button>
     </header>
   );
 }
