@@ -2,8 +2,6 @@ import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Play } from 'lucide-react';
 
-import EloDisplay from '@/components/EloDisplay';
-
 interface Props {
   username: string;
   nextDrillId?: number | string;
@@ -18,7 +16,7 @@ export default function HeroSection({
   const navigate = useNavigate();
 
   return (
-    <header>
+    <header className="mb-8">
       <h1 className="text-3xl leading-[1.1] font-bold text-stone-100">
         Welcome back{username ? `, ${username}` : ''}!
       </h1>
@@ -33,9 +31,6 @@ export default function HeroSection({
           Next Drill{' '}
           <Play className="relative bottom-0.25 ml-1 inline h-4 w-4" />
         </button>
-      </div>
-      <div className="mt-8">
-        <EloDisplay />
       </div>
     </header>
   );
