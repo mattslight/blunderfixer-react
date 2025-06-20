@@ -51,7 +51,7 @@ export default function ActionBar({
 
   return (
     <>
-      <div className="safe-bottom fixed bottom-0 left-0 z-50 flex w-full items-center bg-stone-900 px-4 py-3">
+      <div className="safe-bottom fixed bottom-0 left-0 z-50 flex w-full items-center px-4 py-3">
         {/* Menu trigger */}
         <button
           onClick={() => setMenuOpen(true)}
