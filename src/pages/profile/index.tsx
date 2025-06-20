@@ -1,21 +1,18 @@
-import { Circle, Play, Share2, Users } from 'lucide-react';
+import { Play, Share2, Users } from 'lucide-react';
 
 import { useProfile } from '@/hooks/useProfile';
 
 export default function ProfilePage() {
-  // real profile from context (only has basic Chess.com fields)
   const { profile: ctx } = useProfile();
   const { username, avatar, country } = ctx;
 
-  // mock data for stats and insights not provided by Chess.com API
+  // mock data for stats/insights
   const stats = {
-    blundersFixed: 45,
+    blundersRate: 1.2,
     tacticAccuracy: 64,
     winOpenings: 75,
     endgameWins: 48,
   };
-  const rating = 1237; // mock rating
-  const winRate = { white: 58, black: 42 };
   const strengths = [
     { name: 'Sicilian Defense', score: 72 },
     { name: "Queen's Gambit", score: 68 },
@@ -25,7 +22,9 @@ export default function ProfilePage() {
     { name: "King's Gambit", score: 28 },
     { name: 'Scotch Game', score: 32 },
   ];
-  const form = ['win', 'loss', 'draw', 'win', 'win'];
+  const form = ['win', 'win', 'draw', 'loss', 'win'];
+
+  const rating = 1327;
 
   // derive flag emoji
   const code = country?.split('/').pop()?.toUpperCase() || 'US';
@@ -35,136 +34,133 @@ export default function ProfilePage() {
     .join('');
 
   const metrics = [
-    { icon: '⚔️', label: 'Blunders', value: stats.blundersFixed },
-    { icon: '🎯', label: 'Tactic Acc.', value: `${stats.tacticAccuracy}%` },
-    { icon: '🏆', label: 'Openings', value: `${stats.winOpenings}%` },
-    { icon: '♟️', label: 'Endgame', value: `${stats.endgameWins}%` },
-    { icon: '⚪', label: 'White Win', value: `${winRate.white}%` },
-    { icon: '⚫', label: 'Black Win', value: `${winRate.black}%` },
+    { icon: '⚔️', label: 'Blunder Rate', value: stats.blundersRate },
+    { icon: '🏆', label: 'Opening Accuracy.', value: `${stats.winOpenings}%` },
+    {
+      icon: '🎯',
+      label: 'Tactic Accuracy.',
+      value: `${stats.tacticAccuracy}%`,
+    },
+    { icon: '♟️', label: 'Endgame Accuracy', value: `${stats.endgameWins}%` },
   ];
 
   return (
-    <div className="flex items-start justify-center p-4 sm:p-6">
-      <div className="relative w-full max-w-sm overflow-hidden rounded-2xl bg-black/40 shadow-lg">
+    <div className="flex min-h-screen flex-col items-center px-4 py-12 sm:px-6">
+      <div className="w-full max-w-md overflow-hidden rounded-2xl bg-black/50 shadow-2xl">
         {/* Banner */}
-        <div className="bg-chessboard-pattern h-24 bg-stone-900" />
+        <div className="bg-chessboard-pattern h-32 bg-stone-900" />
 
-        {/* Avatar */}
-        <div className="absolute top-16 left-1/2 -translate-x-1/2 transform">
-          <img
-            src={avatar || 'https://via.placeholder.com/64'}
-            alt={`${username} avatar`}
-            className="h-16 w-16 rounded-full border-2 border-stone-800"
-          />
-        </div>
-
-        {/* Header Info */}
-        <div className="mt-12 space-y-1 px-4 pt-4 pb-6 text-center">
-          <div className="flex items-center justify-center space-x-1">
-            <h1 className="text-xl font-bold text-white">{username}</h1>
-            {flag && <span className="text-lg">{flag}</span>}
+        {/* Avatar & Header */}
+        <div className="relative">
+          <div className="absolute -top-10 left-1/2 -translate-x-1/2 transform">
+            <img
+              src={avatar || 'https://via.placeholder.com/80'}
+              alt={`${username} avatar`}
+              className="h-20 w-20 rounded-full border-4 border-stone-800"
+            />
           </div>
-          <div className="text-sm text-stone-400">Rating {rating || '–––'}</div>
-          <div className="mt-2 flex justify-center space-x-2">
-            <button className="inline-flex items-center rounded-full bg-blue-600 px-4 py-1 text-sm text-white hover:bg-blue-500">
-              <Users className="mr-1 h-4 w-4" />
-              Follow
-            </button>
-            <button className="inline-flex items-center rounded-full bg-green-600 px-4 py-1 text-sm text-white hover:bg-green-500">
-              <Play className="mr-1 h-4 w-4 rotate-90" />
-              Drill
-            </button>
+          <div className="px-6 pt-12 pb-8 text-center">
+            <h1 className="text-3xl leading-tight font-bold text-white">
+              {username}
+              {flag && (
+                <span className="ml-2 align-middle text-xl">{flag}</span>
+              )}
+            </h1>
+            <p className="mt-2 text-lg text-stone-300">
+              Rating {rating || '–––'}
+            </p>
+            <div className="mt-4 flex justify-center space-x-4">
+              <button className="flex items-center rounded-full bg-blue-600 px-6 py-2 text-base text-white hover:bg-blue-500">
+                <Users className="mr-2 h-5 w-5" /> Follow
+              </button>
+              <button className="flex items-center rounded-full bg-green-600 px-6 py-2 text-base text-white hover:bg-green-500">
+                <Play className="mr-2 h-5 w-5 rotate-90" /> Drill
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Metrics Strip */}
-        <div className="overflow-x-auto px-4 py-2">
-          <div className="flex space-x-4">
-            {metrics.map(({ icon, label, value }) => (
-              <div
-                key={label}
-                className="flex flex-shrink-0 flex-col items-center rounded-xl bg-stone-800 px-3 py-2"
-              >
-                <span className="text-base">{icon}</span>
-                <span className="mt-1 text-lg font-bold text-white">
-                  {value}
-                </span>
-                <span className="text-xs text-stone-400">{label}</span>
-              </div>
-            ))}
-          </div>
+        <div className="grid grid-cols-2 gap-4 px-6 py-4 sm:grid-cols-4">
+          {metrics.map(({ icon, label, value }) => (
+            <div
+              key={label}
+              className="flex flex-col items-center rounded-lg bg-stone-800 p-4"
+            >
+              <span className="text-2xl">{icon}</span>
+              <span className="mt-2 text-xl font-semibold text-white">
+                {value}
+              </span>
+              <span className="mt-1 text-xs text-stone-500">{label}</span>
+            </div>
+          ))}
         </div>
 
-        {/* Top Openings */}
-        <div className="space-y-3 px-4 py-3">
-          <section>
-            <h2 className="mb-1 text-sm font-semibold text-stone-200">
+        {/* Openings Sections */}
+        <div className="space-y-6 px-6 py-6">
+          <div>
+            <h2 className="mb-3 text-xl font-bold tracking-wide text-stone-100">
               Top Openings
             </h2>
             <ul className="space-y-2">
               {strengths.map((o) => (
-                <li
-                  key={o.name}
-                  className="flex items-center justify-between text-sm text-white"
-                >
-                  <span>{o.name}</span>
-                  <div className="ml-2 h-1 w-20 overflow-hidden rounded-full bg-stone-800">
+                <li key={o.name} className="flex items-center justify-between">
+                  <span className="text-base text-stone-400">{o.name}</span>
+                  <div className="ml-4 h-2 flex-1 overflow-hidden rounded-full bg-stone-800">
                     <div
-                      className="h-1 bg-green-500"
+                      className="h-2 bg-green-500"
                       style={{ width: `${o.score}%` }}
                     />
                   </div>
                 </li>
               ))}
             </ul>
-          </section>
-
-          {/* Weak Openings */}
-          <section>
-            <h2 className="mb-1 text-sm font-semibold text-stone-200">
+          </div>
+          <div>
+            <h2 className="mb-3 text-xl font-bold tracking-wide text-stone-100">
               Weak Openings
             </h2>
             <ul className="space-y-2">
               {weaknesses.map((o) => (
-                <li
-                  key={o.name}
-                  className="flex items-center justify-between text-sm text-white"
-                >
-                  <span>{o.name}</span>
-                  <div className="ml-2 h-1 w-20 overflow-hidden rounded-full bg-stone-800">
+                <li key={o.name} className="flex items-center justify-between">
+                  <span className="text-base text-stone-400">{o.name}</span>
+                  <div className="ml-4 h-2 flex-1 overflow-hidden rounded-full bg-stone-800">
                     <div
-                      className="h-1 bg-red-500"
+                      className="h-2 bg-red-500"
                       style={{ width: `${o.score}%` }}
                     />
                   </div>
                 </li>
               ))}
             </ul>
-          </section>
+          </div>
         </div>
 
         {/* Recent Form */}
-        <div className="px-4 py-3">
-          <h2 className="mb-1 text-sm font-semibold text-stone-200">
-            Recent Form
+        <div className="px-6 py-6">
+          <h2 className="mb-3 text-lg font-bold tracking-wide text-stone-100">
+            Form
           </h2>
           <div className="flex space-x-2">
             {form.map((f, i) => {
-              const col =
-                f === 'win'
-                  ? 'text-green-500'
-                  : f === 'loss'
-                    ? 'text-red-500'
-                    : 'text-yellow-500';
-              return <Circle key={i} className={`${col} h-5 w-5`} />;
+              const bg = f === 'win' ? 'bg-green-500' : 'bg-red-500';
+              const letter = f === 'win' ? 'W' : 'L';
+              return (
+                <div
+                  key={i}
+                  className={`${bg} flex h-8 w-8 items-center justify-center rounded-full text-base font-bold text-stone-800`}
+                >
+                  {letter}
+                </div>
+              );
             })}
           </div>
         </div>
 
-        {/* Footer Actions */}
-        <div className="flex justify-end border-t border-stone-700 px-4 py-3">
-          <button className="items-center rounded-full bg-indigo-600 px-4 py-1 text-sm text-white hover:bg-indigo-500">
-            <Share2 className="mr-1 inline-flex h-4 w-4" /> Share
+        {/* Share Footer */}
+        <div className="flex justify-center px-6 py-8">
+          <button className="flex items-center rounded bg-indigo-600 px-8 py-3 text-base font-semibold text-white hover:bg-indigo-500">
+            <Share2 className="mr-2 h-5 w-5" /> Share Profile
           </button>
         </div>
       </div>
