@@ -2,6 +2,7 @@
 import { formatDistanceToNow } from 'date-fns';
 import { Calendar, ChartNoAxesCombined, Loader, Timer } from 'lucide-react';
 
+import { GameInfoBadges } from '@/pages/drills/components/DrillCard/GameInfoBadges';
 import { GameRecord } from '@/types';
 
 interface GameCardProps {
@@ -32,6 +33,7 @@ export default function GameCard({
   const resultTag = game.meta.pgnTags?.Result || '';
   const won = resultTag === (side === 'white' ? '1-0' : '0-1');
   const lost = resultTag === (side === 'white' ? '0-1' : '1-0');
+  const heroResult = won ? 'win' : lost ? 'loss' : 'draw';
 
   // date & time control
   const dateTime = new Date(game.meta.endTime * 1000);
@@ -47,9 +49,15 @@ export default function GameCard({
   let tcStr = mins > 0 ? `${mins}m${secs ? `${secs}s` : ''}` : `${secs}s`;
   if (inc > 0) tcStr += ` +${inc}s`;
 
+  const badgeTimeControl = `${init}${inc > 0 ? `+${inc}` : ''}`;
+
   // result
   const yourMeta = side === 'white' ? wMeta : bMeta;
   const opponentMeta = side === 'white' ? bMeta : wMeta;
+  const opponentInfo = {
+    username: opponentMeta.player.username,
+    rating: opponentMeta.rating,
+  };
   let rawReason: string | undefined;
   if (won) {
     rawReason = opponentMeta.result; // how they lost
@@ -110,13 +118,16 @@ export default function GameCard({
           <Calendar size={14} />
           <time dateTime={dateTime.toISOString()}>{dateStr}</time>
         </div>
-        <div className="flex items-center space-x-1">
-          <Timer size={15} /> {tcStr}{' '}
-          <em className="ml-2">
-            {game.meta.rated === true ? '' : '(Unrated)'}
-          </em>
-        </div>
       </div>
+
+      {/* → GameInfoBadges */}
+      <GameInfoBadges
+        timeClass={game.meta.timeClass}
+        timeControl={badgeTimeControl}
+        heroResult={heroResult}
+        eco={game.meta.pgnTags?.ECO}
+        ecoUrl={game.meta.pgnTags?.ECOUrl}
+      />
 
       {/* Footer: result & action */}
 
