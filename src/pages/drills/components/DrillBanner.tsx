@@ -118,8 +118,8 @@ export default function DrillBanner({
         <div
           className={`flex w-full items-center justify-between space-x-2 rounded-md px-3 py-2 text-center text-sm font-medium ${
             drillResult === 'pass'
-              ? 'border border-green-500 bg-green-900 text-green-100'
-              : 'border border-red-500 bg-red-900 text-red-100'
+              ? 'bg-green-900 text-green-100'
+              : 'bg-red-900 text-red-100'
           }`}
         >
           <span>
