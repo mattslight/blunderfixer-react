@@ -43,7 +43,7 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div className="flex min-h-screen flex-col items-center px-4 py-12 sm:px-6">
+    <div className="flex min-h-screen flex-col items-center">
       <div className="w-full max-w-md overflow-hidden rounded-2xl bg-black/50 shadow-2xl">
         {/* Banner */}
         <div className="bg-chessboard-pattern h-32 bg-stone-900" />
@@ -88,7 +88,9 @@ export default function ProfilePage() {
               <span className="mt-2 text-xl font-semibold text-white">
                 {value}
               </span>
-              <span className="mt-1 text-xs text-stone-500">{label}</span>
+              <span className="mt-1 text-center text-xs text-stone-500">
+                {label}
+              </span>
             </div>
           ))}
         </div>
