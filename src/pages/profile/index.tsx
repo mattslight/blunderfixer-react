@@ -1,5 +1,6 @@
 import { Share2, UserRoundPlus, Users } from 'lucide-react';
 
+import EloDisplay from '@/components/EloDisplay';
 import { useProfile } from '@/hooks/useProfile';
 
 export default function ProfilePage() {
@@ -23,8 +24,6 @@ export default function ProfilePage() {
     { name: 'Scotch Game', score: 32 },
   ];
   const form = ['win', 'win', 'draw', 'loss', 'win'];
-
-  const rating = 1327;
 
   // derive flag emoji
   const code = country?.split('/').pop()?.toUpperCase() || 'US';
@@ -66,9 +65,7 @@ export default function ProfilePage() {
                 <span className="ml-2 align-middle text-xl">{flag}</span>
               )}
             </h1>
-            <p className="mt-2 text-lg text-stone-300">
-              Rating {rating || '–––'}
-            </p>
+            <EloDisplay />
             <div className="mt-4 flex justify-center space-x-4">
               <button className="flex items-center rounded bg-indigo-600 px-6 py-2 text-base text-white hover:bg-indigo-500">
                 <Users className="mr-2 h-5 w-5" /> Follow
