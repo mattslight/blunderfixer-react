@@ -1,4 +1,4 @@
-import { JSX, useRef } from 'react';
+import { JSX } from 'react';
 import { CalendarClock, TimerReset } from 'lucide-react';
 
 import blitzIcon from '@/assets/blitz.png';
@@ -25,44 +25,8 @@ export default function EloDisplay() {
     (a, b) => TIME_ORDER.indexOf(a) - TIME_ORDER.indexOf(b)
   );
 
-  const touchStartX = useRef<number | null>(null);
-  const lastTrigger = useRef(0);
-  const cooldown = 700; // ms
-
-  const cycleTimeClass = (dir: 'left' | 'right') => {
-    const index = sortedPreferred.indexOf(timeClass);
-    if (index === -1) return;
-    const nextIndex =
-      dir === 'left'
-        ? (index - 1) % sortedPreferred.length
-        : (index + 1 + sortedPreferred.length) % sortedPreferred.length;
-    setTimeClass(sortedPreferred[nextIndex]);
-  };
-
   return (
-    <div
-      className="mt-4 flex items-center justify-between rounded bg-stone-800 px-4 py-3"
-      onWheel={(e) => {
-        const now = Date.now();
-        const threshold = 5;
-
-        if (Math.abs(e.deltaX) < threshold) return;
-
-        if (now - lastTrigger.current > cooldown) {
-          cycleTimeClass(e.deltaX > 0 ? 'left' : 'right');
-          lastTrigger.current = now;
-        }
-      }}
-      onTouchStart={(e) => (touchStartX.current = e.touches[0].clientX)}
-      onTouchEnd={(e) => {
-        if (touchStartX.current === null) return;
-        const diff = e.changedTouches[0].clientX - touchStartX.current;
-        if (Math.abs(diff) > 30) {
-          cycleTimeClass(diff < 0 ? 'left' : 'right');
-        }
-        touchStartX.current = null;
-      }}
-    >
+    <div className="mx-auto mt-4 flex w-72 items-center justify-between rounded px-4 py-3">
       <div className="relative flex flex-col" title="Chess.com rating">
         <div className="flex items-baseline space-x-2 text-white">
           <span className="text-2xl font-bold">
