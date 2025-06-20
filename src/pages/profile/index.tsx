@@ -43,8 +43,8 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div className="flex min-h-screen flex-col items-center">
-      <div className="w-full max-w-md overflow-hidden rounded-2xl bg-black/50 shadow-2xl">
+    <div className="flex min-h-screen flex-col items-center pb-48">
+      <div className="w-full max-w-lg overflow-hidden rounded-2xl bg-black/50 shadow-2xl">
         {/* Banner */}
         <div className="bg-chessboard-pattern h-32 bg-stone-900" />
 
@@ -78,7 +78,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Metrics Strip */}
-        <div className="grid grid-cols-2 gap-4 px-6 py-4 sm:grid-cols-4">
+        <div className="xs:grid-cols-4 grid grid-cols-2 gap-4 px-6 py-4">
           {metrics.map(({ icon, label, value }) => (
             <div
               key={label}
