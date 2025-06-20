@@ -269,7 +269,7 @@ export default function PlayDrill() {
               className="w-2"
               boardOrientation={heroColor}
             /> */}
-            <div className="flex-1">
+            <div className="xs:px-0 flex-1 px-4">
               <Chessboard
                 position={fen}
                 customBoardStyle={{ borderRadius: '0.25rem' }}
@@ -338,7 +338,7 @@ export default function PlayDrill() {
           onCopy={handleCopy}
         />
       </div>
-      <div className="xs:px-0 mx-auto mt-5 max-w-md space-y-2 px-2">
+      <div className="xs:px-0 mx-auto mt-5 max-w-md space-y-2 px-4">
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-row items-center space-x-2">
             <div className="text-xs font-bold text-green-400 uppercase">
