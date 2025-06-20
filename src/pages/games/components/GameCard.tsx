@@ -106,7 +106,7 @@ export default function GameCard({
       </header>
 
       {/* Meta: date & time control */}
-      <div className="mt-1 mb-2 flex space-x-4 text-xs text-stone-800">
+      <div className="mt-1 mb-2 flex space-x-4 text-xs text-stone-500">
         <div className="flex items-center space-x-1">
           <Clock size={14} />
           <time dateTime={dateTime.toISOString()}>{dateStr}</time>
