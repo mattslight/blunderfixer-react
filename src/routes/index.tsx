@@ -14,6 +14,7 @@ import Help from '@/pages/help';
 import PreSignupHome from '@/pages/home/PreSignupHome';
 import Insights from '@/pages/insights';
 import NotFound from '@/pages/NotFound';
+import PlayerProfile from '@/pages/profile';
 import ReportPage from '@/pages/report';
 import Settings from '@/pages/settings';
 
@@ -98,6 +99,14 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <ReportPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <PlayerProfile />
           </ProtectedRoute>
         }
       />
