@@ -1,4 +1,3 @@
-import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Archive, Clipboard, ExternalLink, X } from 'lucide-react';
 
