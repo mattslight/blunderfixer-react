@@ -55,7 +55,7 @@ export default function ActionBar({
         {/* Menu trigger */}
         <button
           onClick={() => setMenuOpen(true)}
-          className="mr-1 rounded-md text-stone-200 hover:text-white"
+          className="rounded-md text-stone-400 hover:text-white"
         >
           <EllipsisVertical />
         </button>
@@ -63,7 +63,7 @@ export default function ActionBar({
         {/* Primary big button */}
         <button
           onClick={primaryAction}
-          className={`mx-2 flex-1 rounded-md px-4 py-3 text-base font-bold text-white transition ${primaryColor}`}
+          className={`mx-2 flex-1 rounded-md py-2 text-base font-semibold text-white transition ${primaryColor}`}
         >
           {primaryLabel}
         </button>
@@ -71,7 +71,7 @@ export default function ActionBar({
         {/* Secondary small button */}
         <button
           onClick={secondaryAction}
-          className="flex flex-col items-center gap-1 rounded-md px-3 py-2 text-xs font-semibold text-stone-200 hover:text-white"
+          className="flex flex-col items-center gap-1 rounded-md px-3 py-2 text-xs font-semibold text-stone-400 hover:text-white"
         >
           <SecondaryIcon className="mr-1 inline h-5 w-5" />
           {secondaryLabel}
