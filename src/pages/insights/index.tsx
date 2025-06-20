@@ -35,7 +35,7 @@ export default function HomeScreen() {
 
   const { games: rawGames, loading: loadingGames } = useRecentGames(
     username,
-    3
+    10
   );
 
   const analyseAndGo = useAnalyseAndGoToReport();
