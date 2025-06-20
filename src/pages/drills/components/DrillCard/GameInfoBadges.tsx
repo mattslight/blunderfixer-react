@@ -3,6 +3,7 @@ import { TrendingDown, User } from 'lucide-react';
 
 import { ecoLookup } from '@/const/eco';
 import { formatTimeControl } from '@/lib/formatTimeControl';
+import { getDisplayReason } from '@/lib/gameResult';
 
 type Props = {
   timeClass: string;
@@ -38,6 +39,8 @@ export function GameInfoBadges({
   const ecoTags = eco ? ecoLookup[eco] : undefined;
   const ecoMain = ecoTags?.main ?? eco;
   const ecoSub = ecoTags?.sub;
+
+  const displayReason = getDisplayReason(reason);
 
   return (
     <div className="mt-4 flex items-center gap-2 text-sm">
@@ -88,7 +91,7 @@ export function GameInfoBadges({
             {heroResult}
           </span>
         )}
-        {reason && (
+        {displayReason && (
           <span className="inline-flex items-center gap-1 rounded bg-stone-700 px-2 py-0.5 text-xs text-stone-400">
             <span
               className={`h-2 w-2 rounded-full ${
@@ -99,7 +102,7 @@ export function GameInfoBadges({
                     : 'bg-stone-500'
               }`}
             />
-            {reason}
+            {displayReason}
           </span>
         )}
       </div>

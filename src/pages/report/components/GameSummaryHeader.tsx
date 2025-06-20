@@ -1,6 +1,7 @@
 import { formatDistanceToNow } from 'date-fns';
 
 import { useProfile } from '@/hooks/useProfile';
+import { getDisplayReason } from '@/lib/gameResult';
 
 export default function GameSummaryHeader({ game }) {
   const {
@@ -28,27 +29,7 @@ export default function GameSummaryHeader({ game }) {
       ? youMeta.result // you lost → how you lost
       : oppMeta.result; // draw → usually "stalemate" or "agreed"
 
-  // auto-capitalize fallback
-  const reason = rawReason
-    ?.replace(/_/g, ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase());
-
-  // override verb → noun mapping
-  const normalized = rawReason?.toLowerCase() || '';
-  const displayReason =
-    normalized === 'resigned'
-      ? 'Resignation'
-      : normalized === 'checkmated'
-        ? 'Checkmate'
-        : normalized === 'abandoned'
-          ? 'Abandoned'
-          : normalized === 'timeout'
-            ? 'Timeout'
-            : normalized === 'stalemate'
-              ? 'Stalemate'
-              : normalized === 'agreed'
-                ? 'Draw by Agreement'
-                : reason;
+  const displayReason = getDisplayReason(rawReason);
 
   // assume game.meta.endTime is seconds since epoch
   const dateObj = new Date(game.meta.endTime * 1000);
