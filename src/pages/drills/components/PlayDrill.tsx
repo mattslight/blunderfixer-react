@@ -353,6 +353,7 @@ export default function PlayDrill() {
             playedAt={drill.game_played_at}
             displayPhase={displayPhase}
             phaseColor={phaseColor}
+            hidePhase={true}
           />
         </div>
         {/*
@@ -373,6 +374,7 @@ export default function PlayDrill() {
             eco={drill.eco}
             ecoUrl={drill.eco_url}
             hideGameResult={true}
+            variant="muted"
           />
         </div>
         <div className="xs:flex my-10 hidden items-center justify-between gap-4 space-x-2">
