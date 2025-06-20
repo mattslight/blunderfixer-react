@@ -664,7 +664,6 @@ export const greetings = [
   'Hasta la vista, eval bar.',
   "The first rule of blunder club: don't take on e4.",
   'It’s not about material. It’s about sending a message.',
-  'Why so blunderous?',
   'Blunders? I hate blunders.',
   "I've got a bad feeling about this rook lift...",
   'Trust me—I’m a grandmaster.',
