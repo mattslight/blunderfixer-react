@@ -46,14 +46,14 @@ export function DrillCard({ drill, onStartDrill }: Props) {
   const boardWidth = isAtLeast('sm')
     ? 360
     : current === 'xs'
-      ? 240
+      ? 360
       : screenWidth - 32;
 
   if (DEBUG) console.debug('[useBreakpoint] ', current);
 
   return (
     <div
-      className="xs:grid-cols-[240px_1fr] xs:gap-0 grid rounded-lg bg-stone-800 shadow sm:grid-cols-[360px_1fr]"
+      className="grid rounded-lg bg-stone-800 shadow sm:grid-cols-[360px_1fr]"
       onClick={() => onStartDrill(drill.id)}
     >
       {/* 1) Board */}
