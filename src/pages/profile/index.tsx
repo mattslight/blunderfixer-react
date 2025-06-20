@@ -3,13 +3,18 @@ import { Share2, UserRoundPlus, Users } from 'lucide-react';
 import EloDisplay from '@/components/EloDisplay';
 import { useProfile } from '@/hooks/useProfile';
 
+function acplToBlunderRate(acpl: number): number {
+  return +(3 / (1 + Math.exp(-0.04 * (acpl - 75)))).toFixed(1);
+}
+
 export default function ProfilePage() {
   const { profile: ctx } = useProfile();
   const { username, avatar, country } = ctx;
+  const acpl = 89; // replace with real value when wired
 
   // mock data for stats/insights
   const stats = {
-    blundersRate: 1.2,
+    blundersRate: acplToBlunderRate(acpl),
     tacticAccuracy: 64,
     winOpenings: 75,
     endgameWins: 48,
