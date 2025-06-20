@@ -1,4 +1,4 @@
-import { Play, Share2, Users } from 'lucide-react';
+import { Share2, UserRoundPlus, Users } from 'lucide-react';
 
 import { useProfile } from '@/hooks/useProfile';
 
@@ -70,11 +70,11 @@ export default function ProfilePage() {
               Rating {rating || '–––'}
             </p>
             <div className="mt-4 flex justify-center space-x-4">
-              <button className="flex items-center rounded-full bg-blue-600 px-6 py-2 text-base text-white hover:bg-blue-500">
+              <button className="flex items-center rounded bg-indigo-600 px-6 py-2 text-base text-white hover:bg-indigo-500">
                 <Users className="mr-2 h-5 w-5" /> Follow
               </button>
-              <button className="flex items-center rounded-full bg-green-600 px-6 py-2 text-base text-white hover:bg-green-500">
-                <Play className="mr-2 h-5 w-5 rotate-90" /> Drill
+              <button className="flex items-center rounded bg-green-500 px-6 py-2 text-base text-white hover:bg-green-500">
+                <UserRoundPlus className="mr-2 h-5 w-5" /> Invite
               </button>
             </div>
           </div>
@@ -138,17 +138,24 @@ export default function ProfilePage() {
 
         {/* Recent Form */}
         <div className="px-6 py-6">
-          <h2 className="mb-3 text-lg font-bold tracking-wide text-stone-100">
+          <h2 className="mb-3 text-xl font-bold tracking-wide text-stone-100">
             Form
           </h2>
-          <div className="flex space-x-2">
+          <div className="flex space-x-3">
             {form.map((f, i) => {
-              const bg = f === 'win' ? 'bg-green-500' : 'bg-red-500';
-              const letter = f === 'win' ? 'W' : 'L';
+              let bg = 'bg-stone-500';
+              let letter = 'D';
+              if (f === 'win') {
+                bg = 'bg-green-600';
+                letter = 'W';
+              } else if (f === 'loss') {
+                bg = 'bg-red-600';
+                letter = 'L';
+              }
               return (
                 <div
                   key={i}
-                  className={`${bg} flex h-8 w-8 items-center justify-center rounded-full text-base font-bold text-stone-800`}
+                  className={`${bg} flex h-8 w-8 items-center justify-center rounded-full text-base font-bold text-white`}
                 >
                   {letter}
                 </div>
