@@ -78,21 +78,21 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
         </svg>
       ),
     },
-    // {
-    //   to: '/profile',
-    //   label: 'Profile',
-    //   Icon: ({ className }) => (
-    //     <svg
-    //       aria-hidden="true"
-    //       className={className}
-    //       fill="currentColor"
-    //       viewBox="0 0 20 20"
-    //     >
-    //       <path d="M10 2a4 4 0 100 8 4 4 0 000-8z" />
-    //       <path d="M2 18a8 8 0 0116 0H2z" />
-    //     </svg>
-    //   ),
-    // },
+    {
+      to: '/profile',
+      label: 'Profile',
+      Icon: ({ className }) => (
+        <svg
+          aria-hidden="true"
+          className={className}
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path d="M10 2a4 4 0 100 8 4 4 0 000-8z" />
+          <path d="M2 18a8 8 0 0116 0H2z" />
+        </svg>
+      ),
+    },
   ];
 
   // const endgamesNav = {
