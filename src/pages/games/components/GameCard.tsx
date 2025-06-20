@@ -1,6 +1,6 @@
 // src/pages/games/components/GameCard.tsx
 import { formatDistanceToNow } from 'date-fns';
-import { Calendar, ChartNoAxesCombined, Loader, Timer } from 'lucide-react';
+import { ChartNoAxesCombined, Clock, Loader } from 'lucide-react';
 
 import { GameInfoBadges } from '@/pages/drills/components/DrillCard/GameInfoBadges';
 import { GameRecord } from '@/types';
@@ -44,20 +44,13 @@ export default function GameCard({
 
   const init = game.meta.timeControl;
   const inc = game.meta.increment;
-  const mins = Math.floor(init / 60);
-  const secs = init % 60;
-  let tcStr = mins > 0 ? `${mins}m${secs ? `${secs}s` : ''}` : `${secs}s`;
-  if (inc > 0) tcStr += ` +${inc}s`;
 
   const badgeTimeControl = `${init}${inc > 0 ? `+${inc}` : ''}`;
 
   // result
   const yourMeta = side === 'white' ? wMeta : bMeta;
   const opponentMeta = side === 'white' ? bMeta : wMeta;
-  const opponentInfo = {
-    username: opponentMeta.player.username,
-    rating: opponentMeta.rating,
-  };
+
   let rawReason: string | undefined;
   if (won) {
     rawReason = opponentMeta.result; // how they lost
@@ -113,9 +106,9 @@ export default function GameCard({
       </header>
 
       {/* Meta: date & time control */}
-      <div className="mt-1 mb-2 flex space-x-4 text-xs text-stone-400">
+      <div className="mt-1 mb-2 flex space-x-4 text-xs text-stone-800">
         <div className="flex items-center space-x-1">
-          <Calendar size={14} />
+          <Clock size={14} />
           <time dateTime={dateTime.toISOString()}>{dateStr}</time>
         </div>
       </div>
@@ -127,28 +120,13 @@ export default function GameCard({
         heroResult={heroResult}
         eco={game.meta.pgnTags?.ECO}
         ecoUrl={game.meta.pgnTags?.ECOUrl}
+        hideGameResult
+        reason={reason}
       />
 
       {/* Footer: result & action */}
 
-      <footer className="mt-4 flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <span
-            className={
-              `rounded-full px-2.5 py-1 text-xs font-medium ` +
-              (won
-                ? 'bg-green-500 text-white'
-                : lost
-                  ? 'bg-red-600 text-white'
-                  : 'bg-stone-600 text-white')
-            }
-          >
-            {won ? 'Won' : lost ? 'Lost' : 'Draw'}
-          </span>
-
-          {reason && <span className="text-sm text-stone-500">{reason}</span>}
-        </div>
-
+      <footer className="mt-4 flex items-center justify-end">
         <button
           onClick={() => onAction(game)}
           disabled={isLoading}
