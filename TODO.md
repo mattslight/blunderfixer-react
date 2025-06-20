@@ -1,5 +1,14 @@
 # TODO
 
+- Filter 'Recent Games' by ECO, Filter by time control, filter by opponent.
+- Recent Games maybe show form! WLLWL
+
+- I want a feature that shows be good games I've played – what went well
+  – I want to know which openings are working well for me, and which are not
+- Am I sticking to good book moves or geting involed in mess
+- Am I better with Black or White
+- What opportunities for improvement are there? Opening training – specific related to what I play (or suggestions of openings to try based on my play style), endgame training (specific scenarios and example positions from my games I struggle with), tactics training (drills), positional training (drills)
+
 - Prioritised
   [~] In drill worker – tag drills with themes (e.g. “fork tactic", "pawn push")
   [~] In drill worder - tag drills with time used (time spent on the move), later we will used this on the FE to classify time impulsive or time overspend
