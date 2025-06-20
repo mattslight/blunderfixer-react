@@ -414,7 +414,7 @@ const chessionary = [
     key="pinquisition"
     term="Pin·quisition"
     pos="noun"
-    definition="Demand to know who made the pin."
+    definition="Demand to know how this pin is possible."
   />,
   <DictionaryEntry
     key="pinished"
@@ -568,7 +568,7 @@ export const greetings = [
   'One blunder closer to greatness.',
   'The grind is real.',
   'Tactical debt? Time to pay up.',
-  'The eval bar believes in you.',
+  "The eval bar's got you.",
   'Refuse to hang. Refuse to tilt.',
   'Fewer facepalms. More fist pumps.',
   'Leave no pawn behind.',
