@@ -26,8 +26,8 @@ export default function EloDisplay() {
   );
 
   return (
-    <>
-      <div className="mx-auto mt-4 flex w-72 items-center justify-between rounded px-4 py-3">
+    <div className="flex w-full max-w-md flex-col items-center p-4">
+      <div className="mx-auto mt-4 flex w-64 items-center justify-between rounded">
         <div className="relative flex flex-col" title="Chess.com rating">
           <div className="flex items-baseline space-x-2 text-white">
             <span className="text-2xl font-bold">
@@ -66,7 +66,7 @@ export default function EloDisplay() {
         )}
       </div>
       <RecentForm timeClass={timeClass} />
-    </>
+    </div>
   );
 }
 
