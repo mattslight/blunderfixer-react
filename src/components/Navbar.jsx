@@ -24,7 +24,7 @@ export default function Navbar({ toggleSidebar }) {
         >
           {loggedIn && (
             <button
-              className="cursor-pointer rounded-lg p-2 text-stone-600 hover:bg-stone-100 hover:text-stone-900 2xl:hidden dark:text-stone-400 dark:hover:bg-stone-700 dark:hover:text-white"
+              className="cursor-pointer rounded-lg bg-black p-2 text-stone-600 hover:bg-stone-100 hover:text-stone-900 2xl:hidden dark:bg-black/80 dark:text-stone-400 dark:backdrop-blur dark:hover:bg-stone-700 dark:hover:text-white"
               onClick={toggleSidebar}
             >
               <Menu />
