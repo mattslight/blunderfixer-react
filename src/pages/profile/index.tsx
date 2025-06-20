@@ -7,18 +7,54 @@ function acplToBlunderRate(acpl: number): number {
   return +(3 / (1 + Math.exp(-0.04 * (acpl - 75)))).toFixed(1);
 }
 
+function acplToAccuracy(acpl: number): number {
+  // anchor points [ACPL, Accuracy%]
+  const curve = [
+    [0, 100],
+    [20, 97],
+    [50, 92],
+    [100, 85],
+    [150, 78],
+    [200, 70],
+    [300, 60],
+  ] as const;
+
+  // below first anchor
+  if (acpl <= curve[0][0]) return curve[0][1];
+
+  // find the segment we sit in
+  for (let i = 0; i < curve.length - 1; i++) {
+    const [x0, y0] = curve[i];
+    const [x1, y1] = curve[i + 1];
+    if (acpl <= x1) {
+      const t = (acpl - x0) / (x1 - x0);
+      return +(y0 + (y1 - y0) * t).toFixed(1);
+    }
+  }
+
+  // beyond last anchor, clamp to the last accuracy
+  return curve[curve.length - 1][1];
+}
+
 export default function ProfilePage() {
   const { profile: ctx } = useProfile();
   const { username, avatar, country } = ctx;
-  const acpl = 89; // replace with real value when wired
 
   // mock data for stats/insights
-  const stats = {
-    blundersRate: acplToBlunderRate(acpl),
-    tacticAccuracy: 64,
-    winOpenings: 75,
-    endgameWins: 48,
+  const acplStats = {
+    combined: 89,
+    opening: 150,
+    middle: 50,
+    endgame: 20,
   };
+
+  const stats = {
+    blundersRate: acplToBlunderRate(acplStats.combined),
+    tacticAccuracy: acplToAccuracy(acplStats.middle),
+    winOpenings: acplToAccuracy(acplStats.opening),
+    endgameWins: acplToAccuracy(acplStats.endgame),
+  };
+
   const strengths = [
     { name: 'Sicilian Defense', score: 72 },
     { name: "Queen's Gambit", score: 68 },
@@ -38,10 +74,10 @@ export default function ProfilePage() {
 
   const metrics = [
     { icon: '⚔️', label: 'Blunder Rate', value: stats.blundersRate },
-    { icon: '🏆', label: 'Opening Accuracy.', value: `${stats.winOpenings}%` },
+    { icon: '🏆', label: 'Opening Accuracy', value: `${stats.winOpenings}%` },
     {
       icon: '🎯',
-      label: 'Tactic Accuracy.',
+      label: 'Tactic Accuracy',
       value: `${stats.tacticAccuracy}%`,
     },
     { icon: '♟️', label: 'Endgame Accuracy', value: `${stats.endgameWins}%` },
