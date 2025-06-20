@@ -1,6 +1,6 @@
 import { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Play } from 'lucide-react';
+import { Play, User } from 'lucide-react';
 
 interface Props {
   username: string;
@@ -24,15 +24,23 @@ export default function HeroSection({
         <div className="flex items-center gap-3"></div>
       </div>
       <p className="text-base leading-tight text-stone-400">{greeting}</p>
-      <button
-        onClick={() =>
-          navigate(nextDrillId ? `/drills/play/${nextDrillId}` : '/drills')
-        }
-        className="mt-8 rounded bg-green-600 px-5 py-3 text-sm font-semibold text-white hover:bg-green-700"
-      >
-        Start Fixing{' '}
-        <Play className="relative bottom-0.25 ml-1 inline h-4 w-4" />
-      </button>
+      <div className="flex flex-row space-x-4">
+        <button
+          onClick={() =>
+            navigate(nextDrillId ? `/drills/play/${nextDrillId}` : '/drills')
+          }
+          className="mt-8 rounded bg-green-600 px-5 py-3 text-sm font-semibold text-white hover:bg-green-700"
+        >
+          Start Fixing{' '}
+          <Play className="relative bottom-0.25 ml-1 inline h-4 w-4" />
+        </button>
+        <button
+          onClick={() => navigate('/profile')}
+          className="mt-8 rounded bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-700"
+        >
+          Profile
+        </button>
+      </div>
     </header>
   );
 }
