@@ -141,7 +141,7 @@ export default function GameCard({
         <button
           onClick={() => onAction(game)}
           disabled={isLoading}
-          className={`rounded-md bg-blue-700 px-3.5 py-1.5 text-sm font-medium text-white hover:bg-blue-700`}
+          className={`rounded bg-blue-700 px-4 py-2 text-xs font-medium text-white hover:bg-blue-700`}
         >
           {isLoading ? (
             <Loader className="h-4 w-4 animate-spin" />
