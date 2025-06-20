@@ -23,7 +23,6 @@ export default function ProfilePage() {
     { name: "King's Gambit", score: 28 },
     { name: 'Scotch Game', score: 32 },
   ];
-  const form = ['win', 'win', 'draw', 'loss', 'win'];
 
   // derive flag emoji
   const code = country?.split('/').pop()?.toUpperCase() || 'US';
@@ -65,6 +64,7 @@ export default function ProfilePage() {
                 <span className="ml-2 align-middle text-xl">{flag}</span>
               )}
             </h1>
+
             <EloDisplay />
             <div className="mt-4 flex justify-center space-x-4">
               <button className="flex items-center rounded bg-indigo-600 px-6 py-2 text-base text-white hover:bg-indigo-500">
@@ -133,32 +133,48 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Recent Form */}
+        {/* Most Played Opponents */}
         <div className="px-6 py-6">
-          <h2 className="mb-3 text-xl font-bold tracking-wide text-stone-100">
-            Form
+          <h2 className="mb-4 text-xl font-bold tracking-wide text-stone-100">
+            Most Played Opponents
           </h2>
-          <div className="flex space-x-3">
-            {form.map((f, i) => {
-              let bg = 'bg-stone-500';
-              let letter = 'D';
-              if (f === 'win') {
-                bg = 'bg-green-600';
-                letter = 'W';
-              } else if (f === 'loss') {
-                bg = 'bg-red-600';
-                letter = 'L';
-              }
-              return (
-                <div
-                  key={i}
-                  className={`${bg} flex h-8 w-8 items-center justify-center rounded-full text-base font-bold text-white`}
-                >
-                  {letter}
-                </div>
-              );
-            })}
-          </div>
+          {[
+            {
+              name: 'bharamp',
+              record: '12 games • 7w - 3l - 2d',
+              avatar:
+                'https://images.chesscomfiles.com/uploads/v1/user/185825115.32a36274.200x200o.9f12377a22e0.jpg',
+            },
+            {
+              name: 'merlinjose',
+              record: '10 games • 3w - 8l - 1d',
+              avatar:
+                'https://images.chesscomfiles.com/uploads/v1/user/7743090.6bc5301a.200x200o.989f43012e64.jpg',
+            },
+            {
+              name: 'hikaru',
+              record: '10 games • 11w - 8l - 1d',
+              avatar:
+                'https://images.chesscomfiles.com/uploads/v1/user/15448422.88c010c1.200x200o.3c5619f5441e.png',
+            },
+          ].map((opponent, i) => (
+            <div
+              key={i}
+              className="flex items-center space-x-4 border-b border-stone-800 py-2 last:border-none"
+            >
+              <img
+                src={opponent.avatar} // ✅ use dynamic opponent avatar
+                alt={`${opponent.name} avatar`}
+                className="h-10 w-10 rounded-full"
+              />
+              <div>
+                <p className="text-base font-semibold text-white">
+                  {opponent.name}
+                </p>
+                <p className="text-sm text-stone-400">{opponent.record}</p>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Share Footer */}
