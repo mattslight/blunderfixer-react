@@ -66,7 +66,7 @@ export default function GameCard({
   return (
     <li
       className={
-        `mt-6 flex flex-col rounded border-l-6 bg-stone-800 px-5 py-4 ` +
+        `mt-6 flex flex-col rounded-sm border-l-4 bg-stone-800 px-5 py-4 ` +
         (won
           ? 'border-green-500'
           : lost
@@ -75,11 +75,11 @@ export default function GameCard({
       }
     >
       {/* Header: players & ratings */}
-      <header className="mt-2 mb-0 grid grid-cols-[1fr_auto_1fr] items-center gap-x-2">
+      <header className="mb-0 grid grid-cols-[1fr_auto_1fr] items-center gap-x-2">
         {/* White */}
         <div className="flex items-center space-x-1 truncate">
-          <span className="mr-2 text-xl">♞</span>
-          <span className="truncate text-lg font-semibold">
+          <span className="mr-2 text-lg">♞</span>
+          <span className="truncate text-base font-semibold">
             {whitePlayer.username}
           </span>
           <span className="xs:flex hidden text-sm text-stone-500">
@@ -92,10 +92,10 @@ export default function GameCard({
 
         {/* Black */}
         <div className="flex items-center justify-end space-x-1 truncate">
-          <span className="mr-2 text-xl text-black [text-shadow:-0.5px_-0.5px_0_#fff,0.5px_-0.5px_0_#fff,-0.5px_0.5px_0_#fff,0.5px_0.5px_0_#fff]">
+          <span className="mr-2 text-lg text-black [text-shadow:-0.5px_-0.5px_0_#fff,0.5px_-0.5px_0_#fff,-0.5px_0.5px_0_#fff,0.5px_0.5px_0_#fff]">
             ♞
           </span>
-          <span className="truncate text-lg font-semibold">
+          <span className="truncate text-base font-semibold">
             {blackPlayer.username}
           </span>
           <span className="xs:flex hidden text-sm text-stone-500">
@@ -105,13 +105,13 @@ export default function GameCard({
       </header>
 
       {/* Meta: date & time control */}
-      <div className="mt-1 mb-2 flex space-x-4 text-sm text-stone-400">
+      <div className="mt-1 mb-2 flex space-x-4 text-xs text-stone-400">
         <div className="flex items-center space-x-1">
-          <Calendar size={16} />
+          <Calendar size={14} />
           <time dateTime={dateTime.toISOString()}>{dateStr}</time>
         </div>
         <div className="flex items-center space-x-1">
-          <Timer size={16} /> {tcStr}{' '}
+          <Timer size={15} /> {tcStr}{' '}
           <em className="ml-2">
             {game.meta.rated === true ? '' : '(Unrated)'}
           </em>
