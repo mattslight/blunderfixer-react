@@ -148,7 +148,7 @@ export default function GameCard({
           ) : (
             <span>
               <ChartNoAxesCombined className="relative bottom-0.5 mr-2 inline-flex h-4 w-4" />
-              Report
+              Review
             </span>
           )}
         </button>
