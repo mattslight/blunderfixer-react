@@ -544,7 +544,7 @@ const chessionary = [
   />,
   <DictionaryEntry
     key="conspiracytheory"
-    term="Con·spir·a·cy Theory"
+    term="Open·ing Con·spir·a·cy Theory"
     pos="noun"
     definition="When their opening theory feels like a trap."
   />,
