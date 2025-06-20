@@ -1,6 +1,7 @@
 // GameInfoBadges.tsx
 import { TrendingDown, User } from 'lucide-react';
 
+import { ecoLookup } from '@/const/eco';
 import { formatTimeControl } from '@/lib/formatTimeControl';
 
 type Props = {
@@ -32,6 +33,10 @@ export function GameInfoBadges({
   const text = variant === 'muted' ? 'text-stone-500' : 'text-stone-400';
   const badgeClass = `inline-flex items-center gap-1 rounded ${bg} px-2 py-0.5 text-xs ${text}`;
 
+  const ecoTags = eco ? ecoLookup[eco] : undefined;
+  const ecoMain = ecoTags?.main ?? eco;
+  const ecoSub = ecoTags?.sub;
+
   return (
     <div className="mt-4 flex items-center gap-2 text-sm">
       <div className="flex flex-wrap items-center gap-2">
@@ -52,10 +57,14 @@ export function GameInfoBadges({
           <span className={badgeClass}>
             {ecoUrl ? (
               <a href={ecoUrl} target="_blank" rel="noopener noreferrer">
-                {eco}
+                {ecoMain}
+                {ecoSub && ` (${ecoSub})`}
               </a>
             ) : (
-              eco
+              <>
+                {ecoMain}
+                {ecoSub && ` (${ecoSub})`}
+              </>
             )}
           </span>
         )}
