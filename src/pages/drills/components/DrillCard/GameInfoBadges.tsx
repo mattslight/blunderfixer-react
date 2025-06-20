@@ -1,4 +1,4 @@
-// GameInfoBadges.tsx
+// src/pages/components/DrillCard/GameInfoBadges.tsx
 import { TrendingDown, User } from 'lucide-react';
 
 import { ecoLookup } from '@/const/eco';
@@ -7,14 +7,15 @@ import { formatTimeControl } from '@/lib/formatTimeControl';
 type Props = {
   timeClass: string;
   timeControl: string;
-  opponent: { username: string; rating: number };
-  evalSwing: number;
+  opponent?: { username: string; rating: number };
+  evalSwing?: number;
   heroResult: 'win' | 'loss' | 'draw';
   eco?: string;
   ecoUrl?: string;
   hideGameResult?: boolean;
   hideOpponentRating?: boolean;
   variant?: 'default' | 'muted';
+  reason?: string; // optional reason for the result
 };
 
 export function GameInfoBadges({
@@ -28,6 +29,7 @@ export function GameInfoBadges({
   hideGameResult = false,
   hideOpponentRating = false,
   variant = 'default',
+  reason,
 }: Props) {
   const bg = variant === 'muted' ? 'bg-stone-800' : 'bg-stone-700';
   const text = variant === 'muted' ? 'text-stone-500' : 'text-stone-400';
@@ -42,17 +44,21 @@ export function GameInfoBadges({
       <div className="flex flex-wrap items-center gap-2">
         <span className={`${badgeClass} capitalize`}>{timeClass}</span>
         <span className={badgeClass}>{formatTimeControl(timeControl)}</span>
-        <span className={badgeClass}>
-          <User className="h-3 w-3" />
-          <p className="line-clamp-1">
-            {opponent.username}
-            {!hideOpponentRating && <>&nbsp;({opponent.rating})</>}
-          </p>
-        </span>
-        <span className={`${badgeClass} capitalize`}>
-          <TrendingDown className="h-4 w-3" />
-          {evalSwing > 10000 ? 'Mate' : `${evalSwing / 100} pawns`}
-        </span>
+        {opponent && (
+          <span className={badgeClass}>
+            <User className="h-3 w-3" />
+            <p className="line-clamp-1">
+              {opponent.username}
+              {!hideOpponentRating && <>&nbsp;({opponent.rating})</>}
+            </p>
+          </span>
+        )}
+        {evalSwing != null && (
+          <span className={`${badgeClass} capitalize`}>
+            <TrendingDown className="h-4 w-3" />
+            {evalSwing > 10000 ? 'Mate' : `${evalSwing / 100} pawns`}
+          </span>
+        )}
         {eco && (
           <span className={badgeClass}>
             {ecoUrl ? (
@@ -80,6 +86,20 @@ export function GameInfoBadges({
               }`}
             />
             {heroResult}
+          </span>
+        )}
+        {reason && (
+          <span className="inline-flex items-center gap-1 rounded bg-stone-700 px-2 py-0.5 text-xs text-stone-400">
+            <span
+              className={`h-2 w-2 rounded-full ${
+                heroResult === 'win'
+                  ? 'bg-green-500'
+                  : heroResult === 'loss'
+                    ? 'bg-red-500'
+                    : 'bg-stone-500'
+              }`}
+            />
+            {reason}
           </span>
         )}
       </div>
