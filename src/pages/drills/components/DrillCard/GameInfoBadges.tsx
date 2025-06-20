@@ -29,25 +29,25 @@ export function GameInfoBadges({
   return (
     <div className="mt-4 flex items-center gap-2 text-sm">
       <div className="flex flex-wrap items-center gap-2">
-        <span className="inline-flex items-center gap-1 rounded bg-stone-700 px-2 py-0.5 text-xs text-stone-400 capitalize">
+        <span className="inline-flex items-center gap-1 rounded bg-stone-800 px-2 py-0.5 text-xs text-stone-500 capitalize">
           {timeClass}
         </span>
-        <span className="inline-flex items-center gap-1 rounded bg-stone-700 px-2 py-0.5 text-xs text-stone-400">
+        <span className="inline-flex items-center gap-1 rounded bg-stone-800 px-2 py-0.5 text-xs text-stone-500">
           {formatTimeControl(timeControl)}
         </span>
-        <span className="inline-flex items-center gap-1 rounded bg-stone-700 px-2 py-0.5 text-xs text-stone-400">
+        <span className="inline-flex items-center gap-1 rounded bg-stone-800 px-2 py-0.5 text-xs text-stone-500">
           <User className="h-3 w-3" />
           <p className="line-clamp-1">
             {opponent.username}
             {!hideOpponentRating && <>&nbsp;({opponent.rating})</>}
           </p>
         </span>
-        <span className="inline-flex items-center gap-1 rounded bg-stone-700 px-2 py-0.5 text-xs text-stone-400 capitalize">
+        <span className="inline-flex items-center gap-1 rounded bg-stone-800 px-2 py-0.5 text-xs text-stone-500 capitalize">
           <TrendingDown className="h-4 w-3" />
           {evalSwing > 10000 ? 'Mate' : `${evalSwing / 100} pawns`}
         </span>
         {eco && (
-          <span className="inline-flex items-center gap-1 rounded bg-stone-700 px-2 py-0.5 text-xs text-stone-400">
+          <span className="inline-flex items-center gap-1 rounded bg-stone-800 px-2 py-0.5 text-xs text-stone-500">
             {ecoUrl ? (
               <a href={ecoUrl} target="_blank" rel="noopener noreferrer">
                 {eco}
@@ -58,7 +58,7 @@ export function GameInfoBadges({
           </span>
         )}
         {!hideGameResult && (
-          <span className="inline-flex items-center gap-1 rounded bg-stone-700 px-2 py-0.5 text-xs text-stone-400 capitalize">
+          <span className="inline-flex items-center gap-1 rounded bg-stone-700 px-2 py-0.5 text-xs text-stone-500 capitalize">
             <span
               className={`h-2 w-2 rounded-full ${
                 heroResult === 'win'

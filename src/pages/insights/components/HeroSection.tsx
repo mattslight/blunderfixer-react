@@ -28,9 +28,9 @@ export default function HeroSection({
         onClick={() =>
           navigate(nextDrillId ? `/drills/play/${nextDrillId}` : '/drills')
         }
-        className="mt-8 rounded bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700"
+        className="mt-8 rounded bg-green-600 px-5 py-3 text-sm font-semibold text-white hover:bg-green-700"
       >
-        Start Training{' '}
+        Start Fixing{' '}
         <Play className="relative bottom-0.25 ml-1 inline h-4 w-4" />
       </button>
     </header>

@@ -348,7 +348,7 @@ export default function PlayDrill() {
           </div>
         </div>
 
-        <div className="xs:block hidden">
+        <div className="block">
           <TimePhaseHeader
             playedAt={drill.game_played_at}
             displayPhase={displayPhase}
@@ -360,7 +360,7 @@ export default function PlayDrill() {
         ---------------------------------
         Shows time class, time control, opponent, eval swing, and result.
       */}
-        <div className="xs:block hidden">
+        <div className="block">
           <GameInfoBadges
             timeClass={drill.time_class}
             timeControl={drill.time_control}
